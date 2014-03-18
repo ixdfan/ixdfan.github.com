@@ -1,0 +1,170 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-09-12 03:11:46+00:00
+layout: post
+slug: inet_xxxx%e5%87%bd%e6%95%b0%e6%80%bb%e7%bb%93
+title: inet_xxx函数总结
+wordpress_id: 585
+categories:
+- 网络编程
+---
+
+inet_xxxx函数
+
+==================================================
+
+将点分式IP转换为地址结构in_addr
+
+    
+    int inet_aton(const char *cp, struct in_addr *inp);
+    in_addr_t inet_addr(const char *cp);
+    int inet_pton(int af, const char *src, void *dst);
+
+
+**注意：inet\_pton中的最后的参数应该是struct in\_addr类型的地址，一般使用时为addr.sin\_addr,addr是struct sockaddr\_in类型**
+
+==================================================
+
+将地址结构in_addr转换为点分式IP
+
+    
+    char *inet_ntoa(struct in_addr in);
+    const char *inet_ntop(int af, const void *src,
+    char *dst, socklen_t size);
+
+
+==================================================
+
+将字符串地址的网络部分转换为in_addr
+
+    
+    in_addr_t inet_network(const char *cp);
+
+
+==================================================
+
+将网络地址和主机地址合成IP地址
+
+    
+    struct in_addr inet_makeaddr(int net, int host);
+
+
+==================================================
+
+获取地址中的主机部分
+    
+    in_addr_t inet_lnaof(struct in_addr in);
+
+获取地址中的网络部分
+    
+    in_addr_t inet_netof(struct in_addr in);
+
+==================================================
+
+inet_aton函数
+注意：
+
+**当成功转换后返回值非0**
+
+**当传入的地址非法时返回0！！**
+
+==================================================
+
+inet_addr函数：
+
+注意：如果输入的**参数非法返回值为INADDR_NONE**(通常为-1)
+
+否则返回转换后的IP，但是由于值-1同时可以理解位合法的IP地址255.255.255.255
+
+所以**不能使用这个函数来转换IP地址255.255.255.255**
+
+==================================================
+
+inet_pton与inet_ntop函数是一套安全的协议无关的地址转换函数
+
+安全是相对与inet_aton的不可重入性来讲，这两个函数都可以重入，并且支持
+IPV4与IPV6
+
+inet_pton与inet_ntop的第一个参数af表示网络类型的协议族，IPV4下的值位AF_INET
+
+inet_pton第二个参数src表示需要转换的字符串，第三个参数为转换后的结果
+
+inet_ntop的第二个参数scr指向一个struct in_addr结构类型的指针，
+
+第三个参数dst指向保存结果缓冲区的指针，第四个参数cnt是dst缓冲区的大小
+
+**inet_pton返回值为-1时,通常是af所指定的协议族不支持所造成的**
+此时errno返回值为EAFNOSUPPORT
+
+** 当函数返回0时，表示src所指向的值是不合法的IP地址**
+函数返回正值时，表示转换成功
+
+inet_ntop函数返回一个指向dst的指针，当**发生错误的时候返回NULL**
+
+当af设定的协议族不支持的时候，errno设置位EAFNOSUPPORT
+
+当dst缓冲区大小过小的时候，errno的值位ENOSPC
+
+inet\_ntop与inet_pton的使用
+
+    
+    #include <netinet/in.h>
+    #include <sys/socket.h>
+    #include <arpa/inet.h>
+    #define ADDRLEN 16
+    int main()
+    {
+      struct in_addr ip;
+      char IPSTR[] = "192.168.128.129";
+      char addr[ADDRLEN];
+    
+      const char* str = NULL;
+      inet_pton(AF_INET, IPSTR, &ip);
+      ip.s_addr = htonl(192 << 24 | 168 <<  16 | 128 << 8 | 129);
+    
+      str = inet_ntop(AF_INET, &ip, &addr, ADDRLEN);
+    
+      printf("inet_ntop: ip, ox%x is %s\n", ip.s_addr, str);
+
+
+==================================================
+
+inet_aton返回值为转换后的字串指针，此内存区域为静态的，有可能会被覆盖，因此这个函数不是线程安全的
+例如：
+
+    
+    #include
+    #include <netinet/in.h>
+    #include <sys/socket.h>
+    #include <arpa/inet.h>
+    int main()
+    {
+      struct in_addr ip;
+      char* str1 = NULL;
+      char* str2 = NULL;
+      ip.s_addr = 192 << 24 | 168 << 16 | 128 << 8 | 129;
+      str1 = inet_ntoa(ip);
+    
+      ip.s_addr = 255 << 24 | 255 << 16 | 255 << 8 | 255;
+      str2 = inet_ntoa(ip);
+    
+      printf("inet_ntoa: IP:0x%x string1: %s, string2: %s", ip.s_addr, str1, str2);
+
+
+会发现str1与str2打印出的内容是一样的
+
+==================================================
+
+注意：
+
+    
+    struct in_addr
+    {
+        in_addr_t s_addr;
+    };
+
+
+结构体in\_addr中只有一个成员s\_addr,成员的类型是in\_addr\_t，其实**struct in\_addr与in\_addr_t两种的类型是可以相互转换的！**
+
+比如我们定义in\_addr\_t addr;但是某些函数的参数需要struct in\_addr类型的，此时我们可以使用强制转换，*(struct in_addr*)&addr

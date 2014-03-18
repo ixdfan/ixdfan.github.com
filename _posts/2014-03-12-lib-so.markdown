@@ -1,0 +1,70 @@
+---
+layout: post
+title: 动态库与静态库的封装
+description: 
+modified: 
+categories: 
+- THE LINUX
+---
+
+#### 库: 
+将函数等代码封装的二进制已编译的归档文件
+
+静态库
+======================
+##### 编译静态库的步骤:
+
+##### 1.编译:
+		gcc -c -static lib_func1.c	/* 产生lib_func1.o文件 */
+		gcc -c -static lib_func2.c	/* 产生lib_func2.o文件 */
+        
+##### 2.连接:
+		ar -r libmylib.a lib_func1.o lib_func2.o
+		/*		库名为mylib		*/
+		/* ar -r 指定静态库文件名 被归档的目标文件 */
+
+###### ar是个归档文件
+
+##### 静态库中静态的含义：
+1. 编译的程序运行的时候不依赖库，也就是说运行的时候不在需要库
+2. 库作为程序的一部分编译、链接
+
+##### 静态库的命名规则:
+	lib库名.a 主版本号.副版本号.批号
+
+##### 库的使用:
+	gcc main.c -l库名
+	-L选项制定库文件所在的目录
+
+###### 注意:
+库名是不包含lib之类的仅仅是库名
+
+动态库
+=========================
+##### 动态库的特点:
+程序执行时必须需要动态库文件，如果动态库文件不存在，则无法执行；
+
+##### 注意:
+动态库不会连接成程序的一部分，他总是独立存在。
+
+##### 编译动态库的步骤:
+##### 1.编译
+
+		gcc -c -fpic lib_func1.c	/* 产生lib_func1.o文件 */
+		gcc -c -fpic lib_func2.c	/* 产生lib_func2.o文件 */
+##### 2.连接
+
+		gcc -shared -olibmylib.so lib_func1.o lib_func2.o
+		/*	库名为mylib	*/
+
+##### 动态库的使用:
+
+	gcc main.c -lmylib -L. -omain
+	/*
+	*	-lmylib指明使用动态库mylib
+	*	-L. 指明动态库的位置在当前目录下
+	*/
+	ldd main
+	/* 查看到我们自己的动态库就说明成功了 */
+    
+

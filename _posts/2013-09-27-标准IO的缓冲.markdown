@@ -1,0 +1,114 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-09-27 15:42:17+00:00
+layout: post
+slug: '%e6%a0%87%e5%87%86io%e7%9a%84%e7%bc%93%e5%86%b2'
+title: 标准IO的缓冲
+wordpress_id: 758
+categories:
+- THE C&amp;C++
+---
+
+标准IO的缓冲
+
+==========================================================
+
+标准IO有三种类型的缓冲：
+1. 全缓冲
+2. 行缓冲
+3. 无缓冲
+
+==========================================================
+
+#### 全缓冲：
+
+在填满标准IO的缓冲区后才进行实际的IO操作。对于主流在磁盘上的文件通常是由标准IO库实施全缓冲。
+#### 行缓冲:
+当输入和输出遇到换行符时，标准IO库执行IO操作。涉及到终端时候一般就是行缓冲！
+#### 不带缓冲：
+标准IO库不对字符进行缓冲存储。
+
+例如：标准IO函数fputs写15个字符到不带缓冲的流中，则很可能是write系统调用函数将这些字符写至相关联的文件中。
+
+stderr也是不带缓冲的！
+
+#### 冲洗：
+
+缓冲区可以由标准IO自动冲洗(比如缓冲区满时)，或者是调用fflush冲洗一个流；
+
+flush在UNIX中有两个意思：
+
+在标准IO库中flush意味着将缓冲区中的内容写到磁盘上(缓冲区可能是局部填写)。
+
+在终端驱动方面flush表示丢弃以存储在缓冲区中的数据
+
+=========================================================================
+
+总结：
+
+**标准出错是不带缓冲的**
+
+** 打开至终端设备流是行缓冲**
+
+** 其他的所有都是全缓冲**
+
+=========================================================================
+
+    
+    int glob = 6;
+    char buf[] = "a wirte to stdout\n";
+    int main()
+    {
+    	int var;
+    	pid_t pid;
+    
+    	var = 88;
+    	if(write(0, buf, sizeof(buf)-1) != sizeof(buf))
+    	{
+    		perror("write error");
+    	}
+    	printf("before fork\n");
+    	if((pid = fork()) < 0)
+    	{
+    		perror("fork error");
+    	}
+    	else if(0 == pid)
+    	{
+    		glob++;
+    		var++;
+    	}
+    	else
+    	{
+    		sleep(2);
+    	}
+    	printf("pid = %d, glod = %d, var = %d\n", getpid(), glob, var);
+    	return 0;
+    }
+
+
+==============================================
+
+    [root@localhost 03]# ./main
+    a wirte to stdout
+    before fork
+    pid = 7193, glod = 7, var = 89
+    pid = 7192, glod = 6, var = 88
+    
+==============================================
+
+    [root@localhost 03]# ./main > t
+    a wirte to stdout
+    [root@localhost 03]# cat t
+    before fork
+    pid = 7202, glod = 7, var = 89
+    before fork
+    pid = 7201, glod = 6, var = 88
+
+第一个输出一个before fork
+
+第二个输出的是两个before fork
+
+这就是行缓冲与全缓冲的区别
+
+这也是面试中喜欢的考点

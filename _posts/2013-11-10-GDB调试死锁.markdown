@@ -1,0 +1,107 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-10 10:27:27+00:00
+layout: post
+slug: gdb%e8%b0%83%e8%af%95%e6%ad%bb%e9%94%81
+title: GDB调试死锁
+wordpress_id: 939
+categories:
+- GDB
+tags:
+- GDB
+---
+
+GDB调试死锁
+
+#####1. pstack pid 和 gdb -p pid
+#####2. info thread找到__lll_lock_wait
+#####3. p mutex查看mutex结构体中的owner
+
+
+    
+    
+    [root@localhost 03]# ps a | grep main
+    24481 pts/6    Tl+    0:00 ./main
+    [root@localhost 03]# ps -efH | grep main
+    root     24828 13322  0 18:16 pts/2    00:00:00       grep main
+    root     24820 23644  0 18:16 pts/6    00:00:00       ./main
+    [root@localhost 03]# pstack 24820
+    Thread 5 (Thread 0xb776fb70 (LWP 24821)):
+    #0  0x00548424 in __kernel_vsyscall ()
+    #1  0x00d98019 in __lll_lock_wait () from /lib/libpthread.so.0
+    #2  0x00d93430 in _L_lock_677 () from /lib/libpthread.so.0
+    #3  0x00d93301 in pthread_mutex_lock () from /lib/libpthread.so.0
+    #4  0x0804864b in func1 ()
+    #5  0x080486e8 in thread1 ()
+    #6  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+    #7  0x00ca1aae in clone () from /lib/libc.so.6
+    Thread 4 (Thread 0xb6d6eb70 (LWP 24822)):
+    #0  0x00548424 in __kernel_vsyscall ()
+    #1  0x00d98019 in __lll_lock_wait () from /lib/libpthread.so.0
+    #2  0x00d93430 in _L_lock_677 () from /lib/libpthread.so.0
+    #3  0x00d93301 in pthread_mutex_lock () from /lib/libpthread.so.0
+    #4  0x080486ae in func2 ()
+    #5  0x0804870e in thread2 ()
+    #6  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+    #7  0x00ca1aae in clone () from /lib/libc.so.6
+    Thread 3 (Thread 0xb636db70 (LWP 24823)):
+    #0  0x00548424 in __kernel_vsyscall ()
+    #1  0x00c60876 in nanosleep () from /lib/libc.so.6
+    #2  0x00c606a0 in sleep () from /lib/libc.so.6
+    #3  0x0804873b in thread3 ()
+    #4  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+    #5  0x00ca1aae in clone () from /lib/libc.so.6
+    Thread 2 (Thread 0xb596cb70 (LWP 24824)):
+    #0  0x00548424 in __kernel_vsyscall ()
+    #1  0x00c60876 in nanosleep () from /lib/libc.so.6
+    #2  0x00c606a0 in sleep () from /lib/libc.so.6
+    #3  0x0804878f in thread4 ()
+    #4  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+    #5  0x00ca1aae in clone () from /lib/libc.so.6
+    Thread 1 (Thread 0xb77708d0 (LWP 24820)):
+    #0  0x00548424 in __kernel_vsyscall ()
+    #1  0x00d9210d in pthread_join () from /lib/libpthread.so.0
+    #2  0x080488d0 in main ()
+    
+
+
+通过pstack查看调用栈信息，我们可以发现线程4与线程5才有__lll_lock_wait，所以问题大概就应该是线程4与线程5
+
+    
+    
+    [root@localhost 03]# gdb -p 24481
+    (gdb) info thread
+      5 Thread 0xb7730b70 (LWP 24821)  0x00ef3424 in __kernel_vsyscall ()
+    * 4 Thread 0xb6d2fb70 (LWP 24822)  0x00ef3424 in __kernel_vsyscall ()
+      3 Thread 0xb632eb70 (LWP 24823)  0x00ef3424 in __kernel_vsyscall ()
+      2 Thread 0xb592db70 (LWP 24824)  0x00ef3424 in __kernel_vsyscall ()
+      1 Thread 0xb77318d0 (LWP 24820)  0x00ef3424 in __kernel_vsyscall ()
+      (gdb) bt                                                                                   
+    #0  0x00b83424 in __kernel_vsyscall ()                                                     
+    #1  0x00d98019 in __lll_lock_wait () at ../nptl/sysdeps/unix/sysv/linux/i386/i486/lowlevellock.S:142                                                                                  
+    #2  0x00d93430 in _L_lock_677 () from /lib/libpthread.so.0                                 
+    #3  0x00d93301 in __pthread_mutex_lock (mutex=0x8049c04) at pthread_mutex_lock.c:61        
+    #4  0x0804864b in func1 () at lock.c:18                                                    
+    #5  0x080486e8 in thread1 (arg=0x0) at lock.c:43                                           
+    #6  0x00d91a49 in start_thread (arg=0xb7775b70) at pthread_create.c:301                    
+    #7  0x00ca1aae in clone () at ../sysdeps/unix/sysv/linux/i386/clone.S:133 
+    (gdb) p mutex2
+    $1 = {__data = {__lock = 2, __count = 0, __owner = 24822, __kind = 0, __nusers = 1, {__spins = 0, __list = {
+            __next = 0x0}}},
+      __size = "\002\000\000\000\000\000\000\000\243_\000\000\000\000\000\000\001\000\000\000\000\000\000",
+      __align = 2}
+    (gdb) p mutex1
+    $2 = {__data = {__lock = 2, __count = 0, __owner = 24821, __kind = 0, __nusers = 1, {__spins = 0, __list = {
+            __next = 0x0}}},
+      __size = "\002\000\000\000\000\000\000\000\242_\000\000\000\000\000\000\001\000\000\000\000\000\000",
+      __align = 2}
+    (gdb)
+    
+
+
+可以看到mutex1的owner是24821也就是线程5，而mutex2的owner是24822也就是线程4,所以也就可以定位到线程4与线程5就是最终的问题所在
+
+参考文章：
+
+http://www.ibm.com/developerworks/cn/linux/l-cn-deadlock/

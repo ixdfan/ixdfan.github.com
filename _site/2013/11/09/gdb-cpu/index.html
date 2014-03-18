@@ -1,0 +1,284 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>GDB调试(六):线程CPU占用高 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="GDB">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GDB调试(六):线程CPU占用高">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2013/11/09/gdb-cpu/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2013/11/09/gdb-cpu/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>GDB调试(六):线程CPU占用高</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>如何定位线程占用CPU100%的问题,这个问题曾经在面试时候被问道过</p>
+
+<h1></h1>
+
+<p>测试程序</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">void* tfn1(void* arg)
+{
+        while(1);
+}
+void* tfn2(void* arg)
+{
+        printf(&quot;the second thread\n&quot;);
+        while(1);
+        printf(&quot;the second thread over\n&quot;);
+}
+int main()
+{
+        pthread_t t1, t2;
+        pthread_create(&amp;t1, NULL, tfn1, NULL);
+        pthread_create(&amp;t2, NULL, tfn2, NULL);
+
+        pthread_join(t1, NULL);
+        pthread_join(t2, NULL);
+        return 0;
+}
+</code></pre></div>
+<h1></h1>
+
+<p>编译并运行程序</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost 05]#cc while.c -omain -g -lpthread
+[root@localhost 05]# ./main
+</code></pre></div>
+<h1></h1>
+
+<p>我们使用top命令我们可以看到main程序的CPU占用达到了95.6%</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+15486 root      20   0 22596  472  388 S 95.6  0.0   0:44.86 main
+</code></pre></div>
+<p>使用top的H选项查看哪线程占用CPU最高，此时的PID就是线程的进程ID</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+15488 root      20   0 22596  472  388 R 48.5  0.0   2:18.08 main
+15487 root      20   0 22596  472  388 R 48.0  0.0   2:18.08 main
+</code></pre></div>
+<h1></h1>
+
+<h5>使用GDB调试</h5>
+
+<p>可以看到我们的两个线程分别占用CPU为48.5%，48%,现在我们可以使用GDB来定位了</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost 05]# gdb 
+(gdb) attach 15487
+Attaching to process 15487
+……  #省略一些内容
+tfn1 (arg=0x0) at while.c:9
+9               while(1);
+(gdb) bt
+#0  tfn1 (arg=0x0) at while.c:9
+#1  0x00d91a49 in start_thread (arg=0xb7739b70)
+    at pthread_create.c:301
+#2  0x00ca1aae in clone ()
+    at ../sysdeps/unix/sysv/linux/i386/clone.S:133
+</code></pre></div>
+<p>可以看到原来是我们的tfn1线程占用了CPU，问题就在与while(1)</p>
+
+<p>当然采用同样的方法我们可以看到tfn2。</p>
+
+<h1></h1>
+
+<h5>使用pstack定位</h5>
+
+<p>还有我们可以采用pstack查看线程的调用栈</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost ~]# pstack 15487
+Thread 1 (process 15487):
+#0  0x080484a1 in tfn1 ()
+#1  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+#2  0x00ca1aae in clone () from /lib/libc.so.6
+
+[root@localhost ~]# pstack 15488
+Thread 1 (process 15488):
+#0  0x080484b5 in tfn2 ()
+#1  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+#2  0x00ca1aae in clone () from /lib/libc.so.6
+</code></pre></div>
+<p>可以看到我们的线程15487与15488分别是tfn1与tfn2，这样也可以快速定位到问题线程</p>
+
+<h1></h1>
+
+<h5>查看CPU使用时间</h5>
+
+<p>通过查看每个线程所占用的CPU时间缩小到具体线程</p>
+
+<p>在proc/pid/task下包含了该进程所有的线程，例如线程号15487,那么在proc/pid/task/15487/stat文件可以获取到此线程的信息，其中第14个域和15个于就是用户态时间和内核态时间，依据这2个时间就能知道CPU到底花在哪个线程中了。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost ~]# vim /proc/15486/task/15487/stat
+15487 (main) T 14792 15486 14792 34821 15486 4202560 0 0 0 0 29602 20 0 0 20 0 3 0 3159492 23138304 118 4294967295 134512640 134514360 3220545728 3077804920 134513825 0 0 0 0 0 0 0 -1 0 0 0 0 0 0
+</code></pre></div>
+<p>第14为用户态时间29602</p>
+
+<p>第15为内核态时间20</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>GDB调试(六):线程CPU占用高</strong> was published on <time datetime="2013-11-09T04:12:11Z">November 09, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

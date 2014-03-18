@@ -1,0 +1,217 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-09-19 02:40:44+00:00
+layout: post
+slug: c%e6%a8%a1%e6%9d%bf%e4%b9%8b%e5%87%bd%e6%95%b0%e6%a8%a1%e6%9d%bf
+title: C++模板之函数模板
+wordpress_id: 671
+categories:
+- THE C&amp;C++
+tags:
+- 模板
+---
+
+**函数模板不支持形参默认值，仅仅支持特化，偏特化**
+
+** 函数模板可以没有<>称为自动实例化,但是通用模板必须要有<>即使不传参数**
+
+    
+    template <typename T>
+    string type(T t)
+    {
+    	return Type::name();
+    }
+    
+    cout << type(123) << endl;
+    cout << type(123.0) << endl;
+
+
+编译器会自动识别123,123.0的类型,因此可以不写<>
+
+**函数模板的优势：**
+
+**编译器可以根据实参推测出函数形参中那个未定类型名**，在算法中经常用到
+
+**根据形参自动确定模板中的类型名称为自动实例化**
+<!-- more -->
+
+    
+    int a = 10;
+    char b = 'k';
+    cout << type(a/1.0) << endl;
+    cout << type(a<b) << endl;
+    cout << type(&a) << endl;
+
+
+
+    
+    template <typename T>
+    void sort(T* a, int n);//这样sort就可以通用于各种类型的数组排序了
+    --------------------------------------------
+    int a[5] = ……;
+    double d[4] = ……;
+    ……
+    sort(a, 5);
+    sort(d, 4);
+
+
+编译器会自动推测a，b的类型
+
+======================================================
+
+    
+    template <typename T>
+    void show(T a[], int n)
+    {
+    	for(int i = 0; i < n; i++)
+    		cout << a[i] << ' ';
+    	cout << endl;
+    }
+    -----------------------------------
+    show(a, 5);
+
+
+如何写成show(a);的形式呢？
+
+======================================================
+
+    
+    template <typename T>
+    void show(T& t)
+    {
+    	int n = sizeof(t) / sizeof(t[0]);
+    	for(int i = 0; i < n; i++)
+    		cout << a[i] << ' ';
+    	cout << endl;
+    }
+
+
+**使用引用的目的在与是t与a为同一个变量**，如果不使用引用则sizeof(t);的不到正确的结果。
+
+======================================================
+
+但是这个show函数有个缺陷：
+
+double m = 12.34;
+
+show(m);
+
+它也会与show(T& t)配对，但是T为double类型，t[0]是不存在的，所以编译报错
+
+======================================================
+
+为了使得show专用于数组，写一个通用版本，写一个偏特化版本
+
+    
+    template <
+    void show(T data)
+    {
+    	cout << data << endl;
+    }
+    
+    template <
+    void show(T (&t)[N])
+    {
+    	for(int i = 0; i < N; i++)
+    		cout << t[i] << ' ';
+    	cout << endl;
+    }
+    
+    虽然这两个模板都可以匹配数组，但是T (&t)[N]匹配的更好一些，所以数组还是会使用它
+    
+======================================================
+    
+    T ()[N]
+    T (	)[N]		是一个数组，存放T类型的数据
+    T (*p)[N]		数组指针		
+    T (&p)[N]		数组引用
+    T& (p)[N]		数组中每个元素都是T&类型
+    T* (&p)[N]	        偏向指针数组
+======================================================
+
+    
+    template <typename T>
+    const T& Min(const T&a, const T& b)
+    {
+    	cout << "A Min" << endl;
+    	return a < b ? a ? b;
+    }
+    
+    template <typename T>
+    T& Min(T&a, T& b)
+    {
+    	cout << "B Min" << endl;
+    	return a < b ? a ? b;
+    }
+    
+-------------------------------------------------------------
+    int x = 1;
+    int y = 2;
+    cout << Min(x, y) << endl;	//编译器在选择的时候会选择限制少的，所以调用B模板
+    cout << Min(1, 2) << endl;	//调用A模板，因为输入的是个const常量
+    cout << Min(1.1, 2) << endl;	//错误，因为与两个模板都不匹配,所以要再写一个模板
+
+-------------------------------------------------------------
+    template <typename T, typename U>
+    T& Min(const T& a, const U& b)
+    {
+    	cout << "c Min" << endl;
+    	//return a < b ? a : b;		//错误，因为? :运算符要求前后两个类型都相同
+    	return a < b ? a : static_cast(b); //或使用T(b);
+    	//不同类型的比较则会调用c的模板
+    }
+
+-------------------------------------------------------------
+    cout << Min("hello", "world") << endl;
+    //比较的是地址的大小
+
+-------------------------------------------------------------
+    将const char*写为普通的函数
+    const char* Min(cosnt char* a, const char* b)
+    {
+    	cout << "D Min" << endl;
+    	return strcmp(a, b) < 0 ? a : b;
+    }
+
+
+Min("hello", "world")与const char* Min(cosnt char* a, const char* b)和const T& Min(const T&a, const T& b)都能匹配。
+
+**当普通函数与函数模板都能够匹配的时候，编译器优先选择普通函数**
+
+所以Min("hello", "world")会调用普通函数
+
+如果想要调用模板则使用如下
+
+Min<>("hello", "world");则调用A版Min
+
+======================================================
+
+    
+    template <typenmae T>//偏特化
+    
+    T& Min(const T& a, char& b)
+    {
+    	cout << "E Min" << endl;
+    	return a < b ? a : b;
+    }
+    
+    cout << Min(123, 'x') << endl;//调用E Min
+    
+    template <> //偏特化
+    T Min(double& a, double& b)
+    {
+    	cout << "F Min" << endl;
+    	return a < b ? a : b;
+    }
+
+
+#### 注意：
+
+**特化一定是针对一个已有的模板特化**
+
+** 对于const char*类型都要特化处理**
+
+======================================================
+
+

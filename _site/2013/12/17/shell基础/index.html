@@ -1,0 +1,373 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>shell基础 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell基础">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2013/12/17/shell%E5%9F%BA%E7%A1%80/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2013/12/17/shell%E5%9F%BA%E7%A1%80/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>shell基础</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>shell命令的种类：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">1.内建命令
+2.shell函数
+3.外部函数
+</code></pre></div>
+<h1></h1>
+
+<p>内建命令是shell程序本身包含的命令。这些命令集成在shell解析器中。</p>
+
+<p>例如：所有shell解析器中都包含cd内建命令来改变工作目录内建命令的存在是为了改变shell本身的属性设置。</p>
+
+<p><strong>在执行内建命令时，没有进程的创建和消亡；</strong></p>
+
+<p>另一部分内建命令则是IO命令，例如echo命令；</p>
+
+<h1></h1>
+
+<p>shell函数式一系列函数代码，以shell语言写成，它可以像其他命令一样被引用。</p>
+
+<h1></h1>
+
+<p>外部命令是独立于shell的可执行程序，例如find、grep、echo.sh。命令行shell在执行外部命令时，会创建一个当前shell的复制进程来执行，在执行过程中，存在进程的创建和消亡。
+外部命令的执行如下：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">(1).调用POSIX系统fork函数接口，创建一个命令行shell进程的子进程。
+(2).在子进程的运行环境中，查找外部命令在Linux文件系统中的位置。如果外部命令给出了完全路径，则跳过这一步。
+(3).在子进程里，以新进程取代shell拷贝并执行(exec)，此时父进程进入休眠，等待子进程执行完毕。
+(4).子进程执行完毕后，父进程接着从终端读取下一条命令。
+</code></pre></div>
+<h1></h1>
+
+<h5>注意：</h5>
+
+<ol>
+<li>子进程创建初期和父进程一模一样，但是子进程不能改变父进程参数变量</li>
+<li>只有内建命令才能够改变命令行shell的属性设置(环境变量)</li>
+</ol>
+
+<h1></h1>
+
+<p>实例：echo.sh</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#! /bin/sh
+cd /tmp
+echo &quot;hello world!&quot;
+</code></pre></div>
+<p>执行结果：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost 01]# pwd
+/root/workspace/shell/01
+[root@localhost 01]# chmod +x echo.sh
+[root@localhost 01]# ./echo.sh
+hello world!
+[root@localhost 01]# pwd
+/root/workspace/shell/01
+[root@localhost 01]#
+</code></pre></div>
+<p>会发现路径并没有改变</p>
+
+<h1></h1>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost 01]# pwd
+/root/workspace/shell/01
+[root@localhost 01]# source echo.sh
+hello world!
+[root@localhost tmp]# pwd
+/tmp
+</code></pre></div>
+<p>现在目录发生了改变</p>
+
+<h1></h1>
+
+<p>执行过程：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">(1)父进程接收到命令&quot;./echo.sh&quot;时，发现不是内建命令于是创建一个和自己一样的shell进程(子进程)来执行外命令。
+(2)在shell子进程中使用/bin/sh来取代自己，shell进程设置自己的运行环境变量其中包括$PWD(标识当前工作目录)。
+(3)sh进程一次执行内建命令cd和echo，在此进程中，sh进程(子进程)的环境变量$PWD被cd命令改变。
+注意：父进程的环境变量并没有改变
+(4)sh子进程执行完毕，消失。一直在等待的父进程醒来继续接受命令
+所以在第一次运行的时候目录没有改变，因为父进程的当前目录(环境变量)无法被子进程改变！
+</code></pre></div>
+<h5>注意：</h5>
+
+<p>在使用source执行shell脚本时，不会创建子进程，而是在父进程中直接进行！</p>
+
+<h1></h1>
+
+<p>source语法:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">source file
+. file
+</code></pre></div>
+<p>表示使用shell进程本身执行脚本文件。source命令也称为&quot;点命令&quot;通常用于重新执行刚刚修改的初始化文件，使之立即生效。</p>
+
+<h1></h1>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost 01]# var=123
+[root@localhost 01]# echo &quot;$var&quot;
+123
+[root@localhost 01]# echo &#39;$var&#39;
+$var
+</code></pre></div>
+<p>可以看到单引号中的var并没有被替换成为变量值123，变量替换被禁止了，而双引号中的$var发生了变量替换；</p>
+
+<h5>注意：</h5>
+
+<p>单引号为全引用(强引用)，双引号为弱引用。</p>
+
+<h1></h1>
+
+<p>shell中变量允许为空值(NULL),就是不含有任何字符。但是在算术运算中这个未初始化的变量不一定就是0。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost 01]# echo &quot;$uninit&quot; //为空
+
+[root@localhost 01]# let &quot;uninit+=5&quot;
+[root@localhost 01]# echo &quot;$uninit&quot;
+5
+</code></pre></div>
+<p>虽然结果是5，但是要谨慎使用</p>
+
+<h1></h1>
+
+<p>shell的局部变量与全局变量</p>
+
+<h5>注意：</h5>
+
+<ul>
+<li>局部变量必须以local声明，否则就是变量是属于某一代码块的，它也是全局可见的</li>
+<li>环境变量时全局变量的一种，全局变量在全局范围内可见，声明全局变量不需要任何修饰</li>
+</ul>
+
+<p>示例代码</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#!/bin/sh
+
+num=123
+fun1()
+{
+        num=321
+        echo $num
+}
+
+fun2()
+{
+        local num=456
+        echo $num
+}
+echo $num
+fun1
+echo $num
+fun2
+echo $num
+</code></pre></div>
+<p>输出结果
+    [root@localhost 01]# ./local.sh
+    123 //初始值
+    321 //fun1内被改变
+    321 //fun1中影响了全局变量
+    456 //fun2中的num
+    321 //fun2中没有对全局变量产生影响</p>
+
+<h1></h1>
+
+<p><strong>export主要用于设置或显示环境变量</strong></p>
+
+<p>export的语法
+    export [-fnp] [变量名]=[变量设置值]
+    -f 代表[变量名称]中的函数名称
+    -n 删除指定的变量，实际上变量并没有被删除，只是不会输出到后续指令的执行环境中
+    -p 列出所有的shell赋予程序的环境变量</p>
+
+<h5>注意：</h5>
+
+<ul>
+<li>export仅仅修改当前shell进程的环境变量，若讲export命令置于脚本中被调用执行，则export对父进程的环境变量是没有改变的</li>
+<li>使用source执行脚本的时候没有子进程产生，所以脚本中export命令将会影响父进程的环境</li>
+<li><p>export设置的环境变量的有效期仅仅维持到当前进程消亡为止，所以下次登录时环境变量无效，想要永久的保存export的环境变量，可以将export置于shell登录时的启动文件中。</p>
+
+<p>export PATH=/bin:/usr/bin:/usr/local/bin</p></li>
+</ul>
+
+<h1></h1>
+
+<h5>shell中常见的环境变量</h5>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">HOME 用户的专属目录
+
+PATH 外部命令的搜索路径
+
+LOGNAME 当前用户的登录名
+
+SHELL 当前用户使用的shell类型
+
+MAIL 当前用户的邮件存放目录
+</code></pre></div>
+<h1></h1>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>shell基础</strong> was published on <time datetime="2013-12-17T04:43:07Z">December 17, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

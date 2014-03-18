@@ -1,0 +1,408 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>netstat常用指令小结 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="netstat">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="netstat常用指令小结">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2013/08/05/netstat/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2013/08/05/netstat/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>netstat常用指令小结</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>netstat 命令用于显示各种网络相关信息，如网络连接，路由表，接口状态 (Interface Statistics)，masquerade 连接，多播成员 (Multicast Memberships) 等等。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#netstat
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address Foreign Address State
+tcp 0 0 localhost.localdom:9001 localhost.localdom:1162 ESTABLISHED
+Active UNIX domain sockets (w/o servers)
+Proto RefCnt Flags Type State I-Node Path
+unix 1 [ ] STREAM CONNECTED 16178 @000000dd
+</code></pre></div>
+<p>netstat的输出结果可以分为两个部分：</p>
+
+<p>一个是Active Internet connections，称为有源TCP连接，其中&quot;Recv-Q&quot;和&quot;Send-Q&quot;指%0A的是接收队列和发送队列。这些数字一般都应该是0。如果不是则表示软件包正在队列中堆积。这种情况只能在非常少的情况见到。</p>
+
+<p>另一个是Active UNIX domain sockets，称为有源Unix域套接口(和网络套接字一样，但是只能用于本机通信，性能可以提高一倍)。</p>
+
+<ul>
+<li>Proto显示连接使用的协议</li>
+<li>RefCnt表示连接到本套接口上的进程号</li>
+<li>Types显示套接口的类型</li>
+<li>State显示套接口当前的状态</li>
+<li>Path表示连接到套接口的其它进程使用的路径名</li>
+</ul>
+
+<p>常见参数</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">-a (all)显示所有选项，默认不显示LISTEN相关
+-t (tcp)仅显示tcp相关选项
+-u (udp)仅显示udp相关选项
+-n 拒绝显示别名，能显示数字的全部转化成数字。
+-l 仅列出有在 Listen (监听) 的服務状态
+-p 显示建立相关链接的程序名
+-r 显示路由信息，路由表
+-e 显示扩展信息，例如uid等
+-s 按各个协议进行统计
+-c 每隔一个固定时间，执行该netstat命令。
+</code></pre></div>
+<p>注意：</p>
+
+<p><em>LISTEN和LISTENING的状态只有用-a或者-l才能看到</em></p>
+
+<h3>列出所有端口 (包括监听和未监听的)</h3>
+
+<p>列出所有端口 netstat -a
+    # netstat -a | more
+    Active UNIX domain sockets (servers and established)
+    Proto RefCnt Flags Type State I-Node Path</p>
+
+<p>列出所有 tcp 端口 netstat -at
+    # netstat -at
+    Active Internet connections (servers and established)
+    Proto Recv-Q Send-Q Local Address Foreign Address State</p>
+
+<p>列出所有 udp 端口 netstat -au
+    # netstat -au
+    Active Internet connections (servers and established)
+    Proto Recv-Q Send-Q Local Address Foreign Address State</p>
+
+<h3>列出所有处于监听状态的 Sockets</h3>
+
+<p>显示监听端口 netstat -l
+    # netstat -l
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address Foreign Address State</p>
+
+<p>列出所有监听 tcp 端口 <code>netstat -lt</code>
+    # netstat -lt
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address Foreign Address State</p>
+
+<p>列出所有监听 udp 端口 netstat -lu
+    # netstat -lu
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address Foreign Address State</p>
+
+<p>列出所有监听 UNIX 端口 netstat -lx
+    # netstat -lx
+    Active UNIX domain sockets (only servers)
+    Proto RefCnt Flags Type State I-Node Path</p>
+
+<h3>显示每个协议的统计信息</h3>
+
+<p>显示所有端口的统计信息 netstat -s
+    # netstat -s
+    Ip:
+    11150 total packets received 
+    1 with invalid addresses
+    0 forwarded 
+    0 incoming packets discarded 
+    11149 incoming packets delivered 
+    11635 requests sent out
+    Icmp:
+    0 ICMP messages received
+    0 input ICMP message failed.
+    Tcp:
+    582 active connections openings
+    2 failed connection attempts
+    25 connection resets received
+    Udp:
+    1183 packets received
+    4 packets to unknown port received.</p>
+
+<p>显示 TCP 或 UDP 端口的统计信息 netstat -st 或 -su
+    # netstat -st
+    # netstat -su</p>
+
+<h3>在 netstat 输出中显示 PID 和进程名称 netstat -p</h3>
+
+<p>netstat -p 可以与其它开关一起使用，就可以添加 “PID/进程名称” 到 netstat 输出中，这样 debugging 的时候可以很方便的发现特定端口运行的程序。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># netstat -pt
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address Foreign Address State PID/Program name
+tcp 1 0 ramesh-laptop.loc:47212 192.168.185.75:www CLOSE_WAIT 2109/firefox
+tcp 0 0 ramesh-laptop.loc:52750 lax:www ESTABLISHED 2109/firefox
+</code></pre></div>
+<h3>在 netstat 输出中不显示主机，端口和用户名 (host, port or user)</h3>
+
+<p>当你不想让主机，端口和用户名显示，使用 netstat -n。将会使用数字代替那些名称。
+同样可以加速输出，因为不用进行比对查询。
+    # netstat -an</p>
+
+<p>如果只是不想让这三个名称中的一个被显示，使用以下命令
+    # netsat -a --numeric-ports
+    # netsat -a --numeric-hosts
+    # netsat -a --numeric-users</p>
+
+<h3>持续输出 netstat 信息</h3>
+
+<p>每隔一秒输出网络信息
+    # netstat -c
+    Active Internet connections (w/o servers)
+    Proto Recv-Q Send-Q Local Address Foreign Address State</p>
+
+<h3>显示系统不支持的地址族 (Address Families)</h3>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#netstat --verbose
+在输出的末尾，会有如下的信息
+netstat: no support for `AF IPX&#39; on this system.
+netstat: no support for `AF AX25&#39; on this system.
+netstat: no support for `AF X25&#39; on this system.
+netstat: no support for `AF NETROM&#39; on this system.
+</code></pre></div>
+<h3>显示核心路由信息 netstat -r</h3>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># netstat -r
+Kernel IP routing table
+Destination Gateway Genmask Flags MSS Window irtt Iface
+192.168.1.0 * 255.255.255.0 U 0 0 0 eth2
+link-local * 255.255.0.0 U 0 0 0 eth2
+default 192.168.1.1 0.0.0.0 UG 0 0 0 eth2
+</code></pre></div>
+<h5>注意：</h5>
+
+<p>使用 netstat -rn 显示数字格式，不查询主机名称。</p>
+
+<h3>找出程序运行的端口</h3>
+
+<p>并不是所有的进程都能找到，没有权限的会不显示，使用 root 权限查看所有的信息。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># netstat -ap | grep ssh
+tcp 1 0 dev-db:ssh 101.174.100.22:39213 CLOSE_WAIT -
+tcp 1 0 dev-db:ssh 101.174.100.22:57643 CLOSE_WAIT -
+</code></pre></div>
+<p>找出运行在指定端口的进程</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># netstat -an | grep &#39;:80&#39;
+</code></pre></div>
+<h3>显示网络接口列表</h3>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># netstat -i
+Kernel Interface table
+Iface MTU Met RX-OK RX-ERR RX-DRP RX-OVR TX-OK TX-ERR TX-DRP TX-OVR Flg
+eth0 1500 0 0 0 0 0 0 0 0 0 BMU
+eth2 1500 0 26196 0 0 0 26883 6 0 0 BMRU
+lo 16436 0 4 0 0 0 4 0 0 0 LRU
+</code></pre></div>
+<p>显示详细信息，像是 ifconfig 使用 netstat -ie:
+    # netstat -ie
+    Kernel Interface table
+    eth0 Link encap:Ethernet HWaddr 00:10:40:11:11:11
+    UP BROADCAST MULTICAST MTU:1500 Metric:1
+    RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+    TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+    collisions:0 txqueuelen:1000
+    RX bytes:0 (0.0 B) TX bytes:0 (0.0 B)
+    Memory:f6ae0000-f6b00000</p>
+
+<h3>IP和TCP分析</h3>
+
+<p>查看连接某服务端口最多的的IP地址</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#netstat -nat | grep &quot;192.168.1.15:22&quot; |awk &#39;{print $5}&#39;|awk -F: &#39;{print $1}&#39;|sort|uniq -c|sort -nr|head -20
+18 221.136.168.36
+3 154.74.45.242
+2 78.173.31.236
+2 62.183.207.98
+2 192.168.1.14
+2 182.48.111.215
+2 124.193.219.34
+2 119.145.41.2
+2 114.255.41.30
+1 75.102.11.99
+</code></pre></div>
+<p>TCP各种状态列表</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#netstat -nat |awk &#39;{print $6}&#39;
+established)
+Foreign
+LISTEN
+TIME_WAIT
+ESTABLISHED
+TIME_WAIT
+SYN_SENT
+</code></pre></div>
+<p>先把状态全都取出来,然后使用uniq -c统计，之后再进行排序。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#netstat -nat |awk &#39;{print $6}&#39;|sort|uniq -c
+143 ESTABLISHED
+1 FIN_WAIT1
+1 Foreign
+1 LAST_ACK
+36 LISTEN
+6 SYN_SENT
+113 TIME_WAIT
+1 established)
+</code></pre></div>
+<p>最后的命令如下:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#netstat -nat |awk &#39;{print $6}&#39;|sort|uniq -c|sort -rn
+</code></pre></div>
+<p>分析access.log获得访问前10位的ip地址</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#awk &#39;{print $1}&#39; access.log |sort|uniq -c|sort -nr|head -10
+</code></pre></div>
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>netstat常用指令小结</strong> was published on <time datetime="2013-08-05T08:47:05Z">August 05, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

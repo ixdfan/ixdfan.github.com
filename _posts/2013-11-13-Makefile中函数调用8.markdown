@@ -1,0 +1,490 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-13 07:26:31+00:00
+layout: post
+slug: makefile%e4%b8%ad%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8
+title: Makefile中函数调用
+wordpress_id: 978
+categories:
+- Makefile
+---
+
+Makefile中函数调用： Makefile中函数调用使用$标识
+
+    
+    $(function arguments)
+
+
+或者
+
+    
+    ${function arguments}
+
+
+其中function标识函数名，arguments表示函数的参数列表。参数间可以以逗号","分隔，而函数名和参数之间用空格分隔
+注意：
+函数调用必须以$开头，以圆括号或花括号把函数名和参数括起来，函数中的参数可以是变量
+
+字符串处理函数：
+
+1.字符串替换函数
+
+    
+    $(subst from,to,text)
+
+
+函数功能：将字符串text中的from字符串替换成to
+返回值：返回被替代过后的字符串
+
+    
+    main:
+    
+            echo -n  "the result is :"
+            echo $(subst a,A,how are you, China?)
+    .PHONY:main
+
+
+
+    
+    [root@localhost 01]# make -s
+    the result is :how Are you, ChinA?
+
+
+
+2.模式字符串替换函数
+
+    
+    $(patsubst patterb,replacement,text)
+
+
+函数功能：将字符串text中的patterb模式字符串替换成replacement模式
+
+    
+    main:
+            echo -n  "the result is :"
+            echo $(patsubst %.mk, %.o, makefile.mk.mk a.mk)
+    .PHONY:main
+
+    
+    root@localhost 01]# make -s
+    the result is :makefile.mk.o a.o
+
+
+将.mk的结尾都替换成了.o结尾
+
+3.去空格函数
+    
+    $(strip string)
+
+
+函数功能：去除string开头和结尾的空字符
+    
+    main:
+            echo -n  "the result is :"
+            echo $(strip     hello world    )	#前后各有四个空格
+    .PHONY:main
+
+    
+    [root@localhost 01]# make -s
+    the result is :hello world
+
+
+4.查找字符串函数
+    
+    $(findstring find,in)
+
+
+函数功能：在字符串in中查找find字符串
+
+返回值：找到则返回find字符串，否则返回空字符串
+    
+    main:
+            echo -n  "the result is :"
+            echo $(findstring he,hello)
+    .PHONY:main
+
+    
+    [root@localhost 01]# make -s
+    the result is :he
+
+5.过滤函数
+  
+    $(filter pattern, text)
+
+函数功能：以pattern模式过滤text中字符串中的单词，保留符合模式pattern的单词，可以有多个模式。
+
+返回值:返回符合pattern模式的字符串
+    
+    source := a.c b.c c.c d.h e f g
+    main:
+            echo -n  "the result is :"
+            echo $(filter %.c %.h, $(source))
+    .PHONY:main
+
+
+保留了.c和.h文件
+
+    
+    root@localhost 01]# make -s
+    the result is :a.c b.c c.c d.h
+
+6.反过滤函数
+  
+    $(filter-out pattern, text)
+
+函数功能：以pattern模式过滤text中字符串中的单词，去除符合模式pattern的单词，可以有多个模式。
+
+返回值:返回不符合pattern模式的字符串
+    
+    source := a.c b.c c.c d.h e f g
+    main:
+            echo -n  "the result is :"
+            echo $(filter-out %.c %.h, $(source))
+    .PHONY:main
+   
+    [root@localhost 01]# make -s
+    the result is :e f g
+
+7.排序函数
+    
+    $(sort list)
+
+    
+    main:
+            echo -n  "the result is :"
+            echo $(sort hello world chian hello)
+    .PHONY:main
+
+
+    
+    [root@localhost 01]# make -s
+    the result is :chian hello world
+
+注意：sort会去掉list中相同的单词
+
+8.取单词函数
+    
+    $(word n, text)
+
+函数功能：取字符串text中第n个单词
+
+返回值：返回字符串text中第n个单词
+    
+    main:
+            echo -n  "the result is :"
+            echo $(word 2, hello world  hello chian)
+    .PHONY:main
+    
+    [root@localhost 01]# make -s
+    the result is :world
+
+9.取单词串函数
+    
+    $(wordlist <s>,,)</s>
+
+函数功能：从字符串text中取得s开始到e的单词串。
+
+返回值：返回字符串text中s到e的单词串
+    
+    main:
+            echo -n  "the result is :"
+            echo $(wordlist 1,2, hello world  hello chian)
+    .PHONY:main
+  
+    [root@localhost 01]# make -s
+    the result is :hello world
+
+
+10.单词统计个数函数
+
+    
+    $(words text)
+
+函数功能：统计text中单词串中单词的个数
+
+返回值：返回text中的单词个数
+    
+    main:
+            echo -n  "the result is :"
+            echo $(words hello world  hello chian)
+    .PHONY:main
+   
+    [root@localhost 01]# make -s
+    the result is :4
+
+11.首单词函数
+
+    $(firstword text)
+
+函数功能：取字符串text中的第一个单词
+
+返回值：返回字符串text的第一个单词
+    
+    main:
+            echo -n  "the result is :"
+            echo $(firstword hello world  hello chian)
+    .PHONY:main
+    
+    [root@localhost 01]# make -s
+    the result is :hello
+
+1.取目录函数
+    
+    $(dir name)
+
+函数功能：从文件名序列names中取出目录部分，目录部分是指最后一个"/"之前的，如果没有"/"则返回"./"
+ 
+    main:
+            echo -n  "the result is :"
+            echo $(dir test.c /home/admin/test.c)
+    .PHONY:main
+    
+    [root@localhost 01]# make -s
+    the result is :./ /home/admin/
+
+
+2.取文件函数
+    
+    $(notdir name)
+
+
+函数功能：从文件名序列names中取出非目录部分，非目录部分是指最后一个"/"之后
+    main:
+            echo -n  "the result is :"
+            echo $(dir test.c /home/admin/test.c)
+    .PHONY:main
+  
+    [root@localhost 01]# make -s
+    the result is :test.c test.c
+
+3.去后缀函数
+    
+    $(suffix name)
+
+
+函数功能：从文件名序列name中取得各个文件名的后缀
+
+返回值：如果没有后缀名，则返回空字符
+   
+    main:
+            echo -n  "the result is :"
+            echo $(suffix test.c /home/admin/test.o file)
+    .PHONY:main
+
+    
+    [root@localhost 01]# make -s
+    the result is :.c .o
+
+4.取前缀函数
+    
+    $(basename name)
+
+
+函数功能：从文件名序列name中取得各个文件名的前缀
+
+返回值：如果没有前缀，则返回空字符
+
+    main:
+            echo -n  "the result is :"
+            echo $(basename test.c /home/admin/test.o file)
+    .PHONY:main
+
+
+
+    
+    [root@localhost 01]# make -s
+    the result is :test /home/admin/test file
+
+
+
+5.加后缀函数
+
+    
+    $(addsuffix suffix,name)
+
+
+函数功能:把后缀suffix加到names中的每个单词后面。
+返回值：返回加过后缀的文件名序列
+
+    
+    main:
+            echo -n  "the result is :"
+            echo $(addsuffix .c, a b c)
+    .PHONY:main
+
+
+
+    
+    [root@localhost 01]# make -s
+    the result is :a.c b.c c.c
+
+
+
+6.加前缀函数
+
+    
+    
+    $(addprefix prefix, names...)
+
+
+函数功能：把前缀prefix加到names中的每个单词前面
+
+    
+    
+    result := $(addprefix /home/admin/, text1.c test2.c test3.c)
+    main:
+    
+            echo -n  "the result is :"
+            echo $(result)
+    .PHONY:main
+   
+    
+    
+    [root@localhost 01]# make -s
+    the result is :/home/admin/text1.c /home/admin/test2.c /home/admin/test3.c
+    
+
+
+7.连接函数
+    
+    
+    $(join list1, list2)
+
+
+函数功能：把list2中的单词对应的加到list1单词的后面
+ 
+    result := $(join /home/ /home/ /home/, test1.c test2.c teset3.c )
+    main:
+    
+            echo -n  "the result is :"
+            echo $(result)
+    .PHONY:main
+    
+   
+    
+    [root@localhost 01]# make -s
+    the result is :/home/admin/text1.c /home/admin/test2.c /home/admin/test3.c
+
+
+1.foreach函数
+  
+    $(foreach var, list, text)
+
+var最好是一个变量名，list可以是一个表达式text中一般会使用var参数来依次枚举list中的单词
+
+这个函数的意思是，把参数list中的单词逐一取出放到参数var所指定的变量中，然后再执行text所包含的表达式。
+
+每一次会返回一个字符串，循环过程中，foreach所返回的每个字符串会以空格分隔，最后当整个循环结束时，foreach所返回的每个字符串所组成的整个字符串（以空格分隔）将会是foreach函数的返回值。
+
+    
+    names := a b c d
+    file := $(foreach n, $(names), $(n).c)
+    main:
+    
+            echo -n  "the result is :"
+            echo $(file)
+    .PHONY:main
+    
+    
+    [root@localhost 01]# make -s
+    the result is :a.c b.c c.c d.c
+    
+
+
+注意：foreach的参数var是一个临时变量，因此foreach在执行完成后，var将不再起作用，其作用域只在foreach中
+
+2.if函数
+
+    
+    $(if condition, then-part)
+    $(if condition, then-part, else-part)
+
+if函数中可以包含else部分，也可以不包含，所以if的参数可以是两个可以是三个
+condition表示一个条件表达式，如果该表达式为真，则返回非空字符串,因此then-part的表达式就会被执行，否则执行else-part表达式
+    
+    a := 1
+    b := 1
+    result := $(if ifeq($(a), $(b)), a = 10, b =10)
+    main:
+    
+            echo -n  "the result is :"
+            echo $(result)
+    .PHONY:main
+ 
+    
+    [root@localhost 01]# make -s
+    the result is :a = 10
+
+3.call函数
+call函数为用户创建一个自己定义的函数，用户可以写一个非常复杂的表达式，每次用到这个表达式的时候使用call函数转跳到该表达式处执行即可
+  
+    
+    $(call expression, parm1, parm2, parm3...)
+
+make执行这个函数时候，expression参数中的变量，如$(1)、$(2)、$(3)等会被参数parm1, parm2, parm3依次取代
+expression的返回值就是call的返回值
+
+   strcat= $(1) $(2) 
+    result := $(call strcat, a, b)
+    main:
+    
+            echo -n  "the result is :"
+            echo $(result)
+    .PHONY:main
+    
+  
+    [root@localhost 01]# make -s
+    the result is :a b
+    
+
+
+
+4.orgin函数
+ 
+    
+    $(orgin variable)
+    
+
+orgin函数操作变量的值，该函数可以将变量的定义信息返回给用户
+
+variable表示变量的名字，因此variable中不能使用$使用变量的值。
+
+orgin函数通过返回值告知用户这个变量的定义情况
+
+    
+    
+    undefined:		表示variable变量没有定义过
+    default:		表示variable变量make工具的默认变量
+    environment:	表示variable变量是一个环境变量并且当makefile执行时-e选项没有被打开
+    file:		表示variable变量被定义在makefile中
+    command line:	表示variable变量被命令行定义
+    overrid:		表示variable变量被override指示符重新定义
+    automatic:		表示variable变量是一个命令运行中的自动化变量
+
+
+5.shell函数
+  
+    
+    $(shell command, parm1, parm2, parm3...)
+
+command表示需要执行的shell命令，parm1, parm2, parm3...表示该shell命令的参数；
+
+该函数返回值为执行shell命令的输出结果。
+
+##### 注意：
+
+这个函数会生成一个进程执行shell命令，所以该函数会影响运行性能。如果makefile中大量使用该函数会导致makefile的效率严重下降
+
+    esult:= $(shell ls)
+    main:
+    
+            echo -n  "the result is :"
+            echo $(result)
+    .PHONY:main
+    
+
+    
+    [root@localhost 01]# make -s
+    the result is :fun1.c fun1.h makefile t
+

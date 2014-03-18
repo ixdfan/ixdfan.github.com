@@ -1,0 +1,417 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-13 01:17:51+00:00
+layout: post
+slug: '%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%88%86%e7%a6%bb'
+title: 线程的资源回收
+wordpress_id: 971
+categories:
+- 线程
+tags:
+- 线程
+---
+
+线程的分离状态
+
+由于线程和进程一样，在内核中拥有进程控制结构存储线程结束状态之类的信息，所以系统中同样会出现僵尸线程，不过当进程结束时，这种僵尸线程就会随着进程的消失而消失，所以影响不是很严重，如果想避免僵尸线程，则应将线程设置为结束状态分离，这是线程的结束状态将不能再被进程中的其他线程得到，同时保持线程结束状态信息的存储区域也将变得不可用
+
+**在创建线程的时候，可以指定线程的结束状态和线程分离。**
+
+实例：
+
+    
+    void* tfn1(void* arg)
+    {
+            printf("the thread\n");
+            return NULL;
+    }
+    
+    int main()
+    {
+            int err;
+            pthread_t tid;
+            pthread_attr_t attr;
+    
+    	//初始化线程属性
+            err = pthread_attr_init(&attr);
+            if(0 != err){
+                    printf("can't init attr %s\n", strerror(err));
+                    exit(1);
+            }
+    
+    	//将线程属性设置为线程结束状态信息分离
+            err = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+            if(0 != err){
+                    printf("can't set attr %s\n", strerror(err));
+                    exit(1);
+            }
+    
+            err = pthread_create(&tid, &attr, tfn1, NULL);
+            if(0 != err){
+                    printf("can't create thread %s\n", strerror(err));
+                    exit(1);
+            }
+    	//由于线程是分离状态，所以不能够得到该线程的结束状态信息，pthread_join将会出错
+            err = pthread_join(tid, NULL);
+            if(0 != err){
+                    printf("thread has been detached\n");
+            }
+            return 0;
+    }
+
+
+
+**分离一个已经创建的线程
+
+**在创建一个线程时，可以通过设置创建线程属性的方法将一个线程设置为状态分离，但是如果需要将一个已经创建的线程设置为状态分离时，可以使用Linux系统的支持。该系统支持将一个已经运行线程设置为状态分离。
+
+Linux中使用pthread_detach函数使一个已经创建的线程进入分离状态。
+
+**pthread_detach() 函数用于指示应用程序在线程 tid 终止时回收其存储空间。如果 tid 尚未终止，pthread_detach() 不会终止该线程。**
+    
+    int pthread_detach(pthread_t thread);
+
+
+pthread_detach的参数就是要分离的线程ID
+
+    
+    void* tfn1(void* arg)
+    {
+            printf("1the thread\n");
+            sleep(2);
+            printf("2the thread done\n");
+            return NULL;
+    }
+    
+    int main()
+    {
+            int err;
+            pthread_t tid;
+    
+            err = pthread_create(&tid, NULL, tfn1, NULL);
+            if(0 != err){
+                    printf("can't create thread %s\n", strerror(err));
+                    exit(1);
+            }
+    
+            err = pthread_detach(tid);
+            if(0 != err){
+                    printf("can't detach thread %s\n", strerror(err));
+                    exit(1);
+            }
+    
+            err = pthread_join(tid, NULL);
+            if(0 != err){
+                    printf("thread has been detached\n");
+            }
+            sleep(5);
+            printf("the main thread done\n");
+            return 0;
+    }
+
+
+
+    
+    [root@localhost 06]# cc detach.c -lpthread -omain
+    [root@localhost 06]# ./main
+    thread has been detached
+    1the thread
+    2the thread done
+    the main thread done
+
+
+##### 注意：
+如果main函数中不使用sleep(5）休眠5秒，则看不到2the thread done，因为主线程结束了该线程，线程直接退出
+
+分离状态的线程会导致pthread_join函数出错，所以主线程不能依靠该函数来等待线程执行完毕，而必须使用sleep休眠来等待线程执行完毕
+
+线程创建的时候**默认处于joinable状态**，**joinable状态线程结束的时候不会自动回收线程资源，需要pthread_join函数来回收；**
+pthread_detach可以将线程转换为detached状态，子线程运行完成之后可以自行回收资源。
+一般情况下，进程中各个线程的运行都是相互独立的，线程的终止并不会通知，也不会影响其他线程，终止的线程所占用的资源也并不会随着线程的终止而得到释放。
+正如进程之间可以用wait()系统调用来同步终止并释放资源一样，线程之间也有类似机制，那就是pthread_join()函数。
+
+    void pthread_exit(void *retval) 
+    int pthread_join(pthread_t th, void **thread_return)
+    int pthread_detach(pthread_t th)
+
+pthread_join()的调用者将挂起并等待th线程终止，retval是pthread_exit()调用者线程（线程ID为th）的返回值，如果thread_return不为NULL，则*thread_return=retval。
+
+##### 注意：
+
+**一个线程仅允许唯一的一个线程使用pthread_join()等待它的终止**，并且被等待的线程应该处于可join状态，即非DETACHED状态。
+
+
+如果进程中的某个线程执行了pthread_detach(th)，则th线程将处于DETACHED状态，这使得th线程在结束运行时自行释放所占用的内存资源，同时也无法由pthread_join()同步，pthread_detach()执行之后，对th请求pthread_join()将返回错误。
+
+##### 注意：
+**joinable线程所占用的内存仅当有线程对其执行了pthread_join()后才会释放**，因此为了**避免内存泄漏**，所有线程的终止，要么已设为DETACHED，要么就需要使用pthread_join()来回收。
+
+
+	int pthread_join(pthread_t tid, void **status);
+
+tid 是希望等待的线程的线程号，status 是指向线程返回值的指针，线程的返回值就是pthread_exit 中的value_ptr 参数，或者是return语句中的返回值。该函数可用于线程间的同步
+
+	int pthread_detach( pthread_t pid );
+
+tid 是希望等待的线程的线程号, 把指定的线程转变为分离状态
+
+一个线程是可汇合的（joinable，缺省值）或者是分离的（detached）。
+
+**joinable线程终止时，它的线程ID和退出状态将留到另一个线程对它调用pthread_join。**
+
+分离线程却象守护进程：当它们终止的时，所有相关资源都被释放，我们不能等待它们终止。
+
+如果一个线程需要知道另一个线程什么时候终止，那就最好将第二个线程设置为joinable状态。
+
+实例:
+
+    
+    #define THREAD_NUMBER 2
+    int     retval_hello1= 1,
+            retval_hello2 = 2;
+    
+    void* hello1(void *arg)
+    {
+            char* hello_str = (char *)arg;
+    
+            sleep(2);
+    
+            printf("%s\n", hello_str);
+    
+            pthread_exit(&retval_hello1);
+    }
+    
+    void* hello2(void *arg)
+    {
+            char* hello_str = (char *)arg;
+    
+            sleep(1);
+    
+            printf("%s\n", hello_str);
+    
+            pthread_exit(&retval_hello2);
+    }
+    
+    int main(int argc, char *argv[])
+    {
+            int     i;
+            int     ret_val;
+            int*    retval_hello[2];
+    
+            pthread_t pth[THREAD_NUMBER];
+    
+            const char* arg[THREAD_NUMBER];
+    
+            arg[0] = "hello world from thread1";
+            arg[1] = "hello world from thread2";
+    
+            printf("Begin to create threads...\n");
+    
+            ret_val = pthread_create(&pth[0], NULL, hello1, (void *)arg[0]);
+            if (ret_val != 0 ) {
+    
+                    printf("pthread_create error!\n");
+                    exit(1);
+            }
+    
+            ret_val = pthread_create(&pth[1], NULL, hello2, (void *)arg[1]);
+            if (ret_val != 0 ) {
+    
+                    printf("pthread_create error!\n");
+                    exit(1);
+            }
+    
+            printf("Begin to wait for threads...\n");
+    
+            for(i = 0; i < THREAD_NUMBER; i++) {
+                    ret_val = pthread_join(pth[i], (void **)&retval_hello[i]);
+    
+                    if (ret_val != 0) {
+    
+                            printf("pthread_join error!\n");
+                            exit(1);
+                    } else {
+    
+                            printf("return value is %d\n", *retval_hello[i]);
+                    }
+            }
+    
+            printf("Now, the main thread returns.\n");
+            return 0;
+    }
+    
+    执行结果为：
+
+
+
+    
+    [root@localhost 07]# ./main
+    Begin to create threads...
+    Begin to wait for threads...
+    hello world from thread2
+    hello world from thread1
+    return value is 1
+    return value is 2
+    Now, the main thread returns.
+
+
+线程1，2的执行顺序可以通过sleep来调节，但是主线程必须在子线程完成之后才能执行，即打印Now, the main thread returns.。
+
+因为**调用pthread_join()的顺序**，必定是线程1先执行“return value is xx”，不管线程2是否先执行完。
+
+实例：
+
+    
+    #define THREAD_NUMBER 2
+    int     retval_hello1= 1,
+            retval_hello2 = 2;
+    
+    void* hello1(void *arg)
+    {
+            char* hello_str = (char *)arg;
+    
+            sleep(2);
+    
+            printf("%s\n", hello_str);
+    
+            pthread_exit(&retval_hello1);
+    }
+    
+    void* hello2(void *arg)
+    {
+            char* hello_str = (char *)arg;
+    
+            sleep(1);
+    
+            printf("%s\n", hello_str);
+    
+            pthread_exit(&retval_hello2);
+    }
+    
+    int main(int argc, char *argv[])
+    {
+            int     i;
+            int     ret_val;
+            int*    retval_hello[2];
+    
+            pthread_t pth[THREAD_NUMBER];
+    
+            const char* arg[THREAD_NUMBER];
+    
+            arg[0] = "hello world from thread1";
+            arg[1] = "hello world from thread2";
+    
+            printf("Begin to create threads...\n");
+    
+            ret_val = pthread_create(&pth[0], NULL, hello1, (void *)arg[0]);
+            if (ret_val != 0 ) {
+    
+                    printf("pthread_create error!\n");
+                    exit(1);
+            }
+    
+            ret_val = pthread_create(&pth[1], NULL, hello2, (void *)arg[1]);
+            if (ret_val != 0 ) {
+    
+                    printf("pthread_create error!\n");
+                    exit(1);
+            }
+    
+            printf("Begin to wait for threads...\n");
+    
+            for(i = 0; i < THREAD_NUMBER; i++) {
+    		ret_val = pthread_detach(pth[i]);
+    
+                    if (ret_val != 0) {
+    
+                            printf("pthread_detach error!\n");
+                            exit(1);
+                    } else {
+                            printf("return value is %d\n", *retval_hello[i]);
+                    }
+            }
+    
+            printf("Now, the main thread returns.\n");
+            return 0;
+    }
+    
+    执行结果为
+   
+    [root@localhost 07]# ./main
+    Begin to create threads...
+    Begin to wait for threads...
+    return value is 1474660693
+    return value is -1990267599
+    Now, the main thread returns.
+
+
+线程1，2没有执行（也可能执行），因为子线程为可分离的，主线程在执行完之后即将进程销毁，资源收回，导致子线程未运行。
+
+可以在return 0 语句之前加入sleep(5)，这样执行结果为
+
+    
+    [root@localhost 07]# ./main
+    Begin to create threads...
+    Begin to wait for threads...
+    return value is 1474660693
+    return value is -1990267599
+    Now, the main thread returns.
+    hello world from thread2
+    hello world from thread1
+
+
+注意：
+
+**pthread_join()会挂起父线程，直至子线程完成才可以执行后面的代码；**
+
+**PTHREAD_CREATE_JOINABLE状态的子线程不会自动释放该线程的内存资源，包括线程描述符和其使用的栈；**
+
+**主线程调用pthread_detach()时，无需等待子线程的完成，它可以立即执行后面的代码**，也有可能主线程执行完之后销毁进程，导致子线程未能执行，此外，一个PTHREAD_CREATE_DETACH状态的子线程拥有自我回收内存资源的功能。
+
+
+线程处于两种状态下，退出时（也就是调用pthread_exit()函数）,对资源的释放情况。
+
+通过查看线程号，判断线程退出时，是否释放了资源
+
+    
+    void *print_msg_fun(void *ptr)
+    {
+    	//pthread_detach(pthread_self());
+    	/*保留此句表示线程处于分离, 注释掉表示线程处于非分离*/
+            /*注意pthread_t的类型为unsigned long 所以打印时候要使用%lu否则打印结果是错误的*/
+            printf("%lu\n",pthread_self());
+    	pthread_exit(NULL);
+    }
+    
+    int main()
+    {
+            pthread_t th;
+    
+            while(1)
+            {
+                    if( 0 != (pthread_create(&th,NULL,print_msg_fun,NULL))){
+                            perror("create th1");
+                            return;
+                    }
+                    sleep(3);
+                    printf("%d\n",th);
+            }
+    
+            return 0;
+    }
+
+
+
+通常是主线程使用pthread_create()创建子线程以后，一般可以调用pthread_detach(threadid)分离刚刚创建的子线程，这里的threadid是指子线程的threadid；该子线程终止时底层资源立即被回收；
+
+被创建的子线程也可以自己分离自己，子线程调用pthread_detach(pthread_self())就是分离自己，因为pthread_self()这个函数返回的就是自己本身的线程ID；
+
+##### 注意：
+一个可**join的线程所占用的内存仅当有线程对其执行了pthread_join()后才会释放**，因此为了避免内存泄漏，所有线程的终止，要么已设为DETACHED，要么就需要使用pthread_join()来回收。
+
+函数调用**pthread_join解决的是线程资源释放的问题**，但是这个时候每次调用子进程都是要等待线程结束才能继续运行的。
+
+**pthread_join是一个线程阻塞的函数，调用它的函数将一直等待到被等待的线程结束为止，当函数返回时，被等待线程的资源被收回。**
+
+建议使用设置线程属性的方法来实现资源回收：PTHREAD_CREATE_DETACHED

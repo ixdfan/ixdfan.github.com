@@ -1,0 +1,105 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-15 07:30:32+00:00
+layout: post
+slug: '%e7%ba%bf%e7%a8%8b%e7%89%b9%e5%ae%9a%e6%95%b0%e6%8d%ae%e7%9a%84%e5%a4%84%e7%90%86%e5%87%bd%e6%95%b0'
+title: 线程特定数据的处理函数
+wordpress_id: 1016
+categories:
+- 线程
+tags:
+- 线程
+---
+
+为线程特定数据创建键
+
+单线程程序有两类基本数据：局部数据和全局数据。
+
+对于多线程程序，添加了第三类数据：线程特定数据。
+
+线程特定数据与全局数据非常相似，区别在于前者为线程专有。
+
+线程特定数据基于个每线程进行维护。TSD（特定于线程的数据）是定义和引用线程专用数据的唯一方法。
+
+每个线程特定数据项都与一个作用于进程内所有线程的键关联。通过使用 key，线程可以访问基于每线程进行维护的指针 (void *)。
+    
+    int pthread_key_create(pthread_key_t *key, void (*destructor)(void*));
+
+pthread_key_create创建一个对进程中所有线程都可见的关键字；
+
+使用pthread_setspecific和pthread_getspecific来读取和设置关键字；
+
+当创建关键字时，进程中的所有线程的这个关键字的值都为NULL，当创建一个线程时，这个线程中的所有的关键字的值为NULL。
+
+创建键之后，每个线程都会将一个值绑定到该键。这些值特定于线程并且针对每个线程单独维护。如果创建该键时指定了 destructor 函数，则该线程终止时，系统会解除针对每线程的绑定。
+    
+    ret = pthread_key_create(&key, NULL);
+    ret = pthread_key_create(&key, destructor);
+
+使用可选的析构函数destructor可以释放过时的存储。如果某个键具有非 NULL的destructor函数，而线程具有一个与该键关联的非 NULL 值，则该线程退出时，系统将使用当前的相关值调用 destructor 函数。destructor 函数的调用顺序不确定。
+    
+    int pthread_key_delete(pthread_key_t key);
+
+pthread_key_delete可以销毁现有线程特定数据键。
+
+由于键已经无效，因此将释放与该键关联的所有内存。
+
+如果已删除键，则使用调用 pthread_setspecific() 或 pthread_getspecific() 引用该键时，生成的结果将是不确定的。
+
+删除函数不会调用任何析构函数。
+    
+    void *pthread_getspecific(pthread_key_t key);
+    int pthread_setspecific(pthread_key_t key, const void *value);
+
+pthread_setspecific指定由参数value指定的指针指向由参数key指定的关键字；
+
+每个线程都有一个相互独立的指针，这个指针指向一个特定的关键字。
+
+pthread_getspecific用来获取由pthread_setspecific设定的关键字指针，返回一个指向最近一次使用pthread_setspecific而设定的指向线程关键字的指针。
+
+##### 注意：
+设置新绑定时，pthread_setspecific() 不会释放其存储空间。必须释放现有绑定，否则会出现内存泄漏。
+pthread_getspecific 不返回任何错误。
+
+
+    pthread_once_t once_control = PTHREAD_ONCE_INIT;
+    int pthread_once(pthread_once_t *once_control, void (*init_routine)(void));
+
+
+pthread_once的目的是保证某些初始化代码最多只能执行一次，参数once_control指向静态或外部变量，这个变量初始化为PTHREAD_ONCE_INIT；
+
+当第一次调用pthread_once时，系统将记录已经执行了初始化，后面再调用pthread_once时如果参数once_control相同，那就什么也不做
+
+=======================================================================================================
+
+    int sched_yield(void);
+
+使用 sched_yield,可以使当前线程停止执行，以便执行另一个具有相同或更高优先级的线程。
+    
+    void* tfn1(void* arg)
+    {
+    //	sched_yield();
+            printf("this is first thread\n");
+    }
+    void* tfn2(void* arg)
+    {
+    //	sched_yield();
+            printf("this is second thread\n");
+    }
+    int main()
+    {
+            pthread_t       first,
+                            second;
+    
+            pthread_create(&first, NULL, tfn1, NULL);
+            pthread_create(&second, NULL, tfn2, NULL);
+    
+            pthread_join(first, NULL);
+            pthread_join(second, NULL);
+    
+            return 0;
+    }
+
+
+=======================================================================================================

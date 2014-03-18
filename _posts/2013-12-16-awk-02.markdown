@@ -1,0 +1,105 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-12-16 16:18:06+00:00
+layout: post
+slug: awk%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8
+title: awk简单使用
+wordpress_id: 1236
+categories:
+- awk
+---
+
+$1代表的含义的文本记录行中的第一列字段
+
+-F参数是设置awk的字段分隔符FS，默认情况下是空白字符
+
+使用-F显式指明分隔符，并且海支持多个字符，甚至是正则表达式
+
+
+	awk -F":" '{print "USER: " $1 "\tSHELL: "$7}' /etc/passwd
+
+指定分隔符为':'
+
+	awk -F"[\t ]+" '{print "DEVICE: "$1 "\tFSTYPE: "$3}' /etc/fstab
+
+"[\t ]+"中有一个‘\’t和一个空格 ‘+’表示前面出现的单个字符出现一次或多次，这里表示的匹配一个或多个制表符或分隔符
+
+awk会对每个输入行执行一个代码块，awk的运行分为三个部分:处理输入前的初始化、处理输入过程、处理完所有输入后的扫尾工作
+
+	BEGIN和END分别映射到第一和第三块
+	BEGIN:完成awk部分参数的初始化操作
+	END:就是所有输入都处理完成后awk执行的代码，我们可以做一些统计信息以及数据打印
+
+BEGIN和END都是可选的！
+
+    
+    
+    [root@localhost awk]# cat fs.awk
+    BEGIN{
+            FS=":"
+    }
+    
+            print "USER: "$1 "\tSHELL: "$7
+    }
+    
+    [root@localhost awk]# awk -f fs.awk passwd.bak
+    USER: root      SHELL: /bin/bash
+    USER: bin       SHELL: /sbin/nologin
+    USER: daemon    SHELL: /sbin/nologin
+    USER: adm       SHELL: /sbin/nologin
+    USER: lp        SHELL: /sbin/nologin
+    USER: sync      SHELL: /bin/sync
+    USER: shutdown  SHELL: /sbin/shutdown
+    USER: halt      SHELL: /sbin/halt
+    USER: mail      SHELL: /sbin/nologin
+    USER: uucp      SHELL: /sbin/nologin
+    [root@localhost awk]#
+
+
+awk中BEGIN代码块的格式是BEGIN标签加上{}。在这个代码块中能够进行一些变量的初始化操作。
+awk中定义FS变量位字段分隔符，当我们将冒号赋值给FS时候awk在初始化操作过程中就会将默认分隔号变为冒号。使用-F也可以指定，但是使用FS更加清晰。
+    
+    
+    [root@localhost awk]# cat  search.awk
+    BEGIN{
+            print "How many people with nologin?"
+    }
+    
+    /nologin/       {++adder}	#注释2
+    
+    END{				#注释3
+            print "'nologin' appears " adder " times."
+    }
+    [root@localhost awk]# awk -f search.awk /etc/passwd
+    How many people with nologin?
+    'nologin' appears 30 times.
+    [root@localhost awk]#
+
+
+注释2它标志这awk处理输入的过程，在这一行中，awk首先将输入数据中的每条记录与正则表达式nologin(在此处就是一个固定字符串)匹配，如果匹配上了，则执行{}中的内容，即++adder
+
+
+模式匹配
+
+awk的模式匹配的语法是这样的
+
+	/正则表达式/	{匹配后的操作}
+
+
+    [root@localhost awk]# cat shell.awk
+    BEGIN{
+            print "SHELL USAGE:"
+    }
+    /bash/{++bash}
+    /nologin/{++nologin}
+    
+    END{
+            print "We have " bash " bash user"
+            print "We have " nologin " nologin user"
+    }
+    [root@localhost awk]# awk -f shell.awk /etc/passwd
+    SHELL USAGE:
+    We have 4 bash user
+    We have 30 nologin user
+    [root@localhost awk]#

@@ -1,0 +1,200 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Fedora19安装Monaco字体 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fedora19安装Monaco字体">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2014/02/26/fedora19-install-monaco/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2014/02/26/fedora19-install-monaco/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>Fedora19安装Monaco字体</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>最近使用终端发现字体有一种说不出来的别扭，以前看到过一篇文章是推荐编程字体的！</p>
+
+<p>找了一下，就是Monaco字体，原来是苹果系统专用的！</p>
+
+<p>字体下载:
+http://www.gringod.com/wp-upload/MONACO.TTF</p>
+
+<p>安装</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cd /usr/share/fonts/
+
+sudo cp $HOME/MONACO.TTF .      #拷贝MONACO字体到/usr/share/fonts/文件中
+
+sudo fc-cache -v -f .
+</code></pre></div>
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>Fedora19安装Monaco字体</strong> was published on <time datetime="2014-02-26T13:12:28Z">February 26, 2014</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

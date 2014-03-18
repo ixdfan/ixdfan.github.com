@@ -1,0 +1,296 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-08-05 09:04:53+00:00
+layout: post
+slug: tcpdump%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4%e5%b0%8f%e7%bb%93
+title: tcpdump常用指令总结
+wordpress_id: 440
+categories:
+- THE TOOL
+tags:
+- tcpdump
+---
+
+
+-A 以ASCII格式打印出所有分组，并将链路层的头最小化。
+
+-a 将网络地址和广播地址转变成名字；
+
+-b 在数据-链路层上选择协议，包括ip、arp、rarp、ipx都是这一层的。
+
+-c 在收到指定的数量的分组后，tcpdump就会停止。
+
+-C 在将一个原始分组写入文件之前，检查文件当前的大小是否超过了参数file\_size 中指定的大小。如果超过了指定大小，则关闭当前文件，然后在打开一个新的文件。参数 file_size 的单位是兆字节（是1,000,000字节，而不是1,048,576字节）。
+
+-d 将匹配信息包的代码以人们能够理解的汇编格式给出。
+
+-dd 将匹配信息包的代码以c语言程序段的格式给出。
+
+-ddd 将匹配信息包的代码以十进制的形式给出。
+
+-D 打印出系统中所有可以用tcpdump截包的网络接口。
+
+##### -e 在输出行打印出数据链路层的头部信息MAC地址。
+
+-E 用spi@ipaddr algo:secret解密那些以addr作为地址，并且包含了安全参数索引值spi的IPsec ESP分组。
+
+-f 将外部的Internet地址以数字的形式打印出来。
+
+-F 从指定的文件中读取表达式，忽略命令行中给出的表达式。
+
+###### -i 指定监听的网络接口。
+
+-l 使标准输出变为缓冲行形式，可以把数据导出到文件。
+
+-L 列出网络接口的已知数据链路。
+
+-m 从文件module中导入SMI MIB模块定义。该参数可以被使用多次，以导入多个MIB模块。
+
+-M 如果tcp报文中存在TCP-MD5选项，则需要用secret作为共享的验证码用于验证TCP-MD5选选项摘要（详情可参考RFC 2385）。
+
+###### -n 不把IP地址转换成主机名字。
+
+###### -nn 不进行端口名称的转换。
+
+-N 不输出主机名中的域名部分。例如，‘nic.ddn.mil‘只输出’nic‘。
+
+-t 在输出的每一行不打印时间戳。
+
+-O 不运行分组分组匹配（packet-matching）代码优化程序。
+
+-P 不将网络接口设置成混杂模式。
+
+-q 快速输出。只输出较少的协议信息。
+
+-r 从指定的文件中读取包(这些包一般通过-w选项产生)。
+
+##### -S 将tcp的序列号以绝对值形式输出，而不是相对值。比如我第一次用tcpdump查看tcp的三次握手时发现第三次握手的ack=1,这个ack就是相对的，因为tcpdump只在SYN包中显示绝对顺序 号，而非SYN包则显示相对的，为了便于观察，在抓包时都采用来绝对的顺序号
+
+-s 从每个分组中读取最开始的snaplen个字节，而不是默认的68个字节。
+
+-T 将监听到的包直接解释为指定的类型的报文，常见的类型有rpc远程过程调用）和snmp（简单网络管理协议；）。
+
+-t 不在每一行中输出时间戳。
+
+-tt 在每一行中输出非格式化的时间戳。
+
+-ttt 输出本行和前面一行之间的时间差。
+
+-tttt 在每一行中输出由date处理的默认格式的时间戳。
+
+-u 输出未解码的NFS句柄。
+
+##### -v 输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息。
+
+-vv 输出详细的报文信息。
+
+-w 直接将分组写入文件中，而不是不分析并打印出来。
+
+ 
+
+表达式是一个正则表达式，tcpdump利用它作为过滤报文的条件，如果一个报文满足表达式的条件，则这个报文将会被捕获。
+
+如果没有给出任何条件，则网络上所有的信息包 将会被截获。
+
+在表达式中一般如下几种类型的关键字：
+
+#### 第一种是关于类型的关键字，主要包括**host，net，port**;
+
+例如:
+
+host 210.27.48.2，指明 210.27.48.2是一台主机;
+
+net 202.0.0.0，指明202.0.0.0网络段;
+
+port 23, 指明端口号是23。
+
+如果没有指定类型，缺省的类型是host。
+
+#### 第二种是确定传输方向的关键字，主要包括**src，dst，dst or src，dst and src**， 这些关键字指明了传输的方向。
+
+例如：
+
+src 210.27.48.2，指明ip包中源地址是210.27.48.2；
+
+dst net 202.0.0.0 指明目的网络地址是202.0.0.0；
+
+如果没有指明 方向关键字，则缺省是src or dst关键字。
+
+#### 第三种是协议的关键字，主要包括**fddi，ip，arp，rarp，tcp，udp**等。
+
+Fddi指明是在FDDI (分布式光纤数据接口网络)上的特定的网络协议，实际上它是”ether”的别名，fddi和ether 具有类似的源地址和目的地址，所以可以将fddi协议包当作ether的包进行处理和分析。
+其他的几个关键字就是指明了监听的包的协议内容。
+
+**注意**:
+
+**ip icmp arp rarp 和 tcp、udp、icmp这些选项等都要放到第一个参数的位置，用来过滤数据报的类型。**
+
+如果没有指定任何协议，则tcpdump 将会 监听所有协议的信息包。
+
+除了这三种类型的关键字之外，其他重要的关键字如下：gateway， broadcast，less， greater；
+
+还有三种逻辑运算:
+* 取非运算是 'not ' '! ';
+* 与运算是'and' '&&';
+* 或运算是'or’ '||'；
+
+    
+    [root@localhost ~]# tcpdump arp -i wlan0 -nn                                        
+    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode          
+    listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes           
+    22:45:31.908179 ARP, Request who-has 125.87.196.1 tell 125.87.199.67, length 42     
+    22:45:32.401081 ARP, Request who-has 125.81.80.1 tell 125.81.82.253, length 42      
+    22:45:34.407593 ARP, Request who-has 125.81.58.1 tell 125.81.58.207, length 42      
+    22:45:36.416256 ARP, Request who-has 125.87.116.1 tell 125.87.119.91, length 42     
+    22:45:37.303943 ARP, Request who-has 125.87.116.1 tell 125.87.117.243, length 42    
+    22:45:38.404027 ARP, Request who-has 125.81.80.1 tell 125.81.80.34, length 42       
+    22:45:39.594323 ARP, Request who-has 125.87.196.1 tell 125.87.197.16, length 42     
+    22:45:40.039010 ARP, Request who-has 125.87.196.1 tell 125.87.197.16, length 42     
+    22:45:40.710771 ARP, Request who-has 125.81.58.1 tell 125.81.58.207, length 42      
+    22:45:42.338369 ARP, Request who-has 222.183.20.134 (ec:55:f9:77:a5:3a) tell 222.183.20.1, length 42
+    22:45:42.338390 ARP, Reply 222.183.20.134 is-at ec:55:f9:77:a5:3a, length 28                        
+    22:45:44.853015 ARP, Request who-has 125.81.58.1 tell 125.81.58.207, length 42
+
+
+    Arp/rarp output shows the type of request and its arguments. The format is intended to be self explanatory.
+    Here is a short sample taken from the start of an ‘rlogin’ from host rtsg to host csam:
+    1.arp who-has csam tell rtsg
+    2.arp reply csam is-at CSAM
+    The first line says that rtsg sent an arp packet asking for the Ethernet address of internet host csam.
+    Csam replies with its Ethernet address (in this example, Ethernet addresses are in caps and internet addresses in
+    lower case).
+
+第一个的含义是rtsg发送arp包来请求获取主机casm的以太网地址(MAC地址)
+
+第二个的含义是csam回复csam的以太网地址(MAC地址)
+
+22:45:44.853015中22:45:44是时间戳，853015是ID号
+
+    
+    [root@localhost ~]# ifconfig
+    wlan0     Link encap:Ethernet  HWaddr EC:55:F9:77:A5:3A
+              inet6 addr: fe80::ee55:f9ff:fe77:a53a/64 Scope:Link
+              UP BROADCAST MULTICAST  MTU:1500  Metric:1
+              RX packets:199298 errors:0 dropped:0 overruns:0 frame:0
+              TX packets:69744 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:1000
+              RX bytes:168024049 (160.2 MiB)  TX bytes:7105006 (6.7 MiB)
+
+
+可以看到本机的MAC地址确实为EC:55:F9:77:A5:3A，与arp的reply一致
+
+
+TCP包的捕获
+
+    
+    [root@localhost ~]# tcpdump tcp -i wlan0                                                                                                                                
+    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode                                                                                              
+    listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes                                                                                               
+    22:59:41.021574 IP 125.87.199.184.58316 > 222.180.124.151.http: Flags [S], seq 550843385, win 14600, options [mss 1460,sackOK,TS val 5013034 ecr 0,nop,wscale 6], length 0                                                                                                                                                                      
+    22:59:41.648016 IP 222.180.124.151.http > 125.87.199.184.58316: Flags [S.], seq 798460844, ack 550843386, win 5792, options [mss 1460,sackOK,TS val 690162454 ecr 5013034,nop,wscale 7], length 0
+
+
+FLAGS [S]是TCP报文中的标志信息，S(SYN), F(FIN), P(PUSH), R(RST) "." (代表响应), S.代表对SYN的响应
+
+seq 550843385代表报文中的数据的序列号, ack是对SYN的响应, window是滑动窗口大小, urgent表明报文中是否有紧急指针, options是选项。
+
+
+UDP包的捕获 `tcpdump udp -i wlan0`
+
+    
+    [root@localhost ~]# tcpdump udp -i wlan0
+    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+    listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes 
+    23:07:13.845283 IP 125.87.117.188.netbios-ns > 125.87.119.255.netbios-ns: NBT UDP PACKET(137): QUERY; REQUEST; BROADCAST
+    23:07:14.051588 IP 125.87.118.240.58856 > 224.0.0.252.hostmon: UDP, length 24                                           
+    23:07:14.108979 IP 125.87.118.240.58856 > 224.0.0.252.hostmon: UDP, length 24                                           
+    23:07:14.458987 IP 125.87.118.240.51600 > 239.255.255.250.ssdp: UDP, length 133
+
+
+-nn表示不进行端口名称的转换
+
+    
+    t[root@localhost ~]# tcpdump udp -i wlan0 -nn
+    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+    listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes
+    23:08:51.595548 IP 222.183.20.62.53110 > 239.255.255.250.1900: UDP, length 133
+    23:08:51.595563 IP 222.183.20.62.137 > 222.183.21.255.137: NBT UDP PACKET(137): QUERY; REQUEST; BROADCAST
+
+
+输出行表明从主机A的port1端口发出的一个报文到主机B的port2端口，类型是UDP， 包的长度是lenth。
+
+ 
+
+截获所有125.87.198.63的主机收到的和发出的所有的数据包:
+	
+    tcpdump host 202.202.43.125 -i wlan0
+
+ 
+
+截获主机125.87.198.63 和主机202.202.43.125或202.202.43.124的通信
+
+    tcpdump host 125.87.198.63 and \(202.202.43.125 or 202.202.43.124\) -i wlan0 -n -nn
+
+注意：括号前的反斜杠是必须的
+* -n 不把网络地址转换成名字。
+* -nn 不进行端口名称的转换。
+
+ 
+
+如果想要获取主机125.87.198.63除了和主机202.202.43.125之外所有主机通信的ip包，使用命令：
+
+	tcpdump ip host 125.87.198.63 and !202.202.43.125
+
+ 
+
+如果想要获取主机192.168.228.246接收或发出的ssh包,ssh端口为22
+
+	tcpdump -nn -n src host 125.87.198.63 and port 22 and tcp -i wlan0
+
+如果想要获取主机192.168.228.246接收或发出的ssh包,并打印MAC地址
+
+	tcpdump -e src host 192.168.228.246 and port 22 and tcp -n -nn
+
+ 
+
+过滤的是源主机为192.168.0.1与目的网络为192.168.0.0的报头：
+	tcpdump src host 192.168.0.1 and dst net 192.168.0.0/24
+
+ 
+
+过滤源主机物理地址为XXX的报头：
+
+	tcpdump ether src 00:50:04:BA:9B and dst……
+物理地址没有网络，所以ether src后面没有host或者net
+
+ 
+
+打印主机125.87.198.63的以太网头部
+
+	tcpdump -e host 125.87.198.63
+
+ 
+
+把抓取的数据包记录存到/workspace/test文件中，当抓取100个数据包后就退出程序。
+
+	tcpdump –i eth0 -vnn -w /workspace/test -c 100
+
+ 
+
+从/workspace/test记录中读取tcp协议的数据包
+
+	tcpdump –i eth0 -vnn -r /workspace/test tcp
+
+
+从/workspace/test记录中读取包含172.16.1.58的数据包
+
+	tcpdump –i eth0 -vnn -r /workspace/test host 172.16.1.58
+
+ 
+
+取源ip是192.168.128.128且目的端口是22，或源ip是192.168.128.127且目的端口是80的数据包。
+
+	tcpdump -i eth0 -vnn 'src host 192.168.128.128 and dst port 22' or ' src host 192.168.128.127 and dst port 80 '
+
+ 

@@ -1,0 +1,326 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>线程同步之互斥变量 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="线程">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程同步之互斥变量">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E5%8F%98%E9%87%8F/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E5%8F%98%E9%87%8F/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>线程同步之互斥变量</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>线程同步：互斥变量</p>
+
+<h1>互斥量是一种锁，在访问共享资源时对其加锁，在结束访问时释放锁，这样可以保证在任意时间内，只有一个线程处于临界区内。</h1>
+
+<h5>互斥锁的特点：</h5>
+
+<p>(1).<strong>原子性</strong>：</p>
+
+<p>把互斥锁定义为一个原子操作，这意味着操作系统保证了如果一个线程锁定了一个互斥锁，没有其他线程在同一时间可以成功锁定这个互斥锁。</p>
+
+<p>(2).<strong>唯一性</strong>：</p>
+
+<p>如果一个线程锁定了一个互斥锁，在她解除锁定之前，没有其他线程可以锁定这个互斥量</p>
+
+<p>(3).<strong>非繁忙等待</strong>：</p>
+
+<p>如果一个线程已经锁定了一个互斥锁，第二个线程又试图去锁定这个互斥锁，则第二个线程将被挂起(不占用CPU资源)，直到第一个线程解除对这个互斥锁的锁定为止，第二个线则被唤醒并继续执行，同时锁定这个互斥锁</p>
+
+<h1></h1>
+
+<h5>注意：</h5>
+
+<p><strong>任何想要进入临界区的线程都要对锁进行测试，如果该锁已经被某一个线程所持有，则测试线程会被阻塞，线程会重复上述过程，直到该锁被释放。</strong></p>
+
+<h1></h1>
+
+<p><strong>线程没有释放锁之前所有试图进入临界区的线程都将被阻塞，形成一个阻塞线程队列：</strong></p>
+
+<p>如图所示：<img src="/uploads/2013/11/%E4%BA%92%E6%96%A5%E9%94%81-300x107.jpg" alt="互斥锁"></p>
+
+<h1></h1>
+
+<p>1.锁的初始化：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">静态初始化：pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+动态初始化：int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);
+</code></pre></div>
+<p>其中pthread<em>mutex</em>init第二个参数为互斥量的属性，写为NULL，则表示以默认属性初始化。</p>
+
+<h5>注意：</h5>
+
+<p><strong>静态初始化有个局限性，如果互斥量使用动态分配内存的方法得到，那么下面的方法是错误的</strong></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">pthread_mutex_t* mutex = malloc(sizeof(pthread_mutex_t));
+mutex = PTHREAD_MUTEX_INITIALIZER;
+</code></pre></div>
+<p>原因在于linux中的pthread<em>mutex</em>t类型是一个结构体，而PTHREAD<em>MUTEX</em>INITIALIZER常量相当于已经设置好的结构体变量中的每个成员变量的值，显而易见，一个已经定义好的结构体对象可以使用这种方法，但是使用malloc分配的结构体对象则不能使用</p>
+
+<h1></h1>
+
+<p>2.锁的销毁：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_mutex_destroy(pthread_mutex_t *mutex);
+</code></pre></div>
+<p>当不使用锁时，应将其销毁。</p>
+
+<p>3.得到与释放锁</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_mutex_lock(pthread_mutex_t *mutex);
+int pthread_mutex_trylock(pthread_mutex_t *mutex);
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
+</code></pre></div>
+<p>其中pthread<em>mutex</em>lock的参数表示互斥锁，调用线程希望得到互斥锁。如果互斥锁已经被别的线程得到，那么该函数会导致线程阻塞，直到互斥量的锁释放。如果成功得到锁则返回0，失败返回错误号。</p>
+
+<p><strong>pthread<em>mutex</em>trylock的参数与返回值的意义同pthread<em>mutex</em>lock一样，但是不同在于pthread<em>mutex</em>trylock函数在得不到指定互斥锁的时候并不会导致调用线程阻塞，而是立即返回一个错误编号EBUSY，表示锁申请的锁处于繁忙状态。</strong></p>
+
+<h1></h1>
+
+<p>实例：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#define FALSE 0
+#define TRUE 1
+
+void* readfun(void* arg);
+void* writefun(void* arg);
+
+char buffer[256];
+int buffer_has_item = 0;
+int retflag = FALSE;
+pthread_mutex_t mutex;
+
+int main()
+{
+
+        pthread_t reader,
+                writer;
+        memset(buffer, 0, sizeof(buffer));
+        pthread_mutex_init(&amp;mutex, NULL);
+        pthread_create(&amp;reader, NULL, readfun, NULL);
+        pthread_create(&amp;writer, NULL, writefun, NULL);
+
+        pthread_join(reader, NULL);
+        pthread_join(writer, NULL);
+
+        pthread_mutex_destroy(&amp;mutex);
+        return 0;
+}
+
+void* readfun(void* arg)
+{
+        while(1){
+                if(retflag)
+                        return NULL;
+                pthread_mutex_lock(&amp;mutex);
+
+                if(buffer_has_item == 1){
+                        printf(&quot;%s&quot;, buffer);
+                        buffer_has_item = 0;
+                }
+                pthread_mutex_unlock(&amp;mutex);
+        }
+}
+
+void* writefun(void* arg)
+{
+        int i = 0;
+        while(1){
+                if(10 == i){
+            sleep(1);   //优先级的关系不确定，如果不加sleep可能不会输出This is 9,
+                        retflag = TRUE;
+                        return;
+                }
+
+                pthread_mutex_lock(&amp;mutex);
+                if(buffer_has_item == 0){
+                        sprintf(buffer, &quot;This is %d\n&quot;, i++);
+                        buffer_has_item = 1;
+                }
+                pthread_mutex_unlock(&amp;mutex);
+        }
+}
+
+
+[root@localhost 06]# ./main
+This is 0
+This is 1
+This is 2
+This is 3
+This is 4
+This is 5
+This is 6
+This is 7
+This is 8
+This is 9
+</code></pre></div>
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>线程同步之互斥变量</strong> was published on <time datetime="2013-11-11T02:18:25Z">November 11, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

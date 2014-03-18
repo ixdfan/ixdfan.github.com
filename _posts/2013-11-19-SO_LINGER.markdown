@@ -1,0 +1,79 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-19 03:06:04+00:00
+layout: post
+slug: so_linger%e7%bc%93%e5%86%b2%e5%8c%ba%e5%a4%84%e7%90%86%e6%96%b9%e5%bc%8f%e9%80%89%e9%a1%b9
+title: SO_LINGER缓冲区处理方式选项
+wordpress_id: 1059
+categories:
+- 网络编程
+tags:
+- SOL_SOCK
+---
+
+Linux内核的默认处理方式是当用户调用close函数时，函数会立刻返回。在可能的情况下，尽量可能的发送缓冲区的数据，但是并不一定保证会发送剩余的数据，这造成了剩余数据的不可确定性。因为close函数立刻返回，用户没有办法知道剩余数据的处理情况。
+
+![close默认](http://ucshell.com/wp-content/uploads/2013/11/close默认-300x237.png)
+
+SO_LINGER选项可以阻塞close函数的调用，知道剩余数据全部发送给对方。并且可以保证TCP连接两端正常关闭，或者获得错误的情况。
+
+如果需要程序立刻关闭，就可以设置结构linger中的值，此时调用close函数时，会直接丢弃缓冲区中的数据，并立刻关闭连接。
+    
+    struct linger
+    {
+    	int l_onoff;                /* Nonzero to linger on close.  */
+    	int l_linger;               /* Time to linger.  */
+    };
+
+
+(1).设置l_onoff的值为0，这是成员l_linger将被忽略，使用系统的默认关闭行为。
+
+这种方式与没有设置SO_LINGER选项的状态是一样的，close函数会立即返回调用者，发送缓冲区内数据的处理方式未知。
+
+(2).设置l_onoff的值为1，此时成员l_linger表示关闭连接的超时时间；
+
+l_linger的值如果非零表示的是超时的秒数，会在超时之前发送所有未发送的数据，如果发送成功，则close函数会返回0值，发送失败将会返回错误，变量errno的值会被设置为WEOULDBLOCK;
+
+l_linger的值如果设置为0，表示立刻关闭，此时调用close函数将立刻返回，并且发送缓冲区中的数据直接丢弃；
+    
+    #define YES 1
+    #define NO 0
+    
+    int s;
+    int err;
+    struct linger optval;
+    optval.l_onoff = YES;
+    optval.l_linger = 60;
+    
+    s = socket(AF_INET, SOCK_STREAM , 0);
+    
+    err = setsockopt(s, SOL_SOCK, SO_LINGER, &optval, sizeof(optval));
+    if(-1 == err){
+            perror("setsockopt error");
+    }
+
+
+在调用close函数之后，在60s内运行发送数据，当缓冲区的数据发送完毕之后，会正常关闭，不能正常发送在则会返回错误
+
+![close延迟](http://ucshell.com/wp-content/uploads/2013/11/close延迟-300x226.png)
+
+    #define YES 1
+    #define NO 0
+    
+    int s;
+    int err;
+    struct linger optval;
+    optval.l_onoff = YES;
+    optval.l_linger = 0;
+    
+    s = socket(AF_INET, SOCK_STREAM , 0);
+    
+    err = setsockopt(s, SOL_SOCK, SO_LINGER, &optval, sizeof(optval));
+    if(-1 == err){
+            perror("setsockopt error");
+    }
+
+
+close函数会立刻返回并丢弃没有发送的数据
+

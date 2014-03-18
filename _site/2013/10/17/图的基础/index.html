@@ -1,0 +1,270 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>图的基础 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图的基础">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2013/10/17/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2013/10/17/%E5%9B%BE%E7%9A%84%E5%9F%BA%E7%A1%80/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>图的基础</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <h1></h1>
+
+<p>一个图G = <V, E>两个集合来定义的；
+<strong>V</strong>代表的是顶点的集合；</p>
+
+<p><strong>E</strong>代表的是两顶点之间的边；</p>
+
+<h1></h1>
+
+<p><strong>邻接</strong>:如果每对顶点之间都没有顺序，比如(u, v)等同于(v, u)，那么就说顶点u和顶点为相互邻接，他们通过<strong>无向边</strong>(u, v)相链接；将端点u和顶点v称为边(u, v)的端点，称u、v和该边相关联，当然边(u, v)也和端点u和v相关联。</p>
+
+<h1></h1>
+
+<p>如果顶点对于(u, v)不等同于顶点对(v, u)，那么就说(u, v)的方向是从顶点u到顶点v。</p>
+
+<p>其中u称为尾，v称为头。也可以说是边(u, v)离开了u进入了v。</p>
+
+<h4>注意：</h4>
+
+<p>**v称为头，u称为尾</p>
+
+<h1></h1>
+
+<p>图(a)中包含了6个顶点与7条边</p>
+
+<p><a href="http://ucshell.com/wp-content/uploads/2013/10/%E6%97%A0%E5%90%91%E5%9B%BE.png"><img src="http://ucshell.com/wp-content/uploads/2013/10/%E6%97%A0%E5%90%91%E5%9B%BE.png" alt="无向图"></a><a href="http://ucshell.com/wp-content/uploads/2013/10/%E6%9C%89%E5%90%91%E5%9B%BE.png"><img src="http://ucshell.com/wp-content/uploads/2013/10/%E6%9C%89%E5%90%91%E5%9B%BE-300x150.png" alt="有向图"></a></p>
+
+<p>图a                                                                                              图b</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">V = {a, b, c, d, e, f};
+E = {(a, c), (a, d), (b, c), (b, f), (c, e), (d, e), (e, f)};
+</code></pre></div>
+<p>对于|V|个顶点的无圈无向图，它可能含有的边的数量|E|可以表示为：</p>
+
+<p>0 &lt;= |E| &lt;= |V|(|V| - 1)/2;</p>
+
+<p>如果每个顶点|V|和其他所有|V|-1个顶点之间都有边相连，图中的数量就会达到最大。</p>
+
+<p>但是要对|V|(|v| - 1)/2，因为每条边都被包含了两次</p>
+
+<h1></h1>
+
+<ul>
+<li>完全图：任意两个顶点之间都有边相连的称为完全图</li>
+<li>无向图：如果图中所有的边都是无向的，那么就图就是无向图</li>
+<li>有向图：如果图中所有的边都是有向的，那么图本身就是有向的</li>
+</ul>
+
+<h1></h1>
+
+<p>如果完全图具有|V|个顶点，它的标准符号是K|V|.</p>
+
+<p>如果图中所缺的边数量相对较少，我们称它为稠密图</p>
+
+<p>如果图中的边相对顶点来说数量较少，我们称它为稀疏图</p>
+
+<h1></h1>
+
+<p>图的两种表示方法：邻接矩阵和邻接链表</p>
+
+<p>n个顶点的邻接矩阵是一个n*n的布尔矩阵，</p>
+
+<p>如果第i个矩阵到第j个顶点之间有链接边，则将矩阵中第i行第j列元素置为1。</p>
+
+<p>如果没有这条边则置为0。</p>
+
+<h4>注意：</h4>
+
+<p>一个无向图的邻接矩阵总是对称的，也就是说当i&gt;=0，j&lt;=n-1时，A[i, j] = A[j, i]</p>
+
+<h1></h1>
+
+<p>图的邻接链表：</p>
+
+<p>每一个顶点用一个邻接链表表示，该链表包含了和这个顶点想邻接的所有顶点。
+通常由表头开始，表头指出了该链表表示的是哪一个顶点，如图所示为图b的邻接链表和b的邻接矩阵，也可以说邻接链表指出了邻接矩阵中值为1的列</p>
+
+<p><a href="http://ucshell.com/wp-content/uploads/2013/10/a.png"><img src="http://ucshell.com/wp-content/uploads/2013/10/a-300x277.png" alt="a"></a><a href="http://ucshell.com/wp-content/uploads/2013/10/b.png"><img src="http://ucshell.com/wp-content/uploads/2013/10/b-300x231.png" alt="b"></a></p>
+
+<h4>注意：**</h4>
+
+<p>如果图是稀疏的，尽管链表中的指针会占用额外的存储器，但是相对于相应的邻接矩阵来说，邻接链表占用空间还是比较少的。如果是稠密图，则情况刚好相反。</p>
+
+<p>一般来说采用哪种表示法一般取决于问题的性质</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>图的基础</strong> was published on <time datetime="2013-10-17T11:52:15Z">October 17, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

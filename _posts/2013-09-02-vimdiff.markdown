@@ -1,0 +1,28 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-09-02 14:05:38+00:00
+layout: post
+slug: vimdiff%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8
+title: vimdiff简单使用
+wordpress_id: 556
+categories:
+- THE TOOL
+tags:
+- vim
+---
+
+Vimdiff的基本用法就是：
+	# vimdiff file1 file2
+    
+或者
+
+	# vim -d file1 file2
+
+屏幕被垂直分割，左右两侧分别显示被比较的两个文件。
+
+两个文件中连续的相同的行被折叠了起来，以便使用者能把注意力集中在两个文件的差异上。
+
+只在某一文件中存在的行的背景色被设置为蓝色，而在另一文件中的对应位置被显示为绿色。
+
+两个文件中都存在，但是包含差异的行显示为粉色背景，引起差异的文字用红色背景加以突出。

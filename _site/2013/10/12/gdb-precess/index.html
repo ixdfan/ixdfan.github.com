@@ -1,0 +1,291 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>GDB调试(三)：多进程调试 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="GDB">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GDB调试(三)：多进程调试">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2013/10/12/gdb-precess/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2013/10/12/gdb-precess/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>GDB调试(三)：多进程调试</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>GDB高端调试(三)——多进程的调试</p>
+
+<p>在多进程当中想要使用GDB调试程序中调用fork派生出的子进程，但是会发现GDB调试的仍然还是父进程，其子进程的执行无法调试。</p>
+
+<p>如果你在子进程的代码中加了断点，那么执行到此断点的时候子进程会受到一个SIGTRAP信号而终止！</p>
+
+<p>如何调试多进程呢?</p>
+
+<h1></h1>
+
+<p>主要有两种方法：</p>
+
+<h5>1. attach 子进程方法(也可以是gdb -p pid)</h5>
+
+<h5>2. follow-fork-mode 方法</h5>
+
+<h1></h1>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">/*测试用例*/
+void function()
+{
+    printf(&quot;this is a function!\n&quot;);
+}
+
+int main()
+{
+    pid_t pid;
+    if((pid = fork()) &lt; 0)
+    {
+        perror(&quot;fork error!&quot;);
+    }
+    else if(0 == pid)
+    {
+        sleep(60);/*注意*/
+        printf(&quot;this is a child process\n&quot;);
+        function();
+        exit(0);
+    }
+    else
+    waitpid(pid, 0, 0);
+    return 0;
+}
+</code></pre></div>
+<h1></h1>
+
+<p>注意处标识的sleep(60)其实就为了调试而加入的！</p>
+
+<p>让子进程sleep60秒，这个就是调试的关键！</p>
+
+<p>为什么要子进程刚开始执行就sleep呢？因为我们要利用子进程sleep的这段时间内找出子进程的PID！</p>
+
+<p>再用GDB的attach</p>
+
+<p>方法依附带该进程上！</p>
+
+<h1></h1>
+
+<p>步骤:
+1. 编译：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">    [root@localhost GDB]# cc gdb.c -omain -g
+</code></pre></div>
+<ol>
+<li><p>运行：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost GDB]# ./main
+</code></pre></div></li>
+<li><p>查找进程ID</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost GDB]# ps a
+</code></pre></div></li>
+<li><p>运行GDB</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost GDB]# gdb
+(gdb)attach PID
+(gdb)stop /*这个是非常重要的，必须先暂停你在设置一些断点*/
+(gdb)break function /*在function函数上设置断点*/
+(gdb)continue
+</code></pre></div>
+<p><strong>也可以直接使用gdb -p pid</strong> 这两种方法都可以
+/<em>遇到断点后进行单步调试</em>/</p></li>
+</ol>
+
+<h1></h1>
+
+<p>follow-fork-mode的用法：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">set follow-fork-mode [parent | child]
+parent:fork之后继续调试父进程，子进程不受影响
+child:fork之后继续调试子进程，父进程不受影响
+</code></pre></div>
+<p>如果需要调试子进程</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">(gdb)set follow-fork-mode child
+</code></pre></div>
+<p>并在子进程代码设置断点</p>
+
+<p>detach-on-fork参数，知识GDB在fork之后是否断开(detach)某个进程的调试，或都交由GDB控制；</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">set detach-on-fork [on | off]
+</code></pre></div>
+<p>on:断开调试follow-fork-mode指定的进程</p>
+
+<p>off:GDB将控制父进程和子进程，follow-fork-mode指定的进程将被调试，另一个进程处于暂停状态。</p>
+
+<h1></h1>
+
+<p>总结:</p>
+
+<h5>1. follow-fork-mode方法：方便易用，对系统内核和GDB版本有限制，适合于较为简单的多进程系统</h5>
+
+<h5>2. attach子进程方法：灵活强大，但需要添加额外代码，适合于各种复杂情况，特别是守护进程</h5>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>GDB调试(三)：多进程调试</strong> was published on <time datetime="2013-10-12T12:17:55Z">October 12, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

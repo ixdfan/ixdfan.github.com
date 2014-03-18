@@ -1,0 +1,50 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-09-02 13:38:25+00:00
+layout: post
+slug: '%e6%80%bb%e7%ba%bf%e9%94%99%e8%af%af'
+title: 总线错误
+wordpress_id: 546
+categories:
+- THE LINUX
+tags:
+- BUS ERROR
+---
+
+ 
+    # include <fcntl.h> 
+    # include <unistd.h>
+    # include <sys/mman.h> 
+    # include <stdio.h>
+    
+    int main() 
+    { 
+             int fd = open("temp", O_RDWR);// | O_CREAT, 0666); 
+             int i = 1; 
+             if(-1 == fd) 
+                     perror("open error!"); 
+             int* p = mmap(NULL, 4, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0); 
+             if((void*)-1 == p) 
+                     perror("mmap error!"); 
+    
+             while(1) 
+             { 
+                     sleep(1); 
+                     *p = i++; 
+                     printf("i = %d\n", i++); 
+    
+             } 
+             munmap(p, 4); 
+             close(fd); 
+             return 0; 
+    }
+
+
+
+编译没有问题，运行则程序产生总线错误退出，我记得之前写的程序没有错误啊！
+
+网上查的说是什么内存对齐的原因，看了半天没有看到哪的问题，mmap没有错误，好像一切都正确，后来到水木上问了下才找到了答案，因为我的文件大小是0，所以没有办法进行分配只要在mmap之前将文件扩展下就可以了加入
+
+	ftruncate(fd, 4);
+

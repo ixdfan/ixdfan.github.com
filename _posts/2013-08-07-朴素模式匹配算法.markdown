@@ -1,0 +1,83 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-08-07 00:53:06+00:00
+layout: post
+slug: '%e6%9c%b4%e7%b4%a0%e6%a8%a1%e5%bc%8f%e5%8c%b9%e9%85%8d%e7%ae%97%e6%b3%95'
+title: 朴素模式匹配算法
+wordpress_id: 474
+categories:
+- THE ALGORITHM
+tags:
+- 朴素匹配
+---
+
+昨天看了一天的关于KMP的算法，至今都没有看懂代码的含义，不过对于朴素模式匹配算法倒是有了足够的认识！
+
+朴素的模式匹配算法:最简单和最直接的做法，用P中的字符依次与T中的字符进行比较，遇到不相等的字符，则可将P右移一个字符，重新进行比较，直到某次匹配成功或者到达P的最右字符移出T为止。
+
+如：若P="aaaba", T="aaabbaaaba", 则匹配过程如下图
+
+============================================================
+
+    T: a a a b b a a a b a
+    P: a a a b a
+    	 a a a b a
+    .....
+    			a a a b a
+
+============================================================
+
+从上不难分析，最坏的情况是“每次比较都在最后一个字符出现不等，每趟最多比较M次，最多比较N-M+1趟，总的比较次数最多为M*(N-M+1)” ，时间复杂性为0(M*N)。 在P右移一位时，不管上一趟比较的中间结果是什么，因此回溯是不可避免的
+     
+    # include  <iostream>
+    # include <string>
+    using namesapce std;
+    int match(const string& target, const string& pattern)
+    {
+        int target_length = target.size();
+        int pattern_length = pattern.size();
+        int target_index = 0;    //下标
+        int pattern_index = 0;   //下标
+    
+        //下标要不能超过这个长度，因为下标的最大值就是size-1，所以要小于size
+        while(target_index < target_length && pattern_index < pattern_length)
+        {
+            //当pattern最后一字符仍然相等的时候继续++
+            //此时pattern_index == pattern_length则结束循环
+            if(target[target_index] == pattern[pattern_index])
+            {
+                //target的下标是一直都在增加的
+                ++target_index;
+                ++pattern_index;
+            }
+            else
+            {
+                //它负责的是target_index的增长
+                //如果当target_index == target_length的时候，结束循环
+    
+                //当他不相等的时target的下标为当前位置的下标减去pattern此时的下标（也就是pattern匹配的长度）,+1表示移动到下一个位置
+                //即target再次匹配的下标应该为target与pattern开始匹配时的那个下标+1；
+                target_index -= (pattern_index - 1);
+                pattern_index = 0;//回溯，又从第一个开始匹配了！
+            }
+        }
+    
+        //当pattern下标到达最后时候，也就是完全匹配的时候
+        if(pattern_index == pattern_length)
+        {
+        //当前target的下标-pattern的长度，也就是匹配的开始位置
+            return target_index - pattern_length;       
+        }
+        else
+        {//没有匹配的时候
+            return -1;
+        }
+    }
+    int main()
+    {
+        cout << match("banananobano", "nano")
+    }
+
+
+

@@ -1,0 +1,322 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>非阻塞connect的实现 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="connect, nonblock">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非阻塞connect的实现">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2014/03/09/nonblock-connect/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2014/03/09/nonblock-connect/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>非阻塞connect的实现</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p><strong>当非阻塞的socket调用connect，而连接又没有立即建立时候，这时候connect出错，设置errno的值为EINPROGRESS。</strong></p>
+
+<p>在这种情况下，我们可以调用select或是poll等函数来监听这个连接失败的socket上的可写事件。</p>
+
+<p>当select、poll等函数返回后，再利用getsockopt来读取错误码并清除该socket上的数据，如果错误码是0，则表示连接建立成功，否则连接建立失败。</p>
+
+<p>利用上面的非阻塞connect方式，我们就能同时发起多个连接并一起等待。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;sys/epoll.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;pthread.h&gt;
+
+#define BUFFER_SIZE 1024
+int setnonblocking(int fd)
+{
+    int old_option = fcntl(fd, F_GETFL);
+    int new_option = old_option | O_NONBLOCK;
+    fcntl(fd, F_SETFL, new_option);
+    return old_option;
+}
+
+/*time是超时时间，函数成功则返回已经处于连接状态的socket，失败则返回-1*/
+int unblock_connect(const char* ip, int port, int time) 
+{
+    int ret = 0;
+    struct sockaddr_in address;
+    bzero(&amp;address, sizeof(address));
+    address.sin_family = AF_INET;
+    address.sin_port  = htons(port);
+    inet_pton(AF_INET, ip, &amp;address.sin_addr);
+
+
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    int fdopt = setnonblocking(sockfd);
+
+    ret = connect(sockfd, (struct sockaddr*)&amp;address, sizeof(address));
+    if (ret == 0) {
+        /*连接成功则恢复sockfd的属性，并立刻返回*/
+        printf(&quot;connect with server immediately\n&quot;);
+        fcntl(sockfd, F_SETFL, fdopt);
+        return sockfd;
+    } else if (errno != EINPROGRESS) {
+            printf(&quot;not EINPROGRESS\n&quot;);
+            exit(-1);
+        /*
+        *如果连接没有建立，那么只有当errno为EINPROGRESS时候
+        *才表示连接还在进行，否则就出错返回
+        */
+    }
+
+
+    fd_set readfds;
+    fd_set writefds;
+    struct timeval timeout; 
+
+
+    FD_ZERO(&amp;readfds);  
+    FD_ZERO(&amp;writefds); 
+    FD_SET(sockfd, &amp;writefds);
+
+    timeout.tv_sec = time;
+    timeout.tv_usec = 0;
+
+    ret = select(sockfd + 1, NULL, &amp;writefds, NULL, &amp;timeout);
+    if (ret &lt;= 0) { /* 超时或是是出错都立刻返回 */
+        printf(&quot;connection time out\n&quot;);
+        close(sockfd);
+        return -1;
+    }
+
+    if (!FD_ISSET(sockfd, &amp;writefds)) {
+        printf(&quot;no events on sockfd found\n&quot;);
+        close(sockfd);
+        return -1;
+    }
+
+
+    int error = 0;
+    socklen_t length = sizeof(errno);
+
+    /* getsockopt来获取并清除sockfd上的错误 */    
+    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &amp;error, &amp;length) &lt; 0) {
+        printf(&quot;getsockopt error&quot;);
+        close(sockfd);
+        return -1;
+    }
+
+    /* errno不为0则表示出错 */
+    if (error != 0) {
+        printf(&quot;connection failed after select with the error:%d\n&quot;, error);
+        close(sockfd);
+        return -1;
+    }
+
+    /* 连接成功 */  
+    printf(&quot;connection ready after select with the socket: %d\n&quot;, sockfd);  
+    send(sockfd, &quot;12&quot;, 3, 0);
+    fcntl(sockfd, F_SETFL, fdopt);
+    return sockfd;
+
+
+}
+
+
+int main(int argc, char** argv)
+{
+    const char* ip = &quot;127.0.0.1&quot;;
+    int port = 80;
+
+    int sockfd = unblock_connect(ip, port, 10);
+
+    if (sockfd &lt; 0) {
+        return 1;
+    }
+    close(sockfd);
+
+    return 0;
+}
+</code></pre></div>
+<h5>但是以上的代码存在移植性的问题:</h5>
+
+<ul>
+<li>非阻塞的socket可能导致connect始终失败</li>
+<li>select对处于EINPROGRESS状态下的socket可能不起作用</li>
+<li>对于出错的socket，getsocketopt在有些系统上返回-1，但是有点系统上(比如伯克利的UNIX)上返回0</li>
+</ul>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>非阻塞connect的实现</strong> was published on <time datetime="2014-03-09T00:00:00+00:00">March 09, 2014</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

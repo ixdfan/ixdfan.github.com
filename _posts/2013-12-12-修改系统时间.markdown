@@ -1,0 +1,27 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-12-12 07:26:45+00:00
+layout: post
+slug: '%e4%bf%ae%e6%94%b9%e7%b3%bb%e7%bb%9f%e6%97%b6%e9%97%b4'
+title: 修改系统时间
+wordpress_id: 1197
+categories:
+- THE TOOL
+---
+
+我们一般使用“date -s”命令来修改系统时间。比如将系统时间设定成2013年12月11日的命令如下。
+  
+    
+    date -s 11/12/2013
+
+将系统时间设定成下午11点12分0秒的命令如下。
+
+    date -s 11:12:00    
+
+##### 注意:
+这里说的是系统时间，是linux由操作系统维护的。    
+    
+    clock -w
+    
+这个命令强制把系统时间写入CMOS。 

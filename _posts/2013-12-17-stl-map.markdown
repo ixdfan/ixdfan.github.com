@@ -1,0 +1,289 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-12-17 04:23:25+00:00
+layout: post
+slug: stlmap
+title: STL::map
+wordpress_id: 1274
+categories:
+- STL
+---
+
+map是一种包含已排序对象的关联容器。
+
+##### map的特点：
+所有元素都会根据键值自动被排序，关联容器是有键和值的，与set不同，map的键是键，值是值。
+##### 注意：
+* **关联容器的键是不允许被改变的，所以map的键是不能被修改的，但是他的值时可以修改的。**
+* **map不允许两个元素就有相同的键。**
+* **map采用的是非线性链表结构——树，所以他的迭代器不会向vector容器的迭代器那样因为重新分配存储空间而失效。**
+
+map的键和值以pair的形式出现
+
+pair和make_pair 的源代码
+
+    
+    template 
+    struct pair
+    {   // store a pair of values
+    typedef pair<_Ty1, _Ty2> _Myt;
+    typedef _Ty1 first_type;
+    typedef _Ty2 second_type;
+    
+    pair(): first(_Ty1()), second(_Ty2())
+    {    // construct from defaults
+    }
+    
+    pair(const _Ty1& _Val1, const _Ty2& _Val2): first(_Val1), second(_Val2)
+    {    // construct from specified values
+    }
+    
+    template
+    pair(const pair<_Other1, _Other2>& _Right): first(_Right.first), second(_Right.second)
+    {    // construct from compatible pair
+    }
+    
+    void swap(_Myt& _Right)
+    {    // exchange contents with _Right
+    	std::swap(first, _Right.first);
+            std::swap(second, _Right.second);
+    }
+    
+        _Ty1 first;    // the first stored value
+        _Ty2 second;    // the second stored value
+    };
+    
+    template inline
+    pair<_Ty1, _Ty2> make_pair(_Ty1 _Val1, _Ty2 _Val2)
+    {    // return pair composed from arguments
+    	return (pair<_Ty1, _Ty2>(_Val1, _Val2));
+    }
+
+
+
+    
+    private:
+    	typedef _Rb_tree<key_type, value_type, _Select1st<value_type>,key_compare, _Pair_alloc_type> _Rep_type;
+    	_Rep_type _M_t;
+    	……
+    	map(): _M_t() { }
+    	……
+
+
+可以看到**map中用到了红黑树_Rep_typ**e，由此可见，map确实是建立在红黑树基础上的
+
+================================================================
+##### begin
+
+    
+    iterator begin();
+    const_iterator begin() const;
+
+作用:
+
+返回一个指向map容器中其实元素的迭代器
+
+================================================================
+
+##### clear
+
+    
+    void clear();
+
+作用:
+
+删除map中所有元素
+
+================================================================
+
+##### count
+    
+    size_type count(const Key& Key) const;
+
+作用:
+
+返回map容器中元素键值为Key的元素的个数
+
+================================================================
+
+##### empty
+
+    bool empty() const;
+
+作用:
+
+如果map容器中没有容纳任何元素，则empty返回true
+
+================================================================
+
+##### end
+    
+    iterator end() const;
+    iterator end() const;
+
+作用:
+
+返回指向map容器中末尾元素的迭代器，例如[a, b)中指向b
+
+================================================================
+
+##### erase
+    
+    iterator erase(iterator it);
+    iterator erase(iterator first, iterator last);
+    size_type erase(const Key& key);
+
+作用:
+* 删除map容器中it位置的元素；
+* 删除在first与last之间的元素；
+* 删除那些值为key的所有元素；
+
+================================================================
+
+##### find
+
+    
+    const_iterator find(const Key& key) const;
+
+作用:
+
+返回map容器中一个指向找到元素的迭代器，如果没找到则返回map尾部的迭代器。
+
+================================================================
+
+##### get_allocator
+
+    
+    allocator_type get_allocator() const;
+
+
+作用:
+
+返回map容器的内存分配器
+
+================================================================
+
+##### insert
+
+    
+    pair<iterator, bool> insert(const value_type& x);
+    iterator insert(iterator it, const value_type& x);
+    void insert(const value_type* first, const value_type* last);
+
+作用:
+* 在迭代器中插入值为x的元素；
+* 在迭代器it指定的位置前插入值为x的元素；
+* 在容器中插入区间[first, last)中所有的元素；
+
+================================================================
+
+##### max_size
+    
+    size_type max_size() const;
+
+作用:
+
+返回map容器所能容纳的元素数量的最大值
+
+================================================================
+
+#####rbegin
+    
+    const_reverse_iterator rbegin() cosnt;
+
+作用:
+
+返回指向map末尾的反向迭代器
+
+================================================================
+
+##### rend
+
+    
+    reverse_iterator rend();
+    const_reverse_iterator rend() cosnt;
+
+
+作用:
+
+返回指向map起始位置的反向迭代器
+
+================================================================
+##### size
+
+    
+    size_type size() const;
+
+
+作用:
+
+返回map容器所容纳元素的数目
+
+================================================================
+
+##### swap
+    
+    void swap(map& str);
+
+作用:
+
+交换当前map容器与str容器中的元素，str是一个map容器
+
+================================================================
+##### lower_bound
+
+    
+    const_iterator lower_bound(const Key& key) const;
+
+作用:
+
+返回map容器中小于或等于key的第一个元素的迭代器.
+
+================================================================
+
+##### upper_bound
+    
+    const_iterator upper_bound(const Key& key) const;
+
+作用:
+
+返回map容器中大于key的第一个元素的迭代器。
+
+================================================================
+
+##### equal_range
+
+    
+    pair<const_iterator, const_iterator>equal_range(const Key& key) const
+
+
+作用:
+
+* 返回map容器中与定值相等的上下限的两个迭代器；
+* 返回连个迭代器，一个指向map容器中第一个键值为key的元素，一个指向map中最后一个键值为key的元素
+* 
+================================================================
+
+##### key_comp
+
+    
+    key_compare key_comp(const Key& key) const;
+
+作用:
+
+返回一个用于元素间的键的比较函数
+
+================================================================
+##### value_comp
+
+    
+    value_compare value_comp(const Key& key) const;
+
+作用:
+
+返回一个用于元素间的值比较函数
+
+================================================================
+
+**multimap和map的特性和用法完全相同，唯一不同的是multimap支持重复键值**

@@ -1,0 +1,293 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>fcntl函数使用 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="fcntl">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fcntl函数使用">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://ucshell.github.com/2013/09/11/fcntl/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://ucshell.github.com/2013/09/11/fcntl/">
+<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://ucshell.github.com">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://ucshell.github.com" >Home</a></li>
+		        
+				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+		        
+				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+		        
+				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>fcntl函数使用</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>fcntl函数函数原型如下</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">int fcntl(int fd, int cmd, ... /* arg */ );
+</code></pre></div>
+<p>fcntl函数的选项                 类似于ioctl中的功能</p>
+
+<h1></h1>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">F_DUPFD                 复制文件描述符
+F_SETOWN, flags         设置套接字属主               FIOSETOWN
+F_GETOWN, 0             获取套接字属主               FIOGETOWN
+F_SETFL, O_ASYNC           设置套接字为信号驱动IO     FIOASYNC
+F_SETFL, O_NONBLOCK     设置套接字为非阻塞IO         FIONBIO
+F_GETLK                 获取记录锁
+F_SETLK                 设置记录锁
+F_SETLKW                   与F_SETLK类似，不过如果已经被加锁。他会阻塞等待直到解锁后在进行加缩
+</code></pre></div>
+<h1></h1>
+
+<p>O_GETFL获取的属性如下:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">O_RDONLY
+O_WRONLY
+O_RDWR          **注意：以上三个只能与O_ACCMODE存放获取位不可直接获取**
+
+O_APPEND
+O_NONBLOCK
+O_SYSNC
+O_ASYNC
+</code></pre></div>
+<p><strong>注意：对于O<em>RDONLY,O</em>WRONLY,O<em>RDWD只能与O</em>ACCMODE存放获取位，</strong></p>
+
+<p>** 不可以直接与选项进行&amp;获取**</p>
+
+<h1></h1>
+
+<p>F_GETOWN:获得接收信号SIGIO或SIGUSR信号的进程ID或进程组ID</p>
+
+<p>F_SETOWN:设置接受信号SIGIO或SIGUSR信号的进程ID或进程组ID,
+参数arg位正时设置接受信号的进程ID,arg为负值时设置接受信号的进程组ID位arg的绝对值</p>
+
+<p>F_SETOWN与F_GETOWN用来设置信号的属主，因为信号SIGIO与SIGURG这两个
+信号需要使用命令F_SETOWN设定进程主才能生成。</p>
+
+<h1></h1>
+
+<p>实例：F_GETFL</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#include 
+#include 
+#include 
+
+int main()
+{
+  int flags = -1;
+  int accmode = -1;
+
+  flags = fcntl(0, F_GETFL, 0);
+
+  accmode = flags &amp; O_ACCMODE;//获取访问模式z只能使用O_ACCMODE获取
+  if(O_RDONLY == accmode)
+    printf(&quot;STDIN readonly\n&quot;);
+  if(O_WRONLY == accmode)
+    printf(&quot;STDIN writeonly\n&quot;);
+  if(O_RDWR == accmode)
+    printf(&quot;STDIN read and write\n&quot;);
+
+  if(flags &amp; O_APPEND)
+    printf(&quot;STDIN append\n&quot;);
+  if(flags &amp; O_NONBLOCK)
+    printf(&quot;STDIN NONBLOCK\n&quot;);
+
+  return 0;
+}
+</code></pre></div>
+<h1></h1>
+
+<p>实例：使用fcntl函数修改套接字的非阻塞属性</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">int main()
+{
+  int uid;
+  int fd = open(&quot;case.txt&quot;, O_RDWR);
+  uid = fcntl(fd, F_GETOWN);    //获得接受信号的进程ID
+  printf(&quot;SIG recv ID : %d\n&quot;, uid);
+  close(fd);
+  return 0;
+}
+</code></pre></div>
+<h1></h1>
+
+<p>F_SETOWN实例:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">int main()
+{
+  int uid;
+  itt fd = open(&quot;test.txt&quot;, O_RDWR);
+  uid = fcntl(fd, F_SETOWN, getpid());//将信号发送给本进程
+  return 0;
+}
+</code></pre></div>
+<h1></h1>
+
+<p>F_DUPFD实例:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">int main()
+{
+  int fd = open(&quot;test&quot;, O_RDONLY);
+  int newfd = fcntl(fd, F_DUPFD, 0);
+  return 0;
+}
+</code></pre></div>
+<h1></h1>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>fcntl函数使用</strong> was published on <time datetime="2013-09-11T01:50:45Z">September 11, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+    
+      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>
