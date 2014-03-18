@@ -53,9 +53,8 @@ links:
 timezone:    China/Chongqing
 future:      true
 pygments:    true
-markdown:    redcarpet
-#markdown:    rdiscount 
-#kramdown 
+markdown:    rdiscount 
+
 # https://github.com/mojombo/jekyll/wiki/Permalinks
 permalink:   /:year/:month/:day/:title/
 
