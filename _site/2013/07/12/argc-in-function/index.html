@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="函数参数的传递顺序">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/07/12/argc-in-function/">
+<meta property="og:url" content="http://localhost:4000/2013/07/12/argc-in-function/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/07/12/argc-in-function/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/07/12/argc-in-function/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -115,50 +115,52 @@
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
       <p>今天写程序时候遇到一个奇怪的问题, 查找了许久才找到问题所在, 原来是printf函数参数的传递顺序的问题！函数参数是从右向左传递， 这么简单的知识竟然忘记了， 看了真的要花时间好好的复习下基础内容了！
-    # include <stdio.h>
-    # include <stdlib.h>
-    # include <unistd.h>
-    # include <string.h>
-    # include <sys/types.h>
-    # include <sys/sem.h>
-    # include <sys/socket.h>
-    # include <netdb.h>
+    # include &lt;stdio.h>
+    # include &lt;stdlib.h>
+    # include &lt;unistd.h>
+    # include &lt;string.h>
+    # include &lt;sys/types.h>
+    # include &lt;sys/sem.h>
+    # include &lt;sys/socket.h>
+    # include &lt;netdb.h>
     int main()
     {
-        struct hostent* ent;
+        struct hostent<em> ent;
         sethostent(1);
-        ent = gethostbyname( &quot;www.sina.com&quot; );
-        printf ( &quot;host : %s\n&quot; , ent-&gt;h<em>name);
+        ent = gethostbyname( "www.sina.com" );
+        printf ( "host : %s\n" , ent->h_name);
         int i = 0;
-        while (NULL!=ent-&gt;h</em>addr<em>list[i])
+        while (NULL!=ent->h_addr_list[i])
         {
-            printf ( &quot;IP[%d] : %hhu.%hhu.%hhu.%hhu\t\n&quot; , i,
-            ent-&gt;h</em>addr<em>list[i][0],
-            ent-&gt;h</em>addr<em>list[i][1],
-            ent-&gt;h</em>addr<em>list[i][2],
-            /<em>=======错误处==========</em>/
-            ent-&gt;h</em>addr<em>list[i++][3]);
+            printf ( "IP[%d] : %hhu.%hhu.%hhu.%hhu\t\n" , i,
+            ent->h_addr_list[i][0],
+            ent->h_addr_list[i][1],
+            ent->h_addr_list[i][2],
+            /</em>=======错误处==========*/
+            ent->h_addr_list[i++][3]);
         }
         i = 0;
-        while (NULL!=ent-&gt;h</em>aliases[i])
+        while (NULL!=ent->h_aliases[i])
         {
-            printf ( &quot;aliases : %s\n&quot; , ent-&gt;h_aliases[i++]);
+            printf ( "aliases : %s\n" , ent->h_aliases[i++]);
         }
         endhostent();
         return 0;
     }</p>
 
 <p>\================================================</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/*改为如下即可*/
+
+<pre><code>/*改为如下即可*/
 ent-&gt;h_addr_list[++i][0],
 ent-&gt;h_addr_list[i][1],
 ent-&gt;h_addr_list[i][2],
 ent-&gt;h_addr_list[i][3]);
-</code></pre></div>
+</code></pre>
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -175,7 +177,7 @@ ent-&gt;h_addr_list[i][3]);
 
 
         </div>
-        <p class="byline"><strong>函数参数的传递顺序</strong> was published on <time datetime="2013-07-12T15:51:00Z">July 12, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>函数参数的传递顺序</strong> was published on <time datetime="2013-07-12T15:51:00Z">July 12, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -183,14 +185,14 @@ ent-&gt;h_addr_list[i][3]);
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -219,8 +221,8 @@ ent-&gt;h_addr_list[i][3]);
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

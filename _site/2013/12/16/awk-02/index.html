@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="awk简单使用">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/16/awk-02/">
+<meta property="og:url" content="http://localhost:4000/2013/12/16/awk-02/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/16/awk-02/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/16/awk-02/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -119,25 +119,32 @@
 <p>-F参数是设置awk的字段分隔符FS，默认情况下是空白字符</p>
 
 <p>使用-F显式指明分隔符，并且海支持多个字符，甚至是正则表达式</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">awk -F&quot;:&quot; &#39;{print &quot;USER: &quot; $1 &quot;\tSHELL: &quot;$7}&#39; /etc/passwd
-</code></pre></div>
-<p>指定分隔符为&#39;:&#39;</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">awk -F&quot;[\t ]+&quot; &#39;{print &quot;DEVICE: &quot;$1 &quot;\tFSTYPE: &quot;$3}&#39; /etc/fstab
-</code></pre></div>
-<p>&quot;[\t ]+&quot;中有一个‘\’t和一个空格 ‘+’表示前面出现的单个字符出现一次或多次，这里表示的匹配一个或多个制表符或分隔符</p>
+
+<pre><code>awk -F":" '{print "USER: " $1 "\tSHELL: "$7}' /etc/passwd
+</code></pre>
+
+<p>指定分隔符为':'</p>
+
+<pre><code>awk -F"[\t ]+" '{print "DEVICE: "$1 "\tFSTYPE: "$3}' /etc/fstab
+</code></pre>
+
+<p>"[\t ]+"中有一个‘\’t和一个空格 ‘+’表示前面出现的单个字符出现一次或多次，这里表示的匹配一个或多个制表符或分隔符</p>
 
 <p>awk会对每个输入行执行一个代码块，awk的运行分为三个部分:处理输入前的初始化、处理输入过程、处理完所有输入后的扫尾工作</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">BEGIN和END分别映射到第一和第三块
+
+<pre><code>BEGIN和END分别映射到第一和第三块
 BEGIN:完成awk部分参数的初始化操作
 END:就是所有输入都处理完成后awk执行的代码，我们可以做一些统计信息以及数据打印
-</code></pre></div>
+</code></pre>
+
 <p>BEGIN和END都是可选的！</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost awk]# cat fs.awk
+
+<pre><code>[root@localhost awk]# cat fs.awk
 BEGIN{
-        FS=&quot;:&quot;
+        FS=":"
 }
 
-        print &quot;USER: &quot;$1 &quot;\tSHELL: &quot;$7
+        print "USER: "$1 "\tSHELL: "$7
 }
 
 [root@localhost awk]# awk -f fs.awk passwd.bak
@@ -152,53 +159,58 @@ USER: halt      SHELL: /sbin/halt
 USER: mail      SHELL: /sbin/nologin
 USER: uucp      SHELL: /sbin/nologin
 [root@localhost awk]#
-</code></pre></div>
+</code></pre>
+
 <p>awk中BEGIN代码块的格式是BEGIN标签加上{}。在这个代码块中能够进行一些变量的初始化操作。
 awk中定义FS变量位字段分隔符，当我们将冒号赋值给FS时候awk在初始化操作过程中就会将默认分隔号变为冒号。使用-F也可以指定，但是使用FS更加清晰。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost awk]# cat  search.awk
+
+<pre><code>[root@localhost awk]# cat  search.awk
 BEGIN{
-        print &quot;How many people with nologin?&quot;
+        print "How many people with nologin?"
 }
 
 /nologin/       {++adder}   #注释2
 
 END{                #注释3
-        print &quot;&#39;nologin&#39; appears &quot; adder &quot; times.&quot;
+        print "'nologin' appears " adder " times."
 }
 [root@localhost awk]# awk -f search.awk /etc/passwd
 How many people with nologin?
-&#39;nologin&#39; appears 30 times.
+'nologin' appears 30 times.
 [root@localhost awk]#
-</code></pre></div>
+</code></pre>
+
 <p>注释2它标志这awk处理输入的过程，在这一行中，awk首先将输入数据中的每条记录与正则表达式nologin(在此处就是一个固定字符串)匹配，如果匹配上了，则执行{}中的内容，即++adder</p>
 
 <p>模式匹配</p>
 
 <p>awk的模式匹配的语法是这样的</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/正则表达式/   {匹配后的操作}
+
+<pre><code>/正则表达式/   {匹配后的操作}
 
 
 [root@localhost awk]# cat shell.awk
 BEGIN{
-        print &quot;SHELL USAGE:&quot;
+        print "SHELL USAGE:"
 }
 /bash/{++bash}
 /nologin/{++nologin}
 
 END{
-        print &quot;We have &quot; bash &quot; bash user&quot;
-        print &quot;We have &quot; nologin &quot; nologin user&quot;
+        print "We have " bash " bash user"
+        print "We have " nologin " nologin user"
 }
 [root@localhost awk]# awk -f shell.awk /etc/passwd
 SHELL USAGE:
 We have 4 bash user
 We have 30 nologin user
 [root@localhost awk]#
-</code></pre></div>
+</code></pre>
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -215,7 +227,7 @@ We have 30 nologin user
 
 
         </div>
-        <p class="byline"><strong>awk简单使用</strong> was published on <time datetime="2013-12-16T16:18:06Z">December 16, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>awk简单使用</strong> was published on <time datetime="2013-12-16T16:18:06Z">December 16, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -223,14 +235,14 @@ We have 30 nologin user
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -259,8 +271,8 @@ We have 30 nologin user
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

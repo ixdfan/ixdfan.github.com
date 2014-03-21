@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于memset的详细用法">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/07/07/how-to-use-memset/">
+<meta property="og:url" content="http://localhost:4000/2013/07/07/how-to-use-memset/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/07/07/how-to-use-memset/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/07/07/how-to-use-memset/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -116,148 +116,172 @@
     <div class="article-wrap">
       <p>今天在写程序时候无意间发现自己对memset使用错误， 经过查找才知道原来自 己对于memset的理解一直就是错误的</p>
 
-<h1></h1>
+<hr />
 
-<p>功能： 
-    void *memset(void *s, int ch, unsigned n); </p>
+<p>功能：
+    void <em>memset(void </em>s, int ch, unsigned n);</p>
 
 <p>将s所指向的某一块内存中的每个字节的内容全部设置为ch指定的ASCII值, 块的大小由第三个参数指定,这个函数通常为新申请的内存做初始化工作,其返回值为指向S的指针。</p>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#include &lt;string.h&gt;
+<hr />
+
+<pre><code>#include &lt;string.h&gt;
 #include &lt;stdio.h&gt;
 #include &lt;memory.h&gt;
 
 int main( void)
 { 　　
-    char buffer[] = &quot;Hello world\n&quot;; 　
-    printf (&quot;Buffer before memset: %s\n&quot;, buffer);
-    memset (buffer, &#39;*&#39;,strlen(buffer) ); 
-    printf (&quot;Buffer after memset: %s\n&quot;, buffer);
+    char buffer[] = "Hello world\n"; 　
+    printf ("Buffer before memset: %s\n", buffer);
+    memset (buffer, '*',strlen(buffer) ); 
+    printf ("Buffer after memset: %s\n", buffer);
 
     return 0;
 }
-</code></pre></div>
-<p>输出结果：<br>
-Buffer before memset: Hello world<br>
+</code></pre>
+
+<p>输出结果：<br/>
+Buffer before memset: Hello world<br/>
 Buffer after memset: ***********</p>
 
-<h1></h1>
+<hr />
 
 <p>编译平台： 　　Microsoft Visual C++ 6.0</p>
 
 <p>也不一定就是把内容全部设置为ch指定的ASCII值，而且该处的ch可为int 或者其他类型，并不一定要是char类型。例如下面这样：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int array[5] = {1,4,3,5,2}; 
+
+<pre><code>int array[5] = {1,4,3,5,2}; 
 for (int i = 0; i &lt; 5; i++) 
-    cout&lt;&lt;array[i]&lt;&lt;   &quot; &quot;   ; 
+    cout&lt;&lt;array[i]&lt;&lt;   " "   ; 
 cout&lt;&lt;endl; 
 
 memset(array, 0, 5*sizeof   (   int   )); 
 
 for(int k = 0; k &lt; 5; k++) 
-    cout&lt;&lt;array[k]&lt;&lt;   &quot; &quot;   ; 
+    cout&lt;&lt;array[k]&lt;&lt;   " "   ; 
 cout&lt;&lt;endl; 
-</code></pre></div>
-<p>输出的结果就是：<br>
-1 4 3 5 2<br>
-0 0 0 0 0<br>
+</code></pre>
+
+<p>输出的结果就是： <br/>
+1 4 3 5 2 <br/>
+0 0 0 0 0 <br/>
 后面的表大小的参数是以字节为单位，所以，对于int或其他的就并不是都乘默认的1（字符型）了。而且不同的机器上int的大小也可能不同，所以最好用sizeof（）。</p>
 
 <p>要注意的是，<em>memset是对字节进行操作，所以上述程序如果改为</em></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int array[5] = {1,4,3,5,2};
+
+<pre><code>int array[5] = {1,4,3,5,2};
 for ( int i = 0; i &lt; 5; i++)
-    cout&lt;&lt;array[i]&lt;&lt; &quot; &quot; ;
+    cout&lt;&lt;array[i]&lt;&lt; " " ;
 cout&lt;&lt;endl;
 
 memset (array,1,5* sizeof ( int )); // 注意 这里与上面的程序不同
 for ( int k = 0; k &lt; 5; k++)
-    cout&lt;&lt;array[k]&lt;&lt; &quot; &quot; ;
+    cout&lt;&lt;array[k]&lt;&lt; " " ;
 cout&lt;&lt;endl;
-</code></pre></div>
-<p>输出的结果就是：<br>
-　　1 4 3 5 2<br>
-　　16843009 16843009 16843009 16843009 16843009<br>
-　　为什么呢？<br>
+</code></pre>
+
+<p>输出的结果就是： <br/>
+　　1 4 3 5 2 <br/>
+　　16843009 16843009 16843009 16843009 16843009 <br/>
+　　为什么呢？ <br/>
 　　因为memset是以字节为单位就是对array指向的内存的5个字节进行赋值，每个都用ASCII为1的字符去填充，转为二进制后，1就是00000001,占一个字节。一个INT元素是4字节，合一起就是00000001000000010000000100000001，就等于16843009，就完成了对一个INT元素的赋值了。</p>
 
-<p>*<em>所以用memset对非字符型数组赋初值是不可取的！ *</em></p>
+<p><strong>所以用memset对非字符型数组赋初值是不可取的！ </strong></p>
 
-<p>　　例如有一个结构体Some x，可以这样清零：<br>
-　　memset( &amp;x, 0, sizeof(Some) );<br>
-　　如果是一个结构体的数组Some x[10]，可以这样：<br>
+<p>　　例如有一个结构体Some x，可以这样清零： <br/>
+　　memset( &amp;x, 0, sizeof(Some) ); <br/>
+　　如果是一个结构体的数组Some x[10]，可以这样： <br/>
 　　memset( x, 0, sizeof(Some)*10 );</p>
 
-<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</p>
+<p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></p>
 
-<p>1.void *memset(void *s,int c,size_t n)<br>
+<p>1.void <em>memset(void </em>s,int c,size_t n) <br/>
 总的作用：将已开辟内存空间 s 的首 n 个字节的值设为值 c。</p>
 
-<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br>
-2.例子<br>
-    main(){<br>
-    char *s=&quot;Golden Global View&quot;;<br>
-    clrscr();<br>
-    memset(s,&#39;G&#39;,6);//貌似这里有点问题//<br>
-    printf(&quot;%s&quot;,s);<br>
-    getchar();<br>
-    return 0;<br>
-    }　<br>
+<p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><br/>
+2.例子 <br/>
+    main(){ <br/>
+    char *s="Golden Global View"; <br/>
+    clrscr(); <br/>
+    memset(s,'G',6);//貌似这里有点问题// <br/>
+    printf("%s",s); <br/>
+    getchar(); <br/>
+    return 0; <br/>
+    }　 <br/>
 【应该是没有问题的，字符串指针一样可以，并不是只读内存，可以正常运行】</p>
 
-<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
-3.memset() 函数常用于内存空间初始化。如：   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">char str[100];   
+<p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+3.memset() 函数常用于内存空间初始化。如：</p>
+
+<pre><code>char str[100];   
 memset(str,0,100);
-</code></pre></div>
-<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</code></pre>
+
+<p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 4.memset()的深刻内涵：
-用来对一段内存空间全部设置为某个字符，一般用在对定义的字符串进行初始化为&#39;memset(a, &#39;\0&#39;, sizeof(a));<br>
-　　memcpy用来做内存拷贝，你可以拿它拷贝任何数据类型的对象，可以指定拷贝的数据长度；例：   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">char a[100], b[50];   
+用来对一段内存空间全部设置为某个字符，一般用在对定义的字符串进行初始化为'memset(a, '\0', sizeof(a));<br/>
+　　memcpy用来做内存拷贝，你可以拿它拷贝任何数据类型的对象，可以指定拷贝的数据长度；例：</p>
+
+<pre><code>char a[100], b[50];   
 memcpy(b, a, sizeof(b)); //注意如用sizeof(a)，会造成b的内存地址溢出。
-</code></pre></div>
-<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br>
-　　strcpy就只能拷贝字符串了，它遇到&#39;\0&#39;就结束拷贝；例：   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">char a[100], b[50];   
+</code></pre>
+
+<p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> <br/>
+　　strcpy就只能拷贝字符串了，它遇到'\0'就结束拷贝；例：</p>
+
+<pre><code>char a[100], b[50];   
 strcpy(a,b);   
-</code></pre></div>
-<p>如用strcpy(b,a)，要注意a中的字符串长度（第一个&#39;\0&#39;之前）是否超过50位，如超过，则会造成b的内存地址溢出。</p>
+</code></pre>
 
-<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;   </p>
+<p>如用strcpy(b,a)，要注意a中的字符串长度（第一个'\0'之前）是否超过50位，如超过，则会造成b的内存地址溢出。</p>
 
-<p>5.补充：某人的一点心得<br>
-memset可以方便的清空一个结构类型的变量或数组。<br>
-如：  </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">struct sample_struct   
+<p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></p>
+
+<p>5.补充：某人的一点心得 <br/>
+memset可以方便的清空一个结构类型的变量或数组。 <br/>
+如：</p>
+
+<pre><code>struct sample_struct   
 {   
 char csName[16];   
 int iSeq;   
 int iType;   
 };   
-</code></pre></div>
-<p>对于变量   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">struct sample_strcut stTest;   
-</code></pre></div>
-<p>一般情况下，清空stTest的方法：   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">stTest.csName[0]=&#39;\0&#39;;   
+</code></pre>
+
+<p>对于变量</p>
+
+<pre><code>struct sample_strcut stTest;   
+</code></pre>
+
+<p>一般情况下，清空stTest的方法：</p>
+
+<pre><code>stTest.csName[0]='\0';   
 stTest.iSeq=0;   
 stTest.iType=0;   
-</code></pre></div>
-<p>用memset就非常方便：   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">memset(&amp;stTest,0,sizeof(struct sample_struct));   
-</code></pre></div>
-<p>如果是数组：   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">struct sample_struct TEST[10];   
-</code></pre></div>
-<p>则   </p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">memset(TEST,0,sizeof(struct sample_struct)*10);
-</code></pre></div>
-<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</p>
+</code></pre>
+
+<p>用memset就非常方便：</p>
+
+<pre><code>memset(&amp;stTest,0,sizeof(struct sample_struct));   
+</code></pre>
+
+<p>如果是数组：</p>
+
+<pre><code>struct sample_struct TEST[10];   
+</code></pre>
+
+<p>则</p>
+
+<pre><code>memset(TEST,0,sizeof(struct sample_struct)*10);
+</code></pre>
+
+<p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></p>
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -274,7 +298,7 @@ stTest.iType=0;
 
 
         </div>
-        <p class="byline"><strong>关于memset的详细用法</strong> was published on <time datetime="2013-07-07T04:35:00Z">July 07, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>关于memset的详细用法</strong> was published on <time datetime="2013-07-07T04:35:00Z">July 07, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -282,14 +306,14 @@ stTest.iType=0;
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -318,8 +342,8 @@ stTest.iType=0;
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

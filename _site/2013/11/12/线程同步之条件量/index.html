@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程同步之条件量">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/11/12/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E6%9D%A1%E4%BB%B6%E9%87%8F/">
+<meta property="og:url" content="http://localhost:4000/2013/11/12/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E6%9D%A1%E4%BB%B6%E9%87%8F/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/11/12/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E6%9D%A1%E4%BB%B6%E9%87%8F/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/11/12/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E6%9D%A1%E4%BB%B6%E9%87%8F/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -122,7 +122,7 @@
 
 <p>条件量是对互斥锁的补充，他允许线程阻塞并等待另一个线程发送的信号。当收到信号时，阻塞的线程就被唤醒并试图锁定与之相关的互斥锁。</p>
 
-<h1></h1>
+<hr />
 
 <p>条件量模型：
     1.定义条件量
@@ -131,12 +131,14 @@
     4.其他线程修改条件量
     5.释放条件量</p>
 
-<h1></h1>
+<hr />
 
 <p>1.互斥量的初始化</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_cond_init(pthread_cond_t *restrict cond,const pthread_condattr_t *restrict attr);
+
+<pre><code>int pthread_cond_init(pthread_cond_t *restrict cond,const pthread_condattr_t *restrict attr);
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-</code></pre></div>
+</code></pre>
+
 <h5>注意：</h5>
 
 <p>对于静态初始化的方式可以不用destroy函数。</p>
@@ -144,62 +146,67 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 <p>多线程不能同时初始化同一个条件变量，如果一个条件变量正在使用他不能被重新初始化。</p>
 
 <p>2.互斥量的销毁</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_cond_destroy(pthread_cond_t *cond);
-</code></pre></div>
-<h1></h1>
+
+<pre><code>int pthread_cond_destroy(pthread_cond_t *cond);
+</code></pre>
+
+<hr />
 
 <ol>
-<li><br>
-int pthread<em>cond</em>wait(pthread<em>cond</em>t *restrict cond, pthread<em>mutex</em>t *restrict mutex);</li>
+<li><p>int pthread_cond_wait(pthread_cond_t <em>restrict cond, pthread_mutex_t </em>restrict mutex);</p></li>
 </ol>
 
-<p>使用<strong>pthread<em>cond</em>wait释放由参数mutex指向的互斥锁</strong>，并且使调用线程关于参数cond指向的条件变量阻塞。被阻塞的线程可以被pthread<em>cond</em>siganl、pthread<em>cond</em>broadcast或fork或传递信号引起的中断唤醒。</p>
 
-<p>pthread<em>cond</em>wait通常在互斥锁被调用线程加锁后才返回。</p>
+<p>使用<strong>pthread_cond_wait释放由参数mutex指向的互斥锁</strong>，并且使调用线程关于参数cond指向的条件变量阻塞。被阻塞的线程可以被pthread_cond_siganl、pthread_cond_broadcast或fork或传递信号引起的中断唤醒。</p>
+
+<p>pthread_cond_wait通常在互斥锁被调用线程加锁后才返回。</p>
 
 <p><strong>线程将阻塞直到条件量被信号唤醒，它在阻塞前自动释放互斥锁，在返回前在自动获得它。</strong></p>
 
 <p>如果有多个线程关于条件量阻塞，其退出阻塞状态的顺序将不确定。</p>
 
-<h1></h1>
+<hr />
 
 <ol>
-<li><br>
-int pthread<em>cond</em>timedwait(pthread<em>cond</em>t  *restrict cond,
-    pthread<em>mutex</em>t *restrict mutex,
-    const struct timespec *restrict abstime);</li>
+<li><p>int pthread_cond_timedwait(pthread_cond_t  <em>restrict cond,
+    pthread_mutex_t </em>restrict mutex,
+    const struct timespec *restrict abstime);</p></li>
 </ol>
+
 
 <h5>注意：</h5>
 
-<p>pthread<em>cond</em>timedwait和pthread<em>cond</em>wait含义相同，区别在于pthread<em>cond</em>timedwait在经过参数abstime指定的时间时不会阻塞。</p>
+<p>pthread_cond_timedwait和pthread_cond_wait含义相同，区别在于pthread_cond_timedwait在经过参数abstime指定的时间时不会阻塞。</p>
 
-<p>即使返回错误，pthread<em>cond</em>timedwait也是在给互斥锁加锁后返回。</p>
+<p>即使返回错误，pthread_cond_timedwait也是在给互斥锁加锁后返回。</p>
 
-<p>pthread<em>cond</em>timedwait将会阻塞，知道条件量获得信号或者经过由abstime指定的时间</p>
+<p>pthread_cond_timedwait将会阻塞，知道条件量获得信号或者经过由abstime指定的时间</p>
 
 <p>如果阻塞时间超过了abstime所指定的时间，那么就返回ETIMEOUT</p>
 
-<h1></h1>
+<hr />
 
-<p>5.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_cond_broadcast(pthread_cond_t *cond);
-int pthread_cond_signal(pthread_cond_t *cond);
-</code></pre></div>
-<p>pthread<em>cond</em>signal使得关于由参数cond指向的条件变量阻塞的线程退出阻塞状态。在同一个互斥锁的保护下使用pthread<em>cond</em>signal，否则，条件量可以在对关联条件变量的测试和pthread<em>cond</em>wait带来的阻塞之间获得信号，这将导致无限等待。</p>
+<ol>
+<li><p>  int pthread_cond_broadcast(pthread_cond_t <em>cond);
+  int pthread_cond_signal(pthread_cond_t </em>cond);</p></li>
+</ol>
 
-<p>如果没有一个线程关于条件变量阻塞，那么美pthread<em>cond</em>signal无效。</p>
 
-<p>pthread<em>cond</em>broadcast使得多有关于参数cond指向的条件变量阻塞的线程退出阻塞状态。如果没有阻塞线程则pthread<em>cond</em>broadcast无效。</p>
+<p>pthread_cond_signal使得关于由参数cond指向的条件变量阻塞的线程退出阻塞状态。在同一个互斥锁的保护下使用pthread_cond_signal，否则，条件量可以在对关联条件变量的测试和pthread_cond_wait带来的阻塞之间获得信号，这将导致无限等待。</p>
 
-<p>pthread<em>cond</em>broadcast会唤醒所有由pthread<em>cond</em>wait阻塞的线程。</p>
+<p>如果没有一个线程关于条件变量阻塞，那么美pthread_cond_signal无效。</p>
+
+<p>pthread_cond_broadcast使得多有关于参数cond指向的条件变量阻塞的线程退出阻塞状态。如果没有阻塞线程则pthread_cond_broadcast无效。</p>
+
+<p>pthread_cond_broadcast会唤醒所有由pthread_cond_wait阻塞的线程。</p>
 
 <p>因为所有关于条件量阻塞的线程都同时参与竞争.</p>
 
-<h1></h1>
+<hr />
 
 <p>实例：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#define BUFFER_SIZE 4
+
+<pre><code>#define BUFFER_SIZE 4
 #define OVER (-1)
 
 struct producers
@@ -266,7 +273,7 @@ void* producter(void* data)
 {
         int n;
         for(n = 0; n &lt; 10; n++){                 
-            printf(&quot;Producer: %d--&gt;\n&quot;, n);
+            printf("Producer: %d--&gt;\n", n);
                 put(&amp;buffer, n);
         }
         put(&amp;buffer, OVER);
@@ -279,7 +286,7 @@ void* consumer(void* data)
         while(1){
                 d = get(&amp;buffer);
                 if(OVER == d)   break;
-                printf(&quot;Consumer:--&gt;%d\n&quot;, d);
+                printf("Consumer:--&gt;%d\n", d);
         }
         return NULL;
 }
@@ -295,19 +302,21 @@ int main()
         pthread_join(thb, NULL);
         return 0;
 }
-</code></pre></div>
+</code></pre>
+
 <p>主进程建立两个线程，一个叫producer，一个叫consumer。</p>
 
 <p>producer向缓冲区中写入整数1-10，当缓冲区中写入数据后，就发送缓冲区有数据的信号。</p>
 
 <p>consumer从缓冲区中读数据当consumer从缓冲区读出数据后，就发送当前缓冲区未满的信号.</p>
 
-<p>(b-&gt;writepos == b-&gt;readpos)含义：当读位置与写位置相同时，表示的也就是现在为空</p>
+<p>(b->writepos == b->readpos)含义：当读位置与写位置相同时，表示的也就是现在为空</p>
 
-<h1>(b-&gt;writepos+1) % BUFFER_SIZE == b-&gt;readpos)含义：当写位置处于读位置的后面一个位置时，表明此时已经写满了，需要被读取</h1>
+<h1>(b->writepos+1) % BUFFER_SIZE == b->readpos)含义：当写位置处于读位置的后面一个位置时，表明此时已经写满了，需要被读取</h1>
 
 <p>输出如下：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost 05]# ./main                      
+
+<pre><code>[root@localhost 05]# ./main                      
 Producer: 0--&gt;                                   
 Producer: 1--&gt;                                   
 Producer: 2--&gt;                                   
@@ -328,13 +337,14 @@ Consumer:--&gt;6
 Consumer:--&gt;7
 Consumer:--&gt;8
 Consumer:--&gt;9
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -351,7 +361,7 @@ Consumer:--&gt;9
 
 
         </div>
-        <p class="byline"><strong>线程同步之条件量</strong> was published on <time datetime="2013-11-12T02:44:50Z">November 12, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>线程同步之条件量</strong> was published on <time datetime="2013-11-12T02:44:50Z">November 12, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -359,14 +369,14 @@ Consumer:--&gt;9
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -395,8 +405,8 @@ Consumer:--&gt;9
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

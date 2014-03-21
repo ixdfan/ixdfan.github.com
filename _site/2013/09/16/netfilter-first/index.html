@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="netfilter框架编程学习(一)">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/09/16/netfilter-first/">
+<meta property="og:url" content="http://localhost:4000/2013/09/16/netfilter-first/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/09/16/netfilter-first/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/09/16/netfilter-first/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -115,7 +115,8 @@
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
       <p>内核层的“Hello world”实例：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/*
+
+<pre><code>/*
   hello.c
 */
 
@@ -124,12 +125,12 @@
 #include &lt;linux/init.h&gt;
 
 /*  版权声明        */
-MODULE_LICENSE(&quot;Dual BSD/GPL&quot;);
+MODULE_LICENSE("Dual BSD/GPL");
 
 /*  初始化模块 */
 static int helloworld_init(void)
 {
-        printk(KERN_ALERT &quot;hello world modul init\n&quot;);
+        printk(KERN_ALERT "hello world modul init\n");
         return 0;
 }
 /*  内核模块加载函数    */
@@ -140,18 +141,19 @@ moudule_init(helloworld_init);
 /*  清理模块        */
 static void helloworld_exit(void)
 {
-        printk(KERN_ALERT &quot;hello world modul exit\n&quot;);
+        printk(KERN_ALERT "hello world modul exit\n");
 }
 /*  内核模块卸载函数    */
 moudule_exit(helloworld_exit);
 
 /*作者、软件描述、版本、别名等声明信息*/
-MODULE_AUTHOR(&quot;pangxie009&quot;);
-MODULE_DESCRIPTION(&quot;Hello world &quot;);
-MODULE_VERSION(&quot;0.0.1&quot;);
-MODULE_ALIAS(&quot;Example &quot;);
-</code></pre></div>
-<h1></h1>
+MODULE_AUTHOR("pangxie009");
+MODULE_DESCRIPTION("Hello world ");
+MODULE_VERSION("0.0.1");
+MODULE_ALIAS("Example ");
+</code></pre>
+
+<hr />
 
 <p>可能看不到输出，可以使用dmesg命令得到内核中打印的信息</p>
 
@@ -159,39 +161,47 @@ MODULE_ALIAS(&quot;Example &quot;);
 
 <p>已经加载的内核模块信息以及模块间的以来关系可以通过命令lsmod获得</p>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">static int helloworld_init(void)
+<hr />
+
+<pre><code>static int helloworld_init(void)
 {
-        printk(KERN_ALERT &quot;hello world modul init\n&quot;);
+        printk(KERN_ALERT "hello world modul init\n");
         return 0;
 }
 moudule_init(helloworld_init);
-</code></pre></div>
-<hr>
+</code></pre>
+
+<hr />
 
 <p>也可以直接使用init_module函数来写</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int init_module()
+
+<pre><code>int init_module()
 {
-  printk(KERN_ALERT &quot;hello world modul init\n&quot;);
+  printk(KERN_ALERT "hello world modul init\n");
   return 0;
 }
-</code></pre></div>
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">static void helloworld_exit(void)
+</code></pre>
+
+<hr />
+
+<pre><code>static void helloworld_exit(void)
 {
-  printk(KERN_ALERT &quot;hello world modul exit\n&quot;);
+  printk(KERN_ALERT "hello world modul exit\n");
 }
 moudule_exit(helloworld_exit);
-</code></pre></div>
-<hr>
+</code></pre>
+
+<hr />
 
 <p>也可以直接使用clean_module函数来写</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void cleanup_module()
+
+<pre><code>void cleanup_module()
 {
-  printk(KERN_ALERT &quot;hello world modul exit\n&quot;);
+  printk(KERN_ALERT "hello world modul exit\n");
 }
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p><strong>编译内核的Makefile有如下特殊的地方</strong>：
 1. 指定内核模块的编译文件和头文件的路径,因为头文件不是/usr/include/linux/下
@@ -199,10 +209,11 @@ moudule_exit(helloworld_exit);
 2. 制定编译模块的名称
 3. 给出当前模块的路径</p>
 
-<h1></h1>
+<hr />
 
 <p>Makefile文件：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">target = hello
+
+<pre><code>target = hello
 obj-m += $(target).o
 KERNELDIR = /lib/modules/`uname -r`/build
 main:
@@ -214,8 +225,9 @@ install:
         /sbin/insmod $(target).ko
 remove:
         /sbin/rmmod $(target)
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>obj-m制定编译模块的名称，在编译时候自动查找hello.c文件
 ,将其编译位hello.o,生成hello.ko.</p>
@@ -234,22 +246,22 @@ M=选项要求在建立内核模块前，回到指定的路径。一般使用pwd
 
 <p>在X-window下有可能看不到输出结果，可以使用dmesg命令与grep相结合的方式查看结果</p>
 
-<h1></h1>
+<hr />
 
 <p>netfilter的五个HOOK点的位置：</p>
 
-<p>NF<em>IP</em>PRE_ROUTING：刚刚进入网络层的数据包通过此点(刚刚进行完版本号，校验
+<p>NF_IP_PRE_ROUTING：刚刚进入网络层的数据包通过此点(刚刚进行完版本号，校验
 和等检测),目的地址转换在此点进行</p>
 
-<p>NF<em>IP</em>LOCAL_IN：经路由查找后，送往本机的通过此检查点，INPUT包过滤在此点进行；</p>
+<p>NF_IP_LOCAL_IN：经路由查找后，送往本机的通过此检查点，INPUT包过滤在此点进行；</p>
 
-<p>NF<em>IP</em>FORWARD：要转发的包通过此检测点，FORWARD包过滤在此点进行；</p>
+<p>NF_IP_FORWARD：要转发的包通过此检测点，FORWARD包过滤在此点进行；</p>
 
-<p>NF<em>IP</em>POST_ROUTING：所有马上便要通过网络设备出去的包通过此检测点，内置的源地址转换功能（包括地址伪装）在此点进行；</p>
+<p>NF_IP_POST_ROUTING：所有马上便要通过网络设备出去的包通过此检测点，内置的源地址转换功能（包括地址伪装）在此点进行；</p>
 
-<p>NF<em>IP</em>LOCAL_OUT：本机进程发出的包通过此检测点，OUTPUT包过滤在此点进行。</p>
+<p>NF_IP_LOCAL_OUT：本机进程发出的包通过此检测点，OUTPUT包过滤在此点进行。</p>
 
-<h1></h1>
+<hr />
 
 <p>netfilter的钩子函数返回值:</p>
 
@@ -263,8 +275,9 @@ M=选项要求在建立内核模块前，回到指定的路径。一般使用pwd
 
 <p>NF_REPEAT:再调用一次钩子</p>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">struct nf_hook_ops
+<hr />
+
+<pre><code>struct nf_hook_ops
 {
         struct list_head list;  /*钩子链表*/
         nf_hookfn *hook;    /*钩子处理函数*/
@@ -273,7 +286,8 @@ M=选项要求在建立内核模块前，回到指定的路径。一般使用pwd
         unsigned int hooknum;   /*钩子的位置值*/
         int priority;       /*钩子的优先级，默认情况为继承优先级*/
 };
-</code></pre></div>
+</code></pre>
+
 <p>list:结构nf_hook_ops构成一个链表，list是此链表的表头，将各个处理函数组成一张表,
 初始值为{NULL, NULL};</p>
 
@@ -281,44 +295,51 @@ M=选项要求在建立内核模块前，回到指定的路径。一般使用pwd
 
 <p>pf:协议族,表示这个HOOK属于哪个协议族,对IPV4来讲就是AF_INET</p>
 
-<p>hooknum:用户想注册钩子的位置,取值为5个钩子NF<em>IP</em>PRE<em>ROUTING、NF</em>IP<em>LOCAL</em>IN、NF<em>IP</em>FORWARD、NF<em>IP</em>POST<em>ROUTING、NF</em>IP<em>LOCAL</em>OUT.一个挂节点可以挂接多个钩子函数，谁先被调用要看优先级</p>
+<p>hooknum:用户想注册钩子的位置,取值为5个钩子NF_IP_PRE_ROUTING、NF_IP_LOCAL_IN、NF_IP_FORWARD、NF_IP_POST_ROUTING、NF_IP_LOCAL_OUT.一个挂节点可以挂接多个钩子函数，谁先被调用要看优先级</p>
 
 <p>priority:优先级，取值越小优先接越高</p>
 
-<h1></h1>
+<hr />
 
 <p>注册的钩子函数的原型如下：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">typedef unsigned int nf_hookfn(unsigned int hooknum,
+
+<pre><code>typedef unsigned int nf_hookfn(unsigned int hooknum,
                                struct sk_buff *skb,
                                const struct net_device *in,
                                const struct net_device *out,
                                int (*okfn)(struct sk_buff *));
-</code></pre></div>
+</code></pre>
+
 <p>其中okfn函数是当回调函数为空时netfilter调用的处理函数</p>
 
-<h1></h1>
+<hr />
 
 <p>注册钩子函数:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int nf_register_hook(struct nf_hook_ops *reg);
-</code></pre></div>
+
+<pre><code>int nf_register_hook(struct nf_hook_ops *reg);
+</code></pre>
+
 <p>注销钩子函数</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void uf_unregister_hook(struct nf_hook_ops* reg);
-</code></pre></div>
+
+<pre><code>void uf_unregister_hook(struct nf_hook_ops* reg);
+</code></pre>
+
 <p>当<strong>成功注册时候返回为0，失败时候返回一个小于0的数</strong></p>
 
-<h1></h1>
+<hr />
 
-<p>注册回调函数时，要首先书写回调函数，将其挂接到nf<em>hook</em>ops链上，</p>
+<p>注册回调函数时，要首先书写回调函数，将其挂接到nf_hook_ops链上，</p>
 
 <p>如下：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/*  回调函数        */
+
+<pre><code>/*  回调函数        */
 unsigned int hello_hook(unsigned int hooknum, 
             struct sk_buff* skb;
             const struct net_device* in,
             const struct net_device *out,
                         int (*okfn)(struct sk_buff *))
 {
-  printk(KERN_ALERT &quot;hello world\n&quot;);
+  printk(KERN_ALERT "hello world\n");
   return NF_ACCEPT;
 }
 
@@ -340,21 +361,24 @@ void exit(void)
 }
 
 module_exit(exit);
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>netfilter还有一次性注册注销多个钩子的函数</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int nf_register_hooks(struct nf_hook_ops *reg, unsigned int n);
+
+<pre><code>int nf_register_hooks(struct nf_hook_ops *reg, unsigned int n);
 void nf_unregister_hooks(struct nf_hook_ops *reg, unsigned int n);
-</code></pre></div>
+</code></pre>
+
 <p>其中参数reg输入的为一个数组，n为注册钩子的个数</p>
 
-<h1></h1>
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -371,7 +395,7 @@ void nf_unregister_hooks(struct nf_hook_ops *reg, unsigned int n);
 
 
         </div>
-        <p class="byline"><strong>netfilter框架编程学习(一)</strong> was published on <time datetime="2013-09-16T12:41:22Z">September 16, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>netfilter框架编程学习(一)</strong> was published on <time datetime="2013-09-16T12:41:22Z">September 16, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -379,14 +403,14 @@ void nf_unregister_hooks(struct nf_hook_ops *reg, unsigned int n);
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -415,8 +439,8 @@ void nf_unregister_hooks(struct nf_hook_ops *reg, unsigned int n);
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

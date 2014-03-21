@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="stack queue priority_queue">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/11/29/stack-queue-priority_queue/">
+<meta property="og:url" content="http://localhost:4000/2013/11/29/stack-queue-priority_queue/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/11/29/stack-queue-priority_queue/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/11/29/stack-queue-priority_queue/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -118,7 +118,7 @@
 
 <p>stack、queue是以deque的数据结构为基础的，并且修改了符合stack和queue的需要，这种修改了修改了其他组件的接口形成另一种风格的组件一般称为适配器，stack、queue与vector的priority_queue都应该归于适配器，而不是容器。</p>
 
-<h1></h1>
+<hr />
 
 <p>stack是建立在deque的基础上的，对应着数据结构中的栈，是一种先进后出(FILO)的数据结构，除了在stack的最顶端压栈和出栈来操作元素以外，没有任何办法存取stack的元素。</p>
 
@@ -130,14 +130,16 @@
 
 <p>stack是连续性的空间，不过这种连续性也是一种假象。</p>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">empty():堆栈为空则返回真
+<hr />
+
+<pre><code>empty():堆栈为空则返回真
 pop():移除栈顶元素
 push():在栈顶增加元素
 size():返回栈中元素的个数
 top():返回栈顶元素
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <h5>queue是建立在deque数据结构基础之上的，这里的queue对应数据结构中的队列，是一种先进先出(FIFO)的数据结构。</h5>
 
@@ -147,32 +149,35 @@ top():返回栈顶元素
 
 <h5>queue是连续性的空间，不过这种连续性也是一种假象。</h5>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">back():返回最后一个元素
+<hr />
+
+<pre><code>back():返回最后一个元素
 empty():队列为空则返回真
 front():返回第一个元素
 pop():移除栈顶元素
 push():在栈顶增加元素
 size():返回栈中元素的个数
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>vector的priority_queue</p>
 
-<p>priority<em>queue是以vector的数据结构为基础的，并且修改了符合priority</em>queue的需要。</p>
+<p>priority_queue是以vector的数据结构为基础的，并且修改了符合priority_queue的需要。</p>
 
-<p>priority<em>queue(优先队列)是建立在vector数据结构之上的，priority</em>queue是有优先权值的queue，它只允许在容器的两端操作元素，但它并非像queue那样先进先出，他设置了一个优先权，优先权大的先出。</p>
+<p>priority_queue(优先队列)是建立在vector数据结构之上的，priority_queue是有优先权值的queue，它只允许在容器的两端操作元素，但它并非像queue那样先进先出，他设置了一个优先权，优先权大的先出。</p>
 
 <p>比如从容器的一段输入:4、2、8、7</p>
 
 <p>这时候经过优先权从另一端去除的元素顺序是8、7、4、2</p>
 
-<p>除了在priority<em>queue的最顶端和最顶端操作元素外，没有任何办法来存取priority</em>queue中的元素。</p>
+<p>除了在priority_queue的最顶端和最顶端操作元素外，没有任何办法来存取priority_queue中的元素。</p>
 
 <p>priority_queue不允许对容器的遍历操作。所以也没有迭代器。</p>
 
-<p>priority<em>queue的出列顺序是按照less来设定优先权，也就是元素值最大的先出列，如果此时不用默认的less，而是在程序中声明priority</em>queue时采用greater，则priority_queue中最小值的元素先出列</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/*默认情况下的采用less设定优先权*/
+<p>priority_queue的出列顺序是按照less来设定优先权，也就是元素值最大的先出列，如果此时不用默认的less，而是在程序中声明priority_queue时采用greater，则priority_queue中最小值的元素先出列</p>
+
+<pre><code>/*默认情况下的采用less设定优先权*/
 #include iostream
 #include string
 #include queue
@@ -188,7 +193,7 @@ int main()
         ipqueue.push(7);
 
         while(ipqueue.size()){
-                cout &lt;&lt; ipqueue.top() &lt;&lt; &#39;,&#39;;
+                cout &lt;&lt; ipqueue.top() &lt;&lt; ',';
 
                 ipqueue.pop();
         }
@@ -196,9 +201,11 @@ int main()
 }
 
 输出: 8,7,4,2
-</code></pre></div>
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/*设定了greater则不适用默认优先权*/
+</code></pre>
+
+<hr />
+
+<pre><code>/*设定了greater则不适用默认优先权*/
 #include iostream
 #include string
 #include queue
@@ -214,7 +221,7 @@ int main()
         ipqueue.push(7);
 
         while(ipqueue.size()){
-                cout &lt;&lt; ipqueue.top() &lt;&lt; &#39;,&#39;;
+                cout &lt;&lt; ipqueue.top() &lt;&lt; ',';
 
                 ipqueue.pop();
         }
@@ -222,28 +229,31 @@ int main()
 }
 
 输出: 4,2,7,8
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <h5>注意：</h5>
 
 <p>priority_queue的头文件也是queue</p>
 
-<p>priority<em>queue与queue的数据结构不一样，priority</em>queue是建立在vector数据结构基础上的，所以是真正的连续空间！</p>
+<p>priority_queue与queue的数据结构不一样，priority_queue是建立在vector数据结构基础上的，所以是真正的连续空间！</p>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">empty():优先队列为空则返回真
+<hr />
+
+<pre><code>empty():优先队列为空则返回真
 pop():删除第一个元素
 push():加入一个元素
 size():返回优先队列中元素的个数
 top():返回优先队列中有最高优先级的元素
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -260,7 +270,7 @@ top():返回优先队列中有最高优先级的元素
 
 
         </div>
-        <p class="byline"><strong>stack queue priority_queue</strong> was published on <time datetime="2013-11-29T12:53:01Z">November 29, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>stack queue priority_queue</strong> was published on <time datetime="2013-11-29T12:53:01Z">November 29, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -268,14 +278,14 @@ top():返回优先队列中有最高优先级的元素
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -304,8 +314,8 @@ top():返回优先队列中有最高优先级的元素
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

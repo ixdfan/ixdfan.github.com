@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="TOP命令的使用">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/10/11/top-command/">
+<meta property="og:url" content="http://localhost:4000/2013/10/11/top-command/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/10/11/top-command/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/10/11/top-command/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -119,7 +119,8 @@
 <p>使用方式：top [-] [d delay] [q] [c] [S] [s] [n]</p>
 
 <h1>proce说明：即时显示ss 的动态</h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">top - 23:45:47 up  1:46,  7 users,  load average: 0.00, 0.00, 0.00
+
+<pre><code>top - 23:45:47 up  1:46,  7 users,  load average: 0.00, 0.00, 0.00
 Tasks: 135 total,   1 running, 134 sleeping,   0 stopped,   0 zombie
 Cpu(s):  0.7%us,  0.0%sy,  0.0%ni, 99.0%id,  0.0%wa,  0.0%hi,  0.3%si,  0.0%st
 Mem:   1030684k total,   533368k used,   497316k free,    84548k buffers
@@ -131,8 +132,9 @@ Swap:  2097144k total,        0k used,  2097144k free,   279276k cached
  3123 root      20   0  194m  18m  14m S  0.3  1.9   0:17.97 knotify4
  4285 root      20   0  2704 1140  884 R  0.3  0.1   0:00.17 top
     1    root      20   0  2900 1444 1224 S  0.0  0.1   0:01.91 init
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>d : 改变显示的更新速度，或是在交谈式指令列按 s</p>
 
@@ -148,16 +150,17 @@ Swap:  2097144k total,        0k used,  2097144k free,   279276k cached
 
 <p>b : 批次档模式，搭配 “n” 参数一起使用，可以用来将 top 的结果输出到档案内</p>
 
-<h1></h1>
+<hr />
 
 <p>显示更新十次后退出:top -n 10</p>
 
 <p>使用者将不能利用交谈式指令来对行程下命令:top -s</p>
 
-<h1>将更新显示二次的结果输入到名称为 top.log 的档案里:top -n 2 -b &gt; top.log</h1>
+<h1>将更新显示二次的结果输入到名称为 top.log 的档案里:top -n 2 -b > top.log</h1>
 
 <p>对下面top进行说明：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">top - 10:38:10 up 4 days, 17:37, 1 user, load average: 0.23, 0.14, 0.10
+
+<pre><code>top - 10:38:10 up 4 days, 17:37, 1 user, load average: 0.23, 0.14, 0.10
 Tasks: 429 total, 1 running, 428 sleeping, 0 stopped, 0 zombie
 Cpu(s): 0.0%us, 0.1%sy, 0.0%ni, 99.8%id, 0.0%wa, 0.0%hi, 0.0%si, 0.0%st
 Mem: 20605080k total, 2020484k used, 18584596k free, 324324k buffers
@@ -170,8 +173,9 @@ PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
 3123 root      20   0  194m  18m  14m S  0.3  1.9   0:17.97 knotify4
 4285 root      20   0  2704 1140  884 R  0.3  0.1   0:00.17 top
    1    root      20   0  2900 1444 1224 S  0.0  0.1   0:01.91 init
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>第一行：</p>
 
@@ -183,12 +187,12 @@ PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
 
 <p>load average: 0.23, 0.14, 0.10— load average后面的三个数分别是1分钟、5分钟、15分钟的负载情况。</p>
 
-<h1></h1>
+<hr />
 
 <p>第二行：
 Tasks — 任务（进程），系统现在共有429个进程，其中处于运行中的有1个，428个在休眠（sleep），stoped状态的有0个，zombie状态（僵尸）的有0个。</p>
 
-<h1></h1>
+<hr />
 
 <p>第三行：cpu状态</p>
 
@@ -206,7 +210,7 @@ Tasks — 任务（进程），系统现在共有429个进程，其中处于运�
 
 <p>0.0% si — 软中断（Software Interrupts）占用CPU的百分比</p>
 
-<h1></h1>
+<hr />
 
 <p>第四行：内存状态</p>
 
@@ -228,7 +232,7 @@ Tasks — 任务（进程），系统现在共有429个进程，其中处于运�
 
 <p>546292k cached — 缓冲的交换区总量（500MB）</p>
 
-<h1></h1>
+<hr />
 
 <p>第七行以下：各进程（任务）的状态监控</p>
 
@@ -256,7 +260,7 @@ Tasks — 任务（进程），系统现在共有429个进程，其中处于运�
 
 <p>COMMAND — 进程名称（命令名/命令行）</p>
 
-<h1></h1>
+<hr />
 
 <h5>特殊用法</h5>
 
@@ -267,16 +271,16 @@ Tasks — 任务（进程），系统现在共有429个进程，其中处于运�
 
 <p>3、使用h 看更多使用技巧</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>H选项用来显示线程</strong></p>
 
-<p>** top -p pid 查看指定的进程(线程)**</p>
+<p><strong> top -p pid 查看指定的进程(线程)</strong></p>
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -293,7 +297,7 @@ Tasks — 任务（进程），系统现在共有429个进程，其中处于运�
 
 
         </div>
-        <p class="byline"><strong>TOP命令的使用</strong> was published on <time datetime="2013-10-11T16:02:33Z">October 11, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>TOP命令的使用</strong> was published on <time datetime="2013-10-11T16:02:33Z">October 11, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -301,14 +305,14 @@ Tasks — 任务（进程），系统现在共有429个进程，其中处于运�
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -337,8 +341,8 @@ Tasks — 任务（进程），系统现在共有429个进程，其中处于运�
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

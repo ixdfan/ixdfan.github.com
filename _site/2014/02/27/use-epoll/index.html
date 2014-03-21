@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="epoll编程实例">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2014/02/27/use-epoll/">
+<meta property="og:url" content="http://localhost:4000/2014/02/27/use-epoll/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2014/02/27/use-epoll/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2014/02/27/use-epoll/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -114,19 +114,19 @@
       <h1>epoll编程实例</h1>
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <div class="highlight"><pre><code class="text language-text" data-lang="text">#include &quot;sys/types.h&quot;
-#include &quot;sys/socket.h&quot;
-#include &quot;netinet/in.h&quot;
-#include &quot;assert.h&quot;
-#include &quot;sys/epoll.h&quot;
-#include &quot;arpa/inet.h&quot;
-#include &quot;fcntl.h&quot;
-#include &quot;unistd.h&quot;
-#include &quot;stdio.h&quot;
-#include &quot;errno.h&quot;
-#include &quot;string.h&quot;
-#include &quot;stdlib.h&quot;
-#include &quot;pthread.h&quot;
+      <pre><code>#include "sys/types.h"
+#include "sys/socket.h"
+#include "netinet/in.h"
+#include "assert.h"
+#include "sys/epoll.h"
+#include "arpa/inet.h"
+#include "fcntl.h"
+#include "unistd.h"
+#include "stdio.h"
+#include "errno.h"
+#include "string.h"
+#include "stdlib.h"
+#include "pthread.h"
 
 #define MAX_EVENT_NUMBER    1024
 #define BUFFER_SIZE         10
@@ -167,17 +167,17 @@ void lt(epoll_event* events, int number, int epollfd, int listenfd)
 
         } else if (events[i].events &amp; EPOLLIN) {
             /*只要socket中还有数据没有读取这段代码就触发*/
-            printf(&quot;event trigger once\n&quot;);     
+            printf("event trigger once\n");     
             memset(buf, 0, BUFFER_SIZE);
             int ret = recv(sockfd, buf, BUFFER_SIZE - 1 , 0);
             if ( ret &lt;= 0) {
                 close(sockfd);
                 continue;
             }
-            printf(&quot;get %d bytes of content: %s\n&quot;, ret, buf);
+            printf("get %d bytes of content: %s\n", ret, buf);
 
         } else {
-            printf(&quot;something else happened\n&quot;);    
+            printf("something else happened\n");    
 
         }
     }
@@ -197,7 +197,7 @@ void et (struct epoll_event* events, int number, int epollfd, int listenfd)
                         addfd(epollfd, connfd, false);
 
                 } else if (events[i].events &amp; EPOLLIN) {
-            printf(&quot;event trigger once\n&quot;);
+            printf("event trigger once\n");
 
             while (1) {
             memset(buf, 0, BUFFER_SIZE);
@@ -205,7 +205,7 @@ void et (struct epoll_event* events, int number, int epollfd, int listenfd)
                         if ( ret &lt; 0) {
                         /*errno为EAGAIN才表示读取完毕*/
                 if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
-                    printf(&quot;read later\n&quot;);
+                    printf("read later\n");
                     break;
                 }
                 close(sockfd);
@@ -215,13 +215,13 @@ void et (struct epoll_event* events, int number, int epollfd, int listenfd)
                 close(sockfd);
 
             } else {
-                printf(&quot;get %d bytes of content: %s\n&quot;, ret, buf);  
+                printf("get %d bytes of content: %s\n", ret, buf);  
             }
 
             }
 
         } else {
-            printf(&quot;something else happened \n&quot;);       
+            printf("something else happened \n");       
         }
     }
 }
@@ -230,7 +230,7 @@ int main(int argc, char** argv)
 {
 
     if (argc &lt;= 2) {     
-        printf(&quot;usage: %s ip_address port_number\n&quot;, basename(argv[0]));    
+        printf("usage: %s ip_address port_number\n", basename(argv[0]));    
         return 1;     
     }    
     const char* ip = argv[1];     
@@ -246,7 +246,7 @@ int main(int argc, char** argv)
     /*  地址重用    */
     int on = 1;
     if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on)) == -1) {
-       perror(&quot;setsockopt error&quot;);
+       perror("setsockopt error");
     }
 
     ret = bind(listenfd, (struct sockaddr*)&amp;address, sizeof(address));
@@ -264,7 +264,7 @@ int main(int argc, char** argv)
     while(1) {
     int ret = epoll_wait(epollfd, events, MAX_EVENT_NUMBER, -1);
     if (ret &lt; 0) {
-        printf(&quot;epoll failure&quot;);
+        printf("epoll failure");
         break;
     }
 //  et(events, ret, epollfd, listenfd);    /*et模式的处理方式*/
@@ -275,15 +275,16 @@ int main(int argc, char** argv)
 
     return 0;
 }
-</code></pre></div>
-<p>总的来说不难，主要的工作流程同select类似:<br>
-1. 建立socket<br>
-2. bind绑定地址<br>
-3. listen监听<br>
-4. epoll<em>create建立epoll<br>
-5. epoll</em>ctl将监听的sockfd加入epoll<br>
+</code></pre>
+
+<p>总的来说不难，主要的工作流程同select类似:<br/>
+1. 建立socket<br/>
+2. bind绑定地址<br/>
+3. listen监听<br/>
+4. epoll_create建立epoll<br/>
+5. epoll_ctl将监听的sockfd加入epoll<br/>
 6. epoll_wait等待
-* 当发生事件的是sockfd时候，表示有连接上来了，将连接上的描述符加入epoll中<br>
+* 当发生事件的是sockfd时候，表示有连接上来了，将连接上的描述符加入epoll中<br/>
 * 如果发生事件的不是sockfd时候，表示是客户端发送了数据，读取数据即可</p>
 
 <h4>需要注意的是:</h4>
@@ -293,12 +294,13 @@ int main(int argc, char** argv)
 <li>对于LT模式只要正常读取即可，因为假如有数据没有读取完毕，那么epoll_wait会一直通知你让你去读</li>
 </ul>
 
+
 <p>errno参考文章<a href="http://ucshell.com/archives/1339">《errno中EAGAIN的含义》</a></p>
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -315,7 +317,7 @@ int main(int argc, char** argv)
 
 
         </div>
-        <p class="byline"><strong>epoll编程实例</strong> was published on <time datetime="2014-02-27T14:41:16Z">February 27, 2014</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>epoll编程实例</strong> was published on <time datetime="2014-02-27T14:41:16Z">February 27, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -323,14 +325,14 @@ int main(int argc, char** argv)
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -359,8 +361,8 @@ int main(int argc, char** argv)
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程(一):基础">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/11/08/pthread-base/">
+<meta property="og:url" content="http://localhost:4000/2013/11/08/pthread-base/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/11/08/pthread-base/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/11/08/pthread-base/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -114,14 +114,14 @@
       <h1>线程(一):基础</h1>
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <h1></h1>
+      <hr />
 
 <p>线程的概念：
 一个进程中每一个线程都有自己的运行环境上下文，包括线程ID、一组寄存器的值、堆、栈、信号屏蔽字等。</p>
 
 <p><strong>进程间所有的资源都被线程所共享，包括可执行的程序代码、全局变量、堆、栈、文件描述符。</strong></p>
 
-<p>** 线程之间的堆栈式独立的！**</p>
+<p><strong> 线程之间的堆栈式独立的！</strong></p>
 
 <h5>注意：</h5>
 
@@ -130,9 +130,10 @@
 <li>进程是系统资源分配的最小单位，线程是系统进程调度的单位。</li>
 </ul>
 
+
 <p>Linux中的线程是一个轻量级的进程</p>
 
-<h1></h1>
+<hr />
 
 <h5>线程的优势：</h5>
 
@@ -145,11 +146,14 @@
 浏览器就是采用这种方式，一个线程处理用户输入(鼠标或键盘)，一个线程负责显示请求站点发回的数据，剩下的线程分别就收不同的数据包。</li>
 </ol>
 
-<h1></h1>
+
+<hr />
 
 <p>线程标识符的类型为pthread_t</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">pthread_t pthread_self(void);
-</code></pre></div>
+
+<pre><code>pthread_t pthread_self(void);
+</code></pre>
+
 <p>使用pthread_self来查看线程ID</p>
 
 <h5>注意：</h5>
@@ -157,43 +161,50 @@
 <p><strong>pthread_t的类型为unsigned long int，所以在打印的时候要使用%lu方式，否则将产生奇怪的结果。</strong></p>
 
 <p>比较两个线程ID是否相等</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_equal(pthread_t t1, pthread_t t2);
-</code></pre></div>
+
+<pre><code>int pthread_equal(pthread_t t1, pthread_t t2);
+</code></pre>
+
 <p>如果相等则返回0，不相等则返回非0值</p>
 
 <p>实例：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">    pthread_t pid;
+
+<pre><code>    pthread_t pid;
     tid = pthread_self;
     if(0 == pthread_equal(save_tid, tid))
         ……
     else
         ……
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>线程的创建：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_create(pthread_t *thread, const pthread_attr_t *attr,void *(*start_routine) (void *), void *arg);
-</code></pre></div>
+
+<pre><code>int pthread_create(pthread_t *thread, const pthread_attr_t *attr,void *(*start_routine) (void *), void *arg);
+</code></pre>
+
 <h5>注意:</h5>
 
-<p>start_routine函数的类型必须是void* ()(void*)类型的函数</p>
+<p>start_routine函数的类型必须是void<em> ()(void</em>)类型的函数</p>
 
 <h5>注意：</h5>
 
 <p><strong>如果pthread_create函数(所有线程系列函数)创建成功则返回0，但是如果线程失败，返回的是错误编号，而不是像Linux其他函数一样返回-1并设置errno。
 这种规律适合于线程中所有函数。</strong></p>
 
-<h1></h1>
+<hr />
 
 <p>实例：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void* thfun(void* arg)
+
+<pre><code>void* thfun(void* arg)
 {
         pid_t pid;
         pthread_t tid;
 
         pid = getpid();
         tid = pthread_self();
-        printf(&quot;the new pthread pid is : %u,tid is %u\n&quot;,
+        printf("the new pthread pid is : %u,tid is %u\n",
                 (unsigned int)pid, (unsigned int)tid);
         return NULL;
 }
@@ -208,17 +219,19 @@ int main()
         err = pthread_create(&amp;tid, NULL, thfun, NULL);
 
         if(err){
-                printf(&quot;can&#39;t create thread %s\n&quot;, strerror(err));
+                printf("can't create thread %s\n", strerror(err));
                 exit(1);
         }
         sleep(1);
-        printf(&quot;the main pthread : pid id :%u, tid is %u\n&quot;,
+        printf("the main pthread : pid id :%u, tid is %u\n",
                         (unsigned int)pid, (unsigned int)mtid);
         return 0;
 }
-</code></pre></div>
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/*
+</code></pre>
+
+<hr />
+
+<pre><code>/*
     向线程函数传递多个参数；
     多线程共享文件句柄
 */
@@ -235,9 +248,9 @@ void* thfn(void* arg)
         (*p-&gt;heap)++;
         (*p-&gt;stack)++;
 
-        fprintf(fp, &quot;new thread heap : %d stack : %d\n&quot;,
+        fprintf(fp, "new thread heap : %d stack : %d\n",
                 *(p-&gt;heap)), *(p-&gt;stack);
-        printf(&quot;the new thread done\n&quot;);
+        printf("the new thread done\n");
         return NULL;
 }
 
@@ -251,7 +264,7 @@ int main()
 
         heap = (int*)malloc(sizeof(int));
         if(NULL == heap){
-                perror(&quot;fail to malloc&quot;);
+                perror("fail to malloc");
                 exit(1);
         }
 
@@ -262,14 +275,14 @@ int main()
         arg.stack = &amp;stack;
 
     /*此为wb，原因就是多进程共享文件句柄*/
-        if((fp = fopen(&quot;test.txt&quot;, &quot;wb&quot;)) == NULL){
-                perror(&quot;fail to open&quot;);
+        if((fp = fopen("test.txt", "wb")) == NULL){
+                perror("fail to open");
                 exit(1);
         }
 
         err = pthread_create(&amp;tid, NULL, thfn, &amp;arg);
         if(0 != err){
-                printf(&quot;can&#39;t create thread %s\n&quot;, strerror(err));
+                printf("can't create thread %s\n", strerror(err));
                 exit(1);
         }
 
@@ -277,9 +290,9 @@ int main()
         (*heap)++;
         stack++;
 
-        fprintf(fp, &quot;main thread: heap : %d stack : %d\n&quot;,
+        fprintf(fp, "main thread: heap : %d stack : %d\n",
                                         *(arg.heap), *(arg.stack));
-        printf(&quot;the main thread done\n&quot;);
+        printf("the main thread done\n");
 
         fclose(fp);
         free(heap);
@@ -293,8 +306,9 @@ int main()
 cat test.txt
 new thread heap : 3 stack : 4
 main thread: heap : 4 stack : 5
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>从结果看以知道，文件中有线程输入的内容，所以新线程和进程(主线程)公用文件描述符、文件对象和数据段；</p>
 
@@ -306,21 +320,22 @@ main thread: heap : 4 stack : 5
 <li>进程中的地址空间对于任意一个线程来讲都是开放的！</li>
 </ul>
 
-<h1></h1>
 
-<p>** 现在也可以解释为什么线程系列处理函数不设置errno变量，而是采用返回错误号的原因了。
-**</p>
+<hr />
 
-<p>** 由于线程可以随意访问进程的环境变量，所以当多个线程出错时候，errno变量的值将被多次覆盖，进程检查到的只是最后一个线程出错的原因 **</p>
+<p><strong> 现在也可以解释为什么线程系列处理函数不设置errno变量，而是采用返回错误号的原因了。
+</strong></p>
 
-<p>** 归根结底，还是由于线程出错和检查errno变量两个操作不是原子操作，因此线程系列处理函数只返回错误号，不会设置errno **</p>
+<p><strong> 由于线程可以随意访问进程的环境变量，所以当多个线程出错时候，errno变量的值将被多次覆盖，进程检查到的只是最后一个线程出错的原因 </strong></p>
 
-<h1></h1>
+<p><strong> 归根结底，还是由于线程出错和检查errno变量两个操作不是原子操作，因此线程系列处理函数只返回错误号，不会设置errno </strong></p>
+
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -337,7 +352,7 @@ main thread: heap : 4 stack : 5
 
 
         </div>
-        <p class="byline"><strong>线程(一):基础</strong> was published on <time datetime="2013-11-08T04:48:45Z">November 08, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>线程(一):基础</strong> was published on <time datetime="2013-11-08T04:48:45Z">November 08, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -345,14 +360,14 @@ main thread: heap : 4 stack : 5
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -381,8 +396,8 @@ main thread: heap : 4 stack : 5
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

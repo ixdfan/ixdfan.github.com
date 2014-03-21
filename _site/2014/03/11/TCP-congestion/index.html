@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="TCP的拥塞控制">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2014/03/11/TCP-congestion/">
+<meta property="og:url" content="http://localhost:4000/2014/03/11/TCP-congestion/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2014/03/11/TCP-congestion/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2014/03/11/TCP-congestion/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -123,6 +123,7 @@
 <li>快速恢复</li>
 </ol>
 
+
 <p>发送方维持一个叫做拥塞窗口cwnd的状态变量，拥塞窗口的大小取决于网络的拥塞程度，并且动态变化，发送方让自己的发送窗口为min(cwnd,rwnd);</p>
 
 <h6>发送方控制拥塞窗口的原则是:</h6>
@@ -145,11 +146,11 @@
 
 <h6>使用慢开始算法后，每经过一个传输轮次，拥塞窗口cwnd就加倍;</h6>
 
-<p><img src="/uploads/2014/03/001.gif" alt="001"></p>
+<p><img src="/uploads/2014/03/001.gif" alt="001" /></p>
 
 <h5>轮次传输:</h5>
 
-<p>一个轮次所经历的时间其实就是往返时间RTT，不过&quot;传输轮次&quot;中:把拥塞窗口cwnd所允许发送的报文段都连续发送出去，并收到了对已发送的最后一个字节的确认。</p>
+<p>一个轮次所经历的时间其实就是往返时间RTT，不过"传输轮次"中:把拥塞窗口cwnd所允许发送的报文段都连续发送出去，并收到了对已发送的最后一个字节的确认。</p>
 
 <p>例如:</p>
 
@@ -161,9 +162,10 @@
 
 <ul>
 <li>当cwnd &lt; ssthresh时，使用慢开始算法;</li>
-<li>当cwnd &gt; ssthresh时，停止使用慢开始算法改用拥塞避免算法;</li>
+<li>当cwnd > ssthresh时，停止使用慢开始算法改用拥塞避免算法;</li>
 <li>当cwnd &lt; ssthresh时，既可以使用慢开始算法，也可以使用拥塞避免算法</li>
 </ul>
+
 
 <h4>拥塞避免算法:</h4>
 
@@ -182,16 +184,18 @@
 <ol>
 <li>TCP连接初始化，设置拥塞窗口初始，不能大于两个报文段，一般为cwnd=1MSS，设置慢启动门限初值(cwnd为拥塞窗口);</li>
 <li>TCP开始发送过程，发送窗口swnd按照swnd = min(cwnd, rwnd)来计算，一般通告窗口rwnd足够大，所以实际上swnd=cwnd;</li>
-<li>每次传输都调节一次拥塞窗口，从而调节了发送窗口的大小。cwnd从初值1开始，每收到一个对新报文段的确认ACK，则cwnd = cwnd + 1.这样第一次传输完，受到1个ACK，cwnd增加到2;第二次传输完，受到2个ACK，cwnd增加到4(2+1+1);因此cwnd按照指数规律增长，也就是说每传输1次，cwnd加倍，直到cwnd&gt;ssthresh(ssthresh为慢启动门限)，进入拥塞避免;</li>
+<li>每次传输都调节一次拥塞窗口，从而调节了发送窗口的大小。cwnd从初值1开始，每收到一个对新报文段的确认ACK，则cwnd = cwnd + 1.这样第一次传输完，受到1个ACK，cwnd增加到2;第二次传输完，受到2个ACK，cwnd增加到4(2+1+1);因此cwnd按照指数规律增长，也就是说每传输1次，cwnd加倍，直到cwnd>ssthresh(ssthresh为慢启动门限)，进入拥塞避免;</li>
 <li>当在某时刻发生了拥塞，则设置ssthresh = max(swnd/2, 2),也就是说ssthresh降到拥塞发生时swnd的一半，但是不能小于2,并设置cwnd为1,重新开始慢启动过程。</li>
 </ol>
+
 
 <h5>注意:</h5>
 
 <ul>
-<li>&quot;慢启动&quot;指每出现一次超时，拥塞窗口降低到1,使报文慢慢注入网络;</li>
-<li>&quot;拥塞避免&quot;指超过门限窗口后指数增长率降为线性增长率;</li>
+<li>"慢启动"指每出现一次超时，拥塞窗口降低到1,使报文慢慢注入网络;</li>
+<li>"拥塞避免"指超过门限窗口后指数增长率降为线性增长率;</li>
 </ul>
+
 
 <h6>慢的含义:</h6>
 
@@ -201,7 +205,7 @@
 
 <h5>慢开始与拥塞控制的完整过程</h5>
 
-<p><img src="/uploads/2014/03/002.jpg" alt="002"></p>
+<p><img src="/uploads/2014/03/002.jpg" alt="002" /></p>
 
 <p>0.TCP连接进行初始化时候，将拥塞窗口设置为1,，图中的窗口单位不使用字节而使用报文段。慢开始门限的初始值设置为16个<strong>报文段</strong>，ssthresh = 16；</p>
 
@@ -223,7 +227,7 @@
 
 <h4>特别注意:</h4>
 
-<p>如果在慢开始阶段(指数增长阶段)，如果2 * cwnd &gt; ssthresh,则下一个RTT的cwnd应该等于ssthresh，而不是2*cwnd，也就是说cwnd不能越过ssthresh值，例如图中第16个轮次cwnd=8，ssthresh=12，第17轮次时，cwnd=12，而不是16</p>
+<p>如果在慢开始阶段(指数增长阶段)，如果2 * cwnd > ssthresh,则下一个RTT的cwnd应该等于ssthresh，而不是2*cwnd，也就是说cwnd不能越过ssthresh值，例如图中第16个轮次cwnd=8，ssthresh=12，第17轮次时，cwnd=12，而不是16</p>
 
 <h5>乘法减小:</h5>
 
@@ -246,7 +250,7 @@
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -263,7 +267,7 @@
 
 
         </div>
-        <p class="byline"><strong>TCP的拥塞控制</strong> was published on <time datetime="2014-03-11T00:00:00+00:00">March 11, 2014</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>TCP的拥塞控制</strong> was published on <time datetime="2014-03-11T00:00:00+00:00">March 11, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -271,14 +275,14 @@
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -307,8 +311,8 @@
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="STL::map">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/17/stl-map/">
+<meta property="og:url" content="http://localhost:4000/2013/12/17/stl-map/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/17/stl-map/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/17/stl-map/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -128,10 +128,12 @@
 <li><strong>map采用的是非线性链表结构——树，所以他的迭代器不会向vector容器的迭代器那样因为重新分配存储空间而失效。</strong></li>
 </ul>
 
+
 <p>map的键和值以pair的形式出现</p>
 
 <p>pair和make_pair 的源代码</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">template 
+
+<pre><code>template 
 struct pair
 {   // store a pair of values
 typedef pair&lt;_Ty1, _Ty2&gt; _Myt;
@@ -176,200 +178,245 @@ private:
     ……
     map(): _M_t() { }
     ……
-</code></pre></div>
-<p>可以看到<strong>map中用到了红黑树<em>Rep</em>typ</strong>e，由此可见，map确实是建立在红黑树基础上的</p>
+</code></pre>
 
-<h1></h1>
+<p>可以看到<strong>map中用到了红黑树_Rep_typ</strong>e，由此可见，map确实是建立在红黑树基础上的</p>
+
+<hr />
 
 <h5>begin</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator begin();
+
+<pre><code>iterator begin();
 const_iterator begin() const;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回一个指向map容器中其实元素的迭代器</p>
 
-<h1></h1>
+<hr />
 
 <h5>clear</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void clear();
-</code></pre></div>
+
+<pre><code>void clear();
+</code></pre>
+
 <p>作用:</p>
 
 <p>删除map中所有元素</p>
 
-<h1></h1>
+<hr />
 
 <h5>count</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type count(const Key&amp; Key) const;
-</code></pre></div>
+
+<pre><code>size_type count(const Key&amp; Key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器中元素键值为Key的元素的个数</p>
 
-<h1></h1>
+<hr />
 
 <h5>empty</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">bool empty() const;
-</code></pre></div>
+
+<pre><code>bool empty() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>如果map容器中没有容纳任何元素，则empty返回true</p>
 
-<h1></h1>
+<hr />
 
 <h5>end</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator end() const;
+
+<pre><code>iterator end() const;
 iterator end() const;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回指向map容器中末尾元素的迭代器，例如[a, b)中指向b</p>
 
-<h1></h1>
+<hr />
 
 <h5>erase</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator erase(iterator it);
+
+<pre><code>iterator erase(iterator it);
 iterator erase(iterator first, iterator last);
 size_type erase(const Key&amp; key);
-</code></pre></div>
+</code></pre>
+
 <p>作用:
 * 删除map容器中it位置的元素；
 * 删除在first与last之间的元素；
 * 删除那些值为key的所有元素；</p>
 
-<h1></h1>
+<hr />
 
 <h5>find</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_iterator find(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>const_iterator find(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器中一个指向找到元素的迭代器，如果没找到则返回map尾部的迭代器。</p>
 
-<h1></h1>
+<hr />
 
 <h5>get_allocator</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">allocator_type get_allocator() const;
-</code></pre></div>
+
+<pre><code>allocator_type get_allocator() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器的内存分配器</p>
 
-<h1></h1>
+<hr />
 
 <h5>insert</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">pair&lt;iterator, bool&gt; insert(const value_type&amp; x);
+
+<pre><code>pair&lt;iterator, bool&gt; insert(const value_type&amp; x);
 iterator insert(iterator it, const value_type&amp; x);
 void insert(const value_type* first, const value_type* last);
-</code></pre></div>
+</code></pre>
+
 <p>作用:
 * 在迭代器中插入值为x的元素；
 * 在迭代器it指定的位置前插入值为x的元素；
 * 在容器中插入区间[first, last)中所有的元素；</p>
 
-<h1></h1>
+<hr />
 
 <h5>max_size</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type max_size() const;
-</code></pre></div>
+
+<pre><code>size_type max_size() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器所能容纳的元素数量的最大值</p>
 
-<h1></h1>
+<hr />
 
 <h5>rbegin</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_reverse_iterator rbegin() cosnt;
-</code></pre></div>
+
+<pre><code>const_reverse_iterator rbegin() cosnt;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回指向map末尾的反向迭代器</p>
 
-<h1></h1>
+<hr />
 
 <h5>rend</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">reverse_iterator rend();
+
+<pre><code>reverse_iterator rend();
 const_reverse_iterator rend() cosnt;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回指向map起始位置的反向迭代器</p>
 
-<h1></h1>
+<hr />
 
 <h5>size</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type size() const;
-</code></pre></div>
+
+<pre><code>size_type size() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器所容纳元素的数目</p>
 
-<h1></h1>
+<hr />
 
 <h5>swap</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void swap(map&amp; str);
-</code></pre></div>
+
+<pre><code>void swap(map&amp; str);
+</code></pre>
+
 <p>作用:</p>
 
 <p>交换当前map容器与str容器中的元素，str是一个map容器</p>
 
-<h1></h1>
+<hr />
 
 <h5>lower_bound</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_iterator lower_bound(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>const_iterator lower_bound(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器中小于或等于key的第一个元素的迭代器.</p>
 
-<h1></h1>
+<hr />
 
 <h5>upper_bound</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_iterator upper_bound(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>const_iterator upper_bound(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器中大于key的第一个元素的迭代器。</p>
 
-<h1></h1>
+<hr />
 
 <h5>equal_range</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">pair&lt;const_iterator, const_iterator&gt;equal_range(const Key&amp; key) const
-</code></pre></div>
+
+<pre><code>pair&lt;const_iterator, const_iterator&gt;equal_range(const Key&amp; key) const
+</code></pre>
+
 <p>作用:</p>
 
 <ul>
 <li>返回map容器中与定值相等的上下限的两个迭代器；</li>
-<li>返回连个迭代器，一个指向map容器中第一个键值为key的元素，一个指向map中最后一个键值为key的元素</li>
+<li>返回连个迭代器，一个指向map容器中第一个键值为key的元素，一个指向map中最后一个键值为key的元素
+
+<ul>
+<li></li>
+</ul>
+</li>
 </ul>
 
-<h1>* </h1>
+
+<hr />
 
 <h5>key_comp</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">key_compare key_comp(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>key_compare key_comp(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回一个用于元素间的键的比较函数</p>
 
-<h1></h1>
+<hr />
 
 <h5>value_comp</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">value_compare value_comp(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>value_compare value_comp(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回一个用于元素间的值比较函数</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>multimap和map的特性和用法完全相同，唯一不同的是multimap支持重复键值</strong></p>
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -386,7 +433,7 @@ const_reverse_iterator rend() cosnt;
 
 
         </div>
-        <p class="byline"><strong>STL::map</strong> was published on <time datetime="2013-12-17T04:23:25Z">December 17, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>STL::map</strong> was published on <time datetime="2013-12-17T04:23:25Z">December 17, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -394,14 +441,14 @@ const_reverse_iterator rend() cosnt;
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -430,8 +477,8 @@ const_reverse_iterator rend() cosnt;
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

@@ -2,26 +2,26 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
 <title type="text">高手之路</title>
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
-<link rel="self" type="application/atom+xml" href="http://ucshell.github.com/feed.xml" />
-<link rel="alternate" type="text/html" href="http://ucshell.github.com" />
-<updated>2014-03-18T07:38:32+00:00</updated>
-<id>http://ucshell.github.com/</id>
+<link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml" />
+<link rel="alternate" type="text/html" href="http://localhost:4000" />
+<updated>2014-03-21T08:53:12+00:00</updated>
+<id>http://localhost:4000/</id>
 <author>
   <name>Neo</name>
-  <uri>http://ucshell.github.com/</uri>
+  <uri>http://localhost:4000/</uri>
   <email>ucshell.neo@gmail.com</email>
 </author>
 
 
 <entry>
   <title type="html"><![CDATA[静态连接与动态连接的区别]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" />
-  <id>http://ucshell.github.com/2014/03/15/dynamic-link-libary</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/15/dynamic-link-libary/" />
+  <id>http://localhost:4000/2014/03/15/dynamic-link-libary</id>
   <published>2014-03-15T00:00:00+00:00</published>
   <updated>2014-03-15T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;h4&gt;静态连接于动态连接的区别&lt;/h4&gt;
@@ -50,68 +50,67 @@
 
 &lt;h4&gt;静态链接库与动态链接库有什么区别&lt;/h4&gt;
 
-&lt;p&gt;静态链接库就是使用的.lib或者.a文件，库中的代码最后需要连接到可执行文件中去，所以静态连接的可执行文件一般比较大一些；&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;静态链接库就是使用的.lib或者.a文件，库中的代码最后需要连接到可执行文件中去，所以静态连接的可执行文件一般比较大一些；&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;动态链接库是一个包含可由多个程序同时使用的代码和数据的库，它包含函数和数据的模块的集合。程序文件在运行时加载这些模块(也就是所需的模块映射到调用进程的地址空间)。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;静态链接库于动态链接库的相同点是他们都实现了代码的共享;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;不同点是静态链接库中代码被包含在了调用的执行文件中，该lib中不能再包含其他动态链接库或者静态链接库了。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;动态链接库dll可以被调用的exe动态的引用和卸载，该dll中还可以包含其他动态链接库或者静态链接库&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;动态链接库是一个包含可由多个程序同时使用的代码和数据的库，它包含函数和数据的模块的集合。程序文件在运行时加载这些模块(也就是所需的模块映射到调用进程的地址空间)。&lt;/p&gt;
 
-&lt;p&gt;静态链接库于动态链接库的相同点是他们都实现了代码的共享;&lt;/p&gt;
-
-&lt;p&gt;不同点是静态链接库中代码被包含在了调用的执行文件中，该lib中不能再包含其他动态链接库或者静态链接库了。&lt;/p&gt;
-
-&lt;p&gt;动态链接库dll可以被调用的exe动态的引用和卸载，该dll中还可以包含其他动态链接库或者静态链接库&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/15/dynamic-link-libary/&quot;&gt;静态连接与动态连接的区别&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 15, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/15/dynamic-link-libary/&quot;&gt;静态连接与动态连接的区别&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 15, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[程序编译的过程]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/15/compile-link/" />
-  <id>http://ucshell.github.com/2014/03/15/compile-link</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/15/compile-link/" />
+  <id>http://localhost:4000/2014/03/15/compile-link</id>
   <published>2014-03-15T00:00:00+00:00</published>
   <updated>2014-03-15T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;&lt;img src=&quot;uploads201403004.jpg&quot; alt=&quot;004&quot;&gt;&lt;/p&gt;
+  <content type="html">&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\004.jpg&quot; alt=&quot;004&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;从图中可以看到:
-1. 预编译&lt;/p&gt;
+&lt;p&gt;从图中可以看到:&lt;/p&gt;
+
+&lt;h5&gt;1.预编译&lt;/h5&gt;
 
 &lt;p&gt;将.c文件转化成.i文件，使用命令是:gcc -E,对应预处理命令是cpp；&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;编译&lt;/li&gt;
-&lt;/ol&gt;
+&lt;h5&gt;2.编译&lt;/h5&gt;
 
 &lt;p&gt;将.i文件转换成了.s文件，使用gcc命令是: gcc -S,对应编译命令是cc -S&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;汇编
-将.s文件转化成了.o文件，使用gcc命令是:gcc -c，对应汇编命令式as&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;连接
-将.o文件转化成可执行程序，使用gcc命令是:gcc,对应的连接命令式ld&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;h5&gt;3.汇编&lt;/h5&gt;
 
-&lt;p&gt;总的来说编译就上面的四个过程:&lt;/p&gt;
+&lt;p&gt;将.s文件转化成了.o文件，使用gcc命令是:gcc -c，对应汇编命令式as&lt;/p&gt;
 
-&lt;p&gt;预编译处理(.c)---&amp;gt;编译、优化程序(.s)---&amp;gt;汇编程序(.obj、.o、.a.、so)---&amp;gt;链接程序(elf、exe)&lt;/p&gt;
+&lt;h5&gt;4.连接&lt;/h5&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/15/compile-link/&quot;&gt;程序编译的过程&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 15, 2014.&lt;/p&gt;</content>
+&lt;p&gt;将.o文件转化成可执行程序，使用gcc命令是:gcc,对应的连接命令式ld&lt;/p&gt;
+
+&lt;h6&gt;总的来说编译就上面的四个过程:&lt;/h6&gt;
+
+&lt;p&gt;预编译处理(.c)---&gt;编译、优化程序(.s)---&gt;汇编程序(.obj、.o、.a.、so)---&gt;链接程序(elf、exe)&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/15/compile-link/&quot;&gt;程序编译的过程&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 15, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[各种变量在程序内存中的分布]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/14/memory-variable/" />
-  <id>http://ucshell.github.com/2014/03/14/memory-variable</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/14/memory-variable/" />
+  <id>http://localhost:4000/2014/03/14/memory-variable</id>
   <published>2014-03-14T00:00:00+00:00</published>
   <updated>2014-03-14T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;h5&gt;程序的内存分布:&lt;/h5&gt;
@@ -119,18 +118,20 @@
 &lt;ol&gt;
 &lt;li&gt;栈区(stack)：由编译器自动分配释放，存放函数的参数值，局部变量的值；&lt;/li&gt;
 &lt;li&gt;堆区(heap): 一般由程序员分配和释放，如果程序员不释放，程序结束时由OS回收；&lt;/li&gt;
-&lt;li&gt;全局区(静态区static): 全局变量和静态变量的存储时放在一起的，初始化的全局变量和静态变量在一块区域，未初始化的全局变量和&amp;gt;未初始化的静态变量在相邻的另一块区域，程序接收后系统释放&lt;/li&gt;
+&lt;li&gt;全局区(静态区static): 全局变量和静态变量的存储时放在一起的，初始化的全局变量和静态变量在一块区域，未初始化的全局变量和未初始化的静态变量在相邻的另一块区域，程序接收后系统释放&lt;/li&gt;
 &lt;li&gt;文字常量: 常量字符串就在这里&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;程序代码区: 存放函数体的二进制代码&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;----------------------- 内存低端
-|      程序段   |
------------------
-|      数据段   |
------------------
-|      堆栈     |
------------------------ 内存高端
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;程序代码区: 存放函数体的二进制代码&lt;/li&gt;
 &lt;/ol&gt;
+
+
+&lt;pre&gt;&lt;code&gt;        ----------------------- 内存低端
+        |      程序段   |
+        -----------------
+        |      数据段   |
+        -----------------
+        |      堆栈     |
+        ----------------------- 内存高端
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;一个正常的程序在内存中通常分为程序段、数据段
 堆栈三部分；&lt;/p&gt;
@@ -165,34 +166,37 @@
 
 &lt;p&gt;堆栈段包括在进程控制块PCB中。PCB处于核心堆栈的底部，不需要额外分配空间。&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/14/memory-variable/&quot;&gt;各种变量在程序内存中的分布&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 14, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/14/memory-variable/&quot;&gt;各种变量在程序内存中的分布&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 14, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[小球称重的问题]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/14/compare-ball/" />
-  <id>http://ucshell.github.com/2014/03/14/compare-ball</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/14/compare-ball/" />
+  <id>http://localhost:4000/2014/03/14/compare-ball</id>
   <published>2014-03-14T00:00:00+00:00</published>
   <updated>2014-03-14T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;h5&gt;12个小球，要求用天平称量3次之内找出有问题的小球，并且确定问题小球是偏轻还是偏重！&lt;/h5&gt;
 
 &lt;p&gt;首先将12个小球分3组:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;A(1,2,3,4)
+
+&lt;pre&gt;&lt;code&gt;A(1,2,3,4)
 
 B(5,6,7,8)
 
 C(9,10,11,12)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;随便选取两组比如A、B比较: &lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;随便选取两组比如A、B比较:&lt;/p&gt;
 
 &lt;p&gt;A = B:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;    说明A、B中都是正常的！C中是不正常的！
+
+&lt;pre&gt;&lt;code&gt;    说明A、B中都是正常的！C中是不正常的！
 
     第二次称量:从C中取出3个小球(9,10,11)，A中取出3个小球；
 
@@ -203,9 +207,11 @@ C(9,10,11,12)
     2.如果不相等,比如C&amp;gt;A,那么问题小球在9、10、11中并且偏重
 
     第三次称量:9,10,11随便取两个球(9,10)，如果相等，则问题球是11，不等，问题球就是偏重的那个
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;A &amp;gt; B（或B &amp;gt; A原理一样):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;    说明C中(9,10,11,12)一定是真的; 在现实当中,如果交换真球，天平是不会改变的！
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A &gt; B（或B &gt; A原理一样):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    说明C中(9,10,11,12)一定是真的; 在现实当中,如果交换真球，天平是不会改变的！
 
     所以将A改变为(1,9,10,11)将B改变为(2,3,4,5) 进行第二次称重；
 
@@ -220,20 +226,21 @@ C(9,10,11,12)
     3.如果A == B，说明A此时B中都是真的，那么假的只能在6,7,8中产生，并且因为之前A&amp;gt;B，所以假球一定是偏轻的。
 
     第三次称重类似于2方法
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/14/compare-ball/&quot;&gt;小球称重的问题&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 14, 2014.&lt;/p&gt;</content>
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/14/compare-ball/&quot;&gt;小球称重的问题&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 14, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[TCP如何保证可靠传输]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/13/TCP-reliable/" />
-  <id>http://ucshell.github.com/2014/03/13/TCP-reliable</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/13/TCP-reliable/" />
+  <id>http://localhost:4000/2014/03/13/TCP-reliable</id>
   <published>2014-03-13T00:00:00+00:00</published>
   <updated>2014-03-13T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;TCP的任务是在IP层的不可靠、尽力而为的基础上建立一种可靠数据传输服务。&lt;/p&gt;
@@ -248,7 +255,7 @@ C(9,10,11,12)
 
 &lt;p&gt;TCP连接中传送的数据流中的每一个字节都编上序号。序号字段的值则是指本报文段所发送的数据的第一个字节的序号。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;uploads201403003.jpg&quot; alt=&quot;002&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\003.jpg&quot; alt=&quot;002&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;假设A和B之间建立一条TCP连接，A的发送缓存区中共有10个字节，序号从0开始标号，第一个报文包含第0~2个字节，则该TCP报文段的序号是0；&lt;/p&gt;
 
@@ -284,19 +291,19 @@ C(9,10,11,12)
 &lt;p&gt;例如：发送发A发送了序号1、2、3、4、5的TCP报文段，其中2号报文段在链路中丢失，它将无法到达接收方B；因此3、4、5号报文段对于B来讲是成了失序报文段；3、4、5不是B所期望的下一个报文，于是B就发送3个对1号报文段的冗余ACK，表示自己期望接收2号报文段。
 当A收到对1号报文段的3个冗余ACK时，则它就可以认为2号报文段已经丢失，这时发送方A可以立即对2号报文段执行重传，这种技术成为快速重传&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/13/TCP-reliable/&quot;&gt;TCP如何保证可靠传输&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 13, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/13/TCP-reliable/&quot;&gt;TCP如何保证可靠传输&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 13, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[动态库与静态库的封装]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/12/lib-so/" />
-  <id>http://ucshell.github.com/2014/03/12/lib-so</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/12/lib-so/" />
+  <id>http://localhost:4000/2014/03/12/lib-so</id>
   <published>2014-03-12T00:00:00+00:00</published>
   <updated>2014-03-12T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;h4&gt;库:&lt;/h4&gt;
@@ -308,14 +315,18 @@ C(9,10,11,12)
 &lt;h5&gt;编译静态库的步骤:&lt;/h5&gt;
 
 &lt;h5&gt;1.编译:&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;    gcc -c -static lib_func1.c  /* 产生lib_func1.o文件 */
+
+&lt;pre&gt;&lt;code&gt;    gcc -c -static lib_func1.c  /* 产生lib_func1.o文件 */
     gcc -c -static lib_func2.c  /* 产生lib_func2.o文件 */
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5&gt;2.连接:&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;    ar -r libmylib.a lib_func1.o lib_func2.o
+
+&lt;pre&gt;&lt;code&gt;    ar -r libmylib.a lib_func1.o lib_func2.o
     /*      库名为mylib      */
     /* ar -r 指定静态库文件名 被归档的目标文件 */
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h6&gt;ar是个归档文件&lt;/h6&gt;
 
 &lt;h5&gt;静态库中静态的含义：&lt;/h5&gt;
@@ -325,13 +336,18 @@ C(9,10,11,12)
 &lt;li&gt;库作为程序的一部分编译、链接&lt;/li&gt;
 &lt;/ol&gt;
 
+
 &lt;h5&gt;静态库的命名规则:&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;lib库名.a 主版本号.副版本号.批号
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre&gt;&lt;code&gt;lib库名.a 主版本号.副版本号.批号
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5&gt;库的使用:&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;gcc main.c -l库名
+
+&lt;pre&gt;&lt;code&gt;gcc main.c -l库名
 -L选项制定库文件所在的目录
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h6&gt;注意:&lt;/h6&gt;
 
 &lt;p&gt;库名是不包含lib之类的仅仅是库名&lt;/p&gt;
@@ -349,35 +365,41 @@ C(9,10,11,12)
 &lt;h5&gt;编译动态库的步骤:&lt;/h5&gt;
 
 &lt;h5&gt;1.编译&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;    gcc -c -fpic lib_func1.c    /* 产生lib_func1.o文件 */
+
+&lt;pre&gt;&lt;code&gt;    gcc -c -fpic lib_func1.c    /* 产生lib_func1.o文件 */
     gcc -c -fpic lib_func2.c    /* 产生lib_func2.o文件 */
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5&gt;2.连接&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;    gcc -shared -olibmylib.so lib_func1.o lib_func2.o
+
+&lt;pre&gt;&lt;code&gt;    gcc -shared -olibmylib.so lib_func1.o lib_func2.o
     /*  库名为mylib  */
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5&gt;动态库的使用:&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;gcc main.c -lmylib -L. -omain
+
+&lt;pre&gt;&lt;code&gt;gcc main.c -lmylib -L. -omain
 /*
 *   -lmylib指明使用动态库mylib
 *   -L. 指明动态库的位置在当前目录下
 */
 ldd main
 /* 查看到我们自己的动态库就说明成功了 */
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/12/lib-so/&quot;&gt;动态库与静态库的封装&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 12, 2014.&lt;/p&gt;</content>
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/12/lib-so/&quot;&gt;动态库与静态库的封装&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 12, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[MSG_OOB的使用]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/11/use-msg_oob/" />
-  <id>http://ucshell.github.com/2014/03/11/use-msg_oob</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/use-msg_oob/" />
+  <id>http://localhost:4000/2014/03/11/use-msg_oob</id>
   <published>2014-03-11T00:00:00+00:00</published>
   <updated>2014-03-11T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;UDP没有实现带外数据，TCP也没有真正实现带外数据，不过TCP利用头部的紧急指针标志和紧急指针两个字段，给应用程序提供了一种紧急方式；&lt;/p&gt;
@@ -386,12 +408,14 @@ ldd main
 
 &lt;h5&gt;TCP发送带外数据的过程:&lt;/h5&gt;
 
-&lt;p&gt;假设一个进程已经往某个TCP连接的发送缓冲中写入了N字节的普通数据，并等待其发送。在数据发送前，该进程又向这个连接写入3字节的带外数据&amp;quot;abc&amp;quot;.此时，待发送的TCP报文段的头部将被设置URG标记，并且紧急指针被设置为指向最后一个带外数据的下一个字节(减去当前TCP报文段的序号值得到其头部中的紧急偏移值)&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;                        TCP发送缓冲区
+&lt;p&gt;假设一个进程已经往某个TCP连接的发送缓冲中写入了N字节的普通数据，并等待其发送。在数据发送前，该进程又向这个连接写入3字节的带外数据&quot;abc&quot;.此时，待发送的TCP报文段的头部将被设置URG标记，并且紧急指针被设置为指向最后一个带外数据的下一个字节(减去当前TCP报文段的序号值得到其头部中的紧急偏移值)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                        TCP发送缓冲区
 ---------------------------------------------------------------------
 |第一字节|              |第N字节     | a | b | c(OOB) | 紧急指针|
 ---------------------------------------------------------------------
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;从图中可以看到，发送端一次发送的多字节的带外数据中只有最后一个字节被当做带外数据(字母c)，而其他数据(a和b)本当成普通数据。&lt;/p&gt;
 
 &lt;p&gt;如果TCP模块以多个TCP报文段来发送图中的TCP发送缓冲区中的内容，则每个TCP报文段豆浆被设置URG标志，并且他们的紧急指针指向同一个位置(数据流中带外数据的下一个位置)，但是只有一个TCP报文段真正携带带外数据。&lt;/p&gt;
@@ -403,7 +427,8 @@ ldd main
 &lt;h5&gt;SO_OOBINLINE选项:&lt;/h5&gt;
 
 &lt;p&gt;前面讨论的带外数据的接收过程是TCP模块接收带外数据的默认方式，如果我们给TCP连接设置了SO_OOBINLINEE选项，则带外数据将和普通数据一样被TCP模块存放在TCP接收缓冲区中，此时应用程序要像读取普通数据一样来读取带外数据，这种情况下如何区分带外数据和普通数据?可以使用紧急指针来指出带外数据的位置。&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;/* 发送带外数据 */
+
+&lt;pre&gt;&lt;code&gt;/* 发送带外数据 */
 #include &amp;lt;sys/types.h&amp;gt;
 #include &amp;lt;sys/socket.h&amp;gt;
 #include &amp;lt;netinet/in.h&amp;gt;
@@ -420,7 +445,7 @@ ldd main
 
 int main(int argc, char** argv)
 {
-    const char* ip = &amp;quot;127.0.0.1&amp;quot;;
+    const char* ip = &quot;127.0.0.1&quot;;
     int port = 9999;
 
     struct sockaddr_in server_address;
@@ -434,11 +459,11 @@ int main(int argc, char** argv)
     assert(sockfd != -1);
 
     if (connect(sockfd, (struct sockaddr*)&amp;amp;server_address, sizeof(server_address)) &amp;lt; 0) {
-        perror(&amp;quot;connect failed\n&amp;quot;);
+        perror(&quot;connect failed\n&quot;);
 
     } else {
-        const char* oob_data = &amp;quot;abc&amp;quot;;
-        const char* normal_data = &amp;quot;123&amp;quot;;
+        const char* oob_data = &quot;abc&quot;;
+        const char* normal_data = &quot;123&quot;;
         send(sockfd, normal_data, strlen(normal_data), 0);
         send(sockfd, oob_data, strlen(oob_data), MSG_OOB);
         send(sockfd, normal_data, strlen(normal_data), 0);
@@ -469,7 +494,7 @@ int main(int argc, char** argv)
 #define BUF_SIZE 1024
 int main(int argc, char** argv)
 {
-    const char* ip = &amp;quot;127.0.0.1&amp;quot;;
+    const char* ip = &quot;127.0.0.1&quot;;
     int port = 9999;
 
     struct sockaddr_in address;
@@ -493,7 +518,7 @@ int main(int argc, char** argv)
 
     int connfd = accept(sockfd, (struct sockaddr*)&amp;amp;client, &amp;amp;client_length);
     if (connfd &amp;lt; 0) {
-        printf(&amp;quot;accept error\n&amp;quot;);
+        printf(&quot;accept error\n&quot;);
 
     } else {
         char buf[BUF_SIZE];
@@ -501,19 +526,19 @@ int main(int argc, char** argv)
         memset(buf, 0, BUF_SIZE);
         ret = recv(connfd, buf, BUF_SIZE-1, 0);
         assert(ret &amp;gt; 0);
-        printf(&amp;quot;get %d bytes of normal data:\n%s\n&amp;quot;, ret, buf);
+        printf(&quot;get %d bytes of normal data:\n%s\n&quot;, ret, buf);
 
 
         memset(buf, 0, BUF_SIZE);
         ret = recv(connfd, buf, BUF_SIZE-1, MSG_OOB);
         assert(ret &amp;gt; 0);
-        printf(&amp;quot;get %d bytes of oob data:\n%s\n&amp;quot;, ret, buf);
+        printf(&quot;get %d bytes of oob data:\n%s\n&quot;, ret, buf);
 
 
         memset(buf, 0, BUF_SIZE);
         ret = recv(connfd, buf, BUF_SIZE-1, 0);
         assert(ret &amp;gt; 0);
-        printf(&amp;quot;get %d bytes of normal data:\n%s\n&amp;quot;, ret, buf);
+        printf(&quot;get %d bytes of normal data:\n%s\n&quot;, ret, buf);
 
         close(connfd);
     }
@@ -522,21 +547,25 @@ int main(int argc, char** argv)
 
     return 0;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5&gt;程序执行结果:&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;get 3 bytes of normal data:
+
+&lt;pre&gt;&lt;code&gt;get 3 bytes of normal data:
 123
 get 1 bytes of oob data:
 c
 get 2 bytes of normal data:
 ab
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;由此可见，客户端发送给服务器的3字节带外数据&amp;quot;abc&amp;quot;中，仅有最后一个字符&amp;#39;c&amp;#39;被服务器真正当成了带外数据接收;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;并且服务器对正常数据的接收被带外数据截断，也就是说前一部分正常数据&amp;quot;123ab&amp;quot;和后续正常数据&amp;quot;123&amp;quot;是不能被一个recv调用全部读出的。&lt;/p&gt;
+&lt;p&gt;由此可见，客户端发送给服务器的3字节带外数据&quot;abc&quot;中，仅有最后一个字符&#39;c&#39;被服务器真正当成了带外数据接收;&lt;/p&gt;
+
+&lt;p&gt;并且服务器对正常数据的接收被带外数据截断，也就是说前一部分正常数据&quot;123ab&quot;和后续正常数据&quot;123&quot;是不能被一个recv调用全部读出的。&lt;/p&gt;
 
 &lt;h5&gt;tcpdump抓包结果:&lt;/h5&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;15:49:07.237438 IP 127.0.0.1.54354 &amp;gt; 127.0.0.1.distinct: Flags [S], seq 3396511771, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 0,nop,wscale 7], length 0
+
+&lt;pre&gt;&lt;code&gt;15:49:07.237438 IP 127.0.0.1.54354 &amp;gt; 127.0.0.1.distinct: Flags [S], seq 3396511771, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 0,nop,wscale 7], length 0
     0x0000:  4500 003c 1d6a 4000 4006 1f50 7f00 0001
     0x0010:  7f00 0001 d452 270f ca72 a81b 0000 0000
     0x0020:  a002 aaaa fe30 0000 0204 ffd7 0402 080a
@@ -561,8 +590,9 @@ ab
     0x0010:  7f00 0001 d452 270f ca72 a81f 00c0 5977
     0x0020:  8038 0156 fe2b 0003 0101 080a 0065 b572
     0x0030:  0065 b571 6162 63
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;通过tcpdump抓取的数据来看，可以看到标志U，这表示在TCP头部设置了紧急标志，&amp;quot;urg 3&amp;quot;是紧急偏移值，他指出带外数据在字节流中的位置的下一个位置是7，其中的4是该TCP报文段的序号值相对与初始序号值的偏移，因此带外数据是字节流中第6个字符，也就是字符&amp;quot;c&amp;quot;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过tcpdump抓取的数据来看，可以看到标志U，这表示在TCP头部设置了紧急标志，&quot;urg 3&quot;是紧急偏移值，他指出带外数据在字节流中的位置的下一个位置是7，其中的4是该TCP报文段的序号值相对与初始序号值的偏移，因此带外数据是字节流中第6个字符，也就是字符&quot;c&quot;&lt;/p&gt;
 
 &lt;h5&gt;注意:&lt;/h5&gt;
 
@@ -573,17 +603,20 @@ ab
 &lt;p&gt;Linux内核检测到TCP紧急标记时，将通知应用程序有带外数据需要接受;&lt;/p&gt;
 
 &lt;p&gt;内核同志应用程序带外数据到达的两种常见方式是:
-** * I/O复用产生的异常事件**
-** * SIGURG信号**&lt;/p&gt;
+&lt;strong&gt; * I/O复用产生的异常事件&lt;/strong&gt;
+&lt;strong&gt; * SIGURG信号&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;但是，即使应用程序得到了有带外数据需要接受的通知，还需要知道带外数据在数据流中具体的位置，才能准确接受带外数据&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;#include &amp;lt;sys/socket.h&amp;gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;sys/socket.h&amp;gt;
 int sockatmark(int sockfd);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;sockatmark判断sockfd是否处于带外标记，即下一个读取到的数据是否是带外数据。
 * 如果是sockatmark返回1，此时我们便可以使用带有MSG_OOB标志的recv调用来接受带外数据.
 * 如果不是则返回0&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;/* 利用异常事件来读取MSG_OOB信息 */
+
+&lt;pre&gt;&lt;code&gt;/* 利用异常事件来读取MSG_OOB信息 */
 #include &amp;lt;sys/types.h&amp;gt;
 #include &amp;lt;sys/socket.h&amp;gt;
 #include &amp;lt;netinet/in.h&amp;gt;
@@ -601,7 +634,7 @@ int sockatmark(int sockfd);
 int main(int argc, char** argv)
 {
 
-    const char* ip = &amp;quot;127.0.0.1&amp;quot;;
+    const char* ip = &quot;127.0.0.1&quot;;
     int port = 80;
     int ret = 0;
     struct sockaddr_in address;
@@ -625,7 +658,7 @@ int main(int argc, char** argv)
     int connfd = accept(listenfd, (struct sockaddr*)&amp;amp;client_address, &amp;amp;client_addresslength);
 
     if (connfd &amp;lt; 0 ) {
-        printf(&amp;quot;errno is : %d\n&amp;quot;, errno);
+        printf(&quot;errno is : %d\n&quot;, errno);
         close(listenfd);
     }
 
@@ -644,7 +677,7 @@ int main(int argc, char** argv)
 
         ret = select(connfd + 1, &amp;amp;read_fds, NULL, &amp;amp;exception_fds, NULL);
         if (ret &amp;lt; 0) {
-            printf(&amp;quot;selection failure\n&amp;quot;);
+            printf(&quot;selection failure\n&quot;);
             break;
         }
 
@@ -653,14 +686,14 @@ int main(int argc, char** argv)
             if (ret &amp;lt;= 0) {
                 break;
             }
-            printf(&amp;quot;get %d bytes of normal data: %s\n&amp;quot;, ret, buf);
+            printf(&quot;get %d bytes of normal data: %s\n&quot;, ret, buf);
         } else if (FD_ISSET(connfd, &amp;amp;exception_fds)) {
 
             ret = recv(connfd, buf, sizeof(buf) - 1, MSG_OOB);
             if (ret &amp;lt;= 0) {
                 break;
             } 
-            printf(&amp;quot;get %d bytes of oob data: %s\n&amp;quot;, ret, buf);
+            printf(&quot;get %d bytes of oob data: %s\n&quot;, ret, buf);
         }
 
     }
@@ -670,32 +703,35 @@ int main(int argc, char** argv)
 
     return 0;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/11/use-msg_oob/&quot;&gt;MSG_OOB的使用&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/use-msg_oob/&quot;&gt;MSG_OOB的使用&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[close与shutdown关闭连接]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/11/close-shutdown/" />
-  <id>http://ucshell.github.com/2014/03/11/close-shutdown</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/close-shutdown/" />
+  <id>http://localhost:4000/2014/03/11/close-shutdown</id>
   <published>2014-03-11T00:00:00+00:00</published>
   <updated>2014-03-11T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;关闭连接实际上是关闭该连接对应的socket;&lt;/p&gt;
 
-&lt;p&gt;使用close系统调用并非总是立即关闭一个连接，而是将引用计数减一。*&lt;em&gt;只有当&lt;/em&gt;fd的引用计数为0的时候才真正关闭连接*&lt;/p&gt;
+&lt;p&gt;使用close系统调用并非总是立即关闭一个连接，而是将引用计数减一。&lt;em&gt;&lt;em&gt;只有当&lt;/em&gt;fd的引用计数为0的时候才真正关闭连接&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;在多进程中，一次fork系统调用默认将父进程中打开的socket的引用计数加1。&lt;strong&gt;因此我们必须在父进程和子进程中都对该socket执行close调用才能真正将连接关闭&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;如果无论如何都要立即终止连接(而不是将socket的引用计数减一)，可以使用shutdown系统调用，相对与close来讲shutdown是专门为网络编程设计的&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;#include &amp;lt;sys/socket.h&amp;gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;sys/socket.h&amp;gt;
 int shutdown(int sockfd, int howto)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;howto参数决定了shutdown的行为
 1. &lt;strong&gt;SHUT_RD&lt;/strong&gt;:  关闭sockfd上读的这一半，引用程序不能再针对socket文件描述符执行读操作，并且该socket接受缓冲区中的数据都被丢弃;
 2. &lt;strong&gt;SHUT_WR&lt;/strong&gt;: 关闭sockfd上写的这一半，sockfd的发送缓冲区中的数据会在真正关闭连接之前全部发送出去，应用程序不可以在对该socket文件描述符执行写操作，这种情况下处于半关闭状态
@@ -703,19 +739,19 @@ int shutdown(int sockfd, int howto)
 
 &lt;p&gt;shutdown可以分别关闭socket上的读和写或者都关闭，close在关闭连接时只能将socket上的读和写同时关闭。&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/11/close-shutdown/&quot;&gt;close与shutdown关闭连接&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/close-shutdown/&quot;&gt;close与shutdown关闭连接&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[bind与connect错误的原因]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/11/bind-connect-error/" />
-  <id>http://ucshell.github.com/2014/03/11/bind-connect-error</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/bind-connect-error/" />
+  <id>http://localhost:4000/2014/03/11/bind-connect-error</id>
   <published>2014-03-11T00:00:00+00:00</published>
   <updated>2014-03-11T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;bind常见的两种错误errno是EACCESS和EADDRINUSE
@@ -726,24 +762,22 @@ int shutdown(int sockfd, int howto)
 * ECONNREFUESD目标端口不存在，连接被拒绝
 * ETIMEOUT连接超时&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/11/bind-connect-error/&quot;&gt;bind与connect错误的原因&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/bind-connect-error/&quot;&gt;bind与connect错误的原因&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[关于赛马问题的研究]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/11/about-horse-race/" />
-  <id>http://ucshell.github.com/2014/03/11/about-horse-race</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/about-horse-race/" />
+  <id>http://localhost:4000/2014/03/11/about-horse-race</id>
   <published>2014-03-11T00:00:00+00:00</published>
   <updated>2014-03-11T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;blockquote&gt;
-&lt;p&gt;说有25匹马，赛道每次最多只能容纳5匹马同时比赛，要求求出跑得最快的5匹，不能计时！&lt;/p&gt;
-&lt;/blockquote&gt;
+  <content type="html">&lt;blockquote&gt;&lt;p&gt;说有25匹马，赛道每次最多只能容纳5匹马同时比赛，要求求出跑得最快的5匹，不能计时！&lt;/p&gt;&lt;/blockquote&gt;
 
 &lt;p&gt;这个问题，想了两天最终才想到了答案！&lt;/p&gt;
 
@@ -781,6 +815,7 @@ int shutdown(int sockfd, int howto)
 &lt;li&gt;可能会是C1，因为A3和B2可能比C1快&lt;/li&gt;
 &lt;/ul&gt;
 
+
 &lt;p&gt;以上就是最后一名的所有可能性:A3或B2或C1&lt;/p&gt;
 
 &lt;p&gt;我们再分析:&lt;/p&gt;
@@ -809,7 +844,7 @@ int shutdown(int sockfd, int howto)
 
 &lt;p&gt;很有可能B3会比C1还快，所以第二名可能会是B3和C1&lt;/p&gt;
 
-&lt;p&gt;以上就是所有的可能性，大家也可以自己假设每一种情况，从上面的总结中我们可以看出，具有争夺5匹马中第四第五名的只有一下的&amp;quot;选马&amp;quot;:C1、A3、D1、B2、B3，刚好5匹马！刚好能进行一次比赛！&lt;/p&gt;
+&lt;p&gt;以上就是所有的可能性，大家也可以自己假设每一种情况，从上面的总结中我们可以看出，具有争夺5匹马中第四第五名的只有一下的&quot;选马&quot;:C1、A3、D1、B2、B3，刚好5匹马！刚好能进行一次比赛！&lt;/p&gt;
 
 &lt;p&gt;所以第八轮比赛可以这样来描述:&lt;/p&gt;
 
@@ -821,19 +856,19 @@ int shutdown(int sockfd, int howto)
 
 &lt;p&gt;这个问题前几天在网上找了半天都没有一个具体的！呵呵！今天被我做出来了！看来我的智商还是不错的！&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/11/about-horse-race/&quot;&gt;关于赛马问题的研究&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/about-horse-race/&quot;&gt;关于赛马问题的研究&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[TCP的拥塞控制]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/11/TCP-congestion/" />
-  <id>http://ucshell.github.com/2014/03/11/TCP-congestion</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/TCP-congestion/" />
+  <id>http://localhost:4000/2014/03/11/TCP-congestion</id>
   <published>2014-03-11T00:00:00+00:00</published>
   <updated>2014-03-11T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;h5&gt;拥塞控制四种算法:&lt;/h5&gt;
@@ -844,6 +879,7 @@ int shutdown(int sockfd, int howto)
 &lt;li&gt;快速重传&lt;/li&gt;
 &lt;li&gt;快速恢复&lt;/li&gt;
 &lt;/ol&gt;
+
 
 &lt;p&gt;发送方维持一个叫做拥塞窗口cwnd的状态变量，拥塞窗口的大小取决于网络的拥塞程度，并且动态变化，发送方让自己的发送窗口为min(cwnd,rwnd);&lt;/p&gt;
 
@@ -867,11 +903,11 @@ int shutdown(int sockfd, int howto)
 
 &lt;h6&gt;使用慢开始算法后，每经过一个传输轮次，拥塞窗口cwnd就加倍;&lt;/h6&gt;
 
-&lt;p&gt;&lt;img src=&quot;/uploads/2014/03/001.gif&quot; alt=&quot;001&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/03/001.gif&quot; alt=&quot;001&quot; /&gt;&lt;/p&gt;
 
 &lt;h5&gt;轮次传输:&lt;/h5&gt;
 
-&lt;p&gt;一个轮次所经历的时间其实就是往返时间RTT，不过&amp;quot;传输轮次&amp;quot;中:把拥塞窗口cwnd所允许发送的报文段都连续发送出去，并收到了对已发送的最后一个字节的确认。&lt;/p&gt;
+&lt;p&gt;一个轮次所经历的时间其实就是往返时间RTT，不过&quot;传输轮次&quot;中:把拥塞窗口cwnd所允许发送的报文段都连续发送出去，并收到了对已发送的最后一个字节的确认。&lt;/p&gt;
 
 &lt;p&gt;例如:&lt;/p&gt;
 
@@ -883,9 +919,10 @@ int shutdown(int sockfd, int howto)
 
 &lt;ul&gt;
 &lt;li&gt;当cwnd &amp;lt; ssthresh时，使用慢开始算法;&lt;/li&gt;
-&lt;li&gt;当cwnd &amp;gt; ssthresh时，停止使用慢开始算法改用拥塞避免算法;&lt;/li&gt;
+&lt;li&gt;当cwnd &gt; ssthresh时，停止使用慢开始算法改用拥塞避免算法;&lt;/li&gt;
 &lt;li&gt;当cwnd &amp;lt; ssthresh时，既可以使用慢开始算法，也可以使用拥塞避免算法&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;h4&gt;拥塞避免算法:&lt;/h4&gt;
 
@@ -904,16 +941,18 @@ int shutdown(int sockfd, int howto)
 &lt;ol&gt;
 &lt;li&gt;TCP连接初始化，设置拥塞窗口初始，不能大于两个报文段，一般为cwnd=1MSS，设置慢启动门限初值(cwnd为拥塞窗口);&lt;/li&gt;
 &lt;li&gt;TCP开始发送过程，发送窗口swnd按照swnd = min(cwnd, rwnd)来计算，一般通告窗口rwnd足够大，所以实际上swnd=cwnd;&lt;/li&gt;
-&lt;li&gt;每次传输都调节一次拥塞窗口，从而调节了发送窗口的大小。cwnd从初值1开始，每收到一个对新报文段的确认ACK，则cwnd = cwnd + 1.这样第一次传输完，受到1个ACK，cwnd增加到2;第二次传输完，受到2个ACK，cwnd增加到4(2+1+1);因此cwnd按照指数规律增长，也就是说每传输1次，cwnd加倍，直到cwnd&amp;gt;ssthresh(ssthresh为慢启动门限)，进入拥塞避免;&lt;/li&gt;
+&lt;li&gt;每次传输都调节一次拥塞窗口，从而调节了发送窗口的大小。cwnd从初值1开始，每收到一个对新报文段的确认ACK，则cwnd = cwnd + 1.这样第一次传输完，受到1个ACK，cwnd增加到2;第二次传输完，受到2个ACK，cwnd增加到4(2+1+1);因此cwnd按照指数规律增长，也就是说每传输1次，cwnd加倍，直到cwnd&gt;ssthresh(ssthresh为慢启动门限)，进入拥塞避免;&lt;/li&gt;
 &lt;li&gt;当在某时刻发生了拥塞，则设置ssthresh = max(swnd/2, 2),也就是说ssthresh降到拥塞发生时swnd的一半，但是不能小于2,并设置cwnd为1,重新开始慢启动过程。&lt;/li&gt;
 &lt;/ol&gt;
+
 
 &lt;h5&gt;注意:&lt;/h5&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&amp;quot;慢启动&amp;quot;指每出现一次超时，拥塞窗口降低到1,使报文慢慢注入网络;&lt;/li&gt;
-&lt;li&gt;&amp;quot;拥塞避免&amp;quot;指超过门限窗口后指数增长率降为线性增长率;&lt;/li&gt;
+&lt;li&gt;&quot;慢启动&quot;指每出现一次超时，拥塞窗口降低到1,使报文慢慢注入网络;&lt;/li&gt;
+&lt;li&gt;&quot;拥塞避免&quot;指超过门限窗口后指数增长率降为线性增长率;&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;h6&gt;慢的含义:&lt;/h6&gt;
 
@@ -923,7 +962,7 @@ int shutdown(int sockfd, int howto)
 
 &lt;h5&gt;慢开始与拥塞控制的完整过程&lt;/h5&gt;
 
-&lt;p&gt;&lt;img src=&quot;/uploads/2014/03/002.jpg&quot; alt=&quot;002&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/03/002.jpg&quot; alt=&quot;002&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;0.TCP连接进行初始化时候，将拥塞窗口设置为1,，图中的窗口单位不使用字节而使用报文段。慢开始门限的初始值设置为16个&lt;strong&gt;报文段&lt;/strong&gt;，ssthresh = 16；&lt;/p&gt;
 
@@ -945,7 +984,7 @@ int shutdown(int sockfd, int howto)
 
 &lt;h4&gt;特别注意:&lt;/h4&gt;
 
-&lt;p&gt;如果在慢开始阶段(指数增长阶段)，如果2 * cwnd &amp;gt; ssthresh,则下一个RTT的cwnd应该等于ssthresh，而不是2*cwnd，也就是说cwnd不能越过ssthresh值，例如图中第16个轮次cwnd=8，ssthresh=12，第17轮次时，cwnd=12，而不是16&lt;/p&gt;
+&lt;p&gt;如果在慢开始阶段(指数增长阶段)，如果2 * cwnd &gt; ssthresh,则下一个RTT的cwnd应该等于ssthresh，而不是2*cwnd，也就是说cwnd不能越过ssthresh值，例如图中第16个轮次cwnd=8，ssthresh=12，第17轮次时，cwnd=12，而不是16&lt;/p&gt;
 
 &lt;h5&gt;乘法减小:&lt;/h5&gt;
 
@@ -965,19 +1004,19 @@ int shutdown(int sockfd, int howto)
 
 &lt;h4&gt;快重传&lt;/h4&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/11/TCP-congestion/&quot;&gt;TCP的拥塞控制&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/TCP-congestion/&quot;&gt;TCP的拥塞控制&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[非阻塞connect的实现]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/09/nonblock-connect/" />
-  <id>http://ucshell.github.com/2014/03/09/nonblock-connect</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/09/nonblock-connect/" />
+  <id>http://localhost:4000/2014/03/09/nonblock-connect</id>
   <published>2014-03-09T00:00:00+00:00</published>
   <updated>2014-03-09T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;&lt;strong&gt;当非阻塞的socket调用connect，而连接又没有立即建立时候，这时候connect出错，设置errno的值为EINPROGRESS。&lt;/strong&gt;&lt;/p&gt;
@@ -987,7 +1026,8 @@ int shutdown(int sockfd, int howto)
 &lt;p&gt;当select、poll等函数返回后，再利用getsockopt来读取错误码并清除该socket上的数据，如果错误码是0，则表示连接建立成功，否则连接建立失败。&lt;/p&gt;
 
 &lt;p&gt;利用上面的非阻塞connect方式，我们就能同时发起多个连接并一起等待。&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;#include &amp;lt;sys/types.h&amp;gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;sys/types.h&amp;gt;
 #include &amp;lt;sys/socket.h&amp;gt;
 #include &amp;lt;netinet/in.h&amp;gt;
 #include &amp;lt;assert.h&amp;gt;
@@ -1027,11 +1067,11 @@ int unblock_connect(const char* ip, int port, int time)
     ret = connect(sockfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
     if (ret == 0) {
         /*连接成功则恢复sockfd的属性，并立刻返回*/
-        printf(&amp;quot;connect with server immediately\n&amp;quot;);
+        printf(&quot;connect with server immediately\n&quot;);
         fcntl(sockfd, F_SETFL, fdopt);
         return sockfd;
     } else if (errno != EINPROGRESS) {
-            printf(&amp;quot;not EINPROGRESS\n&amp;quot;);
+            printf(&quot;not EINPROGRESS\n&quot;);
             exit(-1);
         /*
         *如果连接没有建立，那么只有当errno为EINPROGRESS时候
@@ -1054,13 +1094,13 @@ int unblock_connect(const char* ip, int port, int time)
 
     ret = select(sockfd + 1, NULL, &amp;amp;writefds, NULL, &amp;amp;timeout);
     if (ret &amp;lt;= 0) { /* 超时或是是出错都立刻返回 */
-        printf(&amp;quot;connection time out\n&amp;quot;);
+        printf(&quot;connection time out\n&quot;);
         close(sockfd);
         return -1;
     }
 
     if (!FD_ISSET(sockfd, &amp;amp;writefds)) {
-        printf(&amp;quot;no events on sockfd found\n&amp;quot;);
+        printf(&quot;no events on sockfd found\n&quot;);
         close(sockfd);
         return -1;
     }
@@ -1071,21 +1111,21 @@ int unblock_connect(const char* ip, int port, int time)
 
     /* getsockopt来获取并清除sockfd上的错误 */    
     if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &amp;amp;error, &amp;amp;length) &amp;lt; 0) {
-        printf(&amp;quot;getsockopt error&amp;quot;);
+        printf(&quot;getsockopt error&quot;);
         close(sockfd);
         return -1;
     }
 
     /* errno不为0则表示出错 */
     if (error != 0) {
-        printf(&amp;quot;connection failed after select with the error:%d\n&amp;quot;, error);
+        printf(&quot;connection failed after select with the error:%d\n&quot;, error);
         close(sockfd);
         return -1;
     }
 
     /* 连接成功 */  
-    printf(&amp;quot;connection ready after select with the socket: %d\n&amp;quot;, sockfd);  
-    send(sockfd, &amp;quot;12&amp;quot;, 3, 0);
+    printf(&quot;connection ready after select with the socket: %d\n&quot;, sockfd);  
+    send(sockfd, &quot;12&quot;, 3, 0);
     fcntl(sockfd, F_SETFL, fdopt);
     return sockfd;
 
@@ -1095,7 +1135,7 @@ int unblock_connect(const char* ip, int port, int time)
 
 int main(int argc, char** argv)
 {
-    const char* ip = &amp;quot;127.0.0.1&amp;quot;;
+    const char* ip = &quot;127.0.0.1&quot;;
     int port = 80;
 
     int sockfd = unblock_connect(ip, port, 10);
@@ -1107,7 +1147,8 @@ int main(int argc, char** argv)
 
     return 0;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5&gt;但是以上的代码存在移植性的问题:&lt;/h5&gt;
 
 &lt;ul&gt;
@@ -1116,25 +1157,26 @@ int main(int argc, char** argv)
 &lt;li&gt;对于出错的socket，getsocketopt在有些系统上返回-1，但是有点系统上(比如伯克利的UNIX)上返回0&lt;/li&gt;
 &lt;/ul&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/09/nonblock-connect/&quot;&gt;非阻塞connect的实现&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 09, 2014.&lt;/p&gt;</content>
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/09/nonblock-connect/&quot;&gt;非阻塞connect的实现&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 09, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[TCP与UDP协议]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/08/the-different-between-TCP-and-UDP/" />
-  <id>http://ucshell.github.com/2014/03/08/the-different-between-TCP-and-UDP</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/08/the-different-between-TCP-and-UDP/" />
+  <id>http://localhost:4000/2014/03/08/the-different-between-TCP-and-UDP</id>
   <published>2014-03-08T00:00:00+00:00</published>
   <updated>2014-03-08T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;TCP相对与UDP的特点是:&lt;br&gt;
-* 面向连接&lt;br&gt;
-* 字节流&lt;br&gt;
-* 可靠传输&lt;br&gt;
+  <content type="html">&lt;p&gt;TCP相对与UDP的特点是:&lt;br/&gt;
+* 面向连接 &lt;br/&gt;
+* 字节流&lt;br/&gt;
+* 可靠传输&lt;br/&gt;
 * 全双工
 * 点对点&lt;/p&gt;
 
@@ -1143,74 +1185,78 @@ int main(int argc, char** argv)
 &lt;h4&gt;面向连接的运输层协议&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;使用TCP协议通信的双方必须先建立连接，然后才能开始数据的读写，双方都必须为该连接分配必要的内核资源，用来管理连接的状态和连接上的数据传输。&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;使用TCP协议通信的双方必须先建立连接，然后才能开始数据的读写，双方都必须为该连接分配必要的内核资源，用来管理连接的状态和连接上的数据传输。&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;h4&gt;TCP提供全双工通信&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;TCP连接是全双工的，也就是&lt;em&gt;通信双方的读写可以通过一个连接进行&lt;/em&gt;，完成数据交换后，通信双方必须断开连接释放系统资源。&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;TCP连接是全双工的，也就是&lt;em&gt;通信双方的读写可以通过一个连接进行&lt;/em&gt;，完成数据交换后，通信双方必须断开连接释放系统资源。&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;h4&gt;TCP连接是点对点的&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;TCP协议是一对一的，所以基于广播和多播(目标地址是多个主机地址)的应用程序不能使用TCP服务，而无连接的UDP则非常的适合广播和多播。&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;TCP协议是一对一的，所以基于广播和多播(目标地址是多个主机地址)的应用程序不能使用TCP服务，而无连接的UDP则非常的适合广播和多播。&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;h4&gt;字节流&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;当发送端应用程序连续执行多次写操作时，TCP模块先将这些数据放入TCP发送缓冲区中，当TCP模块开始发送数据的时候，发送缓冲区中这些等待发送的数据可能被封装成一个或多个TCP报文段发出。所以TCP模块发送的TCP报文段的个数和应用程序执行的写操作次数之间没有固定的关系。&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;当发送端应用程序连续执行多次写操作时，TCP模块先将这些数据放入TCP发送缓冲区中，当TCP模块开始发送数据的时候，发送缓冲区中这些等待发送的数据可能被封装成一个或多个TCP报文段发出。所以TCP模块发送的TCP报文段的个数和应用程序执行的写操作次数之间没有固定的关系。&lt;/li&gt;
 &lt;li&gt;当接受端受到一个或多个TCP报文段后，TCP模块将他们携带的应用程序数据按照TCP报文段的序号一次放入TCP接受缓冲区中，并通知应用程序读取数据。接收端可以一次性将TCP接收缓冲区中数据全部读取，也可以分多次读取，这取决与用户指定的接受端读缓冲的大小。&lt;em&gt;因此程序执行读操作次数和接受端接受到的TCP报文端个数之间没有固定的数量关系，应用程序对数据的发送和接受是没有边界限制的&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;UDP中发送端没执行一次写操作，UDP模块就将其封装为一个UDP数据报并发送，接受端必须及时针对每一个UDP数据执行读操作，否则就会丢包(发生在较慢的服务器上),并且如果用户没有制定足够的应用程序缓冲来读取UDP数据，则UDP数据将会被截断&lt;br&gt;
+&lt;li&gt;UDP中发送端没执行一次写操作，UDP模块就将其封装为一个UDP数据报并发送，接受端必须及时针对每一个UDP数据执行读操作，否则就会丢包(发生在较慢的服务器上),并且如果用户没有制定足够的应用程序缓冲来读取UDP数据，则UDP数据将会被截断&lt;br/&gt;
 发送端执行写操作次数和接受端执行的读操作次数之间没有任何数量关系，这就是字节流&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;h4&gt;可靠传输&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;TCP协议采用发送应答机制，即发送端发送的每个TCP报文段都必须得到接收方的应答，才会认为这个TCP报文段传输成功&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;TCP协议采用发送应答机制，即发送端发送的每个TCP报文段都必须得到接收方的应答，才会认为这个TCP报文段传输成功&lt;/li&gt;
 &lt;li&gt;TCP协议采用超时重传机制，发送端在发送出一个TCP报文段之后启动定时器，如果在定时器时间内没有收到应答，他将重发该报文段&lt;/li&gt;
 &lt;li&gt;因为TCP报文段最终是以IP数据报发送的，而IP数据报到达接受端可能乱序、重复，所以TCP协议还会对接收到的TCP报文段重排、整理，再提交给应用层。&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;h5&gt;注意:&lt;/h5&gt;
 
 &lt;p&gt;TCP点对点中端点是指套接字(socket)&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/08/the-different-between-TCP-and-UDP/&quot;&gt;TCP与UDP协议&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 08, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/08/the-different-between-TCP-and-UDP/&quot;&gt;TCP与UDP协议&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 08, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Address family not supported by protocol]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/03/01/address-family-not-supported-by-protocol/" />
-  <id>http://ucshell.github.com/2014/03/01/address-family-not-supported-by-protocol</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/01/address-family-not-supported-by-protocol/" />
+  <id>http://localhost:4000/2014/03/01/address-family-not-supported-by-protocol</id>
   <published>2014-03-01T06:18:20Z</published>
   <updated>2014-03-01T06:18:20Z</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;今天看非阻塞connect时候自己写了一个小例子，结果却出现了&lt;/p&gt;
 
-&lt;blockquote&gt;
-&lt;p&gt;Address family not supported by protocol&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;Address family not supported by protocol&lt;/p&gt;&lt;/blockquote&gt;
 
 &lt;p&gt;看到这个提示一下了懵掉了！这又是怎么回事！
 我以为是那里写错了又重新写了一个connect的例子，结果还是一样的错误！&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;int main(int argc, char** argv)
+
+&lt;pre&gt;&lt;code&gt;int main(int argc, char** argv)
 {
-        const char* ip = &amp;quot;127.0.0.1&amp;quot;;
+        const char* ip = &quot;127.0.0.1&quot;;
         int port = 80; 
         struct sockaddr_in address;
         address.sin_family = AF_INET;
         address.sin_port = htons(port);
-        inet_pton(AF_INET, &amp;quot;127.0.0.1&amp;quot;, &amp;amp;address.sin_addr);
-/*      inet_pton(AF_INET, &amp;quot;127.0.0.1&amp;quot;, (struct sockaddr*)&amp;amp;address);  */
+        inet_pton(AF_INET, &quot;127.0.0.1&quot;, &amp;amp;address.sin_addr);
+/*      inet_pton(AF_INET, &quot;127.0.0.1&quot;, (struct sockaddr*)&amp;amp;address);  */
 
         int sockfd = socket(AF_INET, SOCK_STREAM, 0); 
         assert(-1 != sockfd);
@@ -1218,56 +1264,59 @@ int main(int argc, char** argv)
         int ret = connect(sockfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
 
         if (-1 == ret) {
-                perror(&amp;quot;connect error&amp;quot;);
+                perror(&quot;connect error&quot;);
                 exit(-1);
         }
 
-        char buf[100] = &amp;quot;this is a test line&amp;quot;;
+        char buf[100] = &quot;this is a test line&quot;;
         int len = strlen(buf);
 
         ret = send(sockfd, buf, len + 1, 0); 
         if (ret != len + 1) {
-                perror(&amp;quot;send eror&amp;quot;);
+                perror(&quot;send eror&quot;);
                 exit(-1);
         }
 
         close(sockfd);
         return 0;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;我随手一写就写成了&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;inet_pton(AF_INET, &amp;quot;127.0.0.1&amp;quot;, (struct sockaddr*)&amp;amp;address);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre&gt;&lt;code&gt;inet_pton(AF_INET, &quot;127.0.0.1&quot;, (struct sockaddr*)&amp;amp;address);
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;老了老了！记忆力不行了！&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/03/01/address-family-not-supported-by-protocol/&quot;&gt;Address family not supported by protocol&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on March 01, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/01/address-family-not-supported-by-protocol/&quot;&gt;Address family not supported by protocol&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 01, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[epoll编程实例]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/02/27/use-epoll/" />
-  <id>http://ucshell.github.com/2014/02/27/use-epoll</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/27/use-epoll/" />
+  <id>http://localhost:4000/2014/02/27/use-epoll</id>
   <published>2014-02-27T14:41:16Z</published>
   <updated>2014-02-27T14:41:16Z</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;#include &amp;quot;sys/types.h&amp;quot;
-#include &amp;quot;sys/socket.h&amp;quot;
-#include &amp;quot;netinet/in.h&amp;quot;
-#include &amp;quot;assert.h&amp;quot;
-#include &amp;quot;sys/epoll.h&amp;quot;
-#include &amp;quot;arpa/inet.h&amp;quot;
-#include &amp;quot;fcntl.h&amp;quot;
-#include &amp;quot;unistd.h&amp;quot;
-#include &amp;quot;stdio.h&amp;quot;
-#include &amp;quot;errno.h&amp;quot;
-#include &amp;quot;string.h&amp;quot;
-#include &amp;quot;stdlib.h&amp;quot;
-#include &amp;quot;pthread.h&amp;quot;
+  <content type="html">&lt;pre&gt;&lt;code&gt;#include &quot;sys/types.h&quot;
+#include &quot;sys/socket.h&quot;
+#include &quot;netinet/in.h&quot;
+#include &quot;assert.h&quot;
+#include &quot;sys/epoll.h&quot;
+#include &quot;arpa/inet.h&quot;
+#include &quot;fcntl.h&quot;
+#include &quot;unistd.h&quot;
+#include &quot;stdio.h&quot;
+#include &quot;errno.h&quot;
+#include &quot;string.h&quot;
+#include &quot;stdlib.h&quot;
+#include &quot;pthread.h&quot;
 
 #define MAX_EVENT_NUMBER    1024
 #define BUFFER_SIZE         10
@@ -1308,17 +1357,17 @@ void lt(epoll_event* events, int number, int epollfd, int listenfd)
 
         } else if (events[i].events &amp;amp; EPOLLIN) {
             /*只要socket中还有数据没有读取这段代码就触发*/
-            printf(&amp;quot;event trigger once\n&amp;quot;);     
+            printf(&quot;event trigger once\n&quot;);     
             memset(buf, 0, BUFFER_SIZE);
             int ret = recv(sockfd, buf, BUFFER_SIZE - 1 , 0);
             if ( ret &amp;lt;= 0) {
                 close(sockfd);
                 continue;
             }
-            printf(&amp;quot;get %d bytes of content: %s\n&amp;quot;, ret, buf);
+            printf(&quot;get %d bytes of content: %s\n&quot;, ret, buf);
 
         } else {
-            printf(&amp;quot;something else happened\n&amp;quot;);    
+            printf(&quot;something else happened\n&quot;);    
 
         }
     }
@@ -1338,7 +1387,7 @@ void et (struct epoll_event* events, int number, int epollfd, int listenfd)
                         addfd(epollfd, connfd, false);
 
                 } else if (events[i].events &amp;amp; EPOLLIN) {
-            printf(&amp;quot;event trigger once\n&amp;quot;);
+            printf(&quot;event trigger once\n&quot;);
 
             while (1) {
             memset(buf, 0, BUFFER_SIZE);
@@ -1346,7 +1395,7 @@ void et (struct epoll_event* events, int number, int epollfd, int listenfd)
                         if ( ret &amp;lt; 0) {
                         /*errno为EAGAIN才表示读取完毕*/
                 if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
-                    printf(&amp;quot;read later\n&amp;quot;);
+                    printf(&quot;read later\n&quot;);
                     break;
                 }
                 close(sockfd);
@@ -1356,13 +1405,13 @@ void et (struct epoll_event* events, int number, int epollfd, int listenfd)
                 close(sockfd);
 
             } else {
-                printf(&amp;quot;get %d bytes of content: %s\n&amp;quot;, ret, buf);  
+                printf(&quot;get %d bytes of content: %s\n&quot;, ret, buf);  
             }
 
             }
 
         } else {
-            printf(&amp;quot;something else happened \n&amp;quot;);       
+            printf(&quot;something else happened \n&quot;);       
         }
     }
 }
@@ -1371,7 +1420,7 @@ int main(int argc, char** argv)
 {
 
     if (argc &amp;lt;= 2) {     
-        printf(&amp;quot;usage: %s ip_address port_number\n&amp;quot;, basename(argv[0]));    
+        printf(&quot;usage: %s ip_address port_number\n&quot;, basename(argv[0]));    
         return 1;     
     }    
     const char* ip = argv[1];     
@@ -1387,7 +1436,7 @@ int main(int argc, char** argv)
     /*  地址重用    */
     int on = 1;
     if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;amp;on, sizeof(on)) == -1) {
-       perror(&amp;quot;setsockopt error&amp;quot;);
+       perror(&quot;setsockopt error&quot;);
     }
 
     ret = bind(listenfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
@@ -1405,7 +1454,7 @@ int main(int argc, char** argv)
     while(1) {
     int ret = epoll_wait(epollfd, events, MAX_EVENT_NUMBER, -1);
     if (ret &amp;lt; 0) {
-        printf(&amp;quot;epoll failure&amp;quot;);
+        printf(&quot;epoll failure&quot;);
         break;
     }
 //  et(events, ret, epollfd, listenfd);    /*et模式的处理方式*/
@@ -1416,15 +1465,16 @@ int main(int argc, char** argv)
 
     return 0;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;总的来说不难，主要的工作流程同select类似:&lt;br&gt;
-1. 建立socket&lt;br&gt;
-2. bind绑定地址&lt;br&gt;
-3. listen监听&lt;br&gt;
-4. epoll&lt;em&gt;create建立epoll&lt;br&gt;
-5. epoll&lt;/em&gt;ctl将监听的sockfd加入epoll&lt;br&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;总的来说不难，主要的工作流程同select类似:&lt;br/&gt;
+1. 建立socket&lt;br/&gt;
+2. bind绑定地址&lt;br/&gt;
+3. listen监听&lt;br/&gt;
+4. epoll_create建立epoll&lt;br/&gt;
+5. epoll_ctl将监听的sockfd加入epoll&lt;br/&gt;
 6. epoll_wait等待
-* 当发生事件的是sockfd时候，表示有连接上来了，将连接上的描述符加入epoll中&lt;br&gt;
+* 当发生事件的是sockfd时候，表示有连接上来了，将连接上的描述符加入epoll中&lt;br/&gt;
 * 如果发生事件的不是sockfd时候，表示是客户端发送了数据，读取数据即可&lt;/p&gt;
 
 &lt;h4&gt;需要注意的是:&lt;/h4&gt;
@@ -1434,21 +1484,22 @@ int main(int argc, char** argv)
 &lt;li&gt;对于LT模式只要正常读取即可，因为假如有数据没有读取完毕，那么epoll_wait会一直通知你让你去读&lt;/li&gt;
 &lt;/ul&gt;
 
+
 &lt;p&gt;errno参考文章&lt;a href=&quot;http://ucshell.com/archives/1339&quot;&gt;《errno中EAGAIN的含义》&lt;/a&gt;&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/02/27/use-epoll/&quot;&gt;epoll编程实例&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on February 27, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/27/use-epoll/&quot;&gt;epoll编程实例&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 27, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[errno中EAGAIN含义]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/02/27/errno-EAGIN/" />
-  <id>http://ucshell.github.com/2014/02/27/errno-EAGIN</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/27/errno-EAGIN/" />
+  <id>http://localhost:4000/2014/02/27/errno-EAGIN</id>
   <published>2014-02-27T13:39:59Z</published>
   <updated>2014-02-27T13:39:59Z</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;从字面上来看，是提示再试一次。这个错误经常出现在当应用程序进行一些非阻塞(non-blocking)操作(对文件或socket)的时候。&lt;/p&gt;
@@ -1473,19 +1524,19 @@ int main(int argc, char** argv)
 
 &lt;p&gt;最后，如果recv的返回值为0，那表明连接已经断开，我们的接收操作也应该结束。&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/02/27/errno-EAGIN/&quot;&gt;errno中EAGAIN含义&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on February 27, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/27/errno-EAGIN/&quot;&gt;errno中EAGAIN含义&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 27, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Fedora19安装Monaco字体]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/02/26/fedora19-install-monaco/" />
-  <id>http://ucshell.github.com/2014/02/26/fedora19-install-monaco</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/26/fedora19-install-monaco/" />
+  <id>http://localhost:4000/2014/02/26/fedora19-install-monaco</id>
   <published>2014-02-26T13:12:28Z</published>
   <updated>2014-02-26T13:12:28Z</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;最近使用终端发现字体有一种说不出来的别扭，以前看到过一篇文章是推荐编程字体的！&lt;/p&gt;
@@ -1496,25 +1547,27 @@ int main(int argc, char** argv)
 http://www.gringod.com/wp-upload/MONACO.TTF&lt;/p&gt;
 
 &lt;p&gt;安装&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd /usr/share/fonts/
+
+&lt;pre&gt;&lt;code&gt;cd /usr/share/fonts/
 
 sudo cp $HOME/MONACO.TTF .      #拷贝MONACO字体到/usr/share/fonts/文件中
 
 sudo fc-cache -v -f .
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/02/26/fedora19-install-monaco/&quot;&gt;Fedora19安装Monaco字体&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on February 26, 2014.&lt;/p&gt;</content>
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/26/fedora19-install-monaco/&quot;&gt;Fedora19安装Monaco字体&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 26, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[epoll模型]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/02/26/epoll/" />
-  <id>http://ucshell.github.com/2014/02/26/epoll</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/26/epoll/" />
+  <id>http://localhost:4000/2014/02/26/epoll</id>
   <published>2014-02-26T12:01:34Z</published>
   <updated>2014-02-26T12:01:34Z</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;设想这样的一个场景:
@@ -1530,6 +1583,7 @@ sudo fc-cache -v -f .
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;调用epoll_wait收集发生事件的连接&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
+
 &lt;p&gt;这样只需要在进程启动时建立一个epoll对象，并在需要的时候向他添加或删除连接就可以了
 所以在收集事件时候，epoll_wait的效率就非常高，因为epoll_wait并没有向操作系统传递这100万个连接，内核也不需要去遍历全部连接。&lt;/p&gt;
 
@@ -1539,10 +1593,11 @@ epoll没有以上的缺点，即同时监控的描述符的个数不受限制(�
 
 &lt;p&gt;epoll对事件的响应是触发式的，也就是无需对整个监控描述符列表做扫描，只需要对有事件发生的描述符做处理即可&lt;/p&gt;
 
-&lt;h1&gt;&lt;/h1&gt;
+&lt;hr /&gt;
 
 &lt;p&gt;使用epoll&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;int epoll_create(int size);
+
+&lt;pre&gt;&lt;code&gt;int epoll_create(int size);
 
 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
 
@@ -1550,7 +1605,8 @@ int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
 
 int epoll_pwait(int epfd, struct epoll_event *events, int maxevents, int timeout,
          const sigset_t *sigmask);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h5&gt;epoll_create:&lt;/h5&gt;
 
 &lt;p&gt;epoll_create会返回一个句柄，之后epoll的使用都将使用这个句柄来标识。&lt;/p&gt;
@@ -1570,20 +1626,25 @@ int epoll_pwait(int epfd, struct epoll_event *events, int maxevents, int timeout
 &lt;p&gt;参数epfd是epoll_create返回的句柄;&lt;/p&gt;
 
 &lt;p&gt;op取值如下:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;EPOLL_CTL_ADD    添加新事件到epoll    
+
+&lt;pre&gt;&lt;code&gt;EPOLL_CTL_ADD    添加新事件到epoll    
 EPOLL_CTL_MOD    修改epoll中的事件
 EPOLL_CTL_DEL    删除epoll中的事件
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;fd是带检测的连接套接字&lt;/p&gt;
 
 &lt;p&gt;event参数是告诉epoll对什么样的事件感兴趣&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;struct epoll_event{
+
+&lt;pre&gt;&lt;code&gt;struct epoll_event{
     __uint32_t events;
     epoll_data_t data;
 };
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;events的取值如下:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;EPOLLIN        表示对应的连接上有数据可以读出(TCP连接的远端主动关闭连接，也相当于可读，因为需要处理发送来的FIN包)
+
+&lt;pre&gt;&lt;code&gt;EPOLLIN        表示对应的连接上有数据可以读出(TCP连接的远端主动关闭连接，也相当于可读，因为需要处理发送来的FIN包)
 
 EPOLLOUT       表示对应的连接上可以写入数据发送(主动向上游服务器发起非阻塞的TCP连接，连接建立成功的事件相当于可写事件)
 
@@ -1598,15 +1659,18 @@ EPOLLHUP       表示对应的连接被挂起
 EPOLLLET       表示将出发方式设置为边缘触发(ET),系统默认为水平触发(LT)
 
 EPOLLONESHOT   表示对这个事件只处理一次，下次需要处理时需重新加入epoll
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;data成员结构如下:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;typedef union epoll_data{
+
+&lt;pre&gt;&lt;code&gt;typedef union epoll_data{
     void*        ptr;
     int          fd;
     uint32_t     u32;
     uint64_t     u64;
 }epoll_data_t;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;epoll_wait:&lt;/p&gt;
 
 &lt;p&gt;收集在epoll监控的事件中已经发生的事情，如果epoll中没有任何一个事件发生，则最多等待timeout毫秒后返回。&lt;/p&gt;
@@ -1618,6 +1682,7 @@ EPOLLONESHOT   表示对这个事件只处理一次，下次需要处理时需�
 &lt;li&gt;&lt;p&gt;如果返回-1.则表示出现错误,需要检查errno错误码判断错误类型&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
+
 &lt;p&gt;epfd是epoll的描述符&lt;/p&gt;
 
 &lt;p&gt;events是分配好的epoll_event结构体数组，epoll将会把发生的事件复制到events数组中(&lt;strong&gt;events不可以是空指针&lt;/strong&gt;，内核仅仅负责将数据复制到events数组中，不会帮助我们在用户态中分配内存，这样的效率很高)。&lt;/p&gt;
@@ -1627,7 +1692,8 @@ EPOLLONESHOT   表示对这个事件只处理一次，下次需要处理时需�
 &lt;p&gt;timeout表示在没有检测到事件发生时最多等待的时间(单位毫秒)，如果为0,则表示epoll_wait在没有检测到事件发生时会立刻发挥，不会等待(有则获取，没有也不会阻塞等待)，取值-1则表示无限等待&lt;/p&gt;
 
 &lt;p&gt;epoll_wait与epoll_pwait的区别是epoll_pwait可以通过最后一个参数设置阻塞过程中的信号屏蔽字&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;ready = epoll_pwait(epfd, &amp;amp;events, maxevents, timeout, &amp;amp;sigmask);
+
+&lt;pre&gt;&lt;code&gt;ready = epoll_pwait(epfd, &amp;amp;events, maxevents, timeout, &amp;amp;sigmask);
 
 等价于以下调用
 
@@ -1635,10 +1701,11 @@ sigset_t origmask;
 sigprocmask(SIG_SETMASK, &amp;amp;sigmask, &amp;amp;origmask);
 ready = epoll_wait(epfd, &amp;amp;events, maxevents, timeout);
 sigprocmask(SIG_SETMASK, &amp;amp;origmask, NULL);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;注意:不再使用epoll时，必须使用close来关闭句柄&lt;/p&gt;
 
-&lt;h1&gt;&lt;/h1&gt;
+&lt;hr /&gt;
 
 &lt;p&gt;epoll有两种工作模式:&lt;strong&gt;LT(level-triggered)模式和ET(edge-triggered)模式&lt;/strong&gt;&lt;/p&gt;
 
@@ -1653,12 +1720,10 @@ sigprocmask(SIG_SETMASK, &amp;amp;origmask, NULL);
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;当一个新的事件到来时，ET模式下当然可以从epoll_wait调用中获得这个事件，但是如果这次没有把这个事件对应的套接字缓冲区处理完，在这个套接字没有新的事件再次到来的时，ET模式下是没有办法再次从epoll_wait调用中获取这个事件的;&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;LT模式刚好相反，只要一个事件对应的套接字缓冲区还有数据，就总能从epoll_wait中获得这个事件;因此LT模式下开发epoll应用要简单一些，而ET模式下事件发生时，如果没有彻底将缓冲区数据处理完，则会导致缓冲区中的用户请求得不到响应&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;LT模式下，当描述符从未就绪变为就绪时，则内核会持续通知，知道这件事处理完成;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;ET模式下，当描述符从未就绪变为就绪时，则内核通过epoll告诉进程该描述符有事情发生，之后就算进程一直不对这个就绪状态的事件进行任何操作，内核也不会再发送更多的通知(除非，该I/O又有新的事件发生)，也就是说内核仅在I/O描述符状态发生变化的那个突变边缘对进程进行一次通知&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;ul&gt;
-&lt;li&gt;LT模式下，当描述符从未就绪变为就绪时，则内核会持续通知，知道这件事处理完成;&lt;/li&gt;
-&lt;li&gt;ET模式下，当描述符从未就绪变为就绪时，则内核通过epoll告诉进程该描述符有事情发生，之后就算进程一直不对这个就绪状态的事件进行任何操作，内核也不会再发送更多的通知(除非，该I/O又有新的事件发生)，也就是说内核仅在I/O描述符状态发生变化的那个突变边缘对进程进行一次通知&lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;p&gt;举个例子:&lt;/p&gt;
 
@@ -1672,14 +1737,15 @@ sigprocmask(SIG_SETMASK, &amp;amp;origmask, NULL);
 &lt;li&gt;进程A调用epoll_wait函数;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;在第5步中，进程A调用epoll_wait函数后会阻塞而不会处罚可读事件，即便是我们知道当前pipe P中仍然有1KB的数据没有读取，假如此时进程B在等待进程A读完全部数据后给出的响应，而没有写入新的数据，那么将会导致ABBA的&amp;quot;假死锁&amp;quot;异常状态;
+
+&lt;p&gt;在第5步中，进程A调用epoll_wait函数后会阻塞而不会处罚可读事件，即便是我们知道当前pipe P中仍然有1KB的数据没有读取，假如此时进程B在等待进程A读完全部数据后给出的响应，而没有写入新的数据，那么将会导致ABBA的&quot;假死锁&quot;异常状态;
 假如进程B不管A是否已读完所有数据，进行第6步&lt;/p&gt;
 
 &lt;p&gt;6.进程B往P的写端又写入2KB数据&lt;/p&gt;
 
 &lt;p&gt;那么此时A进程的epoll_wait函数仍然会捕获rfd上的可读事件&lt;/p&gt;
 
-&lt;p&gt;根据边缘触发方式的特性，epoll模型工作在ET模式时，必须使用非阻塞文件描述符，以避免由于一个文件描述符的阻塞读/写操作而导致需处理的其他多个文件描述符人物被&amp;quot;饿死&amp;quot;。&lt;/p&gt;
+&lt;p&gt;根据边缘触发方式的特性，epoll模型工作在ET模式时，必须使用非阻塞文件描述符，以避免由于一个文件描述符的阻塞读/写操作而导致需处理的其他多个文件描述符人物被&quot;饿死&quot;。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;使用ET模式时候，推荐步骤如下:&lt;/strong&gt;&lt;/p&gt;
 
@@ -1688,45 +1754,48 @@ sigprocmask(SIG_SETMASK, &amp;amp;origmask, NULL);
 &lt;li&gt;&lt;strong&gt;只有当read()或write()返回EAGIN或是read()或write()读到/写出的数据长度小于请求的数据长度&lt;/strong&gt;(对于面向流的文件，例如pipe、FIFO、流套接字)时才需要挂起等待下一个事件，否则可能会出现意想不到的逻辑异常&lt;/li&gt;
 &lt;/ol&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/02/26/epoll/&quot;&gt;epoll模型&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on February 26, 2014.&lt;/p&gt;</content>
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/26/epoll/&quot;&gt;epoll模型&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 26, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Realplay cannot open the audio device]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/02/25/realplay-cannot-open-the-audio-device/" />
-  <id>http://ucshell.github.com/2014/02/25/realplay-cannot-open-the-audio-device</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/25/realplay-cannot-open-the-audio-device/" />
+  <id>http://localhost:4000/2014/02/25/realplay-cannot-open-the-audio-device</id>
   <published>2014-02-25T15:33:54Z</published>
   <updated>2014-02-25T15:33:54Z</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
   <content type="html">&lt;p&gt;Realplay cannot open the audio device, Another application may be using it&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;yum install alsa-oss application
+
+&lt;pre&gt;&lt;code&gt;yum install alsa-oss application
 
 vim /usr/share/applications/realplay.desktop
 
 change 
-&amp;quot;Exec=realplay&amp;quot; to &amp;quot;Exec=aoss realplay&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/02/25/realplay-cannot-open-the-audio-device/&quot;&gt;Realplay cannot open the audio device&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on February 25, 2014.&lt;/p&gt;</content>
+&quot;Exec=realplay&quot; to &quot;Exec=aoss realplay&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/25/realplay-cannot-open-the-audio-device/&quot;&gt;Realplay cannot open the audio device&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 25, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[[Nginx学习]HTTP头的分析]]></title>
-  <link rel="alternate" type="text/html" href="http://ucshell.github.com/2014/02/25/Nginx-http-header/" />
-  <id>http://ucshell.github.com/2014/02/25/Nginx-http-header</id>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/25/Nginx-http-header/" />
+  <id>http://localhost:4000/2014/02/25/Nginx-http-header</id>
   <published>2014-02-25T13:16:53Z</published>
   <updated>2014-02-25T13:16:53Z</updated>
   <author>
     <name>Neo</name>
-    <uri>http://ucshell.github.com</uri>
+    <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;struct ngx_http_request_s {
+  <content type="html">&lt;pre&gt;&lt;code&gt;struct ngx_http_request_s {
     ……
     ngx_uint_t                        method;   
     ngx_uint_t                        http_version;
@@ -1752,13 +1821,15 @@ change
 
     ……
 };
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
 
 &lt;h5&gt;方法名的获取:&lt;/h5&gt;
 
 &lt;p&gt;method是Nginx忽略大小写等情形解析出来的用户请求后得到的方法类型，取值范围如下:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;#define NGX_HTTP_UNKNOWN                   0x0001
+
+&lt;pre&gt;&lt;code&gt;#define NGX_HTTP_UNKNOWN                   0x0001
 #define NGX_HTTP_GET                       0x0002
 #define NGX_HTTP_HEAD                      0x0004
 #define NGX_HTTP_POST                      0x0008
@@ -1774,10 +1845,11 @@ change
 #define NGX_HTTP_UNLOCK                    0x2000
 #define NGX_HTTP_PATCH                     0x4000
 #define NGX_HTTP_TRACE                     0x8000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;如果要了解用户请求中的HTTP方法时，应该使用r-&amp;gt;method与对应的宏进行比较，这样是最快的，如果使用method_name成员与字符串做比较，那么效率会差很多。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;还可以使用method_name取得请求中的方法名字符串，method&lt;em&gt;name是ngx&lt;/em&gt;str_t类型的字符串，直接使用printf(&amp;quot;%*s&amp;quot;, r-&amp;gt;method.len, r-&amp;gt;method.data)即可;&lt;/p&gt;
+&lt;p&gt;如果要了解用户请求中的HTTP方法时，应该使用r-&gt;method与对应的宏进行比较，这样是最快的，如果使用method_name成员与字符串做比较，那么效率会差很多。&lt;/p&gt;
+
+&lt;p&gt;还可以使用method_name取得请求中的方法名字符串，method_name是ngx_str_t类型的字符串，直接使用printf(&quot;%*s&quot;, r-&gt;method.len, r-&gt;method.data)即可;&lt;/p&gt;
 
 &lt;p&gt;或者联合使用request_start与method_end取得方法名:&lt;/p&gt;
 
@@ -1795,12 +1867,12 @@ change
 
 &lt;p&gt;method_name.data、request_start这两个指针实际指向的都是同一地址，而且因为他们只是简单的内存指针，而不是真正的字符串指针，所以，不能直接将这些u_char*指针当作字符串来使用。&lt;/p&gt;
 
-&lt;h1&gt;&lt;/h1&gt;
+&lt;hr /&gt;
 
 &lt;p&gt;URI
 补充一点知识:什么是URI&lt;/p&gt;
 
-&lt;p&gt;Web上可用的每种资源 -HTML文档、图像、视频片段、程序等 - 由一个通用资源标识符（Uniform Resource Identifier, 简称&amp;quot;URI&amp;quot;）进行定位。&lt;/p&gt;
+&lt;p&gt;Web上可用的每种资源 -HTML文档、图像、视频片段、程序等 - 由一个通用资源标识符（Uniform Resource Identifier, 简称&quot;URI&quot;）进行定位。&lt;/p&gt;
 
 &lt;p&gt;ngx_str_t类型的uri成员指向用户请求&lt;/p&gt;
 
@@ -1808,35 +1880,37 @@ change
 
 &lt;p&gt;唯一的不同在于method_end指向方法名的最后一个字符，而uri_end指向URI结束后的下一个地址，也就是最后一个字符的下一个字符地址，这是大部分哦u_char*类型指针对xxx_start和xxx_end变量的用法&lt;/p&gt;
 
-&lt;p&gt;ngx_str_t类型的exten成员指向用户请求的文件扩展名，例如在访问&amp;quot;GET/a.txt HTTP/1.1&amp;quot;时，exten的值为{len=3, data=&amp;#39;txt&amp;#39;}&lt;/p&gt;
+&lt;p&gt;ngx_str_t类型的exten成员指向用户请求的文件扩展名，例如在访问&quot;GET/a.txt HTTP/1.1&quot;时，exten的值为{len=3, data=&#39;txt&#39;}&lt;/p&gt;
 
-&lt;p&gt;当访问&amp;quot;GET/a HTTP/1.1&amp;quot;时，exten当值为空{len=0, data=NULL}&lt;/p&gt;
+&lt;p&gt;当访问&quot;GET/a HTTP/1.1&quot;时，exten当值为空{len=0, data=NULL}&lt;/p&gt;
 
 &lt;p&gt;uri_ext指针指向当地址与extern.data相同&lt;/p&gt;
 
-&lt;p&gt;unparsed_uri表示没有进行URL解码的原始请求，例如，当uri为&amp;quot;/a b&amp;quot;时，unparsed_uri为&amp;quot;/a%20b&amp;quot;(空格字符做完编码后为%20)&lt;/p&gt;
+&lt;p&gt;unparsed_uri表示没有进行URL解码的原始请求，例如，当uri为&quot;/a b&quot;时，unparsed_uri为&quot;/a%20b&quot;(空格字符做完编码后为%20)&lt;/p&gt;
 
-&lt;h1&gt;&lt;/h1&gt;
+&lt;hr /&gt;
 
 &lt;p&gt;URL参数
 arg指向用户请求的URL参素
 args_start指向URL参数的起始地址，配合uri_end使用也可以获得URL参数&lt;/p&gt;
 
-&lt;h1&gt;&lt;/h1&gt;
+&lt;hr /&gt;
 
 &lt;p&gt;协议版本
 http_protocol指向用户请求中HTTP的起始地址。&lt;/p&gt;
 
 &lt;p&gt;http_version是Nginx解析过的协议版本，取值范围如下:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;#define NGX_HTTP_VERSION_9                 9
+
+&lt;pre&gt;&lt;code&gt;#define NGX_HTTP_VERSION_9                 9
 #define NGX_HTTP_VERSION_10                1000
 #define NGX_HTTP_VERSION_11                1001
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;使用request_start和request_end可以获取原始用户的请求行&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://ucshell.github.com/2014/02/25/Nginx-http-header/&quot;&gt;[Nginx学习]HTTP头的分析&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://ucshell.github.com&quot;&gt;高手之路&lt;/a&gt; on February 25, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/25/Nginx-http-header/&quot;&gt;[Nginx学习]HTTP头的分析&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 25, 2014.&lt;/p&gt;</content>
 </entry>
 
 </feed>

@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="两次fork避免僵死进程">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/10/11/%E4%B8%A4%E6%AC%A1fork%E9%81%BF%E5%85%8D%E5%83%B5%E6%AD%BB%E8%BF%9B%E7%A8%8B/">
+<meta property="og:url" content="http://localhost:4000/2013/10/11/%E4%B8%A4%E6%AC%A1fork%E9%81%BF%E5%85%8D%E5%83%B5%E6%AD%BB%E8%BF%9B%E7%A8%8B/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/10/11/%E4%B8%A4%E6%AC%A1fork%E9%81%BF%E5%85%8D%E5%83%B5%E6%AD%BB%E8%BF%9B%E7%A8%8B/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/10/11/%E4%B8%A4%E6%AC%A1fork%E9%81%BF%E5%85%8D%E5%83%B5%E6%AD%BB%E8%BF%9B%E7%A8%8B/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -116,44 +116,44 @@
     <div class="article-wrap">
       <p>APUE原文如下：</p>
 
-<blockquote>
-<p>如果一个进程fork一个子进程，但不要它等待子进程终止，也不希望子进程处于僵死状态直到进程终止，实现这一要求的技巧是调用fork两次：</p>
-</blockquote>
+<blockquote><p>如果一个进程fork一个子进程，但不要它等待子进程终止，也不希望子进程处于僵死状态直到进程终止，实现这一要求的技巧是调用fork两次：</p></blockquote>
 
 <p>代码大体如下：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int main()
+
+<pre><code>int main()
 {
          pid_t pid;
          if((pid = fork()) &lt; 0)
-                 perror(&quot;fork error&quot;);
+                 perror("fork error");
          else if(0 == pid)
          {
                  if((pid = fork()) &lt; 0)                          
-                         perror(&quot;fork2 error&quot;);                  
+                         perror("fork2 error");                  
                  else if(pid &gt; 0)
                          exit(0);
 
                  sleep(5);
-                 printf(&quot;second child, parent pid = %d\n&quot;, getppid());
+                 printf("second child, parent pid = %d\n", getppid());
                  exit(0);
          }
 
          if(waitpid(pid, NULL, 0) != pid)
-                 perror(&quot;waitpid error&quot;);
+                 perror("waitpid error");
          exit(0);
 }
-</code></pre></div>
+</code></pre>
+
 <h5>僵死进程何时会出现：</h5>
 
 <p>除非保证<strong>父进程先于子进程结束</strong>或者是保证在<strong>父进程在子进程结束前调用waitpid</strong>进行等待！否则子进程都会成为僵死进程！</p>
 
-<h1></h1>
+<hr />
 
 <p>当我们只fork()一次后，存在父进程和子进程。这时有<strong>两种方法来避免产生僵尸进程</strong>：
 1. 父进程调用waitpid()等函数来接收子进程退出状态。
 2. 父进程先结束，子进程则自动托管到init进程（pid = 1）。</p>
 
-<h1></h1>
+<hr />
 
 <p>只考虑子进程先于父进程结束的情况：</p>
 
@@ -162,15 +162,16 @@
 <li>若父进程调用waitpid()（阻塞调用确保子进程先于父进程结束）来等待子进程结束，父进程在调用waitpid()后进入睡眠状态，只有子进程结束父进程的waitpid()才会返回。</li>
 </ol>
 
+
 <p>如果存在子进程结束，但父进程还未执行到waitpid()的情况，那么这段时期子进程也将处于僵尸进程状态。</p>
 
-<h1></h1>
+<hr />
 
 <p>所以除非保证父进程先于子进程结束或者保证父进程在子进程结束前执行waitpid()，否则子进程均可能成为僵尸进程。</p>
 
 <p>那么如何使父进程创建不会成为僵尸进程的子进程呢？这就要用两次fork()调用</p>
 
-<h1></h1>
+<hr />
 
 <p>父进程一次fork()后产生一个子进程随后立即执行waitpid(子进程pid, NULL, 0)来等待子进程结束
 然后子进程fork()产生孙子进程后立即exit(0)</p>
@@ -186,7 +187,7 @@
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -203,7 +204,7 @@
 
 
         </div>
-        <p class="byline"><strong>两次fork避免僵死进程</strong> was published on <time datetime="2013-10-11T11:54:42Z">October 11, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>两次fork避免僵死进程</strong> was published on <time datetime="2013-10-11T11:54:42Z">October 11, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -211,14 +212,14 @@
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -247,8 +248,8 @@
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

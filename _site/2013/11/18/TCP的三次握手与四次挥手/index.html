@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="TCP的三次握手与四次挥手">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/11/18/TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
+<meta property="og:url" content="http://localhost:4000/2013/11/18/TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/11/18/TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/11/18/TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -115,7 +115,7 @@
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
       <p>TCP的三次握手建立连接如图所示：
-<img src="/uploads/2013/11/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.jpg" alt="三次握手"></p>
+<img src="/uploads/2013/11/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.jpg" alt="三次握手" /></p>
 
 <h5>注意：</h5>
 
@@ -146,7 +146,8 @@
 <p>使用tcpdump来验证TCP的三次握手</p>
 
 <p>使用ssh localhost来连接主机，使用使用tcpdump来验证TCP的三次握手</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost apue]# tcpdump -i lo tcp -S                                         
+
+<pre><code>[root@localhost apue]# tcpdump -i lo tcp -S                                         
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode          
 listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes              
 1 15:08:03.039511 IP6 localhost.44910 &gt; localhost.ssh: Flags [S], seq 3120401438, win 32752, options [mss 16376,sackOK,TS val 1319756 ecr 0,nop,wscale 7], length 0                                                                            
@@ -154,13 +155,14 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 3 15:08:03.039576 IP6 localhost.44910 &gt; localhost.ssh: Flags [.], ack 404185238, win 256, options [nop,nop,TS val 1319756 ecr 1319756], length 0                                                                                                                              
 4 15:08:03.064809 IP6 localhost.ssh &gt; localhost.44910: Flags [P.], seq 404185238:404185259, ack 3120401439, win 256, options [nop,nop,TS val 1319781 ecr 1319756], length 21                                                                                                  
 15:08:03.064944 IP6 localhost.44910 &gt; localhost.ssh: Flags [.], ack 404185259, win 256, options [nop,nop,TS val 1319781 ecr 1319781], length 0
-</code></pre></div>
+</code></pre>
+
 <p>第一行就是第一次握手，客户端向服务器发送SYN标志(Flags [S])，其中seq = 3120401438；
 第二行就是第二次握手，服务器向客户端进行SYN+ACK响应(Flags [S.]),其中seq 404185237, ack 3120401439(是客户端的seq+1的值)
 第三行就是第三次握手，客户端向服务器进行ACK响应(Flags [.]),其中ack 404185238(就是服务器的seq+1的值)。</p>
 
 <p>TCP采用四次挥手关闭连接如图所示:
-<img src="/uploads/2013/11/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.jpg" alt="四次挥手"></p>
+<img src="/uploads/2013/11/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.jpg" alt="四次挥手" /></p>
 
 <p>通信传输结束后，通信的双方都可以释放连接，现在A和B都处于ESTABLISHED状态。</p>
 
@@ -178,9 +180,7 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 <p><strong>此时的TCP还没有完全的释放掉。必须经过时间等待计时器(TIME-WAIT timer)设置的时间2MSL后，A才进入到CLOSED状态。</strong></p>
 
-<blockquote>
-<p>MSL叫做最长报文段寿命，它是任何报文段被丢弃前在网络内的最长时间。</p>
-</blockquote>
+<blockquote><p>MSL叫做最长报文段寿命，它是任何报文段被丢弃前在网络内的最长时间。</p></blockquote>
 
 <p>2MSL也就是这个时间的两倍，RFC建议设置为2分钟，但是2分钟可能太长了，因此TCP允许不同的实现使用更小的MSL值。</p>
 
@@ -189,12 +189,14 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 <p>使用tcpdump来验证TCP的四次挥手</p>
 
 <p>退出ssh连接的主机，使用使用tcpdump来验证TCP的四次挥手</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">15:14:58.836149 IP6 localhost.44911 &gt; localhost.ssh: Flags [P.], seq 1823848744:1823848808, ack 3857143125, win 305, options [nop,nop,TS val 1735551 ecr 1735551], length 64
+
+<pre><code>15:14:58.836149 IP6 localhost.44911 &gt; localhost.ssh: Flags [P.], seq 1823848744:1823848808, ack 3857143125, win 305, options [nop,nop,TS val 1735551 ecr 1735551], length 64
 15:14:58.836201 IP6 localhost.44911 &gt; localhost.ssh: Flags [F.], seq 1823848808, ack 3857143125, win 305, options [nop,nop,TS val 1735551 ecr 1735551], length 0
 15:14:58.837850 IP6 localhost.ssh &gt; localhost.44911: Flags [.], ack 1823848809, win 318, options [nop,nop,TS val 1735554 ecr 1735551], length 0
 15:14:58.842130 IP6 localhost.ssh &gt; localhost.44911: Flags [F.], seq 3857143125, ack 1823848809, win 318, options [nop,nop,TS val 1735559 ecr 1735551], length 0
 15:14:58.842150 IP6 localhost.44911 &gt; localhost.ssh: Flags [.], ack 3857143126, win 305, options [nop,nop,TS val 1735559 ecr 1735559], length 0
-</code></pre></div>
+</code></pre>
+
 <h5>注意：</h5>
 
 <p><strong>seq start:end意思是初始序列号：结束序列号，end = start + length, 但是接受包的结束序号应该是end - 1。</strong>
@@ -224,7 +226,7 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 <p>在这个时候通常的做法就是也调用close，那么TCP层就发送FIN，继续完成四次握手；</p>
 
-<p><strong>如果不调用close，那么对方就会处于FIN<em>WAIT</em>2状态，而本端则会处于CLOSE_WAIT状态；</strong></p>
+<p><strong>如果不调用close，那么对方就会处于FIN_WAIT_2状态，而本端则会处于CLOSE_WAIT状态；</strong></p>
 
 <p>4.在很多时候，TCP连接的断开都会由TCP层自动进行，例如你CTRL+C终止你的程序，TCP连接依然会正常关闭。</p>
 
@@ -233,7 +235,7 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -250,7 +252,7 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 
         </div>
-        <p class="byline"><strong>TCP的三次握手与四次挥手</strong> was published on <time datetime="2013-11-18T11:26:48Z">November 18, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>TCP的三次握手与四次挥手</strong> was published on <time datetime="2013-11-18T11:26:48Z">November 18, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -258,14 +260,14 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -294,8 +296,8 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="MSG_OOB的使用">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2014/03/11/use-msg_oob/">
+<meta property="og:url" content="http://localhost:4000/2014/03/11/use-msg_oob/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2014/03/11/use-msg_oob/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2014/03/11/use-msg_oob/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -120,12 +120,14 @@
 
 <h5>TCP发送带外数据的过程:</h5>
 
-<p>假设一个进程已经往某个TCP连接的发送缓冲中写入了N字节的普通数据，并等待其发送。在数据发送前，该进程又向这个连接写入3字节的带外数据&quot;abc&quot;.此时，待发送的TCP报文段的头部将被设置URG标记，并且紧急指针被设置为指向最后一个带外数据的下一个字节(减去当前TCP报文段的序号值得到其头部中的紧急偏移值)</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">                        TCP发送缓冲区
+<p>假设一个进程已经往某个TCP连接的发送缓冲中写入了N字节的普通数据，并等待其发送。在数据发送前，该进程又向这个连接写入3字节的带外数据"abc".此时，待发送的TCP报文段的头部将被设置URG标记，并且紧急指针被设置为指向最后一个带外数据的下一个字节(减去当前TCP报文段的序号值得到其头部中的紧急偏移值)</p>
+
+<pre><code>                        TCP发送缓冲区
 ---------------------------------------------------------------------
 |第一字节|              |第N字节     | a | b | c(OOB) | 紧急指针|
 ---------------------------------------------------------------------
-</code></pre></div>
+</code></pre>
+
 <p>从图中可以看到，发送端一次发送的多字节的带外数据中只有最后一个字节被当做带外数据(字母c)，而其他数据(a和b)本当成普通数据。</p>
 
 <p>如果TCP模块以多个TCP报文段来发送图中的TCP发送缓冲区中的内容，则每个TCP报文段豆浆被设置URG标志，并且他们的紧急指针指向同一个位置(数据流中带外数据的下一个位置)，但是只有一个TCP报文段真正携带带外数据。</p>
@@ -137,7 +139,8 @@
 <h5>SO_OOBINLINE选项:</h5>
 
 <p>前面讨论的带外数据的接收过程是TCP模块接收带外数据的默认方式，如果我们给TCP连接设置了SO_OOBINLINEE选项，则带外数据将和普通数据一样被TCP模块存放在TCP接收缓冲区中，此时应用程序要像读取普通数据一样来读取带外数据，这种情况下如何区分带外数据和普通数据?可以使用紧急指针来指出带外数据的位置。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/* 发送带外数据 */
+
+<pre><code>/* 发送带外数据 */
 #include &lt;sys/types.h&gt;
 #include &lt;sys/socket.h&gt;
 #include &lt;netinet/in.h&gt;
@@ -154,7 +157,7 @@
 
 int main(int argc, char** argv)
 {
-    const char* ip = &quot;127.0.0.1&quot;;
+    const char* ip = "127.0.0.1";
     int port = 9999;
 
     struct sockaddr_in server_address;
@@ -168,11 +171,11 @@ int main(int argc, char** argv)
     assert(sockfd != -1);
 
     if (connect(sockfd, (struct sockaddr*)&amp;server_address, sizeof(server_address)) &lt; 0) {
-        perror(&quot;connect failed\n&quot;);
+        perror("connect failed\n");
 
     } else {
-        const char* oob_data = &quot;abc&quot;;
-        const char* normal_data = &quot;123&quot;;
+        const char* oob_data = "abc";
+        const char* normal_data = "123";
         send(sockfd, normal_data, strlen(normal_data), 0);
         send(sockfd, oob_data, strlen(oob_data), MSG_OOB);
         send(sockfd, normal_data, strlen(normal_data), 0);
@@ -203,7 +206,7 @@ int main(int argc, char** argv)
 #define BUF_SIZE 1024
 int main(int argc, char** argv)
 {
-    const char* ip = &quot;127.0.0.1&quot;;
+    const char* ip = "127.0.0.1";
     int port = 9999;
 
     struct sockaddr_in address;
@@ -227,7 +230,7 @@ int main(int argc, char** argv)
 
     int connfd = accept(sockfd, (struct sockaddr*)&amp;client, &amp;client_length);
     if (connfd &lt; 0) {
-        printf(&quot;accept error\n&quot;);
+        printf("accept error\n");
 
     } else {
         char buf[BUF_SIZE];
@@ -235,19 +238,19 @@ int main(int argc, char** argv)
         memset(buf, 0, BUF_SIZE);
         ret = recv(connfd, buf, BUF_SIZE-1, 0);
         assert(ret &gt; 0);
-        printf(&quot;get %d bytes of normal data:\n%s\n&quot;, ret, buf);
+        printf("get %d bytes of normal data:\n%s\n", ret, buf);
 
 
         memset(buf, 0, BUF_SIZE);
         ret = recv(connfd, buf, BUF_SIZE-1, MSG_OOB);
         assert(ret &gt; 0);
-        printf(&quot;get %d bytes of oob data:\n%s\n&quot;, ret, buf);
+        printf("get %d bytes of oob data:\n%s\n", ret, buf);
 
 
         memset(buf, 0, BUF_SIZE);
         ret = recv(connfd, buf, BUF_SIZE-1, 0);
         assert(ret &gt; 0);
-        printf(&quot;get %d bytes of normal data:\n%s\n&quot;, ret, buf);
+        printf("get %d bytes of normal data:\n%s\n", ret, buf);
 
         close(connfd);
     }
@@ -256,21 +259,25 @@ int main(int argc, char** argv)
 
     return 0;
 }
-</code></pre></div>
+</code></pre>
+
 <h5>程序执行结果:</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">get 3 bytes of normal data:
+
+<pre><code>get 3 bytes of normal data:
 123
 get 1 bytes of oob data:
 c
 get 2 bytes of normal data:
 ab
-</code></pre></div>
-<p>由此可见，客户端发送给服务器的3字节带外数据&quot;abc&quot;中，仅有最后一个字符&#39;c&#39;被服务器真正当成了带外数据接收;</p>
+</code></pre>
 
-<p>并且服务器对正常数据的接收被带外数据截断，也就是说前一部分正常数据&quot;123ab&quot;和后续正常数据&quot;123&quot;是不能被一个recv调用全部读出的。</p>
+<p>由此可见，客户端发送给服务器的3字节带外数据"abc"中，仅有最后一个字符'c'被服务器真正当成了带外数据接收;</p>
+
+<p>并且服务器对正常数据的接收被带外数据截断，也就是说前一部分正常数据"123ab"和后续正常数据"123"是不能被一个recv调用全部读出的。</p>
 
 <h5>tcpdump抓包结果:</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">15:49:07.237438 IP 127.0.0.1.54354 &gt; 127.0.0.1.distinct: Flags [S], seq 3396511771, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 0,nop,wscale 7], length 0
+
+<pre><code>15:49:07.237438 IP 127.0.0.1.54354 &gt; 127.0.0.1.distinct: Flags [S], seq 3396511771, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 0,nop,wscale 7], length 0
     0x0000:  4500 003c 1d6a 4000 4006 1f50 7f00 0001
     0x0010:  7f00 0001 d452 270f ca72 a81b 0000 0000
     0x0020:  a002 aaaa fe30 0000 0204 ffd7 0402 080a
@@ -295,8 +302,9 @@ ab
     0x0010:  7f00 0001 d452 270f ca72 a81f 00c0 5977
     0x0020:  8038 0156 fe2b 0003 0101 080a 0065 b572
     0x0030:  0065 b571 6162 63
-</code></pre></div>
-<p>通过tcpdump抓取的数据来看，可以看到标志U，这表示在TCP头部设置了紧急标志，&quot;urg 3&quot;是紧急偏移值，他指出带外数据在字节流中的位置的下一个位置是7，其中的4是该TCP报文段的序号值相对与初始序号值的偏移，因此带外数据是字节流中第6个字符，也就是字符&quot;c&quot;</p>
+</code></pre>
+
+<p>通过tcpdump抓取的数据来看，可以看到标志U，这表示在TCP头部设置了紧急标志，"urg 3"是紧急偏移值，他指出带外数据在字节流中的位置的下一个位置是7，其中的4是该TCP报文段的序号值相对与初始序号值的偏移，因此带外数据是字节流中第6个字符，也就是字符"c"</p>
 
 <h5>注意:</h5>
 
@@ -307,17 +315,20 @@ ab
 <p>Linux内核检测到TCP紧急标记时，将通知应用程序有带外数据需要接受;</p>
 
 <p>内核同志应用程序带外数据到达的两种常见方式是:
-** * I/O复用产生的异常事件**
-** * SIGURG信号**</p>
+<strong> * I/O复用产生的异常事件</strong>
+<strong> * SIGURG信号</strong></p>
 
 <p>但是，即使应用程序得到了有带外数据需要接受的通知，还需要知道带外数据在数据流中具体的位置，才能准确接受带外数据</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#include &lt;sys/socket.h&gt;
+
+<pre><code>#include &lt;sys/socket.h&gt;
 int sockatmark(int sockfd);
-</code></pre></div>
+</code></pre>
+
 <p>sockatmark判断sockfd是否处于带外标记，即下一个读取到的数据是否是带外数据。
 * 如果是sockatmark返回1，此时我们便可以使用带有MSG_OOB标志的recv调用来接受带外数据.
 * 如果不是则返回0</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/* 利用异常事件来读取MSG_OOB信息 */
+
+<pre><code>/* 利用异常事件来读取MSG_OOB信息 */
 #include &lt;sys/types.h&gt;
 #include &lt;sys/socket.h&gt;
 #include &lt;netinet/in.h&gt;
@@ -335,7 +346,7 @@ int sockatmark(int sockfd);
 int main(int argc, char** argv)
 {
 
-    const char* ip = &quot;127.0.0.1&quot;;
+    const char* ip = "127.0.0.1";
     int port = 80;
     int ret = 0;
     struct sockaddr_in address;
@@ -359,7 +370,7 @@ int main(int argc, char** argv)
     int connfd = accept(listenfd, (struct sockaddr*)&amp;client_address, &amp;client_addresslength);
 
     if (connfd &lt; 0 ) {
-        printf(&quot;errno is : %d\n&quot;, errno);
+        printf("errno is : %d\n", errno);
         close(listenfd);
     }
 
@@ -378,7 +389,7 @@ int main(int argc, char** argv)
 
         ret = select(connfd + 1, &amp;read_fds, NULL, &amp;exception_fds, NULL);
         if (ret &lt; 0) {
-            printf(&quot;selection failure\n&quot;);
+            printf("selection failure\n");
             break;
         }
 
@@ -387,14 +398,14 @@ int main(int argc, char** argv)
             if (ret &lt;= 0) {
                 break;
             }
-            printf(&quot;get %d bytes of normal data: %s\n&quot;, ret, buf);
+            printf("get %d bytes of normal data: %s\n", ret, buf);
         } else if (FD_ISSET(connfd, &amp;exception_fds)) {
 
             ret = recv(connfd, buf, sizeof(buf) - 1, MSG_OOB);
             if (ret &lt;= 0) {
                 break;
             } 
-            printf(&quot;get %d bytes of oob data: %s\n&quot;, ret, buf);
+            printf("get %d bytes of oob data: %s\n", ret, buf);
         }
 
     }
@@ -404,11 +415,12 @@ int main(int argc, char** argv)
 
     return 0;
 }
-</code></pre></div>
+</code></pre>
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -425,7 +437,7 @@ int main(int argc, char** argv)
 
 
         </div>
-        <p class="byline"><strong>MSG_OOB的使用</strong> was published on <time datetime="2014-03-11T00:00:00+00:00">March 11, 2014</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>MSG_OOB的使用</strong> was published on <time datetime="2014-03-11T00:00:00+00:00">March 11, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -433,14 +445,14 @@ int main(int argc, char** argv)
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -469,8 +481,8 @@ int main(int argc, char** argv)
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

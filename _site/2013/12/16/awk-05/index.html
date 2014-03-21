@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="awk字符串操作函数">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/16/awk-05/">
+<meta property="og:url" content="http://localhost:4000/2013/12/16/awk-05/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/16/awk-05/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/16/awk-05/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -124,21 +124,24 @@
 
 <p><strong>printf会将格式化字符串打印到stdout</strong></p>
 
-<p>** sprintf函数返回可以赋值给变量的格式化字符串**</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost awk]# cat print.awk
+<p><strong> sprintf函数返回可以赋值给变量的格式化字符串</strong></p>
+
+<pre><code>[root@localhost awk]# cat print.awk
 {
         x = 1
-        b = &quot;foo&quot;
-        printf(&quot;%s got a %d on the last test\n&quot;, &quot;Jim&quot;, 83);
-        myout = sprintf(&quot;%s - %d&quot;, b, x);
+        b = "foo"
+        printf("%s got a %d on the last test\n", "Jim", 83);
+        myout = sprintf("%s - %d", b, x);
         print myout
 }
 [root@localhost awk]# awk -f print.awk num.txt
 Jim got a 83 on the last test
 foo - 1
-</code></pre></div>
+</code></pre>
+
 <p>awk格式化输出支持的转义字符</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">===============================================================
+
+<pre><code>===============================================================
 c           ASCII字符
 s           字符串
 d           十进制整数
@@ -153,22 +156,26 @@ e           科学计数法表示浮点数(e的形式)
 f           浮点数
 g           选用e或f中较短的一种形式
 ===============================================================
-</code></pre></div>
+</code></pre>
+
 <p>printf的修饰符，放在%后面</p>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">- 左对齐修饰符
+<hr />
+
+<pre><code>- 左对齐修饰符
 
 # 显示八进制整数时在前面加个0，显示十六进制在前面加个0x
 
 + 显示使用d、e、f和g转换的整数时，加上正负号
 
 0 使用0而不是空字符来填充所显示的值
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>字符串函数</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">===============================================================
+
+<pre><code>===============================================================
 sub(/reg/, newstr, str)     将str中第一个匹配reg的子串替换为newstr
 
 gsub(/reg/, newstr, str)        将str中所有匹配reg的子串全部替换为newstr
@@ -212,7 +219,7 @@ awk截断字符串
 1.first
 2.second
 3.third
-[root@localhost awk]# awk &#39;{print substr($1, 3)}&#39; info.txt
+[root@localhost awk]# awk '{print substr($1, 3)}' info.txt
 first
 second
 third
@@ -225,7 +232,7 @@ substr第三个参数表示返回字符的个数
 025-587-49079:Li Lei
 025-587-49070:Uncle Wang
 025-587-49071:Han Meimei
-[root@localhost awk]# awk &#39;{print substr($1, 5, 9)}&#39; info.txt
+[root@localhost awk]# awk '{print substr($1, 5, 9)}' info.txt
 587-49079
 587-49070
 587-49071
@@ -233,30 +240,33 @@ substr第三个参数表示返回字符的个数
 
 
 
-match(&quot;My id is 12345&quot; /[0-9]+/);
+match("My id is 12345" /[0-9]+/);
 #返回10，也就是数字1出现的位置
 
-match(&quot;this is a test&quot;, /[a-z]+$/)
+match("this is a test", /[a-z]+$/)
 #返回11，[a-z]+$表示以连续小写字母结尾的开始位置，这里是11也就是t字符
 
-echo &quot;testthisistest&quot;| awk &#39;{gsub(/test/, &quot;mytest&quot;);print}&#39;
+echo "testthisistest"| awk '{gsub(/test/, "mytest");print}'
 将test全部替换位mytest
-</code></pre></div>
+</code></pre>
+
 <p>字符串重建</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">s1 = &quot;hello1&quot;
-s2 = &quot;hello2&quot;
+
+<pre><code>s1 = "hello1"
+s2 = "hello2"
 s = s1 s2
 print s
 
-s1 = &quot;hello1&quot;
-s2 = &quot;hello2&quot;
-s = sprintf(&quot;%s%s&quot;, s1, s2);
+s1 = "hello1"
+s2 = "hello2"
+s = sprintf("%s%s", s1, s2);
 print s
-</code></pre></div>
+</code></pre>
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -273,7 +283,7 @@ print s
 
 
         </div>
-        <p class="byline"><strong>awk字符串操作函数</strong> was published on <time datetime="2013-12-16T16:31:00Z">December 16, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>awk字符串操作函数</strong> was published on <time datetime="2013-12-16T16:31:00Z">December 16, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -281,14 +291,14 @@ print s
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -317,8 +327,8 @@ print s
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

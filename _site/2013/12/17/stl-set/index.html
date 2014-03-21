@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="STL::set">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/17/stl-set/">
+<meta property="og:url" content="http://localhost:4000/2013/12/17/stl-set/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/17/stl-set/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/17/stl-set/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -127,7 +127,8 @@
 <p><strong>关联容器的键是不允许被改变的，所以set的值时不能被修改的。set不允许两个元素具有相同的键。</strong></p>
 
 <p><strong>set采用的是非线性链表结构——树，所以它的迭代器不会向vector容器的迭代器那样因为重新分配存储区而失效。</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">private:
+
+<pre><code>private:
       typedef typename _Alloc::template rebind&lt;_Key&gt;::other _Key_alloc_type;
 
       typedef _Rb_tree&lt;key_type, value_type, _Identity&lt;value_type&gt;,
@@ -136,92 +137,111 @@
       ……
       set(): _M_t() { }
       ……
-</code></pre></div>
+</code></pre>
+
 <p>可以看到set确实是建立在红黑树的基础上的。</p>
 
-<h1></h1>
+<hr />
 
 <p>begin</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator begin();
+
+<pre><code>iterator begin();
 const_iterator begin() const;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回一个指向set容器中其实元素的迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>clear</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void clear();
-</code></pre></div>
+
+<pre><code>void clear();
+</code></pre>
+
 <p>作用:</p>
 
 <p>删除set中所有元素</p>
 
-<h1></h1>
+<hr />
 
 <p>count</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type count(const Key&amp; Key) const;
-</code></pre></div>
+
+<pre><code>size_type count(const Key&amp; Key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回set容器中元素键值为Key的元素的个数</p>
 
-<h1></h1>
+<hr />
 
 <p>empty</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">bool empty() const;
-</code></pre></div>
+
+<pre><code>bool empty() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>如果set容器中没有容纳任何元素，则empty返回true</p>
 
-<h1></h1>
+<hr />
 
 <p>end</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_iterator end() const;
-</code></pre></div>
+
+<pre><code>const_iterator end() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回指向set容器中末尾元素的迭代器，例如[a, b)中指向b</p>
 
-<h1></h1>
+<hr />
 
 <p>erase</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator erase(iterator it);
+
+<pre><code>iterator erase(iterator it);
 iterator erase(iterator first, iterator last);
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>删除set容器中it位置的元素，或者删除在first与last之间的元素；</p>
 
 <p>函数返回的是指向set容器中被删除的最后一个元素的下一个位置的迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>find</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_iterator find(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>const_iterator find(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回set容器中一个指向找到元素的迭代器，如果没找到则返回set尾部的迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>get_allocator</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">allocator_type get_allocator() const;
-</code></pre></div>
+
+<pre><code>allocator_type get_allocator() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回set容器的内存分配器</p>
 
-<h1></h1>
+<hr />
 
 <p>insert</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">pair&lt;iterator, bool&gt; insert(const value_type&amp; x);
+
+<pre><code>pair&lt;iterator, bool&gt; insert(const value_type&amp; x);
 iterator insert(iterator it, const value_type&amp; x);
 void insert(const value_type* first, const value_type* last);
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>在迭代器中插入值为x的元素；</p>
@@ -230,107 +250,127 @@ void insert(const value_type* first, const value_type* last);
 
 <p>在容器中插入区间[first, last)中所有的元素；</p>
 
-<h1></h1>
+<hr />
 
 <p>max_size</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type max_size() const;
-</code></pre></div>
+
+<pre><code>size_type max_size() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回set容器所能容纳的元素数量的最大值</p>
 
-<h1></h1>
+<hr />
 
 <p>rbegin</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_reverse_iterator rbegin() cosnt;
-</code></pre></div>
+
+<pre><code>const_reverse_iterator rbegin() cosnt;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回指向set末尾的反向迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>rend</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">reverse_iterator rend();
+
+<pre><code>reverse_iterator rend();
 const_reverse_iterator rend() cosnt;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回指向set起始位置的反向迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>size</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type size() const;
-</code></pre></div>
+
+<pre><code>size_type size() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回set容器所容纳元素的数目</p>
 
-<h1></h1>
+<hr />
 
 <p>swap</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void swap(set&amp; str);
-</code></pre></div>
+
+<pre><code>void swap(set&amp; str);
+</code></pre>
+
 <p>作用:</p>
 
 <p>交换当前set容器与str容器中的元素，str是一个set容器</p>
 
-<h1></h1>
+<hr />
 
 <p>lower_bound</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_iterator lower_bound(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>const_iterator lower_bound(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回set容器中小于或等于key的第一个元素的迭代器。</p>
 
-<h1></h1>
+<hr />
 
 <p>upper_bound</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">const_iterator upper_bound(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>const_iterator upper_bound(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回set容器中小于或等于key的第一个元素的迭代器。</p>
 
-<h1></h1>
+<hr />
 
 <p>equal_range</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">pair&lt;const_iterator, const_iterator&gt;equal_range(const Key&amp; key) const
-</code></pre></div>
+
+<pre><code>pair&lt;const_iterator, const_iterator&gt;equal_range(const Key&amp; key) const
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回map容器中与定值相等的上下限的两个迭代器；</p>
 
 <p>返回连个迭代器，一个指向map容器中第一个键值为key的元素，一个指向map中最后一个键值为key的元素</p>
 
-<h1></h1>
+<hr />
 
 <p>key_comp</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">key_compare key_comp(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>key_compare key_comp(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回一个用于元素箭的键的比较函数</p>
 
-<h1></h1>
+<hr />
 
 <p>value_comp</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">value_compare value_comp(const Key&amp; key) const;
-</code></pre></div>
+
+<pre><code>value_compare value_comp(const Key&amp; key) const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回一个用于元素间的值比较函数</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>multiset(多元集合)和set(集合)的特性和用法完全相同，唯一不同的是multiset支持重复键值</strong></p>
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -347,7 +387,7 @@ const_reverse_iterator rend() cosnt;
 
 
         </div>
-        <p class="byline"><strong>STL::set</strong> was published on <time datetime="2013-12-17T04:24:46Z">December 17, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>STL::set</strong> was published on <time datetime="2013-12-17T04:24:46Z">December 17, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -355,14 +395,14 @@ const_reverse_iterator rend() cosnt;
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -391,8 +431,8 @@ const_reverse_iterator rend() cosnt;
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

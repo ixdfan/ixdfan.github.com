@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="STL::iterator">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/01/stl-iterator/">
+<meta property="og:url" content="http://localhost:4000/2013/12/01/stl-iterator/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/01/stl-iterator/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/01/stl-iterator/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -117,66 +117,78 @@
       <p>迭代器
 STL的iterator是一种对象，其作用是用来遍历STL容器中的部分或全部元素，因此对于那些需要遍历的容器例如vector、list等，必须在容器的定义中内嵌自己的迭代器，该容器内嵌的迭代器提供一些基本操作符，例如*、++、==、!=、=一遍支持对STL容器的遍历等操作。</p>
 
-<h1></h1>
+<hr />
 
 <p>迭代器的分类：</p>
 
 <p>STL中将迭代器分成5类：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">输入迭代器(inPut iterator)
+
+<pre><code>输入迭代器(inPut iterator)
 输出迭代器(outPut iterator)
 前向迭代器(forward iterator)
 双向迭代器(birectional iterator)
 随机访问迭代器(random access iterator)
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>输入迭代器(inPut iterator)：可用于读取容器中的元素，但是不能保证能支持容器的写入操作。</p>
 
 <h5>必须满足:</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">==、！=:具有相等和不相等操作符，用于比较两个迭代器。
+
+<pre><code>==、！=:具有相等和不相等操作符，用于比较两个迭代器。
 ++:前置和后置的自增运算符
 *:读取元素的解引用操作符
 -&gt;:箭头操作符，可以对迭代器进行解引用
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>输出迭代器(outPut iterator)：可用于向容器中写入元素，但是不能保证能支持容器的读取操作。</p>
 
 <h5>必须满足:</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">++:前置和后置的自增运算符
+
+<pre><code>++:前置和后置的自增运算符
 *:读取元素的解引用操作符
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>前向迭代器(forward iterator):可用读取或写入指定的容器，这类迭代器只会以一个方向遍历容器。</p>
 
 <h5>必须满足:</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">支持输入迭代器和输出迭代器的所有操作
+
+<pre><code>支持输入迭代器和输出迭代器的所有操作
 支持对同一个元素的多次读写
 可复制前向迭代器来记录序列中的一个位置，方便将来返回此位置
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>双向迭代器(birectional iterator):可用从两个方向读取和写入指定的容器。</p>
 
 <h5>注意：STL所有标准库提供的迭代器都至少达到双向迭代器的要求!</h5>
 
 <p>必须满足:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">提供前向迭代器的全部操作
+
+<pre><code>提供前向迭代器的全部操作
 --:双向迭代器还提供前置和后置的自减运算
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>随机访问迭代器(random access iterator):提供在常量时间内访问容器中任意位置的功能</p>
 
 <p>必须满足:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">支持双向迭代器的全部功能
+
+<pre><code>支持双向迭代器的全部功能
 &lt;、&lt;=、&gt;、&gt;=:支持这些关系操作符，用于比较两个迭代器的相对位置。
 +、+=、-、-=:支持迭代器与整形数值n之间的加法和减法操作符，可以使迭代器向前或后移动n个元素。
 -:支持两个迭代器之间的减法操作，可以得到连个迭代器之间的距离。
 []:支持下标操作符[]
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <h5>总结:</h5>
 
@@ -186,8 +198,10 @@ STL的iterator是一种对象，其作用是用来遍历STL容器中的部分或
 <li><p>set/multiset、map/multimap提供的前向迭代器，在定义算法是写作ForwardIterator；</p></li>
 </ul>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#include vector
+
+<hr />
+
+<pre><code>#include vector
 using namespace std;
 
 int main()
@@ -198,9 +212,11 @@ int main()
     ……
     return 0;
 }
-</code></pre></div>
-<p>这段代码用&#39;::&#39;做前缀来声明迭代器iter，能声明一个对象，表明iterator是一个类，但是为什么要使用&#39;::&#39;呢？</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">class A
+</code></pre>
+
+<p>这段代码用'::'做前缀来声明迭代器iter，能声明一个对象，表明iterator是一个类，但是为什么要使用'::'呢？</p>
+
+<pre><code>class A
 {
     public:
     typedef int INT;
@@ -211,9 +227,11 @@ int main()
     A::INT i;
     A::B b;
 }
-</code></pre></div>
-<p>这段代码定义了一个class A，然后又在class A中定义了一个INT类型，还定义了一个嵌套类class B，这时候，如果要在程序中使用class A中的INT类型或B类型去声明一个变量，就要加上一个&#39;::&#39;符号，表明这是在class A中声明的类型。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">class vector : protected _Vector_base&lt;_Tp, _Alloc&gt;
+</code></pre>
+
+<p>这段代码定义了一个class A，然后又在class A中定义了一个INT类型，还定义了一个嵌套类class B，这时候，如果要在程序中使用class A中的INT类型或B类型去声明一个变量，就要加上一个'::'符号，表明这是在class A中声明的类型。</p>
+
+<pre><code>class vector : protected _Vector_base&lt;_Tp, _Alloc&gt;
     {
       // Concept requirements.
       typedef typename _Alloc::value_type                _Alloc_value_type;
@@ -230,15 +248,19 @@ int main()
       typedef typename _Tp_alloc_type::reference         reference;
       typedef typename _Tp_alloc_type::const_reference   const_reference;
       typedef __gnu_cxx::__normal_iterator&lt;pointer, vector&gt; iterator;   //迭代器
-</code></pre></div>
+</code></pre>
+
 <p>iterator是vector中定义的类型，事实上在STL的迭代器都是定义在某个容器类中的，他是专门为每一个容器类分别设计的。
 每种容器都有自己的迭代器。所以声明一个vector类型的迭代器，就要使用vector中定义的迭代器类型。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">vector::iterator iter;
-</code></pre></div>
-<h1></h1>
+
+<pre><code>vector::iterator iter;
+</code></pre>
+
+<hr />
 
 <p>list迭代器</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#include list
+
+<pre><code>#include list
 using namespace std;
 
 int main()
@@ -249,8 +271,9 @@ int main()
     ……
     return 0;
 }
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>其他容器的迭代器</p>
 
@@ -260,33 +283,39 @@ int main()
 
 <p>stack、queue、priority_queue不允许遍历容器，只允许在容器的一端或两端操作元素，所以他们没有迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>以下是正确的：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">vector::iterator iter;
+
+<pre><code>vector::iterator iter;
 list::iterator iter;
 deque::iterator iter;
 set::iterator iter;
 multiset::iterator iter;
 map&lt;int, int&gt;::iterator iter;
 mulitmap&lt;int, int&gt;::iterator iter;
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>以下是错误的：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">stack::iterator iter;
+
+<pre><code>stack::iterator iter;
 queue::iterator iter;
 priority_queue::iterator iter;
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>容器的迭代器例子：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void input(const vector&amp; vec)
+
+<pre><code>void input(const vector&amp; vec)
 {
      vector::iterator iter = vec.begin();
      ……
 }
-</code></pre></div>
+</code></pre>
+
 <p>这个函数的问题是vec是一个const引用，但是却试图在函数中用一个非const迭代器去绑定他。</p>
 
 <p>如果允许这样做，那么就可以非常轻易的使用这个iterator来修改vector引用了，因此在编译时函数就会报错。</p>
@@ -297,12 +326,12 @@ priority_queue::iterator iter;
 
 <p>const容器只能使用const iterator去绑定。</p>
 
-<h1></h1>
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -319,7 +348,7 @@ priority_queue::iterator iter;
 
 
         </div>
-        <p class="byline"><strong>STL::iterator</strong> was published on <time datetime="2013-12-01T05:51:59Z">December 01, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>STL::iterator</strong> was published on <time datetime="2013-12-01T05:51:59Z">December 01, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -327,14 +356,14 @@ priority_queue::iterator iter;
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -363,8 +392,8 @@ priority_queue::iterator iter;
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

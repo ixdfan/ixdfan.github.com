@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程同步之互斥变量">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E5%8F%98%E9%87%8F/">
+<meta property="og:url" content="http://localhost:4000/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E5%8F%98%E9%87%8F/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E5%8F%98%E9%87%8F/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E5%8F%98%E9%87%8F/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -132,54 +132,63 @@
 
 <p>如果一个线程已经锁定了一个互斥锁，第二个线程又试图去锁定这个互斥锁，则第二个线程将被挂起(不占用CPU资源)，直到第一个线程解除对这个互斥锁的锁定为止，第二个线则被唤醒并继续执行，同时锁定这个互斥锁</p>
 
-<h1></h1>
+<hr />
 
 <h5>注意：</h5>
 
 <p><strong>任何想要进入临界区的线程都要对锁进行测试，如果该锁已经被某一个线程所持有，则测试线程会被阻塞，线程会重复上述过程，直到该锁被释放。</strong></p>
 
-<h1></h1>
+<hr />
 
 <p><strong>线程没有释放锁之前所有试图进入临界区的线程都将被阻塞，形成一个阻塞线程队列：</strong></p>
 
-<p>如图所示：<img src="/uploads/2013/11/%E4%BA%92%E6%96%A5%E9%94%81-300x107.jpg" alt="互斥锁"></p>
+<p>如图所示：<img src="/uploads/2013/11/%E4%BA%92%E6%96%A5%E9%94%81-300x107.jpg" alt="互斥锁" /></p>
 
-<h1></h1>
+<hr />
 
 <p>1.锁的初始化：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">静态初始化：pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+<pre><code>静态初始化：pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 动态初始化：int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);
-</code></pre></div>
-<p>其中pthread<em>mutex</em>init第二个参数为互斥量的属性，写为NULL，则表示以默认属性初始化。</p>
+</code></pre>
+
+<p>其中pthread_mutex_init第二个参数为互斥量的属性，写为NULL，则表示以默认属性初始化。</p>
 
 <h5>注意：</h5>
 
 <p><strong>静态初始化有个局限性，如果互斥量使用动态分配内存的方法得到，那么下面的方法是错误的</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">pthread_mutex_t* mutex = malloc(sizeof(pthread_mutex_t));
-mutex = PTHREAD_MUTEX_INITIALIZER;
-</code></pre></div>
-<p>原因在于linux中的pthread<em>mutex</em>t类型是一个结构体，而PTHREAD<em>MUTEX</em>INITIALIZER常量相当于已经设置好的结构体变量中的每个成员变量的值，显而易见，一个已经定义好的结构体对象可以使用这种方法，但是使用malloc分配的结构体对象则不能使用</p>
 
-<h1></h1>
+<pre><code>pthread_mutex_t* mutex = malloc(sizeof(pthread_mutex_t));
+mutex = PTHREAD_MUTEX_INITIALIZER;
+</code></pre>
+
+<p>原因在于linux中的pthread_mutex_t类型是一个结构体，而PTHREAD_MUTEX_INITIALIZER常量相当于已经设置好的结构体变量中的每个成员变量的值，显而易见，一个已经定义好的结构体对象可以使用这种方法，但是使用malloc分配的结构体对象则不能使用</p>
+
+<hr />
 
 <p>2.锁的销毁：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_mutex_destroy(pthread_mutex_t *mutex);
-</code></pre></div>
+
+<pre><code>int pthread_mutex_destroy(pthread_mutex_t *mutex);
+</code></pre>
+
 <p>当不使用锁时，应将其销毁。</p>
 
 <p>3.得到与释放锁</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_mutex_lock(pthread_mutex_t *mutex);
+
+<pre><code>int pthread_mutex_lock(pthread_mutex_t *mutex);
 int pthread_mutex_trylock(pthread_mutex_t *mutex);
 int pthread_mutex_unlock(pthread_mutex_t *mutex);
-</code></pre></div>
-<p>其中pthread<em>mutex</em>lock的参数表示互斥锁，调用线程希望得到互斥锁。如果互斥锁已经被别的线程得到，那么该函数会导致线程阻塞，直到互斥量的锁释放。如果成功得到锁则返回0，失败返回错误号。</p>
+</code></pre>
 
-<p><strong>pthread<em>mutex</em>trylock的参数与返回值的意义同pthread<em>mutex</em>lock一样，但是不同在于pthread<em>mutex</em>trylock函数在得不到指定互斥锁的时候并不会导致调用线程阻塞，而是立即返回一个错误编号EBUSY，表示锁申请的锁处于繁忙状态。</strong></p>
+<p>其中pthread_mutex_lock的参数表示互斥锁，调用线程希望得到互斥锁。如果互斥锁已经被别的线程得到，那么该函数会导致线程阻塞，直到互斥量的锁释放。如果成功得到锁则返回0，失败返回错误号。</p>
 
-<h1></h1>
+<p><strong>pthread_mutex_trylock的参数与返回值的意义同pthread_mutex_lock一样，但是不同在于pthread_mutex_trylock函数在得不到指定互斥锁的时候并不会导致调用线程阻塞，而是立即返回一个错误编号EBUSY，表示锁申请的锁处于繁忙状态。</strong></p>
+
+<hr />
 
 <p>实例：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#define FALSE 0
+
+<pre><code>#define FALSE 0
 #define TRUE 1
 
 void* readfun(void* arg);
@@ -215,7 +224,7 @@ void* readfun(void* arg)
                 pthread_mutex_lock(&amp;mutex);
 
                 if(buffer_has_item == 1){
-                        printf(&quot;%s&quot;, buffer);
+                        printf("%s", buffer);
                         buffer_has_item = 0;
                 }
                 pthread_mutex_unlock(&amp;mutex);
@@ -234,7 +243,7 @@ void* writefun(void* arg)
 
                 pthread_mutex_lock(&amp;mutex);
                 if(buffer_has_item == 0){
-                        sprintf(buffer, &quot;This is %d\n&quot;, i++);
+                        sprintf(buffer, "This is %d\n", i++);
                         buffer_has_item = 1;
                 }
                 pthread_mutex_unlock(&amp;mutex);
@@ -253,11 +262,12 @@ This is 6
 This is 7
 This is 8
 This is 9
-</code></pre></div>
+</code></pre>
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -274,7 +284,7 @@ This is 9
 
 
         </div>
-        <p class="byline"><strong>线程同步之互斥变量</strong> was published on <time datetime="2013-11-11T02:18:25Z">November 11, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>线程同步之互斥变量</strong> was published on <time datetime="2013-11-11T02:18:25Z">November 11, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -282,14 +292,14 @@ This is 9
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -318,8 +328,8 @@ This is 9
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

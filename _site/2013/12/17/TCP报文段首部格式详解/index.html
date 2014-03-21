@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="TCP报文段首部格式详解">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/17/TCP%E6%8A%A5%E6%96%87%E6%AE%B5%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3/">
+<meta property="og:url" content="http://localhost:4000/2013/12/17/TCP%E6%8A%A5%E6%96%87%E6%AE%B5%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/17/TCP%E6%8A%A5%E6%96%87%E6%AE%B5%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/17/TCP%E6%8A%A5%E6%96%87%E6%AE%B5%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -115,7 +115,8 @@
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
       <p>当编码数量达到一定的程度的时候，我们会发现，原来理论真的很重要；所以我才把《计算机网络》仔细的看了一下，要是换在以前，我一定觉的这些纯属理论，没有什么实际用处。但是现在我发现我真的就是缺少这些理论。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">TCP的头格式为： 
+
+<pre><code>TCP的头格式为： 
 struct tcphdr { 
     __u16 source;   /*源地址端口*/ 
     __u16 dest; /*目的地址端口*/ 
@@ -136,18 +137,19 @@ struct tcphdr {
     __u16 urg_ptr; /*紧急字段指针*/ 
 }; 
 头文件：linux/tcp.h
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <h5>源端口和目的端口</h5>
 
 <p>各占2个字节，分别写入源端口号和目的端口号</p>
 
-<h1></h1>
+<hr />
 
 <h5>序号：这个字段的名字也叫报文段序号</h5>
 
-<p>占四个字节，序号的范围是[0-2^32-1],共2^32个序号。序号增加到2^32-1时候，下一个序号就又回到0，也就是说，序号使用mode 2^32运算；</p>
+<p>占四个字节，序号的范围是[0-2<sup>32</sup>-1],共2<sup>32</sup>个序号。序号增加到2<sup>32</sup>-1时候，下一个序号就又回到0，也就是说，序号使用mode 2<sup>32</sup>运算；</p>
 
 <p>TCP是面向字节流的，在TCP连接中传送的字节流中的每一个字节都按顺序编号，整个要传送的字节流的起始序号必须在连接建立时设置。首部中的序号字段值则指的是本报文段所发送的数据的第一个字节的序号。</p>
 
@@ -155,7 +157,7 @@ struct tcphdr {
 
 <p>一个报文段中序号字段值是301，而携带的数据共有100字节，这就表明本报文段的数据的第一个字节的序号是301，最后一个字节的序号是400。显然下一个报文段的序号应该从401开始，即下一个字节的序号字段值应为401。</p>
 
-<h1></h1>
+<hr />
 
 <h5>确认号：</h5>
 
@@ -166,7 +168,7 @@ struct tcphdr {
 
 <p>若确认号 = N，则表明到序号N-1为止的所有的数据都已正确收到</p>
 
-<h1></h1>
+<hr />
 
 <h5>数据偏移：</h5>
 
@@ -178,13 +180,13 @@ struct tcphdr {
 
 <p>数据偏移字段的单位是32位(即4字节为计算单位)。由于4位二进制数能够表示的最大十进制数字是15，因此数据偏移的最大值是60字节，这也是TCP首部的最大长度(即选项长度不能超过40字节)。</p>
 
-<h1></h1>
+<hr />
 
 <h5>保留数据：</h5>
 
 <p>占6位，保留为今后使用，但是现在置为0</p>
 
-<h1></h1>
+<hr />
 
 <h5>紧急URG：</h5>
 
@@ -196,37 +198,37 @@ struct tcphdr {
 
 <p>当URG置为1时候，发送应用进程就告诉发送方的TCP有紧急数据要传送，于是发送方TCP就把紧急数据插入到本报文段数据的最前面，而近期数据后面的数据仍然是普通数据。这时要与紧急指针字段配合使用。</p>
 
-<h1></h1>
+<hr />
 
 <h5>确认ACK</h5>
 
 <p>仅当ACK=1时候确认号字段才有效，当ACK=0时，确认号无效，TCP规定在连接建立后所有传送的报文段都必须把ACK置为1</p>
 
-<h1></h1>
+<hr />
 
 <h5>推送PSH</h5>
 
 <p>当两个应用进程进行交互式的通信时，有时在一端的应用进程希望在键入下一个命令后立刻就能够收到对方的响应。在这种情况下，TCP就可以使用推送操作。这是，发送方TCP把PSH置1，并立即创建一个报文段发送出去。接收方TCP收到PSH=1的报文段就尽快的(即“推送”向前)交互给接收应用进程，而不再等待这个缓存都填满后再向上交付。</p>
 
-<h1></h1>
+<hr />
 
 <h5>复位RST</h5>
 
 <p>当RST=1时，表明TCP连接中出现差错控制(如由于主机崩溃或其他原因)，必须释放连接，然后再重新建立运输连接。RST置为1还用来拒绝一个非法的报文段或拒绝打开一个连接。RST也称为重建位或重置位。</p>
 
-<h1></h1>
+<hr />
 
 <h5>同步SYN</h5>
 
 <p>在建立连接时用来同步序号。当SYN=1而ACK=0时，表明这是一个连接请求报文段，对方若同意建立连接，则应在响应的报文段中使用SYN=1或ACK=1。因此SYN置为1就表示证实一个连接请求或连接接受报文</p>
 
-<h1></h1>
+<hr />
 
 <h5>终止FIN</h5>
 
 <p>用来释放一个连接，当FIN=1时，表明此报文段的发送方的数据已发送完毕，并要求释放运输连接。</p>
 
-<h1></h1>
+<hr />
 
 <h5>窗口</h5>
 
@@ -243,7 +245,8 @@ struct tcphdr {
 <li><p>窗口字段明确指出了现在允许对方发送的数据量，窗口值是经常在动态变化的。</p></li>
 </ul>
 
-<h1></h1>
+
+<hr />
 
 <h5>检验和</h5>
 
@@ -255,7 +258,7 @@ struct tcphdr {
 
 <h5>注意：即使窗口值为0时，也可以发送紧急数据</h5>
 
-<h1></h1>
+<hr />
 
 <h4>TCP选项</h4>
 
@@ -285,7 +288,7 @@ struct tcphdr {
 
 <p>(1)用来计算往返时间RTT。发送方在发送报文段时把当前时间钟的时间值放入时间戳字段，接收方在确认该报文段时把时间戳字段值复制到时间戳回送回答字段因此，发送方在接收到确认后可以准确的计算出RTT来。</p>
 
-<p>(2)用于处理TCP序号超过2^32的情况，这又称为防止序号绕回PAWS，我们知道序号只有32位，而每增加2^32个序号就会重复使用原来使用过的序号。当使用高速网络时，在一次TCP连接的数据传送中序号很可能会被重复使用。例如1Gb/s的速率发送报文段，则不到4.3秒数据字节的序号就会重复，为了使接收方能够把新的报文段和迟到很久的报文段区分开，可以在报文段中加上时间戳。</p>
+<p>(2)用于处理TCP序号超过2<sup>32</sup>的情况，这又称为防止序号绕回PAWS，我们知道序号只有32位，而每增加2<sup>32</sup>个序号就会重复使用原来使用过的序号。当使用高速网络时，在一次TCP连接的数据传送中序号很可能会被重复使用。例如1Gb/s的速率发送报文段，则不到4.3秒数据字节的序号就会重复，为了使接收方能够把新的报文段和迟到很久的报文段区分开，可以在报文段中加上时间戳。</p>
 
 <h5>选择确认选项(STCK)</h5>
 
@@ -294,12 +297,12 @@ struct tcphdr {
 <p>TCP通信时，如果发送序列中间某个数据包丢失，TCP会通过重传最后确认的包开始的后续包，这样原先已经正确传输的包也可能重复发送，急剧降低了TCP性能。为改善这种情况，发展出SACK(SelectiveAcknowledgment,选择性确认)
 技术，使TCP只重新发送丢失的包，不用发送后续所有的包，而且提供相应机制使接收方能告诉发送方哪些数据丢失，哪些数据重发了，哪些数据已经提前收到等。</p>
 
-<h1></h1>
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -316,7 +319,7 @@ struct tcphdr {
 
 
         </div>
-        <p class="byline"><strong>TCP报文段首部格式详解</strong> was published on <time datetime="2013-12-17T04:13:52Z">December 17, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>TCP报文段首部格式详解</strong> was published on <time datetime="2013-12-17T04:13:52Z">December 17, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -324,14 +327,14 @@ struct tcphdr {
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -360,8 +363,8 @@ struct tcphdr {
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

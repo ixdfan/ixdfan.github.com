@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="sed简单使用">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/13/sed-03/">
+<meta property="og:url" content="http://localhost:4000/2013/12/13/sed-03/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/13/sed-03/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/13/sed-03/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -114,7 +114,7 @@
       <h1>sed简单使用</h1>
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# head -n10 /etc/passwd &gt; passwd.bak
+      <pre><code>[root@localhost sed]# head -n10 /etc/passwd &gt; passwd.bak
 [root@localhost sed]# cat passwd.bak
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/bin:/sbin/nologin
@@ -127,8 +127,8 @@ halt:x:7:0:halt:/sbin:/sbin/halt
 mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
 uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin
 
-[root@localhost sed]# sed -e &#39;d&#39; passwd.bak #注释1
-[root@localhost sed]# sed -e &#39;5d&#39; passwd.bak    #注释2
+[root@localhost sed]# sed -e 'd' passwd.bak #注释1
+[root@localhost sed]# sed -e '5d' passwd.bak    #注释2
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/bin:/sbin/nologin
 daemon:x:2:2:daemon:/sbin:/sbin/nologin
@@ -139,36 +139,40 @@ halt:x:7:0:halt:/sbin:/sbin/halt
 mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
 uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin
 [root@localhost sed]#
-</code></pre></div>
-<p>注释1没有看到任何输出，由于使用&#39;d&#39;命令调用sed，sed将文件的一行读入其模式缓冲区，执行删除行的命令，再打印模式缓冲区(此时缓冲区已经为空)。然后他会对后面的每一行重复这些步骤，这就不会产生输出，因为&#39;d&#39;命令出去了缓冲区中的每一行。</p>
+</code></pre>
 
-<p>注释2中的&#39;5d&#39;其中的&#39;5&#39;指的就是第五行，d前面有一个可选的数字地址。通过使用地址，可以告诉sed只对某一行或某些特定的行进行编辑</p>
+<p>注释1没有看到任何输出，由于使用'd'命令调用sed，sed将文件的一行读入其模式缓冲区，执行删除行的命令，再打印模式缓冲区(此时缓冲区已经为空)。然后他会对后面的每一行重复这些步骤，这就不会产生输出，因为'd'命令出去了缓冲区中的每一行。</p>
+
+<p>注释2中的'5d'其中的'5'指的就是第五行，d前面有一个可选的数字地址。通过使用地址，可以告诉sed只对某一行或某些特定的行进行编辑</p>
 
 <h5>注意：</h5>
 
 <p>(1)sed并不会去修改文件。因为sed只读取在命令行指定的文件，将其作用输入，它不会去修改该文件;</p>
 
-<p>(2)sed是面向行的。&#39;d&#39;并不是高速sed一下子就删除所有的数据，sed逐行将passwd.bak的每一行读取其成为模式缓冲区的内部缓冲，一旦将其读入了模式缓冲区，他就会执行&#39;d&#39;命令，然后打印模式缓冲区中的内容(本例中缓冲区已经为空)。如果不是用地址，命令将作用与所有的行;</p>
+<p>(2)sed是面向行的。'd'并不是高速sed一下子就删除所有的数据，sed逐行将passwd.bak的每一行读取其成为模式缓冲区的内部缓冲，一旦将其读入了模式缓冲区，他就会执行'd'命令，然后打印模式缓冲区中的内容(本例中缓冲区已经为空)。如果不是用地址，命令将作用与所有的行;</p>
 
-<p>(3)&#39;d&#39;使用单引号来括起sed命令，这样可以禁止shell扩展；</p>
+<p>(3)'d'使用单引号来括起sed命令，这样可以禁止shell扩展；</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>sed工作地址范围：</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# sed -e &#39;1,5d&#39; passwd.bak
+
+<pre><code>[root@localhost sed]# sed -e '1,5d' passwd.bak
 sync:x:5:0:sync:/sbin:/bin/sync
 shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
 halt:x:7:0:halt:/sbin:/sbin/halt
 mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
 uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin
 [root@localhost sed]#
-</code></pre></div>
+</code></pre>
+
 <p>对1-5行执行d命令</p>
 
 <p>大部分的情况下我们只会处理shell中实在的内容，不想对注释进行处理！</p>
 
 <p>Linux shell中#代表注释，如何才能忽略注释：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# cat rc.local
+
+<pre><code>[root@localhost sed]# cat rc.local
 #!/bin/sh
 #
 #This script will be executed *after* all the other init scripts
@@ -184,7 +188,7 @@ modprobe ip_conntrack_ftp
 modprobe ip_nat_ftp
 echo 1 &gt; /proc/sys/net/ipv4/ip_forward
 
-[root@localhost sed]# sed -e &#39;/^#/d&#39; rc.local | more
+[root@localhost sed]# sed -e '/^#/d' rc.local | more
 
 touch /var/lock/subsys/local
 modprobe ip_tables
@@ -193,21 +197,23 @@ modprobe iptable_filter
 modprobe ip_conntrack_ftp
 modprobe ip_nat_ftp
 echo 1 &gt; /proc/sys/net/ipv4/ip_forward
-</code></pre></div>
+</code></pre>
+
 <p>cat看到rc.local文件中含有注释，而sed成功跳过了注释行</p>
 
-<p>&#39;/^#/d&#39;其中d还是删除的意思;</p>
+<p>'/^#/d'其中d还是删除的意思;</p>
 
-<p>&#39;/^#/&#39;是新的规则表达式地址；规则表达式地址总是由斜杠括起。他们指定的是一种模式，紧跟在规则表达式地址之后的命令将仅适用于与该特定模式匹配的行</p>
+<p>'/^#/'是新的规则表达式地址；规则表达式地址总是由斜杠括起。他们指定的是一种模式，紧跟在规则表达式地址之后的命令将仅适用于与该特定模式匹配的行</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>规则表达式</strong></p>
 
 <p>grep检索与某个规则匹配的文本流中所有的行；</p>
 
-<p>例：grep匹配所有以&#39;#&#39;开头的行</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# grep &#39;^#&#39; rc.local
+<p>例：grep匹配所有以'#'开头的行</p>
+
+<pre><code>[root@localhost sed]# grep '^#' rc.local
 #!/bin/sh
 #
 #This script will be executed *after* all the other init scripts
@@ -215,48 +221,55 @@ echo 1 &gt; /proc/sys/net/ipv4/ip_forward
 #This is a test
 #This is a test
 [root@localhost sed]#
-</code></pre></div>
+</code></pre>
+
 <p>sed中规则表达式实例</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">表达式           含义
+
+<pre><code>表达式           含义
 
 /./             将与包含(除换行以外)至少一个字符的任意字符匹配
 
 /../            将与包含(除换行以外)至少一个字符的任意字符匹配
 
-/^#/            将与以&#39;#&#39;开头的任意行匹配，通常为注释行   
+/^#/            将与以'#'开头的任意行匹配，通常为注释行   
 
 /^$/            与所有的空行匹配
 
-/}$/            与以&#39;}&#39;结束的任意行匹配
+/}$/            与以'}'结束的任意行匹配
 
-/} *$/          在}后有一个空格，这将与&#39;}&#39;后跟零个或多个空格结束的任意行匹配
+/} *$/          在}后有一个空格，这将与'}'后跟零个或多个空格结束的任意行匹配
 
-/[abc]/         将与包含小写字母&#39;a&#39;或&#39;b&#39;或&#39;c&#39;的任意行匹配
+/[abc]/         将与包含小写字母'a'或'b'或'c'的任意行匹配
 
-/^[abc]/            将与以小写字母&#39;a&#39;或&#39;b&#39;或&#39;c&#39;的开头的任意行匹配
-</code></pre></div>
+/^[abc]/            将与以小写字母'a'或'b'或'c'的开头的任意行匹配
+</code></pre>
+
 <p>以上的规则都可以在sed中使用:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">sed -e &#39;regexp/d&#39; /path/file | more
+
+<pre><code>sed -e 'regexp/d' /path/file | more
 删除符合规则的匹配行
-sed -e &#39;regexp/p&#39; /path/file | more
+sed -e 'regexp/p' /path/file | more
 打印符合规则的匹配行
-</code></pre></div>
+</code></pre>
+
 <p>其中regexp就是这些规则</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# sed -n -e &#39;/^#/p&#39; rc.local    #注释1
+
+<pre><code>[root@localhost sed]# sed -n -e '/^#/p' rc.local    #注释1
 #!/bin/sh
 #
 #This script will be executed *after* all the other init scripts
 #This is a test
 #This is a test
 #This is a test
-[root@localhost sed]# sed  -e &#39;/^[^#]/d&#39; rc.local   #注释2
+[root@localhost sed]# sed  -e '/^[^#]/d' rc.local   #注释2
 #!/bin/sh
 #
 #This script will be executed *after* all the other init scripts
 #This is a test
 #This is a test
 #This is a test
-</code></pre></div>
+</code></pre>
+
 <p>注释1中打印以#开头的行</p>
 
 <p>注释2中删除以非#开头的行</p>
@@ -265,21 +278,26 @@ sed -e &#39;regexp/p&#39; /path/file | more
 
 <p><strong>-n选项的意思是保持静默，也就是说如果使用-n选项就不会输出，除非你使用p</strong></p>
 
-<p>** -e选项后跟要执行的命令**</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# sed -e &#39;1d&#39; passwd.bak
+<p><strong> -e选项后跟要执行的命令</strong></p>
+
+<pre><code>[root@localhost sed]# sed -e '1d' passwd.bak
 #删除第一行
-[root@localhost sed]# sed -n -e &#39;1,5p&#39; passwd.bak
+[root@localhost sed]# sed -n -e '1,5p' passwd.bak
 #打印1-5行
-[root@localhost sed]# sed -n -e &#39;/^#/p&#39; rc.local
+[root@localhost sed]# sed -n -e '/^#/p' rc.local
 #打印以#开头的行
-</code></pre></div>
+</code></pre>
+
 <p>我们可以<strong>使用两个逗号来分开规则表达式，从匹配第一个规则表达式的第一行开始，到匹配第二个规则表达式的行结束(包括该行)</strong>，sed将与这些行匹配；</p>
 
 <p>例如：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# sed -n -e &#39;/BEGIN/,/END/p&#39; file | more
-</code></pre></div>
-<p>如果<strong>没有发现&quot;BEGIN&quot;将不会打印数据</strong>，如果<strong>发现了&quot;BEGIN&quot;,但是在这之后的所有行中都没有发现&quot;END&quot;,那么将打印后续所有的行</strong>。因为sed是面向流的特性，它不知到是否会出现END；</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# cat main.c
+
+<pre><code>[root@localhost sed]# sed -n -e '/BEGIN/,/END/p' file | more
+</code></pre>
+
+<p>如果<strong>没有发现"BEGIN"将不会打印数据</strong>，如果<strong>发现了"BEGIN",但是在这之后的所有行中都没有发现"END",那么将打印后续所有的行</strong>。因为sed是面向流的特性，它不知到是否会出现END；</p>
+
+<pre><code>[root@localhost sed]# cat main.c
 #include 
 #include 
 #include 
@@ -287,8 +305,8 @@ sed -e &#39;regexp/p&#39; /path/file | more
 long int power(int, int);
 int main(){
         int base, n;
-        scanf(&quot;%d, %d\n&quot;, &amp;base, &amp;n);
-        printf(&quot;the power is: %d\n&quot;, power(base, n));
+        scanf("%d, %d\n", &amp;base, &amp;n);
+        printf("the power is: %d\n", power(base, n));
 
         return 0;
 }
@@ -298,32 +316,33 @@ long int power(int base, int n)
         return base^n;
 }
 
-[root@localhost sed]# sed -n -e &#39;/main[[:space:]]*(/, /^}/p&#39; main.c
+[root@localhost sed]# sed -n -e '/main[[:space:]]*(/, /^}/p' main.c
 int main(){
         int base, n;
-        scanf(&quot;%d, %d\n&quot;, &amp;base, &amp;n);
-        printf(&quot;the power is: %d\n&quot;, power(base, n));
+        scanf("%d, %d\n", &amp;base, &amp;n);
+        printf("the power is: %d\n", power(base, n));
 
         return 0;
 }
 [root@localhost sed]#
-</code></pre></div>
+</code></pre>
+
 <p>该命令含有两个表达式/main[[:space:]]*(/和/^}/以及一个命令p</p>
 
 <p>第一个规则表达式将与后面一次跟有任意数量的空格或制表键以及后面有左括号的字符串main匹配</p>
 
 <p>[[:space:]]的含义是特殊的关键字，它高速sed与Tab或空格匹配</p>
 
-<p>第二个规则表达式&#39;/^}/&#39;将与任何出现在新行首的&#39;}&#39;匹配</p>
+<p>第二个规则表达式'/^}/'将与任何出现在新行首的'}'匹配</p>
 
-<p>因为处于&#39;-n&#39;安静模式，所以&#39;p&#39;命令明确告诉sed打印该行</p>
+<p>因为处于'-n'安静模式，所以'p'命令明确告诉sed打印该行</p>
 
-<h1></h1>
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -340,7 +359,7 @@ int main(){
 
 
         </div>
-        <p class="byline"><strong>sed简单使用</strong> was published on <time datetime="2013-12-13T08:45:06Z">December 13, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>sed简单使用</strong> was published on <time datetime="2013-12-13T08:45:06Z">December 13, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -348,14 +367,14 @@ int main(){
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -384,8 +403,8 @@ int main(){
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

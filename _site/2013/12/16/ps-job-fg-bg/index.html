@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="进程相关命令">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/16/ps-job-fg-bg/">
+<meta property="og:url" content="http://localhost:4000/2013/12/16/ps-job-fg-bg/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/16/ps-job-fg-bg/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/16/ps-job-fg-bg/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -116,49 +116,50 @@
     <div class="article-wrap">
       <p>ps参数说明：
     -a  显示所有终端机下执行的进程，除了阶段作业领导者之外。
-    a   显示现行终端机下的所有进程，包括其他用户的进程。**
+    a   显示现行终端机下的所有进程，包括其他用户的进程。<strong>
     -A  显示所有进程。
     -c  显示CLS和PRI栏位。
     c   列出进程时，显示每个进程真正的指令名称，而不包含路径，参数或常驻服务的标示。
-    -C&lt;指令名称&gt; 　指定执行指令的名称，并列出该指令的进程的状况。
+    -C&lt;指令名称> 　指定执行指令的名称，并列出该指令的进程的状况。
     -d 　  显示所有进程，但不包括阶段作业领导者的进程。
-    -e 　  此参数的效果和指定&quot;A&quot;参数相同。**
+    -e 　  此参数的效果和指定"A"参数相同。</strong>
     e 　   列出进程时，显示每个进程所使用的环境变量。
     -f 　  显示UID,PPIP,C与STIME栏位。
     <strong>f 　 用ASCII字符显示树状结构，表达进程间的相互关系。</strong>
-    -g&lt;群组名称&gt; 　此参数的效果和指定&quot;-G&quot;参数相同，当亦能使用阶段作业领导者的名称来指定。
+    -g&lt;群组名称> 　此参数的效果和指定"-G"参数相同，当亦能使用阶段作业领导者的名称来指定。
     g 　   显示现行终端机下的所有进程，包括群组领导者的进程。
-    -G&lt;群组识别码&gt; 　列出属于该群组的进程的状况，也可使用群组名称来指定。
+    -G&lt;群组识别码> 　列出属于该群组的进程的状况，也可使用群组名称来指定。
     h 　   不显示标题列。
     -H 　  显示树状结构，表示进程间的相互关系。
     -j或j 　  采用工作控制的格式显示进程状况。
-    -l或l 采用详细的格式来显示进程状况。**
+    -l或l 采用详细的格式来显示进程状况。<strong>
     L 　   列出栏位的相关信息。
     -m或m 　显示所有的执行绪。
     n 　   以数字来表示USER和WCHAN栏位。
     -N 　  显示所有的进程，除了执行ps指令终端机下的进程之外。
-    -p&lt;进程识别码&gt; 　指定进程识别码，并列出该进程的状况。
-    p&lt;进程识别码&gt; 　  此参数的效果和指定&quot;-p&quot;参数相同，只在列表格式方面稍有差异。
+    -p&lt;进程识别码> 　指定进程识别码，并列出该进程的状况。
+    p&lt;进程识别码> 　  此参数的效果和指定"-p"参数相同，只在列表格式方面稍有差异。
     r 　   只列出现行终端机正在执行中的进程。
-    -s&lt;阶段作业&gt; 　    指定阶段作业的进程识别码，并列出隶属该阶段作业的进程的状况。
+    -s&lt;阶段作业> 　    指定阶段作业的进程识别码，并列出隶属该阶段作业的进程的状况。
     s 　   采用进程信号的格式显示进程状况。
     S 　   列出进程时，包括已中断的子进程资料。
-    -t&lt;终端机编号&gt; 　指定终端机编号，并列出属于该终端机的进程的状况。
-    t&lt;终端机编号&gt; 　  此参数的效果和指定&quot;-t&quot;参数相同，只在列表格式方面稍有差异。
+    -t&lt;终端机编号> 　指定终端机编号，并列出属于该终端机的进程的状况。
+    t&lt;终端机编号> 　  此参数的效果和指定"-t"参数相同，只在列表格式方面稍有差异。
     -T 　  显示现行终端机下的所有进程。
-    -u&lt;用户识别码&gt; 　此参数的效果和指定&quot;-U&quot;参数相同。
-    u 　   以用户为主的格式来显示进程状况。**
-    -U&lt;用户识别码&gt; 　列出属于该用户的进程的状况，也可使用用户名称来指定。
-    U&lt;用户名称&gt; 　 列出属于该用户的进程的状况。
+    -u&lt;用户识别码> 　此参数的效果和指定"-U"参数相同。
+    u 　   以用户为主的格式来显示进程状况。</strong>
+    -U&lt;用户识别码> 　列出属于该用户的进程的状况，也可使用用户名称来指定。
+    U&lt;用户名称> 　 列出属于该用户的进程的状况。
     v 　   采用虚拟内存的格式显示进程状况。
     -V或V 　显示版本信息。
     -w或w 　采用宽阔的格式来显示进程状况。
     x 　   显示所有进程，不以终端机来区分。**
     X 　   采用旧式的Linux i386登陆格式显示进程状况。
-    -y  配合参数&quot;-l&quot;使用时，不显示F(flag)栏位，并以RSS栏位取代ADDR栏位</p>
+    -y  配合参数"-l"使用时，不显示F(flag)栏位，并以RSS栏位取代ADDR栏位</p>
 
 <p>常用格式</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">ps aue
+
+<pre><code>ps aue
 ps -elf
 
 %CPU:进程占用CPU的百分比
@@ -170,8 +171,9 @@ STAT: 进程状态
 START:启动进程的时间
 TIME: 进程消耗CPU时间
 COMMAND:进程名称和参数
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>STAT对应的进程状态
     D:不可打断的休眠状态，通常是IO状态
@@ -188,15 +190,17 @@ COMMAND:进程名称和参数
     l:多进程进程
     +:处于后台的进程</p>
 
-<h1></h1>
+<hr />
 
-<p>要想要一个命令在后台运行可以在命令后加上&#39;&amp;&#39;符号</p>
+<p>要想要一个命令在后台运行可以在命令后加上'&amp;'符号</p>
 
 <p>例如:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">find / -name sed笔记 2&gt;/dev/null&amp;
+
+<pre><code>find / -name sed笔记 2&gt;/dev/null&amp;
 [root@localhost shell]# top&amp;
 [1] 5681
-</code></pre></div>
+</code></pre>
+
 <p>前台进程可以与后台进程进行转换:</p>
 
 <p>前台转后台的方法是在程序运行时使用Ctrl+Z，这个快捷键会将当前进程挂起；</p>
@@ -210,7 +214,8 @@ COMMAND:进程名称和参数
 <p>多个后台进程的调度:</p>
 
 <p>当有多个后台进程时候调度指定进程到前台</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost shell]# jobs
+
+<pre><code>[root@localhost shell]# jobs
 [1]   Stopped                 vim
 [2]-  Stopped                 top
 [3]+  Stopped                 top
@@ -221,14 +226,15 @@ COMMAND:进程名称和参数
 [3]+  5767 停止 (信号)         top
 [root@localhost shell]# bg %1
 [1] vim &amp;
-</code></pre></div>
+</code></pre>
+
 <p>如果系统中有多个后台进程，那么shell会标志当前进程和前一个进程。</p>
 
 <p>fg命令会将当前进程带到前台，而bg命令会将当前进程回复到后台执行；</p>
 
 <p>jobs命令就是用来判断所有被挂起(停止)的进程、后台进程的作业号，以及哪个是当前进程(+)，前一个进程(-)</p>
 
-<h1></h1>
+<hr />
 
 <p>jobs</p>
 
@@ -238,16 +244,18 @@ COMMAND:进程名称和参数
     -l纤细详细的作业信息，包括作业号、当前作业、进程组标志、状态和启动作业的命令
     -p显示了所选定的作业的进程组引导符的进程标识,如果指明-p选项则只输出进程标志
     -n显示从最后一次通知后停止或退出的作业</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost shell]# jobs -l
+
+<pre><code>[root@localhost shell]# jobs -l
 [1]+  5765 Stoped      vim
 [2]   5766 Stoped      top
 [3]-  5767 Stoped      top
-</code></pre></div>
+</code></pre>
+
 <p>其中[1]代表进程组号</p>
 
 <p>+或-分别指明了当前进程和前一个进程</p>
 
-<p>如果当前进程退出就用一个&#39;-&#39;(减号标志)来标志将要成为默认作业的作业。</p>
+<p>如果当前进程退出就用一个'-'(减号标志)来标志将要成为默认作业的作业。</p>
 
 <p>这个作业也能够用%+和%%来指定。</p>
 
@@ -256,7 +264,7 @@ COMMAND:进程名称和参数
     Done 表示作业已完成，并返回退出状态0
     Stoped 表示挂起状态</p>
 
-<h1></h1>
+<hr />
 
 <p>fg
 作用:在前台运行作业
@@ -265,12 +273,14 @@ COMMAND:进程名称和参数
 <p>fg命令移动当前环境中的后台作业到前台来，使用JobID参数指明在前台下要运行的特定作业。如果没有提供参数，则默认使用最近在后台被挂起的作业</p>
 
 <p>JobID参数可以是进程的标识号，也可以使用如下组合:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">%Number 通过作业编号引用作业
+
+<pre><code>%Number 通过作业编号引用作业
 %String 引用名称以特定字符串开头的作业
 %?String 引用名称中包含特地字符串的作业
 %+OR%% 引用当前作业，%-引用前一个作业
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>bg</p>
 
@@ -281,16 +291,18 @@ COMMAND:进程名称和参数
 <p>bg命令移动当前环境中的后台作业到前台来，使用JobID参数指明在前台下要运行的特定作业。如果没有提供参数，则默认使用最近在后台被挂起的作业</p>
 
 <p>JobID参数可以是进程的标识号，也可以使用如下组合:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">%Number 通过作业编号引用作业
+
+<pre><code>%Number 通过作业编号引用作业
 %String 引用名称以特定字符串开头的作业
 %?String 引用名称中包含特地字符串的作业
 %+OR%% 引用当前作业，%-引用前一个作业
-</code></pre></div>
+</code></pre>
+
 <h5>注意:</h5>
 
 <p>作业号可以与wait、fg、kill共同使用，只要在作业号前加入%前缀；</p>
 
-<p>例如: 
+<p>例如:
     kill -9 %3</p>
 
 <p>使用Ctrl+C挂起作业，使用bg命令就可以在后台重启作业。</p>
@@ -299,12 +311,12 @@ COMMAND:进程名称和参数
 
 <p>如果后台作业具有终端输出，可以输入一下命令强制停止该作业</p>
 
-<h1></h1>
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -321,7 +333,7 @@ COMMAND:进程名称和参数
 
 
         </div>
-        <p class="byline"><strong>进程相关命令</strong> was published on <time datetime="2013-12-16T16:11:15Z">December 16, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>进程相关命令</strong> was published on <time datetime="2013-12-16T16:11:15Z">December 16, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -329,14 +341,14 @@ COMMAND:进程名称和参数
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -365,8 +377,8 @@ COMMAND:进程名称和参数
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

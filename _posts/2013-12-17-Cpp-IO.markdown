@@ -12,7 +12,6 @@ categories:
 
 ** **
 
-[![IO类](http://ucshell.com/wp-content/uploads/2013/12/IO类-300x198.png)](http://ucshell.com/wp-content/uploads/2013/12/IO类.png)
 
 **继承的关系是'是'的关系，子类对象一定是父类对象**
 

@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程同步之读写锁">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E8%AF%BB%E5%86%99%E9%94%81/">
+<meta property="og:url" content="http://localhost:4000/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E8%AF%BB%E5%86%99%E9%94%81/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E8%AF%BB%E5%86%99%E9%94%81/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E8%AF%BB%E5%86%99%E9%94%81/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -126,13 +126,15 @@
 
 <p>对于多个<strong>读线程来说可以共同占用一把读写锁</strong>，但是对与<strong>写线程来讲，任意时刻只能有一个线程占用读写锁。</strong>
 如图所示:
-<a href="http://ucshell.com/wp-content/uploads/2013/11/%E8%AF%BB%E5%86%99%E9%94%81.jpg"><img src="http://ucshell.com/wp-content/uploads/2013/11/%E8%AF%BB%E5%86%99%E9%94%81-300x238.jpg" alt="读写锁"></a></p>
+<a href="http://ucshell.com/wp-content/uploads/2013/11/%E8%AF%BB%E5%86%99%E9%94%81.jpg"><img src="http://ucshell.com/wp-content/uploads/2013/11/%E8%AF%BB%E5%86%99%E9%94%81-300x238.jpg" alt="读写锁" /></a></p>
 
 <p>在程序执行时，如果对共享资源做读操作的线程数目远大于写线程的时候，使用读写锁可以大大提高线程的并发度，从而提高运行效率。</p>
 
 <p>1.读写锁的初始化：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock,const pthread_rwlockattr_t *restrict attr);
-</code></pre></div>
+
+<pre><code>int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock,const pthread_rwlockattr_t *restrict attr);
+</code></pre>
+
 <p>第一个参数为读写锁的指针，读写锁在该函数内被初始化；</p>
 
 <p>第二个参数为读写锁的属性，通常参数设置为NULL，会采用默认属性去初始化；</p>
@@ -140,34 +142,40 @@
 <p>成功返回0，失败返回错误号</p>
 
 <p>2.读写锁的销毁</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
-</code></pre></div>
+
+<pre><code>int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
+</code></pre>
+
 <p>3.得到与释放读写锁</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">读锁的获取
+
+<pre><code>读锁的获取
 int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);
 int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
 
 写锁的获取
 int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
 int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);
-</code></pre></div>
-<p>pthread<em>rwlock</em>rdlock调用线程想在读模式下获取该读写锁，如果该读写锁已经被某一线程在读模式下获取了，则测试线程仍然可以得到该锁；</p>
+</code></pre>
 
-<p><strong>如果该读写锁已经被某一个线程在写模式下得到，或有一个线程在写模式下等待该锁，则pthread<em>rwlock</em>rdlock会导致线程阻塞，直到该读写锁被释放</strong></p>
+<p>pthread_rwlock_rdlock调用线程想在读模式下获取该读写锁，如果该读写锁已经被某一线程在读模式下获取了，则测试线程仍然可以得到该锁；</p>
 
-<p>pthread<em>rwlock</em>tryrdlock的意义与pthread<em>rwlock</em>rdlock相同，不过在得不到指定读写锁时，并不会导致线程阻塞，而是立即返回一个错误编号EBUSY，表示所申请的锁处于繁忙状态。</p>
+<p><strong>如果该读写锁已经被某一个线程在写模式下得到，或有一个线程在写模式下等待该锁，则pthread_rwlock_rdlock会导致线程阻塞，直到该读写锁被释放</strong></p>
 
-<p>pthread<em>rwlock</em>wrlock在测试读写锁的时候如果有任意一个线程占用该锁，pthread<em>rwlock</em>wrlock函数就会导致阻塞，并且会导致其后所有申请该读写锁的线程阻塞等待</p>
+<p>pthread_rwlock_tryrdlock的意义与pthread_rwlock_rdlock相同，不过在得不到指定读写锁时，并不会导致线程阻塞，而是立即返回一个错误编号EBUSY，表示所申请的锁处于繁忙状态。</p>
 
-<p>pthread<em>rwlock</em>trywrlock的作用类似pthread<em>rwlock</em>tryrdlock</p>
+<p>pthread_rwlock_wrlock在测试读写锁的时候如果有任意一个线程占用该锁，pthread_rwlock_wrlock函数就会导致阻塞，并且会导致其后所有申请该读写锁的线程阻塞等待</p>
+
+<p>pthread_rwlock_trywrlock的作用类似pthread_rwlock_tryrdlock</p>
 
 <h5>锁的释放：</h5>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
-</code></pre></div>
+
+<pre><code>int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
+</code></pre>
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -184,7 +192,7 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);
 
 
         </div>
-        <p class="byline"><strong>线程同步之读写锁</strong> was published on <time datetime="2013-11-11T03:06:13Z">November 11, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>线程同步之读写锁</strong> was published on <time datetime="2013-11-11T03:06:13Z">November 11, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -192,14 +200,14 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -228,8 +236,8 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="tcpdump常用指令总结">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/08/05/tcpdump/">
+<meta property="og:url" content="http://localhost:4000/2013/08/05/tcpdump/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/08/05/tcpdump/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/08/05/tcpdump/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -230,10 +230,11 @@
 <p>除了这三种类型的关键字之外，其他重要的关键字如下：gateway， broadcast，less， greater；</p>
 
 <p>还有三种逻辑运算:
-* 取非运算是 &#39;not &#39; &#39;! &#39;;
-* 与运算是&#39;and&#39; &#39;&amp;&amp;&#39;;
-* 或运算是&#39;or’ &#39;||&#39;；</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost ~]# tcpdump arp -i wlan0 -nn                                        
+* 取非运算是 'not ' '! ';
+* 与运算是'and' '&amp;&amp;';
+* 或运算是'or’ '||'；</p>
+
+<pre><code>[root@localhost ~]# tcpdump arp -i wlan0 -nn                                        
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode          
 listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes           
 22:45:31.908179 ARP, Request who-has 125.87.196.1 tell 125.87.199.67, length 42     
@@ -257,13 +258,15 @@ Here is a short sample taken from the start of an ‘rlogin’ from host rtsg to
 The first line says that rtsg sent an arp packet asking for the Ethernet address of internet host csam.
 Csam replies with its Ethernet address (in this example, Ethernet addresses are in caps and internet addresses in
 lower case).
-</code></pre></div>
+</code></pre>
+
 <p>第一个的含义是rtsg发送arp包来请求获取主机casm的以太网地址(MAC地址)</p>
 
 <p>第二个的含义是csam回复csam的以太网地址(MAC地址)</p>
 
 <p>22:45:44.853015中22:45:44是时间戳，853015是ID号</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost ~]# ifconfig
+
+<pre><code>[root@localhost ~]# ifconfig
 wlan0     Link encap:Ethernet  HWaddr EC:55:F9:77:A5:3A
           inet6 addr: fe80::ee55:f9ff:fe77:a53a/64 Scope:Link
           UP BROADCAST MULTICAST  MTU:1500  Metric:1
@@ -271,84 +274,113 @@ wlan0     Link encap:Ethernet  HWaddr EC:55:F9:77:A5:3A
           TX packets:69744 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:1000
           RX bytes:168024049 (160.2 MiB)  TX bytes:7105006 (6.7 MiB)
-</code></pre></div>
+</code></pre>
+
 <p>可以看到本机的MAC地址确实为EC:55:F9:77:A5:3A，与arp的reply一致</p>
 
 <p>TCP包的捕获</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost ~]# tcpdump tcp -i wlan0                                                                                                                                
+
+<pre><code>[root@localhost ~]# tcpdump tcp -i wlan0                                                                                                                                
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode                                                                                              
 listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes                                                                                               
 22:59:41.021574 IP 125.87.199.184.58316 &gt; 222.180.124.151.http: Flags [S], seq 550843385, win 14600, options [mss 1460,sackOK,TS val 5013034 ecr 0,nop,wscale 6], length 0                                                                                                                                                                      
 22:59:41.648016 IP 222.180.124.151.http &gt; 125.87.199.184.58316: Flags [S.], seq 798460844, ack 550843386, win 5792, options [mss 1460,sackOK,TS val 690162454 ecr 5013034,nop,wscale 7], length 0
-</code></pre></div>
-<p>FLAGS [S]是TCP报文中的标志信息，S(SYN), F(FIN), P(PUSH), R(RST) &quot;.&quot; (代表响应), S.代表对SYN的响应</p>
+</code></pre>
+
+<p>FLAGS [S]是TCP报文中的标志信息，S(SYN), F(FIN), P(PUSH), R(RST) "." (代表响应), S.代表对SYN的响应</p>
 
 <p>seq 550843385代表报文中的数据的序列号, ack是对SYN的响应, window是滑动窗口大小, urgent表明报文中是否有紧急指针, options是选项。</p>
 
 <p>UDP包的捕获 <code>tcpdump udp -i wlan0</code></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost ~]# tcpdump udp -i wlan0
+
+<pre><code>[root@localhost ~]# tcpdump udp -i wlan0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes 
 23:07:13.845283 IP 125.87.117.188.netbios-ns &gt; 125.87.119.255.netbios-ns: NBT UDP PACKET(137): QUERY; REQUEST; BROADCAST
 23:07:14.051588 IP 125.87.118.240.58856 &gt; 224.0.0.252.hostmon: UDP, length 24                                           
 23:07:14.108979 IP 125.87.118.240.58856 &gt; 224.0.0.252.hostmon: UDP, length 24                                           
 23:07:14.458987 IP 125.87.118.240.51600 &gt; 239.255.255.250.ssdp: UDP, length 133
-</code></pre></div>
+</code></pre>
+
 <p>-nn表示不进行端口名称的转换</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">t[root@localhost ~]# tcpdump udp -i wlan0 -nn
+
+<pre><code>t[root@localhost ~]# tcpdump udp -i wlan0 -nn
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes
 23:08:51.595548 IP 222.183.20.62.53110 &gt; 239.255.255.250.1900: UDP, length 133
 23:08:51.595563 IP 222.183.20.62.137 &gt; 222.183.21.255.137: NBT UDP PACKET(137): QUERY; REQUEST; BROADCAST
-</code></pre></div>
+</code></pre>
+
 <p>输出行表明从主机A的port1端口发出的一个报文到主机B的port2端口，类型是UDP， 包的长度是lenth。</p>
 
 <p>截获所有125.87.198.63的主机收到的和发出的所有的数据包:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump host 202.202.43.125 -i wlan0
-</code></pre></div>
+
+<pre><code>tcpdump host 202.202.43.125 -i wlan0
+</code></pre>
+
 <p>截获主机125.87.198.63 和主机202.202.43.125或202.202.43.124的通信</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump host 125.87.198.63 and \(202.202.43.125 or 202.202.43.124\) -i wlan0 -n -nn
-</code></pre></div>
+
+<pre><code>tcpdump host 125.87.198.63 and \(202.202.43.125 or 202.202.43.124\) -i wlan0 -n -nn
+</code></pre>
+
 <p>注意：括号前的反斜杠是必须的
 * -n 不把网络地址转换成名字。
 * -nn 不进行端口名称的转换。</p>
 
 <p>如果想要获取主机125.87.198.63除了和主机202.202.43.125之外所有主机通信的ip包，使用命令：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump ip host 125.87.198.63 and !202.202.43.125
-</code></pre></div>
+
+<pre><code>tcpdump ip host 125.87.198.63 and !202.202.43.125
+</code></pre>
+
 <p>如果想要获取主机192.168.228.246接收或发出的ssh包,ssh端口为22</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump -nn -n src host 125.87.198.63 and port 22 and tcp -i wlan0
-</code></pre></div>
+
+<pre><code>tcpdump -nn -n src host 125.87.198.63 and port 22 and tcp -i wlan0
+</code></pre>
+
 <p>如果想要获取主机192.168.228.246接收或发出的ssh包,并打印MAC地址</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump -e src host 192.168.228.246 and port 22 and tcp -n -nn
-</code></pre></div>
+
+<pre><code>tcpdump -e src host 192.168.228.246 and port 22 and tcp -n -nn
+</code></pre>
+
 <p>过滤的是源主机为192.168.0.1与目的网络为192.168.0.0的报头：
     tcpdump src host 192.168.0.1 and dst net 192.168.0.0/24</p>
 
 <p>过滤源主机物理地址为XXX的报头：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump ether src 00:50:04:BA:9B and dst……
-</code></pre></div>
+
+<pre><code>tcpdump ether src 00:50:04:BA:9B and dst……
+</code></pre>
+
 <p>物理地址没有网络，所以ether src后面没有host或者net</p>
 
 <p>打印主机125.87.198.63的以太网头部</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump -e host 125.87.198.63
-</code></pre></div>
+
+<pre><code>tcpdump -e host 125.87.198.63
+</code></pre>
+
 <p>把抓取的数据包记录存到/workspace/test文件中，当抓取100个数据包后就退出程序。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump –i eth0 -vnn -w /workspace/test -c 100
-</code></pre></div>
+
+<pre><code>tcpdump –i eth0 -vnn -w /workspace/test -c 100
+</code></pre>
+
 <p>从/workspace/test记录中读取tcp协议的数据包</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump –i eth0 -vnn -r /workspace/test tcp
-</code></pre></div>
+
+<pre><code>tcpdump –i eth0 -vnn -r /workspace/test tcp
+</code></pre>
+
 <p>从/workspace/test记录中读取包含172.16.1.58的数据包</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump –i eth0 -vnn -r /workspace/test host 172.16.1.58
-</code></pre></div>
+
+<pre><code>tcpdump –i eth0 -vnn -r /workspace/test host 172.16.1.58
+</code></pre>
+
 <p>取源ip是192.168.128.128且目的端口是22，或源ip是192.168.128.127且目的端口是80的数据包。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tcpdump -i eth0 -vnn &#39;src host 192.168.128.128 and dst port 22&#39; or &#39; src host 192.168.128.127 and dst port 80 &#39;
-</code></pre></div>
+
+<pre><code>tcpdump -i eth0 -vnn 'src host 192.168.128.128 and dst port 22' or ' src host 192.168.128.127 and dst port 80 '
+</code></pre>
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -365,7 +397,7 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 
         </div>
-        <p class="byline"><strong>tcpdump常用指令总结</strong> was published on <time datetime="2013-08-05T09:04:53Z">August 05, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>tcpdump常用指令总结</strong> was published on <time datetime="2013-08-05T09:04:53Z">August 05, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -373,14 +405,14 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -409,8 +441,8 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

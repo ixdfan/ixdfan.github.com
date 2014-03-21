@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="STL::list">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/11/29/stl-list/">
+<meta property="og:url" content="http://localhost:4000/2013/11/29/stl-list/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/11/29/stl-list/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/11/29/stl-list/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -118,7 +118,7 @@
 
 <p><strong>list不支持对任意元素的存取</strong>(即不允许通过下标[]存取)</p>
 
-<p>list中提供的成员函数和vector类似，但是list提供对表首元素的操作<strong>push<em>front、pop</em>front</strong>这是vector不具备的；</p>
+<p>list中提供的成员函数和vector类似，但是list提供对表首元素的操作<strong>push_front、pop_front</strong>这是vector不具备的；</p>
 
 <h5>注意：</h5>
 
@@ -136,104 +136,124 @@
 
 <p><strong>vector只适合简单类型和元素个数不太多的情况</strong>，这时候他的效率要超过list，list每次增加一个元素，不存在重新申请内存的情况，他的成本是恒定的，<strong>他在存储复杂类型和大型元素的情况下，比vector更有优势；</strong></p>
 
-<h1></h1>
+<hr />
 
 <p>assgin</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void assgin(const_iterator frist, const_iterator last);
+
+<pre><code>void assgin(const_iterator frist, const_iterator last);
 void assgin(size_type n, const T&amp; x = T());
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>将区间[first, last)的元素赋值到当前list容器中；</p>
 
 <p>赋n个值为x的元素到list容器中，这个函数将会清除掉list容器以前的内容</p>
 
-<h1></h1>
+<hr />
 
 <p>back</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">reference back();
+
+<pre><code>reference back();
 const_reference back() const;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回list容器中的最末尾的元素的引用</p>
 
-<h1></h1>
+<hr />
 
 <p>begin</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator begin();
+
+<pre><code>iterator begin();
 const_iterator begin() const;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回一个指向list容器中其实元素的迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>clear</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void clear();
-</code></pre></div>
+
+<pre><code>void clear();
+</code></pre>
+
 <p>作用:</p>
 
 <p>删除list中所有元素</p>
 
-<h1></h1>
+<hr />
 
 <p>empty</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">bool empty() const;
-</code></pre></div>
+
+<pre><code>bool empty() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>如果当前list中没有容纳任何元素，则empty返回true</p>
 
-<h1></h1>
+<hr />
 
 <p>end</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator end();
+
+<pre><code>iterator end();
 iterator end() const;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回指向list容器中最后一个元素的下一个元素，例如[a, b)中指向b</p>
 
-<h1></h1>
+<hr />
 
 <p>erase</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator erase(iterator it);
+
+<pre><code>iterator erase(iterator it);
 iterator erase(iterator first, iterator last);
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>删除list容器中it位置的元素，或者删除在first与last之间的元素；</p>
 
 <p>函数返回的是指向list容器中被删除的最后一个元素的下一个位置的迭代器</p>
 
-<h1></h1>
+<hr />
 
 <p>front</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">reference front();
+
+<pre><code>reference front();
 const_reference front() const;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回list容器中起始元素的位置</p>
 
-<h1></h1>
+<hr />
 
 <p>get_allocator</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">allocator_type get_allocator() const;
-</code></pre></div>
+
+<pre><code>allocator_type get_allocator() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回list容器的内存分配器</p>
 
-<h1></h1>
+<hr />
 
 <p>insert</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">iterator insert(iterator it, const T&amp; x = T());
+
+<pre><code>iterator insert(iterator it, const T&amp; x = T());
 void insert(iterator it, size_type n, const T&amp; x);
 void insert(iterator it, const_iterator first, const_iterator last);
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>在容器迭代器it指向的位置前插入值为x的元素，返回指向这个元素的迭代器；</p>
@@ -242,125 +262,155 @@ void insert(iterator it, const_iterator first, const_iterator last);
 
 <p>在迭代器it制定的位置前插入区间[first, last)中所有的元素；</p>
 
-<h1></h1>
+<hr />
 
 <p>max_size</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type max_size() const;
-</code></pre></div>
+
+<pre><code>size_type max_size() const;
+</code></pre>
+
 <p>作用:</p>
 
 <p>返回list容器所能容纳的元素数量的最大值</p>
 
-<h1></h1>
+<hr />
 
 <p>merge</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void merge(list&amp; x);
+
+<pre><code>void merge(list&amp; x);
 void merge(list&amp; x, greater pr);
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <p>将当前list容器和x容器连接到一起，产生一个整齐排列的list容器；</p>
 
 <p>指定pr，则讲条件pr作为比较的依据</p>
 
-<h1></h1>
+<hr />
 
 <p>pop_back</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void pop_back();
-</code></pre></div>
+
+<pre><code>void pop_back();
+</code></pre>
+
 <p>作用:</p>
 
 <p>删除list容器最末尾的元素</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>pop_front</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void pop_front();
-</code></pre></div>
+
+<pre><code>void pop_front();
+</code></pre>
+
 <p>作用:</p>
 
 <h1>删除list容器第一个的元素</h1>
 
 <p>push_back</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void push_back(const T&amp; val);
-</code></pre></div>
+
+<pre><code>void push_back(const T&amp; val);
+</code></pre>
+
 <p>作用:</p>
 
 <h1>添加值为x的元素到list的末尾</h1>
 
 <p><strong>push_front</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void push_front(const T&amp; x);
-</code></pre></div>
+
+<pre><code>void push_front(const T&amp; x);
+</code></pre>
+
 <p>作用:</p>
 
 <h1>添加值为x的元素到list容器开头</h1>
 
 <p>rbegin</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">reverse_iterator rbegin();
+
+<pre><code>reverse_iterator rbegin();
 const_reverse_iterator rbegin() cosnt;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <h1>返回指向list末尾的反向迭代器</h1>
 
 <p>rend</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">reverse_iterator rend();
+
+<pre><code>reverse_iterator rend();
 const_reverse_iterator rend() cosnt;
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <h1>返回指向list起始位置的反向迭代器</h1>
 
 <p>reserve</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void reserve(size_type n);
-</code></pre></div>
+
+<pre><code>void reserve(size_type n);
+</code></pre>
+
 <p>作用:</p>
 
 <h1>为list容器预留可以容纳n个元素的空间</h1>
 
 <p>resize</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void resize(size_type n, T x = T())
-</code></pre></div>
+
+<pre><code>void resize(size_type n, T x = T())
+</code></pre>
+
 <p>作用:</p>
 
 <h1>改变list容器的大小为n，且对新创建的元素赋值x</h1>
 
 <p>size</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">size_type size() const;
-</code></pre></div>
+
+<pre><code>size_type size() const;
+</code></pre>
+
 <p>作用:</p>
 
 <h1>返回list容器所容纳元素的数目</h1>
 
 <p>swap</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void swap(list&amp; x);
-</code></pre></div>
+
+<pre><code>void swap(list&amp; x);
+</code></pre>
+
 <p>作用:</p>
 
 <h1>交换当前list容器与x容器中的元素，x是一个list容器</h1>
 
 <p><strong>remove_if</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void remove_if(greater pr)
-</code></pre></div>
+
+<pre><code>void remove_if(greater pr)
+</code></pre>
+
 <p>作用:</p>
 
 <h1>条件pr作为判断的依据，遍历整个链表，若pr返回为true则删除这个元素</h1>
 
 <p><strong>sort</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void sort()
+
+<pre><code>void sort()
 
 template 
 void sort(greater pr)   //greater pr是手动指定的比较条件
-</code></pre></div>
+</code></pre>
+
 <p>作用:</p>
 
 <h1>对list容器排序，默认是升序，如果指定条件pr，则采用pr来判断两个元素的大小</h1>
 
 <p><strong>splice</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void splice(iterator it, list&amp; x);
+
+<pre><code>void splice(iterator it, list&amp; x);
 void splice(iterator it, list&amp; x, iterator first);
 void splice(iterator it, list&amp; x, iterator first, iterator last);
-</code></pre></div>
+</code></pre>
+
 <p>作用:
 把x容器连接到当前容器的迭代器it指定的位置；
 把x容器中迭代器first指代的元素连接到当前容器的迭代器it指定的位置；</p>
@@ -368,9 +418,11 @@ void splice(iterator it, list&amp; x, iterator first, iterator last);
 <h1>把x容器中first和last指定范围的元素连接到当前容器的迭代器it指定的位置；</h1>
 
 <p><strong>unique</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">void unique()
+
+<pre><code>void unique()
 void unique(greater pr)
-</code></pre></div>
+</code></pre>
+
 <p>作用:
 删除list容器中指定的元素；</p>
 
@@ -379,7 +431,7 @@ void unique(greater pr)
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -396,7 +448,7 @@ void unique(greater pr)
 
 
         </div>
-        <p class="byline"><strong>STL::list</strong> was published on <time datetime="2013-11-29T02:11:54Z">November 29, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>STL::list</strong> was published on <time datetime="2013-11-29T02:11:54Z">November 29, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -404,14 +456,14 @@ void unique(greater pr)
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -440,8 +492,8 @@ void unique(greater pr)
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

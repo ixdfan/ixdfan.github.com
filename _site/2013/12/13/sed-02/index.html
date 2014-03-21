@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="sed的替换功能">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/12/13/sed-02/">
+<meta property="og:url" content="http://localhost:4000/2013/12/13/sed-02/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/12/13/sed-02/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/12/13/sed-02/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -115,7 +115,8 @@
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
       <p>sed的替换功能</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# cat main.c
+
+<pre><code>[root@localhost sed]# cat main.c
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -123,8 +124,8 @@
 long int power(int, int);
 int main(){
         int base, n;
-        scanf(&quot;%d, %d\n&quot;, &amp;base, &amp;n);
-        printf(&quot;the power is: %d\n&quot;, power(base, n));
+        scanf("%d, %d\n", &amp;base, &amp;n);
+        printf("the power is: %d\n", power(base, n));
 
         return 0;
 }
@@ -134,7 +135,7 @@ long int power(int base, int n)
         return base^n;
 }
 
-[root@localhost sed]# sed  -e &#39;s/power/jiecheng/g&#39; main.c
+[root@localhost sed]# sed  -e 's/power/jiecheng/g' main.c
 #include 
 #include 
 #include 
@@ -142,8 +143,8 @@ long int power(int base, int n)
 long int jiecheng(int, int);
 int main(){
         int base, n;
-        scanf(&quot;%d, %d\n&quot;, &amp;base, &amp;n);
-        printf(&quot;the jiecheng is: %d\n&quot;, jiecheng(base, n));
+        scanf("%d, %d\n", &amp;base, &amp;n);
+        printf("the jiecheng is: %d\n", jiecheng(base, n));
 
         return 0;
 }
@@ -154,19 +155,21 @@ long int jiecheng(int base, int n)
 }
 
 [root@localhost sed]#
-</code></pre></div>
-<p>sed命令&#39;s/power/jiecheng/g&#39;这条命令全局查找main.c中的power字符，并将其替换位jiecheng</p>
+</code></pre>
+
+<p>sed命令's/power/jiecheng/g'这条命令全局查找main.c中的power字符，并将其替换位jiecheng</p>
 
 <p>g表示全部替换否则只会替换该行第一次出现的power</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>地址范围+替换操作</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#表示替换1-10行中所有的power
-[root@localhost sed]# sed  -e &#39;1,10s/power/jiecheng/g&#39; main.c
+
+<pre><code>#表示替换1-10行中所有的power
+[root@localhost sed]# sed  -e '1,10s/power/jiecheng/g' main.c
 
 #仅仅替换main函数中所有的power
-[root@localhost sed]# sed  -e &#39;/main[[:space:]]*(/,/^}/s/power/jiecheng/g&#39; main.c
+[root@localhost sed]# sed  -e '/main[[:space:]]*(/,/^}/s/power/jiecheng/g' main.c
 #include 
 #include 
 #include 
@@ -174,8 +177,8 @@ long int jiecheng(int base, int n)
 long int power(int, int);
 int main(){
         int base, n;
-        scanf(&quot;%d, %d\n&quot;, &amp;base, &amp;n);
-        printf(&quot;the jiecheng is: %d\n&quot;, jiecheng(base, n));
+        scanf("%d, %d\n", &amp;base, &amp;n);
+        printf("the jiecheng is: %d\n", jiecheng(base, n));
 
         return 0;
 }
@@ -184,67 +187,78 @@ long int power(int base, int n)
 {
         return base^n;
 }
-</code></pre></div>
+</code></pre>
+
 <p>/main[[:space:]]*(/,/^}/ #地址范围选择在main函数之内</p>
 
-<p>s/power/jiecheng/g&#39; main.c #在地址范围内进行替换</p>
+<p>s/power/jiecheng/g' main.c #在地址范围内进行替换</p>
 
 <h5>注意:</h5>
 
 <p>如果正在执行字符串替换，并且规则表达式或替换字符中有许多斜杠，则可以在s之后指定一个不同的字符来更改分割符号</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# sed -e &#39;s:/usr/loval:/usr:g&#39; list
-[root@localhost sed]# sed -e &#39;s&quot;/usr/loval&quot;/usr&quot;g&#39; list
-</code></pre></div>
-<p>使用&#39;:&#39;或&#39;&quot;&#39;作为分割符，只要你喜欢就可以用任意符号</p>
 
-<h1></h1>
+<pre><code>[root@localhost sed]# sed -e 's:/usr/loval:/usr:g' list
+[root@localhost sed]# sed -e 's"/usr/loval"/usr"g' list
+</code></pre>
+
+<p>使用':'或'"'作为分割符，只要你喜欢就可以用任意符号</p>
+
+<hr />
 
 <p>sed最长匹配问题</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# cat ollir.html
+
+<pre><code>[root@localhost sed]# cat ollir.html
 &lt;html&gt;
 &lt;html&gt;
 &lt;html&gt;
 &lt;head&gt; ollir page&lt;/head&gt;
-&lt;body&gt; &lt;b&gt;this &lt;/b&gt; is &lt;b&gt;ollir&#39;s&lt;/b&gt; page &lt;/body&gt;
+&lt;body&gt; &lt;b&gt;this &lt;/b&gt; is &lt;b&gt;ollir's&lt;/b&gt; page &lt;/body&gt;
 &lt;/html&gt;
 
 
-[root@localhost sed]# sed -e &#39;s/&lt;.*&gt;//g&#39; ollir.html
+[root@localhost sed]# sed -e 's/&lt;.*&gt;//g' ollir.html
 
 [root@localhost sed]#
-</code></pre></div>
-<p>命令sed -e &#39;s/&lt;.*&gt;//g&#39; ollir.html并不是什么都没有输出，而是输出了4个空行</p>
+</code></pre>
 
-<p>我们想要将html文件中的之类的标签去掉，所以要替换的内容是从&lt;到&gt;为止的内容</p>
+<p>命令sed -e 's/&lt;.*>//g' ollir.html并不是什么都没有输出，而是输出了4个空行</p>
 
-<p>但是当sed试图在行中匹配表达式时候，它要在行中查找最长的匹配。这样上面的例子中文件的每一行都从‘&lt;’匹配，一直到行末的&#39;&gt;&#39;结束，所以这些内容被替换成了空</p>
+<p>我们想要将html文件中的之类的标签去掉，所以要替换的内容是从&lt;到>为止的内容</p>
+
+<p>但是当sed试图在行中匹配表达式时候，它要在行中查找最长的匹配。这样上面的例子中文件的每一行都从‘&lt;’匹配，一直到行末的'>'结束，所以这些内容被替换成了空</p>
 
 <p>我们期望的替换结果是</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">ollier page
-this is ollir&#39;s page
-</code></pre></div>
+
+<pre><code>ollier page
+this is ollir's page
+</code></pre>
+
 <p>问题的关键在于如何打破sed的最长匹配机制,最长匹配来自与.*的用法，表示任意字符任意长度</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost sed]# cat ollir.html
+
+<pre><code>[root@localhost sed]# cat ollir.html
 &lt;html&gt;
 &lt;head&gt; ollir page&lt;/head&gt;
-&lt;body&gt; &lt;b&gt;this &lt;/b&gt; is &lt;b&gt;ollir&#39;s&lt;/b&gt; page &lt;/body&gt;
+&lt;body&gt; &lt;b&gt;this &lt;/b&gt; is &lt;b&gt;ollir's&lt;/b&gt; page &lt;/body&gt;
 &lt;/html&gt;
 
 
-[root@localhost sed]# sed -e &#39;s/&lt;[^&gt;]*&gt;/ /g&#39; ollir.html ollir page this is ollir&#39;s page
-</code></pre></div>
-<p>/&lt;[^&gt;]<em>&gt;/表示匹配&lt;后面接任意个非&gt;的字符，当遇到&gt;则与</em>后的&gt;匹配了，然后将其中的内容替换为空</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text"> [root@localhost sed]# sed -e &#39;s:[/*][/*]: :g&#39; main.c
- [root@localhost sed]# sed -e &#39;s/\/\*//g&#39; main.c#转义字符
-</code></pre></div>
+[root@localhost sed]# sed -e 's/&lt;[^&gt;]*&gt;/ /g' ollir.html ollir page this is ollir's page
+</code></pre>
+
+<p>/&lt;[^>]<em>>/表示匹配&lt;后面接任意个非>的字符，当遇到>则与</em>后的>匹配了，然后将其中的内容替换为空</p>
+
+<pre><code> [root@localhost sed]# sed -e 's:[/*][/*]: :g' main.c
+ [root@localhost sed]# sed -e 's/\/\*//g' main.c#转义字符
+</code></pre>
+
 <p>替换c语言中的各种注释符号/<em>和</em>/和//</p>
 
-<h1></h1>
+<hr />
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -261,7 +275,7 @@ this is ollir&#39;s page
 
 
         </div>
-        <p class="byline"><strong>sed的替换功能</strong> was published on <time datetime="2013-12-13T09:11:23Z">December 13, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>sed的替换功能</strong> was published on <time datetime="2013-12-13T09:11:23Z">December 13, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -269,14 +283,14 @@ this is ollir&#39;s page
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -305,8 +319,8 @@ this is ollir&#39;s page
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

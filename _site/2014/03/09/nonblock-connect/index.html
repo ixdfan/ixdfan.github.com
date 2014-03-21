@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="非阻塞connect的实现">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2014/03/09/nonblock-connect/">
+<meta property="og:url" content="http://localhost:4000/2014/03/09/nonblock-connect/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2014/03/09/nonblock-connect/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2014/03/09/nonblock-connect/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -121,7 +121,8 @@
 <p>当select、poll等函数返回后，再利用getsockopt来读取错误码并清除该socket上的数据，如果错误码是0，则表示连接建立成功，否则连接建立失败。</p>
 
 <p>利用上面的非阻塞connect方式，我们就能同时发起多个连接并一起等待。</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">#include &lt;sys/types.h&gt;
+
+<pre><code>#include &lt;sys/types.h&gt;
 #include &lt;sys/socket.h&gt;
 #include &lt;netinet/in.h&gt;
 #include &lt;assert.h&gt;
@@ -161,11 +162,11 @@ int unblock_connect(const char* ip, int port, int time)
     ret = connect(sockfd, (struct sockaddr*)&amp;address, sizeof(address));
     if (ret == 0) {
         /*连接成功则恢复sockfd的属性，并立刻返回*/
-        printf(&quot;connect with server immediately\n&quot;);
+        printf("connect with server immediately\n");
         fcntl(sockfd, F_SETFL, fdopt);
         return sockfd;
     } else if (errno != EINPROGRESS) {
-            printf(&quot;not EINPROGRESS\n&quot;);
+            printf("not EINPROGRESS\n");
             exit(-1);
         /*
         *如果连接没有建立，那么只有当errno为EINPROGRESS时候
@@ -188,13 +189,13 @@ int unblock_connect(const char* ip, int port, int time)
 
     ret = select(sockfd + 1, NULL, &amp;writefds, NULL, &amp;timeout);
     if (ret &lt;= 0) { /* 超时或是是出错都立刻返回 */
-        printf(&quot;connection time out\n&quot;);
+        printf("connection time out\n");
         close(sockfd);
         return -1;
     }
 
     if (!FD_ISSET(sockfd, &amp;writefds)) {
-        printf(&quot;no events on sockfd found\n&quot;);
+        printf("no events on sockfd found\n");
         close(sockfd);
         return -1;
     }
@@ -205,21 +206,21 @@ int unblock_connect(const char* ip, int port, int time)
 
     /* getsockopt来获取并清除sockfd上的错误 */    
     if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &amp;error, &amp;length) &lt; 0) {
-        printf(&quot;getsockopt error&quot;);
+        printf("getsockopt error");
         close(sockfd);
         return -1;
     }
 
     /* errno不为0则表示出错 */
     if (error != 0) {
-        printf(&quot;connection failed after select with the error:%d\n&quot;, error);
+        printf("connection failed after select with the error:%d\n", error);
         close(sockfd);
         return -1;
     }
 
     /* 连接成功 */  
-    printf(&quot;connection ready after select with the socket: %d\n&quot;, sockfd);  
-    send(sockfd, &quot;12&quot;, 3, 0);
+    printf("connection ready after select with the socket: %d\n", sockfd);  
+    send(sockfd, "12", 3, 0);
     fcntl(sockfd, F_SETFL, fdopt);
     return sockfd;
 
@@ -229,7 +230,7 @@ int unblock_connect(const char* ip, int port, int time)
 
 int main(int argc, char** argv)
 {
-    const char* ip = &quot;127.0.0.1&quot;;
+    const char* ip = "127.0.0.1";
     int port = 80;
 
     int sockfd = unblock_connect(ip, port, 10);
@@ -241,7 +242,8 @@ int main(int argc, char** argv)
 
     return 0;
 }
-</code></pre></div>
+</code></pre>
+
 <h5>但是以上的代码存在移植性的问题:</h5>
 
 <ul>
@@ -250,10 +252,11 @@ int main(int argc, char** argv)
 <li>对于出错的socket，getsocketopt在有些系统上返回-1，但是有点系统上(比如伯克利的UNIX)上返回0</li>
 </ul>
 
+
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -270,7 +273,7 @@ int main(int argc, char** argv)
 
 
         </div>
-        <p class="byline"><strong>非阻塞connect的实现</strong> was published on <time datetime="2014-03-09T00:00:00+00:00">March 09, 2014</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>非阻塞connect的实现</strong> was published on <time datetime="2014-03-09T00:00:00+00:00">March 09, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -278,14 +281,14 @@ int main(int argc, char** argv)
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -314,8 +317,8 @@ int main(int argc, char** argv)
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

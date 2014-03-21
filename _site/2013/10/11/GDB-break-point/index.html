@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="GDB调试(二):断点相关">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/10/11/GDB-break-point/">
+<meta property="og:url" content="http://localhost:4000/2013/10/11/GDB-break-point/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/10/11/GDB-break-point/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/10/11/GDB-break-point/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -124,50 +124,59 @@
 
 <p>delete用来基于标示符删除断点</p>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">delete breakpoint_list 删除使用数字标示符表示的断点。
+<hr />
+
+<pre><code>delete breakpoint_list 删除使用数字标示符表示的断点。
 
 delete 2 删除第二个断点
 
 delete 2 4 删除第二四个断点
-</code></pre></div>
+</code></pre>
+
 <h5>注意：</h5>
 
 <p>delete不带参数 删除所有断点</p>
 
 <p>clear不带参数 清除GDB将执行的下一个指令处的断点，主要适用于要删除GDB已经到达的断点的状况。</p>
 
-<h1></h1>
+<hr />
 
 <p>在GDB中禁用断点</p>
 
 <p>每个断点都可以禁用或启用，只有遇到启用的断点时候GDB才会暂停程序的执行。他会忽略禁用的断点；</p>
 
 <p>如果要保留断点以便以后使用暂时又不希望GDB停止执行，可以暂时禁用他们在以后需要时在执行！</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">disable breakpoint-list 禁用断点
+
+<pre><code>disable breakpoint-list 禁用断点
 enable breakpoint-list 启用断点
 
 disable 3 禁用第三个断点
 enable 3 5 启用第三和第五个断点
-</code></pre></div>
+</code></pre>
+
 <h5>注意：</h5>
 
 <p>disable不带任何参数将禁用所有断点
 enable不带任何参数将启用所有断点</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">enable one：在断点下次引起GDB暂停执行后被禁用，命令形式：
+
+<pre><code>enable one：在断点下次引起GDB暂停执行后被禁用，命令形式：
 enable once breakpoint-list
 enable once 3 会使得断点3在下次导致GDB停止程序后被禁用而不是删除，与tbreak非常类似，但tbreak是删除！
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>条件断点</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">break break-args if (condition)
-</code></pre></div>
+
+<pre><code>break break-args if (condition)
+</code></pre>
+
 <p>其中break-args是可以传递给break用来指定断点的任何参数
 conditon是布尔表达式,condition的括号是可选的</p>
 
 <p>例如：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">for(i=0; i&lt;70000; ++i)
+
+<pre><code>for(i=0; i&lt;70000; ++i)
 {
     sum = i;            //第十行
 }
@@ -180,8 +189,9 @@ break test.c:34 if (x&amp;y;) == 1
 break myfunc if i % (j + 3) != 0
 break 44 if (strlen(mystring) == 0)
 break test.c:myfunc if (! check_variable_sanity(i))
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>info breakpoints命令(i b)的解释</p>
 
@@ -192,16 +202,17 @@ break test.c:myfunc if (! check_variable_sanity(i))
 <li>Enb:启用状态，说明断点当前是启用的还是禁用的</li>
 <li>Disp:每个断点都有一个部署，知识断点下次引起GDB暂停程序的执行后该断点会发生什么；
 主要为一下三种类型：</li>
-<li>keep:保持，下次到底断点后不会删除断点，属于默认部署 </li>
+<li>keep:保持，下次到底断点后不会删除断点，属于默认部署</li>
 <li>del:删除，下次到达断点后删除该断点，使用tbreak创建的断点都是这样的断点</li>
 <li>dis:下次到达断点时候会禁用该断点，enable once设置的断点</li>
 </ul>
 
-<hr>
+
+<hr />
 
 <p>最后可以看到显示出每个断点引起GDB停止执行了多少次，如果循环中有一个断点，这个命令会马上告诉你到目前为止循环执行了多少次迭代，非常好用</p>
 
-<h1></h1>
+<hr />
 
 <p>使用continue继续执行直到遇到下一个断点或程序结束</p>
 
@@ -209,7 +220,7 @@ break test.c:myfunc if (! check_variable_sanity(i))
 
 <p>continue 3 意思就是继续执行并忽略下面的n个断点</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>finish</strong>命令的作用是GDB恢复执行，直到恰好当前函数执行完毕后为止。</p>
 
@@ -222,40 +233,44 @@ break test.c:myfunc if (! check_variable_sanity(i))
 
 <p>如果在递归层次较高时完全退出递归函数，那么更适合使用临时断点和continue组合或是使用until命令。</p>
 
-<h1></h1>
+<hr />
 
 <p><strong>until</strong>(简写为u)通常是在不进一步在函数中暂停的情况下完成当前函数的执行。
 until通常用来不进一步在循环中暂停的情况来完成正在执行的循环</p>
 
 <p>比如:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">int i = 99999;
+
+<pre><code>int i = 99999;
 while(i)
 {
-    printf(&quot;i = %d\n&quot;, i);
+    printf("i = %d\n", i);
 }
 future code……
 ……
-</code></pre></div>
+</code></pre>
+
 <p>假设GDB在while处有一个断点上停止，现在打算离开循环去调试future code 处的代码！
 但是问题是i相当的大，但不能使用finish，因为finish会直接执行future code代码，将我们带出函数；
 此时我们可以在future code处设置一个断点并使用continue；
 但是这恰恰就是until能够处理的代码；
 使用until会执行循环的其余部分，让GDB在循环后面的第一行代码(就是futrue code)处暂停</p>
 
-<h1></h1>
+<hr />
 
 <p>until可以接受源代码中位置作为参数，与break类似</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">until 17
+
+<pre><code>until 17
 until swap
 until swapflaw.c:17
 until swapflaw.c:swap
-</code></pre></div>
+</code></pre>
+
 <p>一直执行到swap的入口处停止</p>
 
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -272,7 +287,7 @@ until swapflaw.c:swap
 
 
         </div>
-        <p class="byline"><strong>GDB调试(二):断点相关</strong> was published on <time datetime="2013-10-11T06:22:10Z">October 11, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>GDB调试(二):断点相关</strong> was published on <time datetime="2013-10-11T06:22:10Z">October 11, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -280,14 +295,14 @@ until swapflaw.c:swap
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -316,8 +331,8 @@ until swapflaw.c:swap
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>

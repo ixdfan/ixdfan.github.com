@@ -15,15 +15,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="GDB调试(三)：多进程调试">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://ucshell.github.com/2013/10/12/gdb-precess/">
+<meta property="og:url" content="http://localhost:4000/2013/10/12/gdb-precess/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://ucshell.github.com/2013/10/12/gdb-precess/">
-<link href="http://ucshell.github.com/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="canonical" href="http://localhost:4000/2013/10/12/gdb-precess/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
 <!-- http://t.co/dKP3o1e -->
@@ -34,32 +34,32 @@
 <!-- Google Webfonts -->
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://ucshell.github.com/assets/css/main.min.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
 
 <meta http-equiv="cleartype" content="on">
 
 <!-- HTML5 Shiv and Media Query Support -->
 <!--[if lt IE 9]>
-	<script src="http://ucshell.github.com/assets/js/vendor/html5shiv.min.js"></script>
-	<script src="http://ucshell.github.com/assets/js/vendor/respond.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
 <![endif]-->
 
 <!-- Modernizr -->
-<script src="http://ucshell.github.com/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
 
 <!-- Icons -->
 <!-- 16x16 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.ico">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
 <!-- 32x32 -->
-<link rel="shortcut icon" href="http://ucshell.github.com/favicon.png">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 <!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://ucshell.github.com/images/apple-touch-icon-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
 <!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://ucshell.github.com/images/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
 <!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://ucshell.github.com/images/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
 <!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://ucshell.github.com/images/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
 
@@ -69,19 +69,19 @@
 
 <div class="navigation-wrapper">
 	<div class="site-name">
-		<a href="http://ucshell.github.com">高手之路</a>
+		<a href="http://localhost:4000">高手之路</a>
 	</div><!-- /.site-name -->
 	<div class="top-navigation">
 		<nav role="navigation" id="site-nav" class="nav">
 		    <ul>
 		        
-				<li><a href="http://ucshell.github.com" >Home</a></li>
+				<li><a href="http://localhost:4000" >Home</a></li>
 		        
-				<li><a href="http://ucshell.github.com/posts/" >Posts</a></li>
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
 		        
-				<li><a href="http://ucshell.github.com/about/" >About</a></li>
+				<li><a href="http://localhost:4000/about/" >About</a></li>
 		        
-				<li><a href="http://ucshell.github.com/comment/" >Leave a message</a></li>
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
 		        
 		    </ul>
 		</nav>
@@ -92,7 +92,7 @@
 
 <div id="main" role="main">
   <div class="article-author-side">
-    <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -122,7 +122,7 @@
 
 <p>如何调试多进程呢?</p>
 
-<h1></h1>
+<hr />
 
 <p>主要有两种方法：</p>
 
@@ -130,11 +130,12 @@
 
 <h5>2. follow-fork-mode 方法</h5>
 
-<h1></h1>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">/*测试用例*/
+<hr />
+
+<pre><code>/*测试用例*/
 void function()
 {
-    printf(&quot;this is a function!\n&quot;);
+    printf("this is a function!\n");
 }
 
 int main()
@@ -142,12 +143,12 @@ int main()
     pid_t pid;
     if((pid = fork()) &lt; 0)
     {
-        perror(&quot;fork error!&quot;);
+        perror("fork error!");
     }
     else if(0 == pid)
     {
         sleep(60);/*注意*/
-        printf(&quot;this is a child process\n&quot;);
+        printf("this is a child process\n");
         function();
         exit(0);
     }
@@ -155,8 +156,9 @@ int main()
     waitpid(pid, 0, 0);
     return 0;
 }
-</code></pre></div>
-<h1></h1>
+</code></pre>
+
+<hr />
 
 <p>注意处标识的sleep(60)其实就为了调试而加入的！</p>
 
@@ -168,50 +170,63 @@ int main()
 
 <p>方法依附带该进程上！</p>
 
-<h1></h1>
+<hr />
 
 <p>步骤:
 1. 编译：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">    [root@localhost GDB]# cc gdb.c -omain -g
-</code></pre></div>
+
+<pre><code>    [root@localhost GDB]# cc gdb.c -omain -g
+</code></pre>
+
 <ol>
 <li><p>运行：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost GDB]# ./main
-</code></pre></div></li>
+
+<pre><code> [root@localhost GDB]# ./main
+</code></pre></li>
 <li><p>查找进程ID</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost GDB]# ps a
-</code></pre></div></li>
+
+<pre><code> [root@localhost GDB]# ps a
+</code></pre></li>
 <li><p>运行GDB</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">[root@localhost GDB]# gdb
-(gdb)attach PID
-(gdb)stop /*这个是非常重要的，必须先暂停你在设置一些断点*/
-(gdb)break function /*在function函数上设置断点*/
-(gdb)continue
-</code></pre></div>
-<p><strong>也可以直接使用gdb -p pid</strong> 这两种方法都可以
-/<em>遇到断点后进行单步调试</em>/</p></li>
+
+<pre><code> [root@localhost GDB]# gdb
+ (gdb)attach PID
+ (gdb)stop /*这个是非常重要的，必须先暂停你在设置一些断点*/
+ (gdb)break function /*在function函数上设置断点*/
+ (gdb)continue
+</code></pre>
+
+<p> <strong>也可以直接使用gdb -p pid</strong> 这两种方法都可以
+ /<em>遇到断点后进行单步调试</em>/</p></li>
 </ol>
 
-<h1></h1>
+
+<hr />
 
 <p>follow-fork-mode的用法：</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">set follow-fork-mode [parent | child]
+
+<pre><code>set follow-fork-mode [parent | child]
 parent:fork之后继续调试父进程，子进程不受影响
 child:fork之后继续调试子进程，父进程不受影响
-</code></pre></div>
+</code></pre>
+
 <p>如果需要调试子进程</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">(gdb)set follow-fork-mode child
-</code></pre></div>
+
+<pre><code>(gdb)set follow-fork-mode child
+</code></pre>
+
 <p>并在子进程代码设置断点</p>
 
 <p>detach-on-fork参数，知识GDB在fork之后是否断开(detach)某个进程的调试，或都交由GDB控制；</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">set detach-on-fork [on | off]
-</code></pre></div>
+
+<pre><code>set detach-on-fork [on | off]
+</code></pre>
+
 <p>on:断开调试follow-fork-mode指定的进程</p>
 
 <p>off:GDB将控制父进程和子进程，follow-fork-mode指定的进程将被调试，另一个进程处于暂停状态。</p>
 
-<h1></h1>
+<hr />
 
 <p>总结:</p>
 
@@ -222,7 +237,7 @@ child:fork之后继续调试子进程，父进程不受影响
       <hr />
       <footer role="contentinfo">
         <div class="article-author-bottom">
-          <img src="http://ucshell.github.com/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
 <h3>Neo</h3>
 <p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
 
@@ -239,7 +254,7 @@ child:fork之后继续调试子进程，父进程不受影响
 
 
         </div>
-        <p class="byline"><strong>GDB调试(三)：多进程调试</strong> was published on <time datetime="2013-10-12T12:17:55Z">October 12, 2013</time> by <a href="http://ucshell.github.com/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>GDB调试(三)：多进程调试</strong> was published on <time datetime="2013-10-12T12:17:55Z">October 12, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
@@ -247,14 +262,14 @@ child:fork之后继续调试子进程，父进程不受影响
 
 <div class="footer-wrap">
   <div class="related-articles">
-  <h4>You might also enjoy <small class="pull-right">(<a href="http://ucshell.github.com/posts/">View all posts</a>)</small></h4>
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
     
-      <li><a href="http://ucshell.github.com/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
     
     </ul>
     <hr />
@@ -283,8 +298,8 @@ child:fork之后继续调试子进程，父进程不受影响
 </div><!-- /.footer-wrap -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://ucshell.github.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://ucshell.github.com/assets/js/scripts.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
 	        
 
 </body>
