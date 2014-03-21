@@ -5,24 +5,24 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
-<title>校验和的计算 &#8211; 高手之路</title>
+<title>二叉树与表达式 &#8211; 高手之路</title>
 <meta name="description" content="">
-<meta name="keywords" content="校验和">
+<meta name="keywords" content="">
 
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="校验和的计算">
+<meta property="og:title" content="二叉树与表达式">
 <meta property="og:description" content="专注于linux下程序设计">
-<meta property="og:url" content="http://localhost:4000/2013/11/18/%E6%A0%A1%E9%AA%8C%E5%92%8C%E7%9A%84%E8%AE%A1%E7%AE%97/">
+<meta property="og:url" content="http://localhost:4000/2013/12/02/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%8E%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 <meta property="og:site_name" content="高手之路">
 
 
 
 
 
-<link rel="canonical" href="http://localhost:4000/2013/11/18/%E6%A0%A1%E9%AA%8C%E5%92%8C%E7%9A%84%E8%AE%A1%E7%AE%97/">
+<link rel="canonical" href="http://localhost:4000/2013/12/02/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%8E%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 <link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
 <link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
 
@@ -111,79 +111,22 @@
   </div>
   <article>
     <div class="headline-wrap">
-      <h1>校验和的计算</h1>
+      <h1>二叉树与表达式</h1>
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <p>TCP/UDP校验和与伪首部</p>
+      <p>二叉树与表达式的转换：
+看书的时候才知道以中表达式计算的快速方法，就是用树来存储表达式，然后前缀、中缀、后缀表达式分别对应树的前序、中序、后序遍历
+这个方法对于在笔试的时候会非常快速的！</p>
 
-<p>今天在写扫描器的时候才知道原来TCP/UDP的校验和中还要包括伪首部，以前压根都不知道还要写伪首部！垃圾书籍害死人啊！</p>
+<p>将中缀表达式转换为二叉树
+比如((a+b)+c<em>(d+e)+f)</em>(g+h)的计算
+我们就从头开始读取表达式，遇到要计算的符号就将它作为根
+比如a + b，那么就将a、b分别作为左右节点，将+作为其根节点；</p>
 
-<p>TCP/UDP校验和锁需要的数据包括以下三部分：</p>
+<p>如图所示，其实很简单，一直写就可以了！
+<img src="/uploads/2013/003.png" alt="表达式树" /></p>
 
-<ol>
-<li>伪首部</li>
-<li>首部</li>
-<li>数据部分</li>
-</ol>
-
-
-<p><strong> 伪首部并非TCP\UDP数据报中实际的有效成分。伪首部不会发送，仅仅用于计算校验和。</strong></p>
-
-<p>伪首部是一个虚拟的数据结构，其中的信息是从数据报所在IP分组头的分组头中提取的，既不向下传送也不向上递交，而仅仅是为计算校验和。这样的校验和，既校验了TCP\UDP用户数据的源端口号和目的端口号以及TCP\UDP用户数据报的数据部分，又检验了IP数据报的源IP地址和目的地址。伪报头保证TCP\UDP数据单元到达正确的目的地址。因此，伪报头中包含IP地址并且作为计算校验和需要考虑的一部分。最终目的端根据伪报头和数据单元计算校验和以验证通信数据在传输过程中没有改变而且到达了正确的目的地址。</p>
-
-<h5>伪首部的作用:</h5>
-
-<p>用于检验P数据报已经到达正确的目的地，即正确的主机和协议端口。</p>
-
-<p>尽管IP数据报首部已经包含了必要的校验和，但是，它并不能保证检验出所有的首部错误，因此，为了确保数据传输的正确性，在报文验证时，通过增加伪首部信息校验，再次对IP数据报中的源IP地址、目的IP地址、协议类型和数据长度等信息进行校验。</p>
-
-<p>需要注意的是，<strong>伪首部的内容在报文的传输中是不需要传送的</strong>，即报文中并不安排专门的位置存放伪首部内容，只是在发送报文时计算校验和，以及接收报文时验证校验和时，需要将伪首部定义的内容纳入校验和计算和验证的范畴。</p>
-
-<p>校验和的计算：
-1. 把伪首部添加到TCP/UDP上
-2. 计算初始时将校验和设置为0 //非常重要，否则校验和的结果将是错误的
-3. 将所有位划分为16位的字(一个字是两个字节)
-4. 将所有16为的字相加，如果遇到进位，将高于16字节的进位部分的值加到最低位上。
-        0xBB5E+0xFCED=0x1 B84B，则将1加到最低位，得到结果是0xB84C
-5. 将所有字相加的结果取反就是校验和的值</p>
-
-<pre><code>unsigned short checkSum(void * buffer, int size)
-{
-        unsigned long cksum=0;
-
-        while (size &gt; 1) {
-        cksum += *(unsigned short *)buffer;
-        size -= sizeof(unsigned short);
-        buffer = (char *)buffer + sizeof(unsigned short);
-        }
-
-        if (size)
-                cksum += *(unsigned char*)buffer;
-
-        while(cksum &gt;&gt; 16)
-                cksum = (cksum &gt;&gt; 16) + (cksum &amp; 0xffff);
-    /*
-    while也可以换成一下代码：
-    cksum = (cksum &gt;&gt; 16) + (cksum &amp; 0xffff);   //将高16bit与低16bit相加
-    cksum += (cksum &gt;&gt; 16);             //将进位到高位的16bit与低16bit 再相加
-    */
-        return (unsigned short) (~cksum);
-}
-</code></pre>
-
-<h5>注意：</h5>
-
-<h6>* TCP/UDP的校验和包含伪首部、首部、数据部分，但是发送时并不发送伪首部。</h6>
-
-<h6>* IP头的首部检验和仅仅计算数据报的首部，但是不包含数据部分。</h6>
-
-<p>这是因为数据报每经过一个路由器，路由器都要重新计算一下首部校验和(一些字段，如生存时间、标志、片位移都可能变化)，不检验数据部分可以减少计算工作，进一步减少计算校验和的工作量。</p>
-
-<p><img src="/uploads/2013/TCP.png" alt="TCP伪首部" /></p>
-
-<p><img src="/uploads/2013/UDP.png" alt="UDP伪首部" /></p>
-
-<p>伪首部的格式是相同的：源IP地址、目的IP地址、8位的全0、8位的协议值(TCP为6或IPPROTO_TCP，UDP为17或IPPROTO_UDP)、协议报文总长度(<strong>包含数据部分</strong>)</p>
+<p>我是省略了中间的步骤的！不过其实还是很简单的！有了这个树，求什么前缀表达式、后缀表达式那都是微微一笑，不过希望在面试的时候面试官不会让我将这个树用代码来实现</p>
 
       <hr />
       <footer role="contentinfo">
@@ -205,7 +148,7 @@
 
 
         </div>
-        <p class="byline"><strong>校验和的计算</strong> was published on <time datetime="2013-11-18T08:37:52Z">November 18, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+        <p class="byline"><strong>二叉树与表达式</strong> was published on <time datetime="2013-12-02T01:56:37Z">December 02, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   </article>
