@@ -1,0 +1,101 @@
+---
+layout: post
+title:  pipe与socketpair函数
+description: 
+modified: 
+categories: 
+-  THE LINUX
+tags:
+- 
+
+---
+
+pipe函数用于创建一个管道，以实现进程间通信
+
+	int pipe(int pipefd[2]);
+
+pipe的参数为包含两个整数的数组指针;
+
+通过pipe函数创建的两个文件描述符pipefd[0]、pipefd[1]分别构成管道的两端;
+
+从fd[1]写入的数据可以从fd[0]读出，并且fd[0]只能读取，fd[1]只能写入;不可以反过来使用
+
+如果要事项双向传输数据，就要使用两个管道;
+
+
+	int main()
+	{
+	        int fd[2];
+	        char buf[80];
+	        pid_t pid;
+	     
+	        pipe(fd);
+	        pid = fork();
+	
+	        if (pid > 0) {
+	                printf("this is father process, here write a string to the pipe\n");
+	                char s[] = "Hello world\n";
+	                write(fd[1], s, sizeof(s));        
+	                close(fd[0]);
+	                close(fd[1]);
+	
+	        } else if (pid == 0) {
+	                printf("this is child process, here write a string to the pipe\n");
+	                read(fd[0], buf, sizeof(buf));
+	                printf("%s\n", buf);
+	                close(fd[0]);
+	                close(fd[1]);
+	        }
+	     
+	        waitpid(pid, NULL, 0); 
+	        return 0;
+	}
+	
+
+
+
+
+socketpair函数，能够方便的创建双向管道:
+	
+	int socketpair(int domain, int type, int protocol, int sv[2]);
+	
+socketpair的前三个参数含义与socket相同，但是domain只能够使用AF_UNIX,因为我们只能在本地建立双向管道，最后一个参数与pipe的参数相同;socketpair返回的这对文件描述符是即可读又可写的。
+
+
+
+	#define BUF_SIZE 30
+	int main(int argc, char** argv)
+	{
+		int s[2];
+		int w, r;
+		char* string = "This is a test string";
+		char* buf = (char*)malloc(BUF_SIZE);
+		
+		if (socketpair(AF_UNIX, SOCK_STREAM, 0, s) == -1) {
+			perror("sockpari error");
+			exit(-1);
+		}
+			
+		w=write(s[0], string, strlen(string));
+		assert(w != -1);
+		printf("read string in same process:%s \n", buf);
+		
+		r = read(s[1], buf, BUF_SIZE);
+		assert(-1 != r);
+		printf("read from s1:%s\n", buf);
+
+		/* 可以从s[0]读，也可以从s[0]写 */	
+		bzero(buf, BUF_SIZE);
+		w=write(s[1], string, strlen(string));
+		assert(w != -1);
+		printf("read string in same process:%s \n", buf);
+		
+		r = read(s[0], buf, BUF_SIZE);
+		assert(-1 != r);
+		printf("read from s0:%s\n", buf);
+	
+		return 0;
+	}
+	
+
+
