@@ -18,33 +18,36 @@ POSIX中提供了两种同步机制:互斥锁和条件量
 
 条件量是对互斥锁的补充，他允许线程阻塞并等待另一个线程发送的信号。当收到信号时，阻塞的线程就被唤醒并试图锁定与之相关的互斥锁。
 
+如果说互斥锁是用于同步线程对共享数据的访问的话，那么条件变量则是用于在线程之间同步共享数据的值;
+条件变量提供了一种线程间的通知机制，当某个共享数据达到某个值的时候，唤醒等待这个共享数据的线程;
+
 =============================================================================
 
 条件量模型：
-	1.定义条件量
-	2.初始化条件量
-	3.等待条件量
-	4.其他线程修改条件量
-	5.释放条件量
+* 1.定义条件量
+* 2.初始化条件量 pthread_cond_init
+* 3.等待条件量 pthread_cond_wait
+* 4.其他线程修改条件量
+* 5.释放条件量 pthread_cond_destroy
 
 =============================================================================
 
-1.互斥量的初始化
+1.条件量的初始化
     
     int pthread_cond_init(pthread_cond_t *restrict cond,const pthread_condattr_t *restrict attr);
     pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
-##### 注意：
+###### 注意：
 对于静态初始化的方式可以不用destroy函数。
 
 多线程不能同时初始化同一个条件变量，如果一个条件变量正在使用他不能被重新初始化。
 
-2.互斥量的销毁
+2.条件量的销毁
   
     int pthread_cond_destroy(pthread_cond_t *cond);
 
-=============================================================================
-3.    
+3. 条件量的等待
+
     int pthread_cond_wait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex);
 
 
@@ -56,8 +59,8 @@ pthread_cond_wait通常在互斥锁被调用线程加锁后才返回。
 
 如果有多个线程关于条件量阻塞，其退出阻塞状态的顺序将不确定。
 
-=============================================================================
 4.   
+
 	int pthread_cond_timedwait(pthread_cond_t  *restrict cond,
     	pthread_mutex_t *restrict mutex,
     	const struct timespec *restrict abstime);
@@ -75,6 +78,7 @@ pthread_cond_timedwait将会阻塞，知道条件量获得信号或者经过由a
 =============================================================================
 
 5.
+
     
     int pthread_cond_broadcast(pthread_cond_t *cond);
     int pthread_cond_signal(pthread_cond_t *cond);
@@ -201,7 +205,7 @@ consumer从缓冲区中读数据当consumer从缓冲区读出数据后，就发�
 (b->writepos == b->readpos)含义：当读位置与写位置相同时，表示的也就是现在为空
 
 (b->writepos+1) % BUFFER_SIZE == b->readpos)含义：当写位置处于读位置的后面一个位置时，表明此时已经写满了，需要被读取
-=============================================================================
+
 
 输出如下：
     
