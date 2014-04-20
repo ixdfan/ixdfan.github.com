@@ -96,5 +96,12 @@ key需要具有唯一性，如果自己命名，无法保证key的唯一性，�
 	}
 	
 	
+共享内存被创建/获取后，我们并不能立即访问它，而是需要首先将它关联到进程的地址空间中去，使用完共享内存后，我们也需要将它从进程地址空间中分离。
+
+       void *shmat(int shmid, const void *shmaddr, int shmflg);
+       int shmdt(const void *shmaddr);
 	
+
+
+
 
