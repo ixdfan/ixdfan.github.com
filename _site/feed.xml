@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml" />
 <link rel="alternate" type="text/html" href="http://localhost:4000" />
-<updated>2014-03-21T09:20:29+00:00</updated>
+<updated>2014-05-14T03:01:05+00:00</updated>
 <id>http://localhost:4000/</id>
 <author>
   <name>Neo</name>
@@ -14,1903 +14,3789 @@
 
 
 <entry>
-  <title type="html"><![CDATA[静态连接与动态连接的区别]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/15/dynamic-link-libary/" />
-  <id>http://localhost:4000/2014/03/15/dynamic-link-libary</id>
-  <published>2014-03-15T00:00:00+00:00</published>
-  <updated>2014-03-15T00:00:00+00:00</updated>
+  <title type="html"><![CDATA[nginx的多核绑定]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-per-cpu/" />
+  <id>http://localhost:4000/2014/05/05/nginx-per-cpu</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
     <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;h4&gt;静态连接于动态连接的区别&lt;/h4&gt;
+  <content type="html">&lt;h4&gt;多核绑定&lt;/h4&gt;
 
-&lt;h5&gt;静态连接:&lt;/h5&gt;
+&lt;p&gt;对于多核平台的优化，最核心的思路就是per-cpu处理，这样才能做到性能按cpu线性扩展。&lt;/p&gt;
 
-&lt;p&gt;静态连接是指把要调用的函数或者过程直接连接到可执行文件中，成为可执行文件的一部分；&lt;/p&gt;
+&lt;p&gt;nginx在多核平台上针对负载均衡和优化所做的工作，就是提供了worker_cpu_affinity配置指令，该指令可以将工作进程固定在指定的CPU核上运行，这个又叫做cpu亲和性;&lt;/p&gt;
 
-&lt;p&gt;也就是说动态库函数的代码就在程序exe文件中，该文件包含了运行时所需要的全部代码。&lt;/p&gt;
+&lt;p&gt;CPU亲和性就是让某一段代码/数据尽量的在指定的一个或几个cpu核心上长时间运行/计算的机制。&lt;/p&gt;
 
-&lt;h5&gt;静态连接的缺点:&lt;/h5&gt;
+&lt;p&gt;nginx将工作进程绑定到指定cpu是cpu affinity的一种应用&lt;/p&gt;
 
-&lt;p&gt;当多个程序都调用相同函数时，内存中就会存在这个函数的多个拷贝，这样就浪费了内存资源。&lt;/p&gt;
+&lt;p&gt;nginx中配置cpu亲和性的使用配置首先根据系统CPU个数设定工作进程数目，我的CPU是4核，所以就设定为4,一般工作进程数目与CPU数目一致，否则太多可能导致进程切换频繁，使得整体性能下降。&lt;/p&gt;
 
-&lt;h5&gt;动态连接:&lt;/h5&gt;
+&lt;p&gt;让0号工作进程运行在0号cpu上，一号进程运行在1号cpu上&lt;/p&gt;
 
-&lt;p&gt;动态连接时相对于静态连接而言，动态连接所调用的函数代码并没有被拷贝到应用程序的可执行文件中去，而是仅仅在其中加入了所调用函数的描述信息(往往是一些重定位信息)。&lt;/p&gt;
+&lt;p&gt;可以在配置文件中使用&lt;/p&gt;
 
-&lt;p&gt;仅当应用程序被装入内存开始运行时，在操作系统的管理下，才在应用程序与相应的动态链接库(dynamic link libary，dll或so)之间建立连接关系。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;5 worker_processes  4;                  #指定4个工作进程
+6 worker_cpu_affinity 01 10 100 1000;   #指定各个工作进程使用哪个CPU
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;当要执行所调用的dll中的函数时，根据连接产生的重定位信息，操作系统采取执行dll中相应的函数代码。&lt;/p&gt;
+&lt;p&gt;worker_cpu_affinity指令的配置值是位图表示法，从前往后分别是0号工作进程、1号工作进程的CPU二进制掩码(各个掩码之间使用空格隔开)，所以这里0号工作进程的CPU掩码为01,表示使用0号cpu，1号工作进程的cpu掩码为10,表示使用1号cpu，如果某个工作进程的掩码是11,则表示既使用0号CPU又使用1号cpu。&lt;/p&gt;
 
-&lt;p&gt;静态连接的执行程序能够在其他同类操作系统机器上直接运行，例如一个elf文件是在linux上静态连接的，那么僵该文件直接拷贝到另一台linux的机器上是可以运行的。&lt;/p&gt;
+&lt;p&gt;其中PSR代表的是cpu编号，可以看到4个worker进程分别在0-3的cpu上
+    [root@ sbin]# ps -elHF | grep UID  | grep -v grep
+    F S UID        PID  PPID  C PRI  NI ADDR SZ WCHAN    RSS PSR STIME TTY          TIME CMD&lt;/p&gt;
 
-&lt;p&gt;动态连接的执行程序与静态连接执行程序不同，除非将可执行文件所需的动态库都一并拷贝过去，或者对方机器上也有个相同版本的动态库文件，否则不能保证正常运行；&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[root@ sbin]# ps -elHF | grep nginx | grep -v grep
+1 S root      3473     1  0  80   0 -  1032 sigsus   480   2 10:15 ?        00:00:00   nginx: master process ./nginx
+5 S nobody    3474  3473  0  80   0 -  1076 SyS_ep   828   0 10:15 ?        00:00:00     nginx: worker process
+5 S nobody    3475  3473  0  80   0 -  1076 SyS_ep   828   1 10:15 ?        00:00:00     nginx: worker process
+5 S nobody    3476  3473  0  80   0 -  1076 SyS_ep   828   2 10:15 ?        00:00:00     nginx: worker process
+5 S nobody    3477  3473  0  80   0 -  1076 SyS_ep   828   3 10:15 ?        00:00:00     nginx: worker process
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;静态链接库与动态链接库有什么区别&lt;/h4&gt;
+&lt;p&gt;或者直接使用命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ps -eo pid,args,psr来查看那个每个进程所属CPU
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-o指定了ps的输出参数&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-per-cpu/&quot;&gt;nginx的多核绑定&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx的负载均衡--加权轮询的实现]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;nginx根据每个工作进程的当前压力调整他们获取监听套接口的机率，那些当前比较空闲的工作进程有更多机会获取到监听套接口，从而当客户端的请求到达后也就相应的被他捕获并处理。这是客户端请求在多个Nginx进程之间的均衡。&lt;/p&gt;
+
+&lt;p&gt;如果Nginx是以反向代理的形式配置运行，那么对于请求的实际处理需要转发到后端服务器进行，如果后端服务器有多台，如何选择一个合适的后端服务器来处理当前请求，这就是通常所说的负载均衡。&lt;/p&gt;
+
+&lt;p&gt;可以看到这两个均衡是不相互冲突而且能同时生效。&lt;/p&gt;
+
+&lt;p&gt;负载均衡是指将负载尽量均衡的分摊到多个不同的服务单元(比如多个后台服务器),以保证服务的可用和可靠性，提供给客户更好的用户体验。负载均衡的直接作用只有一个，尽量发挥多个服务单元的整体效能，实现1+1=2甚至大于2的效果。&lt;/p&gt;
+
+&lt;p&gt;nginx提供的负载均衡策略主要包括:&lt;/p&gt;
+
+&lt;h5&gt;加权轮询、weight、IP哈希、fair、一致哈希&lt;/h5&gt;
+
+&lt;p&gt;其中fair和一致哈希都是第三方模块提供的，加权轮询、weight和IP哈希是Nginx内置的策略;&lt;/p&gt;
+
+&lt;h4&gt;加权轮询(默认)&lt;/h4&gt;
+
+&lt;p&gt;每个请求按照时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，则自动踢出这台服务器;默认每个权重都是1;&lt;/p&gt;
+
+&lt;h4&gt;weight&lt;/h4&gt;
+
+&lt;p&gt;与加权轮询配合使用，其实就是自己指定了轮询机率，weight和访问比率成正比，weight越大访问次数越多,用于后端服务器性能不均的情况;&lt;/p&gt;
+
+&lt;h4&gt;ip_hash&lt;/h4&gt;
+
+&lt;p&gt;每个请求按照ip的哈希结果分配，每个访客固定访问一个后端服务器&lt;/p&gt;
+
+&lt;p&gt;Nginx默认采用的是加权轮询策略，如果要采用IP哈希策略，就必须在Nginx的配置文件中通过配置指令ip_hash明确指定(最好放在其他server指令之前，以便检查server的配置选项是否合理)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream backend{   
+    ip_hash;
+    server 192.168.8.1:8000; 
+    server 192.168.8.2:9000;
+}   
+
+
+
+/*  通过执行不同的初始化函数，在后续实际负载时候采用的策略也就不同了    */
+4651 static char *
+4652 ngx_http_upstream_init_main_conf(ngx_conf_t *cf, void *conf)
+4653 {
+4665    ......
+4666     for (i = 0; i &amp;lt; umcf-&amp;gt;upstreams.nelts; i++) {
+4667 
+4668         /* ngx_http_upstream_init_round_robin是加权轮询 */
+4669         /* 如果用户没有做任何策略选择，那么负载均衡策略的初始化函数就是round_robin */
+             /* 否则的话就执行对应的uscfp[i]-&amp;gt;peer.init_upstream指针函数 */
+             /* 如果有配置ip_hash指令，则也就是行数ngx_http_upstream_init_ip_hash() */
+4670         init = uscfp[i]-&amp;gt;peer.init_upstream ? uscfp[i]-&amp;gt;peer.init_upstream:
+4671                                             ngx_http_upstream_init_round_robin;
+4672    ......
+4673 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;准备工作:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream backend {
+    server  backend1.example.com    weight=5;
+    server  127.0.0.1:8080  max_fails=3 fail_timeout=30s;
+    server  UNIX:/temp/backend3 backup;
+    server  192.168.0.1:9000 down;
+}
+指定的server可以是域名、ip或是UNIX域，他们代表不同的后端服务器
+
+weigth:权重，默认是1,与加权轮询策略配合使用
+
+max_fails与fail_timeout:他们需要配合使用，默认值分别是1和10s
+
+具体的含义是:
+如果某台服务器在fail_timeout时间内发生了max_fails次失败连接，那么该后端服务器在这fail_timeout时间内就不再残余被选择，直到fail_timeout时间后才重新加入从而有机会被再次选择，简单点就是先休息下，一会在工作。
+
+backup:备机，平常不被选择，之后当其他所有非备机全部不可用(比如繁忙或宕机)时才会被使用。
+
+down:主动标识其为宕机状态，不参与被选择
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;静态链接库就是使用的.lib或者.a文件，库中的代码最后需要连接到可执行文件中去，所以静态连接的可执行文件一般比较大一些；&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;动态链接库是一个包含可由多个程序同时使用的代码和数据的库，它包含函数和数据的模块的集合。程序文件在运行时加载这些模块(也就是所需的模块映射到调用进程的地址空间)。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;静态链接库于动态链接库的相同点是他们都实现了代码的共享;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;不同点是静态链接库中代码被包含在了调用的执行文件中，该lib中不能再包含其他动态链接库或者静态链接库了。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;动态链接库dll可以被调用的exe动态的引用和卸载，该dll中还可以包含其他动态链接库或者静态链接库&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;backup选项不能用于ip_hash中，因为他会扰乱哈希的结果而违背ip_hash策略的初衷;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;某些参数只能和策略配合使用，如果发现某参数没有生效，则应该检测一下这一点，在配置解析过程中，这些选项设置都被转换为Nginx内部对应的变量值;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/15/dynamic-link-libary/&quot;&gt;静态连接与动态连接的区别&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 15, 2014.&lt;/p&gt;</content>
-</entry>
+&lt;p&gt;path:/src/http/ngx_http_upstream.h&lt;/p&gt;
 
-
-<entry>
-  <title type="html"><![CDATA[程序编译的过程]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/15/compile-link/" />
-  <id>http://localhost:4000/2014/03/15/compile-link</id>
-  <published>2014-03-15T00:00:00+00:00</published>
-  <updated>2014-03-15T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\004.jpg&quot; alt=&quot;004&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;从图中可以看到:&lt;/p&gt;
-
-&lt;h5&gt;1.预编译&lt;/h5&gt;
-
-&lt;p&gt;将.c文件转化成.i文件，使用命令是:gcc -E,对应预处理命令是cpp；&lt;/p&gt;
-
-&lt;h5&gt;2.编译&lt;/h5&gt;
-
-&lt;p&gt;将.i文件转换成了.s文件，使用gcc命令是: gcc -S,对应编译命令是cc -S&lt;/p&gt;
-
-&lt;h5&gt;3.汇编&lt;/h5&gt;
-
-&lt;p&gt;将.s文件转化成了.o文件，使用gcc命令是:gcc -c，对应汇编命令式as&lt;/p&gt;
-
-&lt;h5&gt;4.连接&lt;/h5&gt;
-
-&lt;p&gt;将.o文件转化成可执行程序，使用gcc命令是:gcc,对应的连接命令式ld&lt;/p&gt;
-
-&lt;h6&gt;总的来说编译就上面的四个过程:&lt;/h6&gt;
-
-&lt;p&gt;预编译处理(.c)---&gt;编译、优化程序(.s)---&gt;汇编程序(.obj、.o、.a.、so)---&gt;链接程序(elf、exe)&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/15/compile-link/&quot;&gt;程序编译的过程&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 15, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[各种变量在程序内存中的分布]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/14/memory-variable/" />
-  <id>http://localhost:4000/2014/03/14/memory-variable</id>
-  <published>2014-03-14T00:00:00+00:00</published>
-  <updated>2014-03-14T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;h5&gt;程序的内存分布:&lt;/h5&gt;
-
-&lt;ol&gt;
-&lt;li&gt;栈区(stack)：由编译器自动分配释放，存放函数的参数值，局部变量的值；&lt;/li&gt;
-&lt;li&gt;堆区(heap): 一般由程序员分配和释放，如果程序员不释放，程序结束时由OS回收；&lt;/li&gt;
-&lt;li&gt;全局区(静态区static): 全局变量和静态变量的存储时放在一起的，初始化的全局变量和静态变量在一块区域，未初始化的全局变量和未初始化的静态变量在相邻的另一块区域，程序接收后系统释放&lt;/li&gt;
-&lt;li&gt;文字常量: 常量字符串就在这里&lt;/li&gt;
-&lt;li&gt;程序代码区: 存放函数体的二进制代码&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;pre&gt;&lt;code&gt;        ----------------------- 内存低端
-        |      程序段   |
-        -----------------
-        |      数据段   |
-        -----------------
-        |      堆栈     |
-        ----------------------- 内存高端
+&lt;pre&gt;&lt;code&gt;87 typedef struct {
+88     ngx_addr_t                      *addrs;
+89     ngx_uint_t                       naddrs;
+90     ngx_uint_t                       weight;
+91     ngx_uint_t                       max_fails;
+92     time_t                           fail_timeout;
+93 
+94     unsigned                         down:1;
+95     unsigned                         backup:1;
+96 } ngx_http_upstream_server_t;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;一个正常的程序在内存中通常分为程序段、数据段
-堆栈三部分；&lt;/p&gt;
+&lt;p&gt;addrs是一个数组指针，这是因为一个域名可以对应这多个IP地址;&lt;/p&gt;
 
-&lt;p&gt;程序段放着程序的机器码和只读数据，这个段通常是只读的，写操作是非法的！&lt;/p&gt;
+&lt;p&gt;数组的元素由naddrs指定;&lt;/p&gt;
 
-&lt;p&gt;数据端倪放的是程序中的静态数据；&lt;/p&gt;
+&lt;p&gt;域名解析中Nginx直接采用gethostbyname()阻塞函数获取，所以如果Nginx启动过程中发现卡住情况，可以检查下配置文件是否有配置域名并且系统当前的DNS解析是否正常。&lt;/p&gt;
 
-&lt;p&gt;动态数据则通过堆栈来存放&lt;/p&gt;
+&lt;p&gt;以下代码主要在/src/http/ngx_http_upstream_round_robin.h|c中&lt;/p&gt;
 
-&lt;p&gt;堆栈式内存中的一个连续的块，一个叫堆栈指针的寄存器SP指向堆栈的栈顶。堆栈的底部是一个固定地址！&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;17 typedef struct {
+    /*  基本socket信息      */
+18     struct sockaddr                *sockaddr;
+19     socklen_t                       socklen;
+20     ngx_str_t                       name;
+21  /* 当前权重值和设定权重值 */
+22     ngx_int_t                       current_weight;
+23     ngx_int_t                       weight;
+24  /* 失败次数和访问次数   */ 
+25     ngx_uint_t                      fails;
+    /*  失败访问时间，用于计算超时 */
+26     time_t                          accessed;
+27     time_t                          checked;
+28  /*  失败次数上限和失败时间阀值 */
+29     ngx_uint_t                      max_fails;
+30     time_t                          fail_timeout;
+31  /* 服务器是否被标记了down，标记了就不参与选择 */ 
+32     ngx_uint_t                      down;          /* unsigned  down:1; */
+33     
+34 #if (NGX_HTTP_SSL)
+35     ngx_ssl_session_t              *ssl_session;   /* local to a process */
+36 #endif
+37 } ngx_http_upstream_rr_peer_t;
 
-&lt;p&gt;堆栈的特点:&lt;strong&gt;后进先出&lt;/strong&gt;&lt;/p&gt;
+current_weight和weight的主要区别是前者为权重排序的值，随着处理请求会动态变化，后面是配置文档中的值，用于恢复初始状态。
 
-&lt;p&gt;它支持两个操作:push和pop&lt;/p&gt;
+    /*  注意:与上面的不同，上面是peer_t，下面是peers_t*/
+40 typedef struct ngx_http_upstream_rr_peers_s  ngx_http_upstream_rr_peers_t;
+41     
+42 struct ngx_http_upstream_rr_peers_s {
+43     ngx_uint_t                      single;        /* unsigned  single:1; */
+44     ngx_uint_t                      number;        /*  后台服务器的台数   */
+45     ngx_uint_t                      last_cached;
+46 
+47  /* ngx_mutex_t                    *mutex; */
+48     ngx_connection_t              **cached;
+49     
+50     ngx_str_t                      *name;
+51 
+52     ngx_http_upstream_rr_peers_t   *next;
+53 
+54     ngx_http_upstream_rr_peer_t     peer[1];
+55 };
+56 
+57 
+58 typedef struct {
+59     ngx_http_upstream_rr_peers_t   *peers;
+60     ngx_uint_t                      current;
+61     uintptr_t                      *tried;
+62     uintptr_t                       data;
+63 } ngx_http_upstream_rr_peer_data_t;
 
-&lt;p&gt;push试讲数据放到栈顶；pop是从栈顶取走数据&lt;/p&gt;
-
-&lt;h5&gt;全局变量、静态数据、常量存放在全局数据区&lt;/h5&gt;
-
-&lt;h5&gt;所有函数的代码存放在代码区,假如机器中有数个进程运行相同的程序，他们就可以使用同一个代码段；&lt;/h5&gt;
-
-&lt;h5&gt;为运行函数而分配的局部变量、函数参数、返回数据、返回地址等存放在栈区。&lt;/h5&gt;
-
-&lt;p&gt;所以在同一个进程里，多个任务（线程）的全局变量和静态变量都应该是共享同一块内存(全局数据区);&lt;/p&gt;
-
-&lt;p&gt;而在不同的进程里，重新加载了代码，各个进程间的全局变量和静态变量当然不是拥有同一块内存;&lt;/p&gt;
-
-&lt;p&gt;在psos下，各个任务是不同的线程，所以各个任务的全局变量和静态变量是在同一块内存。&lt;/p&gt;
-
-&lt;p&gt;而我的另一个程序中（在sco unix），是每次运行都是一个新的进程，所以各个进程的全局变量和静态变量拥有不同的内存&lt;/p&gt;
-
-&lt;p&gt;堆栈段包括在进程控制块PCB中。PCB处于核心堆栈的底部，不需要额外分配空间。&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/14/memory-variable/&quot;&gt;各种变量在程序内存中的分布&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 14, 2014.&lt;/p&gt;</content>
-</entry>
 
 
-<entry>
-  <title type="html"><![CDATA[小球称重的问题]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/14/compare-ball/" />
-  <id>http://localhost:4000/2014/03/14/compare-ball</id>
-  <published>2014-03-14T00:00:00+00:00</published>
-  <updated>2014-03-14T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;h5&gt;12个小球，要求用天平称量3次之内找出有问题的小球，并且确定问题小球是偏轻还是偏重！&lt;/h5&gt;
 
-&lt;p&gt;首先将12个小球分3组:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;A(1,2,3,4)
-
-B(5,6,7,8)
-
-C(9,10,11,12)
+加权轮询实现代码
+598 static ngx_uint_t
+599 ngx_http_upstream_get_peer(ngx_http_upstream_rr_peers_t *peers)
+600 {
+601     ngx_uint_t                    i, n, reset = 0;
+602     ngx_http_upstream_rr_peer_t  *peer;
+603 
+604     peer = &amp;amp;peers-&amp;gt;peer[0];
+605 
+606     for ( ;; ) {
+607         /*  i是后台机器的下标   */ 
+608         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+609             /*  如果权重小于等于0,就跳过  */ 
+610             if (peer[i].current_weight &amp;lt;= 0) {
+611                 continue;            
+612             }
+613    
+614             n = i;
+615         
+                /*  while查找当前权重最大的后端机器    */
+616             while (i &amp;lt; peers-&amp;gt;number - 1) {
+617 
+618                 i++;
+619 
+620                 if (peer[i].current_weight &amp;lt;= 0) {
+621                     continue;            
+622                 }
+623 
+624                 if (peer[n].current_weight * 1000 / peer[i].current_weight
+625                     &amp;gt; peer[n].weight * 1000 / peer[i].weight)
+626                 {
+627                     return n;            
+628                 }
+629 
+630                 n = i;               
+631             }
+632             
+                /*  如果while找到了current_weight&amp;gt;0的机器，则返回*/
+633             if (peer[i].current_weight &amp;gt; 0) {
+634                 n = i;
+635             }
+636 
+637             return n;
+638         }
+639             
+            /*  以下代码是恢复状态 */
+640         if (reset++) {
+641             return 0;
+642         }
+643         
+            /*  peer[i].weigth是配置文件中手工设定的权重值    */
+644         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+645             peer[i].current_weight = peer[i].weight;    
+646         }
+647     }
+648 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;随便选取两组比如A、B比较:&lt;/p&gt;
+&lt;p&gt;ngx_http_upstream_init_round_robin()函数根据用户的配置执行不同的代码，用户配置有两种情况&lt;/p&gt;
 
-&lt;p&gt;A = B:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;第一种情况:
 
-&lt;pre&gt;&lt;code&gt;    说明A、B中都是正常的！C中是不正常的！
+upstream backend {
+    server 127.0.0.1:9001   backup;
+    server 127.0.0.1:9000   weight=5;
+    server 127.0.0.1:8000   max_fails=3 fail_timeout=30s;
+    server 127.0.0.1:7000   max_fails=1 fail_timeout=10s;
+}
+    proxy_pass backend;
 
-    第二次称量:从C中取出3个小球(9,10,11)，A中取出3个小球；
+    对应代码if (us-&amp;gt;servers) {...}这一段
 
-    1.如果相等，则问题小球是12；
+第二种情况:
 
-    第三次称量:随便拿一个小球与12比较，如果12重，则问题小球偏重，否则相反
+    proxy_pass localhost:4000   #后面直接接后端服务器地址
 
-    2.如果不相等,比如C&amp;gt;A,那么问题小球在9、10、11中并且偏重
+    对应代码后半部分
 
-    第三次称量:9,10,11随便取两个球(9,10)，如果相等，则问题球是11，不等，问题球就是偏重的那个
+/*  将配置解析后的结果转存到对应的变量  */
+/*  创建后端服务器列表，将非后备服务器与后备服务器分开进行各自单独的列表    */
+/*  每个后端服务器使用结构体ngx_http_upstream_rr_peer_t对应 */
+/*  非后备服务器列表挂载在us-&amp;gt;ps.data字段下*/
+/*  后备服务器列表挂载在非后备服务器列表head域中的next字段下*/
+
+31 ngx_int_t
+32 ngx_http_upstream_init_round_robin(ngx_conf_t *cf,
+33     ngx_http_upstream_srv_conf_t *us)
+34 {
+35     ngx_url_t                      u;
+36     ngx_uint_t                     i, j, n;
+37     ngx_http_upstream_server_t    *server;
+38     ngx_http_upstream_rr_peers_t  *peers, *backup;
+39      /*  初始化操作 */ 
+40     us-&amp;gt;peer.init = ngx_http_upstream_init_round_robin_peer;
+41      /*  适用于情况一*/ 
+42     if (us-&amp;gt;servers) {
+43         server = us-&amp;gt;servers-&amp;gt;elts;
+44 
+45         n = 0;
+46 
+47         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+48             if (server[i].backup) {  
+49                 continue;
+50             }
+51 
+52             n += server[i].naddrs;
+53         }
+54 
+55         if (n == 0) {
+56             ngx_log_error(NGX_LOG_EMERG, cf-&amp;gt;log, 0,
+57                           &quot;no servers in upstream \&quot;%V\&quot; in %s:%ui&quot;,
+58                           &amp;amp;us-&amp;gt;host, us-&amp;gt;file_name, us-&amp;gt;line);
+59             return NGX_ERROR;
+60         }
+61       
+62         peers = ngx_pcalloc(cf-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peers_t)
+63                               + sizeof(ngx_http_upstream_rr_peer_t) * (n - 1));
+64         if (peers == NULL) {
+65             return NGX_ERROR;
+66         }
+67          /*  如果只有一台服务器(非后备和后备服务器一共一台)则会对齐机型标识，
+                这样在后续用户请求的时候更本无需在做选择，直接使用这一台即可*/
+68         peers-&amp;gt;single = (n == 1);
+69         peers-&amp;gt;number = n;
+70         peers-&amp;gt;name = &amp;amp;us-&amp;gt;host;
+71 
+72         n = 0;
+73          /*  将解析后的结果存储到对应的变量之中 */ 
+74         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+75             for (j = 0; j &amp;lt; server[i].naddrs; j++) {
+76                 if (server[i].backup) {  
+77                     continue;    /* 对与后备的服务器暂不操作 */
+78                 }
+79 
+80                 peers-&amp;gt;peer[n].sockaddr = server[i].addrs[j].sockaddr;
+81                 peers-&amp;gt;peer[n].socklen = server[i].addrs[j].socklen;
+82                 peers-&amp;gt;peer[n].name = server[i].addrs[j].name;
+83                 peers-&amp;gt;peer[n].max_fails = server[i].max_fails;
+84                 peers-&amp;gt;peer[n].fail_timeout = server[i].fail_timeout;
+85                 peers-&amp;gt;peer[n].down = server[i].down;
+86                 peers-&amp;gt;peer[n].weight = server[i].down ? 0 : server[i].weight;
+87                 peers-&amp;gt;peer[n].current_weight = peers-&amp;gt;peer[n].weight;
+88                 n++;
+89             }
+90         }
+91 
+92         us-&amp;gt;peer.data = peers;   /*  peers是非后备服务器列表    */
+
+93          /*  对peers列表中的服务器按照权重进行排序*/ 
+94         ngx_sort(&amp;amp;peers-&amp;gt;peer[0], (size_t) n,
+95                  sizeof(ngx_http_upstream_rr_peer_t),
+96                  ngx_http_upstream_cmp_servers);
+97 
+98         /* backup servers */
+99 
+100         n = 0;
+101 
+102         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+103             if (!server[i].backup) {
+104                 continue;   /* 对非后备服务器不进行操作 */
+105             }
+106 
+107             n += server[i].naddrs;
+108         }
+109 
+110         if (n == 0) {
+111             return NGX_OK;
+112         }
+113         /*  后备服务器的列表空间  */
+114         backup = ngx_pcalloc(cf-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peers_t)
+115                               + sizeof(ngx_http_upstream_rr_peer_t) * (n - 1));
+116         if (backup == NULL) {
+117             return NGX_ERROR;
+118         }
+119         /*  why???  */
+120         peers-&amp;gt;single = 0;
+121         backup-&amp;gt;single = 0;
+122         backup-&amp;gt;number = n;
+123         backup-&amp;gt;name = &amp;amp;us-&amp;gt;host;
+124 
+125         n = 0;
+126 
+127         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+128             for (j = 0; j &amp;lt; server[i].naddrs; j++) {
+129                 if (!server[i].backup) {
+130                     continue;   /* 跳过非后备服务器 */
+131                 }
+132 
+133                 backup-&amp;gt;peer[n].sockaddr = server[i].addrs[j].sockaddr;
+134                 backup-&amp;gt;peer[n].socklen = server[i].addrs[j].socklen;
+135                 backup-&amp;gt;peer[n].name = server[i].addrs[j].name;
+136                 backup-&amp;gt;peer[n].weight = server[i].weight;
+137                 backup-&amp;gt;peer[n].current_weight = server[i].weight;
+138                 backup-&amp;gt;peer[n].max_fails = server[i].max_fails;
+139                 backup-&amp;gt;peer[n].fail_timeout = server[i].fail_timeout;
+140                 backup-&amp;gt;peer[n].down = server[i].down;
+141                 n++;
+142             }
+143         }
+144 
+145         peers-&amp;gt;next = backup;   /*  后备服务器 */
+146         /* 对后备服务器进行权重排序  */
+147         ngx_sort(&amp;amp;backup-&amp;gt;peer[0], (size_t) n,
+148                  sizeof(ngx_http_upstream_rr_peer_t),
+149                  ngx_http_upstream_cmp_servers);
+150 
+151         return NGX_OK;
+152     }
+153 
+154 
+155     /* an upstream implicitly defined by proxy_pass, etc. */
+156     /*  实用于情况2，对于直接在proxy_pass等指令之后直接指定后端服务器地址的处理方式*/ 
+157     if (us-&amp;gt;port == 0 &amp;amp;&amp;amp; us-&amp;gt;default_port == 0) {
+158         ngx_log_error(NGX_LOG_EMERG, cf-&amp;gt;log, 0,
+159                       &quot;no port in upstream \&quot;%V\&quot; in %s:%ui&quot;,
+160                       &amp;amp;us-&amp;gt;host, us-&amp;gt;file_name, us-&amp;gt;line);
+161         return NGX_ERROR;
+162     }
+163 
+164     ngx_memzero(&amp;amp;u, sizeof(ngx_url_t));
+165 
+166     u.host = us-&amp;gt;host;
+167     u.port = (in_port_t) (us-&amp;gt;port ? us-&amp;gt;port : us-&amp;gt;default_port);
+168 
+169     if (ngx_inet_resolve_host(cf-&amp;gt;pool, &amp;amp;u) != NGX_OK) {
+170         if (u.err) {
+171             ngx_log_error(NGX_LOG_EMERG, cf-&amp;gt;log, 0,
+172                           &quot;%s in upstream \&quot;%V\&quot; in %s:%ui&quot;,
+173                           u.err, &amp;amp;us-&amp;gt;host, us-&amp;gt;file_name, us-&amp;gt;line);
+174         }
+175 
+176         return NGX_ERROR;
+177     }
+178 
+179     n = u.naddrs;
+180 
+181     peers = ngx_pcalloc(cf-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peers_t)
+182                               + sizeof(ngx_http_upstream_rr_peer_t) * (n - 1));
+183     if (peers == NULL) {
+184         return NGX_ERROR;
+185     }
+186 
+187     peers-&amp;gt;single = (n == 1);
+188     peers-&amp;gt;number = n;
+189     peers-&amp;gt;name = &amp;amp;us-&amp;gt;host;
+190 
+191     for (i = 0; i &amp;lt; u.naddrs; i++) {
+192         peers-&amp;gt;peer[i].sockaddr = u.addrs[i].sockaddr;
+193         peers-&amp;gt;peer[i].socklen = u.addrs[i].socklen;
+194         peers-&amp;gt;peer[i].name = u.addrs[i].name;
+195         peers-&amp;gt;peer[i].weight = 1;
+196         peers-&amp;gt;peer[i].current_weight = 1;
+197         peers-&amp;gt;peer[i].max_fails = 1;
+198         peers-&amp;gt;peer[i].fail_timeout = 10;
+199     }
+200 
+201     us-&amp;gt;peer.data = peers;
+202 
+203     /* implicitly defined upstream has no backup servers */
+204 
+205     return NGX_OK;
+206 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;A &gt; B（或B &gt; A原理一样):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/001.png&quot; alt=&quot;001&quot; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    说明C中(9,10,11,12)一定是真的; 在现实当中,如果交换真球，天平是不会改变的！
+&lt;p&gt;当全局初始准备工作做好以后，当一个客户请求过来时候，Nginx就要选择适合的后端服务器来处理该请求，在正式开始选择前，Nginx还要单独为本轮选择做一些初始化，比如设置回调函数,回调函数是在每个请求选择后端服务器之前被调用。&lt;/p&gt;
 
-    所以将A改变为(1,9,10,11)将B改变为(2,3,4,5) 进行第二次称重；
+&lt;h4&gt;注意:&lt;/h4&gt;
 
-    1.如果A 仍然大于 B,说明天平状态没有改变，也就说明刚刚我们替换掉(2,3,4,5,6,7,8,9-12)的都是真球，所以假球只能在(1,5)中产生
+&lt;p&gt;针对一个客户端请求，Nginx会进行多次尝试，尝试全部失败才会返回502错误，所以要注意一轮选择与一次选择的区别。&lt;/p&gt;
 
-    第三次称量:随便拿一个小球(2)于1比较，如果1&amp;gt;2,那么问题球就是1，质量偏重，如果1=2则问题球是5，切质量偏轻，因为A&amp;gt;B
+&lt;h4&gt;选择后端服务器&lt;/h4&gt;
 
-    2.如果A &amp;lt; B,状态改变，那么说明问题球在我们刚刚替换的球当中，所以是在2,3,4，不可能在6，7，8中，那样就都是真球A应该&amp;gt;等于B，切假球质量偏重，因为B &amp;gt; A
+&lt;pre&gt;&lt;code&gt;/*  选择后端服务器   */
+221 ngx_int_t
+222 ngx_http_upstream_init_round_robin_peer(ngx_http_request_t *r,
+223     ngx_http_upstream_srv_conf_t *us)
+224 {
+225     ngx_uint_t                         n;
+226     ngx_http_upstream_rr_peer_data_t  *rrp;
+227     
+228     rrp = r-&amp;gt;upstream-&amp;gt;peer.data;
+229 
+230     if (rrp == NULL) {
+231         rrp = ngx_palloc(r-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peer_data_t));
+232         if (rrp == NULL) {
+233             return NGX_ERROR;
+234         }
+235 
+236         r-&amp;gt;upstream-&amp;gt;peer.data = rrp;
+237     }
+238     
+        /*  非后备服务器  */
+239     rrp-&amp;gt;peers = us-&amp;gt;peer.data;
+240     rrp-&amp;gt;current = 0;
+241     
+        /*  n要选择后备服务器和非后备服务器中数量较大的那一个   */
+242     n = rrp-&amp;gt;peers-&amp;gt;number;
+243 
+244     if (rrp-&amp;gt;peers-&amp;gt;next &amp;amp;&amp;amp; rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number &amp;gt; n) {
+245         n = rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number;
+246     }
+247 
+248     if (n &amp;lt;= 8 * sizeof(uintptr_t)) {
+249         rrp-&amp;gt;tried = &amp;amp;rrp-&amp;gt;data;
+250         rrp-&amp;gt;data = 0;
+251 
+252     } else {
+253         n = (n + (8 * sizeof(uintptr_t) - 1)) / (8 * sizeof(uintptr_t));
+254 
+255         rrp-&amp;gt;tried = ngx_pcalloc(r-&amp;gt;pool, n * sizeof(uintptr_t));
+256         if (rrp-&amp;gt;tried == NULL) {
+257             return NGX_ERROR;
+258         }
+259     }
 
-    第三次称重，取2,3比较，如果2 &amp;gt; 3那么假球就是2，如果2==3，那么假球就是4，切质量偏重
-
-    3.如果A == B，说明A此时B中都是真的，那么假的只能在6,7,8中产生，并且因为之前A&amp;gt;B，所以假球一定是偏轻的。
-
-    第三次称重类似于2方法
+260     /*  设置回调函数  */
+261     r-&amp;gt;upstream-&amp;gt;peer.get = ngx_http_upstream_get_round_robin_peer; /*  对后端服务器进行一次选择    */ 
+262     r-&amp;gt;upstream-&amp;gt;peer.free = ngx_http_upstream_free_round_robin_peer;
+        /*  初始状态    */
+263     r-&amp;gt;upstream-&amp;gt;peer.tries = rrp-&amp;gt;peers-&amp;gt;number;
+264 #if (NGX_HTTP_SSL)
+265     r-&amp;gt;upstream-&amp;gt;peer.set_session =
+266                                ngx_http_upstream_set_round_robin_peer_session;
+267     r-&amp;gt;upstream-&amp;gt;peer.save_session =
+268                                ngx_http_upstream_save_round_robin_peer_session;
+269 #endif
+270 
+271     return NGX_OK;
+272 }
+273 
 &lt;/code&gt;&lt;/pre&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/14/compare-ball/&quot;&gt;小球称重的问题&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 14, 2014.&lt;/p&gt;</content>
-</entry>
+&lt;h4&gt;注意:&lt;/h4&gt;
 
-
-<entry>
-  <title type="html"><![CDATA[TCP如何保证可靠传输]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/13/TCP-reliable/" />
-  <id>http://localhost:4000/2014/03/13/TCP-reliable</id>
-  <published>2014-03-13T00:00:00+00:00</published>
-  <updated>2014-03-13T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;TCP的任务是在IP层的不可靠、尽力而为的基础上建立一种可靠数据传输服务。&lt;/p&gt;
-
-&lt;p&gt;TCP提供的可靠数据传输服务就是要保证接收方进程从缓存区读取的字节流于发送方发出的字节流是完全一样的。&lt;/p&gt;
-
-&lt;p&gt;TCP使用&lt;strong&gt;校验、序号、确认、重传机制&lt;/strong&gt;来达到这个目的&lt;/p&gt;
-
-&lt;h3&gt;1.序号&lt;/h3&gt;
-
-&lt;p&gt;TCP首部的序号字段用来保证数据能够有序提交给应用层，TCP将数据看成一个无结构但是有序的字节流，而序号就建立在传送的字节流之上的，而不是建立在报文段之上！&lt;/p&gt;
-
-&lt;p&gt;TCP连接中传送的数据流中的每一个字节都编上序号。序号字段的值则是指本报文段所发送的数据的第一个字节的序号。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\003.jpg&quot; alt=&quot;002&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;假设A和B之间建立一条TCP连接，A的发送缓存区中共有10个字节，序号从0开始标号，第一个报文包含第0~2个字节，则该TCP报文段的序号是0；&lt;/p&gt;
-
-&lt;h3&gt;2.确认&lt;/h3&gt;
-
-&lt;p&gt;TCP首部的确认号是期望收到对方的下一个报文段的数据的第一个字节的序号&lt;/p&gt;
-
-&lt;p&gt;TCP默认使用累计确认，也就是TCP只确认数据流中之第一个丢失字节为止的字节&lt;/p&gt;
+&lt;p&gt;rrp-&gt;tried是一个位图，用来标识在一轮选择中多个后端服务器是否已经被选择过;&lt;/p&gt;
 
 &lt;p&gt;例如:&lt;/p&gt;
 
-&lt;p&gt;接收方收到了A发送的包含字节0~2以及字节6~7的报文段，由于某种原因没有收到3~5的报文段，此时B仍在等待3(和后面其他的字节)，因此B到A的下一个报文段将确认字段ack设置为3。&lt;/p&gt;
-
-&lt;h3&gt;3.重传&lt;/h3&gt;
-
-&lt;p&gt;有两种事件会导致TCP对报文段进行重传:超时和冗余ACK
-1. 超时&lt;/p&gt;
-
-&lt;p&gt;TCP 每发送一个报文段，就对这个报文段设置一次计时器。只要计时器设置的重传事件到期但还没有收到确认，就要重传这一报文段；&lt;/p&gt;
-
-&lt;p&gt;由于TCP下层是一个互联网环境，IP数据报所选择的路由变化很大。因而传输层的往返时延的方差也很大。为了计算超时时计时器的重传事件，TCP采用一种自适应算法，它记录一个报文段发出的事件。以及受到相应确认的事件，这两个时间之差叫做报文段的往返事件(RTT),TCP保留了RTT的一个加权平均往返事件RTTs。&lt;/p&gt;
-
-&lt;p&gt;2.冗余ACK(冗余确认)&lt;/p&gt;
-
-&lt;p&gt;超时触发重传存在的一个问题就是超时周期往往太长，但是发送方可以在超时事件发生之前通过注意冗余ACK来较好的检测丢包情况。&lt;/p&gt;
-
-&lt;p&gt;冗余ACK就是再次确认某个报文段的ACK，而发送方先前已经收到过该报文段的确认了！&lt;/p&gt;
-
-&lt;p&gt;TCP规定每当比期望序号大的失序报文段到达时，发送一个冗余ACK，指明下一个期待字节的序号；&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;TCP规定当发送方收到对同一个报文段的3个冗余ACK时，就可以认为跟在这个被确认报文段之后的报文段已经丢失！&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;例如：发送发A发送了序号1、2、3、4、5的TCP报文段，其中2号报文段在链路中丢失，它将无法到达接收方B；因此3、4、5号报文段对于B来讲是成了失序报文段；3、4、5不是B所期望的下一个报文，于是B就发送3个对1号报文段的冗余ACK，表示自己期望接收2号报文段。
-当A收到对1号报文段的3个冗余ACK时，则它就可以认为2号报文段已经丢失，这时发送方A可以立即对2号报文段执行重传，这种技术成为快速重传&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/13/TCP-reliable/&quot;&gt;TCP如何保证可靠传输&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 13, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[动态库与静态库的封装]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/12/lib-so/" />
-  <id>http://localhost:4000/2014/03/12/lib-so</id>
-  <published>2014-03-12T00:00:00+00:00</published>
-  <updated>2014-03-12T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;h4&gt;库:&lt;/h4&gt;
-
-&lt;p&gt;将函数等代码封装的二进制已编译的归档文件&lt;/p&gt;
-
-&lt;h1&gt;静态库&lt;/h1&gt;
-
-&lt;h5&gt;编译静态库的步骤:&lt;/h5&gt;
-
-&lt;h5&gt;1.编译:&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;    gcc -c -static lib_func1.c  /* 产生lib_func1.o文件 */
-    gcc -c -static lib_func2.c  /* 产生lib_func2.o文件 */
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5&gt;2.连接:&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;    ar -r libmylib.a lib_func1.o lib_func2.o
-    /*      库名为mylib      */
-    /* ar -r 指定静态库文件名 被归档的目标文件 */
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h6&gt;ar是个归档文件&lt;/h6&gt;
-
-&lt;h5&gt;静态库中静态的含义：&lt;/h5&gt;
-
-&lt;ol&gt;
-&lt;li&gt;编译的程序运行的时候不依赖库，也就是说运行的时候不在需要库&lt;/li&gt;
-&lt;li&gt;库作为程序的一部分编译、链接&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h5&gt;静态库的命名规则:&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;lib库名.a 主版本号.副版本号.批号
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5&gt;库的使用:&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;gcc main.c -l库名
--L选项制定库文件所在的目录
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h6&gt;注意:&lt;/h6&gt;
-
-&lt;p&gt;库名是不包含lib之类的仅仅是库名&lt;/p&gt;
-
-&lt;h1&gt;动态库&lt;/h1&gt;
-
-&lt;h5&gt;动态库的特点:&lt;/h5&gt;
-
-&lt;p&gt;程序执行时必须需要动态库文件，如果动态库文件不存在，则无法执行；&lt;/p&gt;
-
-&lt;h5&gt;注意:&lt;/h5&gt;
-
-&lt;p&gt;动态库不会连接成程序的一部分，他总是独立存在。&lt;/p&gt;
-
-&lt;h5&gt;编译动态库的步骤:&lt;/h5&gt;
-
-&lt;h5&gt;1.编译&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;    gcc -c -fpic lib_func1.c    /* 产生lib_func1.o文件 */
-    gcc -c -fpic lib_func2.c    /* 产生lib_func2.o文件 */
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5&gt;2.连接&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;    gcc -shared -olibmylib.so lib_func1.o lib_func2.o
-    /*  库名为mylib  */
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5&gt;动态库的使用:&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;gcc main.c -lmylib -L. -omain
-/*
-*   -lmylib指明使用动态库mylib
-*   -L. 指明动态库的位置在当前目录下
-*/
-ldd main
-/* 查看到我们自己的动态库就说明成功了 */
-&lt;/code&gt;&lt;/pre&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/12/lib-so/&quot;&gt;动态库与静态库的封装&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 12, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[MSG_OOB的使用]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/use-msg_oob/" />
-  <id>http://localhost:4000/2014/03/11/use-msg_oob</id>
-  <published>2014-03-11T00:00:00+00:00</published>
-  <updated>2014-03-11T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;UDP没有实现带外数据，TCP也没有真正实现带外数据，不过TCP利用头部的紧急指针标志和紧急指针两个字段，给应用程序提供了一种紧急方式；&lt;/p&gt;
-
-&lt;p&gt;TCP的紧急方式利用传输普通数据的连接来传输紧急数据，这种紧急数据的含义和带外数据类似，因此，将TCP紧急数据成为带外数据。&lt;/p&gt;
-
-&lt;h5&gt;TCP发送带外数据的过程:&lt;/h5&gt;
-
-&lt;p&gt;假设一个进程已经往某个TCP连接的发送缓冲中写入了N字节的普通数据，并等待其发送。在数据发送前，该进程又向这个连接写入3字节的带外数据&quot;abc&quot;.此时，待发送的TCP报文段的头部将被设置URG标记，并且紧急指针被设置为指向最后一个带外数据的下一个字节(减去当前TCP报文段的序号值得到其头部中的紧急偏移值)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;                        TCP发送缓冲区
----------------------------------------------------------------------
-|第一字节|              |第N字节     | a | b | c(OOB) | 紧急指针|
----------------------------------------------------------------------
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从图中可以看到，发送端一次发送的多字节的带外数据中只有最后一个字节被当做带外数据(字母c)，而其他数据(a和b)本当成普通数据。&lt;/p&gt;
-
-&lt;p&gt;如果TCP模块以多个TCP报文段来发送图中的TCP发送缓冲区中的内容，则每个TCP报文段豆浆被设置URG标志，并且他们的紧急指针指向同一个位置(数据流中带外数据的下一个位置)，但是只有一个TCP报文段真正携带带外数据。&lt;/p&gt;
-
-&lt;h5&gt;TCP接收带外数据的过程:&lt;/h5&gt;
-
-&lt;p&gt;TCP接收端只有在接收到紧急指针标志时才检查紧急指针，然后根据紧急指针所指的位置确定带外数据的位置，并将它读入一个特殊的缓冲区，&lt;strong&gt;这个缓冲区只有一个字节，称带外缓存&lt;/strong&gt;，如果上层应用程序设置没有及时将带外数据从带外缓冲中读出，则后续的带外数据(如果有的话)将覆盖它。&lt;/p&gt;
-
-&lt;h5&gt;SO_OOBINLINE选项:&lt;/h5&gt;
-
-&lt;p&gt;前面讨论的带外数据的接收过程是TCP模块接收带外数据的默认方式，如果我们给TCP连接设置了SO_OOBINLINEE选项，则带外数据将和普通数据一样被TCP模块存放在TCP接收缓冲区中，此时应用程序要像读取普通数据一样来读取带外数据，这种情况下如何区分带外数据和普通数据?可以使用紧急指针来指出带外数据的位置。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/* 发送带外数据 */
-#include &amp;lt;sys/types.h&amp;gt;
-#include &amp;lt;sys/socket.h&amp;gt;
-#include &amp;lt;netinet/in.h&amp;gt;
-#include &amp;lt;assert.h&amp;gt;
-#include &amp;lt;sys/epoll.h&amp;gt;
-#include &amp;lt;arpa/inet.h&amp;gt;
-#include &amp;lt;fcntl.h&amp;gt;
-#include &amp;lt;unistd.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;errno.h&amp;gt;
-#include &amp;lt;string.h&amp;gt;
-#include &amp;lt;stdlib.h&amp;gt;
-#include &amp;lt;pthread.h&amp;gt;
-
-int main(int argc, char** argv)
-{
-    const char* ip = &quot;127.0.0.1&quot;;
-    int port = 9999;
-
-    struct sockaddr_in server_address;
-    memset(&amp;amp;server_address, 0, sizeof(server_address));
-
-    server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(port);
-    inet_pton(AF_INET, ip, &amp;amp;server_address.sin_addr);
-
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    assert(sockfd != -1);
-
-    if (connect(sockfd, (struct sockaddr*)&amp;amp;server_address, sizeof(server_address)) &amp;lt; 0) {
-        perror(&quot;connect failed\n&quot;);
-
-    } else {
-        const char* oob_data = &quot;abc&quot;;
-        const char* normal_data = &quot;123&quot;;
-        send(sockfd, normal_data, strlen(normal_data), 0);
-        send(sockfd, oob_data, strlen(oob_data), MSG_OOB);
-        send(sockfd, normal_data, strlen(normal_data), 0);
-    }
-
-    close(sockfd);
-
-    return 0;
-}
-
-
-
-/* 接受带外数据 */
-#include &amp;lt;sys/types.h&amp;gt;
-#include &amp;lt;sys/socket.h&amp;gt;
-#include &amp;lt;netinet/in.h&amp;gt;
-#include &amp;lt;assert.h&amp;gt;
-#include &amp;lt;sys/epoll.h&amp;gt;
-#include &amp;lt;arpa/inet.h&amp;gt;
-#include &amp;lt;fcntl.h&amp;gt;
-#include &amp;lt;unistd.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;errno.h&amp;gt;
-#include &amp;lt;string.h&amp;gt;
-#include &amp;lt;stdlib.h&amp;gt;
-#include &amp;lt;pthread.h&amp;gt;
-
-#define BUF_SIZE 1024
-int main(int argc, char** argv)
-{
-    const char* ip = &quot;127.0.0.1&quot;;
-    int port = 9999;
-
-    struct sockaddr_in address;
-    memset(&amp;amp;address, 0, sizeof(address));
-
-    address.sin_family = AF_INET;
-    address.sin_port = htons(port);
-    inet_pton(AF_INET, ip, &amp;amp;address.sin_addr);
-
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    assert(sockfd != -1);
-
-    int ret = bind(sockfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
-    assert(ret != -1);
-
-    ret = listen(sockfd, 5);
-    assert(ret != -1);
-
-    struct  sockaddr_in client;
-    socklen_t client_length = sizeof(client);
-
-    int connfd = accept(sockfd, (struct sockaddr*)&amp;amp;client, &amp;amp;client_length);
-    if (connfd &amp;lt; 0) {
-        printf(&quot;accept error\n&quot;);
-
-    } else {
-        char buf[BUF_SIZE];
-
-        memset(buf, 0, BUF_SIZE);
-        ret = recv(connfd, buf, BUF_SIZE-1, 0);
-        assert(ret &amp;gt; 0);
-        printf(&quot;get %d bytes of normal data:\n%s\n&quot;, ret, buf);
-
-
-        memset(buf, 0, BUF_SIZE);
-        ret = recv(connfd, buf, BUF_SIZE-1, MSG_OOB);
-        assert(ret &amp;gt; 0);
-        printf(&quot;get %d bytes of oob data:\n%s\n&quot;, ret, buf);
-
-
-        memset(buf, 0, BUF_SIZE);
-        ret = recv(connfd, buf, BUF_SIZE-1, 0);
-        assert(ret &amp;gt; 0);
-        printf(&quot;get %d bytes of normal data:\n%s\n&quot;, ret, buf);
-
-        close(connfd);
-    }
-    close(sockfd);
-
-
-    return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5&gt;程序执行结果:&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;get 3 bytes of normal data:
-123
-get 1 bytes of oob data:
-c
-get 2 bytes of normal data:
-ab
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;由此可见，客户端发送给服务器的3字节带外数据&quot;abc&quot;中，仅有最后一个字符&#39;c&#39;被服务器真正当成了带外数据接收;&lt;/p&gt;
-
-&lt;p&gt;并且服务器对正常数据的接收被带外数据截断，也就是说前一部分正常数据&quot;123ab&quot;和后续正常数据&quot;123&quot;是不能被一个recv调用全部读出的。&lt;/p&gt;
-
-&lt;h5&gt;tcpdump抓包结果:&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;15:49:07.237438 IP 127.0.0.1.54354 &amp;gt; 127.0.0.1.distinct: Flags [S], seq 3396511771, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 0,nop,wscale 7], length 0
-    0x0000:  4500 003c 1d6a 4000 4006 1f50 7f00 0001
-    0x0010:  7f00 0001 d452 270f ca72 a81b 0000 0000
-    0x0020:  a002 aaaa fe30 0000 0204 ffd7 0402 080a
-    0x0030:  0065 b571 0000 0000 0103 0307
-15:49:07.237459 IP 127.0.0.1.distinct &amp;gt; 127.0.0.1.54354: Flags [S.], seq 12605814, ack 3396511772, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 6665585,nop,wscale 7], length 0
-    0x0000:  4500 003c 0000 4000 4006 3cba 7f00 0001
-    0x0010:  7f00 0001 270f d452 00c0 5976 ca72 a81c
-    0x0020:  a012 aaaa fe30 0000 0204 ffd7 0402 080a
-    0x0030:  0065 b571 0065 b571 0103 0307
-15:49:07.237478 IP 127.0.0.1.54354 &amp;gt; 127.0.0.1.distinct: Flags [.], ack 1, win 342, options [nop,nop,TS val 6665585 ecr 6665585], length 0
-    0x0000:  4500 0034 1d6b 4000 4006 1f57 7f00 0001
-    0x0010:  7f00 0001 d452 270f ca72 a81c 00c0 5977
-    0x0020:  8010 0156 fe28 0000 0101 080a 0065 b571
-    0x0030:  0065 b571
-15:49:07.237521 IP 127.0.0.1.54354 &amp;gt; 127.0.0.1.distinct: Flags [P.], seq 1:4, ack 1, win 342, options [nop,nop,TS val 6665586 ecr 6665585], length 3
-    0x0000:  4500 0037 1d6c 4000 4006 1f53 7f00 0001
-    0x0010:  7f00 0001 d452 270f ca72 a81c 00c0 5977
-    0x0020:  8018 0156 fe2b 0000 0101 080a 0065 b572
-    0x0030:  0065 b571 3132 33
-15:49:07.237532 IP 127.0.0.1.54354 &amp;gt; 127.0.0.1.distinct: Flags [P.U], seq 4:7, ack 1, win 342, urg 3, options [nop,nop,TS val 6665586 ecr 6665585], length 3
-    0x0000:  4500 0037 1d6d 4000 4006 1f52 7f00 0001
-    0x0010:  7f00 0001 d452 270f ca72 a81f 00c0 5977
-    0x0020:  8038 0156 fe2b 0003 0101 080a 0065 b572
-    0x0030:  0065 b571 6162 63
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过tcpdump抓取的数据来看，可以看到标志U，这表示在TCP头部设置了紧急标志，&quot;urg 3&quot;是紧急偏移值，他指出带外数据在字节流中的位置的下一个位置是7，其中的4是该TCP报文段的序号值相对与初始序号值的偏移，因此带外数据是字节流中第6个字符，也就是字符&quot;c&quot;&lt;/p&gt;
-
-&lt;h5&gt;注意:&lt;/h5&gt;
-
-&lt;p&gt;flags参数只对send和recv的当前调用有效，我们也可以使用setsockopt永久的改变socket的某些属性;&lt;/p&gt;
-
-&lt;p&gt;在实际的应用中我们通常是没有办法预期带外数据何时到来的！&lt;/p&gt;
-
-&lt;p&gt;Linux内核检测到TCP紧急标记时，将通知应用程序有带外数据需要接受;&lt;/p&gt;
-
-&lt;p&gt;内核同志应用程序带外数据到达的两种常见方式是:
-&lt;strong&gt; * I/O复用产生的异常事件&lt;/strong&gt;
-&lt;strong&gt; * SIGURG信号&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;但是，即使应用程序得到了有带外数据需要接受的通知，还需要知道带外数据在数据流中具体的位置，才能准确接受带外数据&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#include &amp;lt;sys/socket.h&amp;gt;
-int sockatmark(int sockfd);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;sockatmark判断sockfd是否处于带外标记，即下一个读取到的数据是否是带外数据。
-* 如果是sockatmark返回1，此时我们便可以使用带有MSG_OOB标志的recv调用来接受带外数据.
-* 如果不是则返回0&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/* 利用异常事件来读取MSG_OOB信息 */
-#include &amp;lt;sys/types.h&amp;gt;
-#include &amp;lt;sys/socket.h&amp;gt;
-#include &amp;lt;netinet/in.h&amp;gt;
-#include &amp;lt;assert.h&amp;gt;
-#include &amp;lt;sys/epoll.h&amp;gt;
-#include &amp;lt;arpa/inet.h&amp;gt;
-#include &amp;lt;fcntl.h&amp;gt;
-#include &amp;lt;unistd.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;errno.h&amp;gt;
-#include &amp;lt;string.h&amp;gt;
-#include &amp;lt;stdlib.h&amp;gt;
-#include &amp;lt;pthread.h&amp;gt;
-
-int main(int argc, char** argv)
-{
-
-    const char* ip = &quot;127.0.0.1&quot;;
-    int port = 80;
-    int ret = 0;
-    struct sockaddr_in address;
-    memset(&amp;amp;address, 0, sizeof(address));
-
-    address.sin_family = AF_INET;
-    address.sin_port = htons(port);
-    inet_pton(AF_INET, ip, &amp;amp;address.sin_addr);
-
-    int listenfd = socket(AF_INET, SOCK_STREAM, 0);
-    assert(-1 != listenfd);
-
-    ret = bind(listenfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
-    assert(-1 != ret);
-
-    ret = listen(listenfd, 5);
-    assert(ret != -1);
-
-    struct sockaddr_in client_address;
-    socklen_t client_addresslength = sizeof(client_address);
-    int connfd = accept(listenfd, (struct sockaddr*)&amp;amp;client_address, &amp;amp;client_addresslength);
-
-    if (connfd &amp;lt; 0 ) {
-        printf(&quot;errno is : %d\n&quot;, errno);
-        close(listenfd);
-    }
-
-
-    char buf[1024];
-    fd_set read_fds;
-    fd_set exception_fds;
-    FD_ZERO(&amp;amp;read_fds);
-    FD_ZERO(&amp;amp;exception_fds);
-
-    while(1) {
-        memset(buf, 0, sizeof(buf));
-
-        FD_SET(connfd, &amp;amp;read_fds);
-        FD_SET(connfd, &amp;amp;exception_fds);
-
-        ret = select(connfd + 1, &amp;amp;read_fds, NULL, &amp;amp;exception_fds, NULL);
-        if (ret &amp;lt; 0) {
-            printf(&quot;selection failure\n&quot;);
-            break;
-        }
-
-        if (FD_ISSET(connfd, &amp;amp;read_fds)) {
-            ret = recv(connfd, buf, sizeof(buf) - 1, 0);
-            if (ret &amp;lt;= 0) {
-                break;
-            }
-            printf(&quot;get %d bytes of normal data: %s\n&quot;, ret, buf);
-        } else if (FD_ISSET(connfd, &amp;amp;exception_fds)) {
-
-            ret = recv(connfd, buf, sizeof(buf) - 1, MSG_OOB);
-            if (ret &amp;lt;= 0) {
-                break;
-            } 
-            printf(&quot;get %d bytes of oob data: %s\n&quot;, ret, buf);
-        }
-
-    }
-
-    close(connfd);
-    close(listenfd);
-
-    return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/use-msg_oob/&quot;&gt;MSG_OOB的使用&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[close与shutdown关闭连接]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/close-shutdown/" />
-  <id>http://localhost:4000/2014/03/11/close-shutdown</id>
-  <published>2014-03-11T00:00:00+00:00</published>
-  <updated>2014-03-11T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;关闭连接实际上是关闭该连接对应的socket;&lt;/p&gt;
-
-&lt;p&gt;使用close系统调用并非总是立即关闭一个连接，而是将引用计数减一。&lt;em&gt;&lt;em&gt;只有当&lt;/em&gt;fd的引用计数为0的时候才真正关闭连接&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;在多进程中，一次fork系统调用默认将父进程中打开的socket的引用计数加1。&lt;strong&gt;因此我们必须在父进程和子进程中都对该socket执行close调用才能真正将连接关闭&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;如果无论如何都要立即终止连接(而不是将socket的引用计数减一)，可以使用shutdown系统调用，相对与close来讲shutdown是专门为网络编程设计的&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#include &amp;lt;sys/socket.h&amp;gt;
-int shutdown(int sockfd, int howto)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;howto参数决定了shutdown的行为
-1. &lt;strong&gt;SHUT_RD&lt;/strong&gt;:  关闭sockfd上读的这一半，引用程序不能再针对socket文件描述符执行读操作，并且该socket接受缓冲区中的数据都被丢弃;
-2. &lt;strong&gt;SHUT_WR&lt;/strong&gt;: 关闭sockfd上写的这一半，sockfd的发送缓冲区中的数据会在真正关闭连接之前全部发送出去，应用程序不可以在对该socket文件描述符执行写操作，这种情况下处于半关闭状态
-3. &lt;strong&gt;SHUT_RDWR&lt;/strong&gt;: 同时关闭sockfd上的读和写&lt;/p&gt;
-
-&lt;p&gt;shutdown可以分别关闭socket上的读和写或者都关闭，close在关闭连接时只能将socket上的读和写同时关闭。&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/close-shutdown/&quot;&gt;close与shutdown关闭连接&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[bind与connect错误的原因]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/bind-connect-error/" />
-  <id>http://localhost:4000/2014/03/11/bind-connect-error</id>
-  <published>2014-03-11T00:00:00+00:00</published>
-  <updated>2014-03-11T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;bind常见的两种错误errno是EACCESS和EADDRINUSE
-* EACESS,被绑定的地址是受保护的地址，仅仅超级用户能够访问，比如普通用户将socket绑定到漠哥知名服务端口(0-1023)上时，就会返回EACCESS
-* EADDRINUSE,被绑定的地址正在使用中，比如将socket绑定到一个处于TIME-WAIT状态的socket地址&lt;/p&gt;
-
-&lt;p&gt;connect常见的两种错误errno是ECONNREFUESD和ETIMEOUT
-* ECONNREFUESD目标端口不存在，连接被拒绝
-* ETIMEOUT连接超时&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/bind-connect-error/&quot;&gt;bind与connect错误的原因&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[关于赛马问题的研究]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/about-horse-race/" />
-  <id>http://localhost:4000/2014/03/11/about-horse-race</id>
-  <published>2014-03-11T00:00:00+00:00</published>
-  <updated>2014-03-11T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;blockquote&gt;&lt;p&gt;说有25匹马，赛道每次最多只能容纳5匹马同时比赛，要求求出跑得最快的5匹，不能计时！&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;p&gt;这个问题，想了两天最终才想到了答案！&lt;/p&gt;
-
-&lt;p&gt;首先将25匹马分为ABCDE五组;&lt;/p&gt;
-
-&lt;p&gt;每组比赛得出每组的第一名分别是A1、B1、C1、D1、E1，此时进行了5轮比赛;&lt;/p&gt;
-
-&lt;p&gt;第六轮比赛:将A1、B1、C1、D1、E1进行比赛得出第一名A1(假设)，这就是要求的5匹之中的第一名;&lt;/p&gt;
-
-&lt;p&gt;第七轮比赛:将A2、A3、B1、B2、C1同时比赛，问题的关键就在这里了！&lt;/p&gt;
-
-&lt;h5&gt;为什么要用A2、A3、B2同B1、C1一起跑?&lt;/h5&gt;
-
-&lt;p&gt;我们想象一下，A1比A2快，A1比B1快，那么A2与B1谁更快呢?不确定，所以第二名一定是在A2与B1当中产生！&lt;/p&gt;
-
-&lt;p&gt;那么假如B1是本轮比赛的第一名，那么谁是第二名呢? 要么是A2，要么是B2、要么是C1！&lt;/p&gt;
-
-&lt;p&gt;假如A2是本轮比赛的第一名，那么谁是第二名呢?要么是A2、要么是B1&lt;/p&gt;
-
-&lt;p&gt;本轮比赛中第一名和第二名一定就是以上的两种之一,这就是为什么要用A2、A3、B2同B1、C1一起跑!&lt;/p&gt;
-
-&lt;p&gt;所以我们只要将上面所有具有可能性的马都放到一起来比赛一次，那么本轮比赛的前两名就是5匹马中的第二、第三名！&lt;/p&gt;
-
-&lt;p&gt;同样的道理:&lt;/p&gt;
-
-&lt;p&gt;我们还要找出剩下的两匹马！&lt;/p&gt;
-
-&lt;p&gt;假设第七轮比赛结束了，我们知道了第七轮比赛的前两名假设为n1和n2; n1和n2是谁是无关紧要的！&lt;/p&gt;
-
-&lt;p&gt;但是第七轮比赛之后一定有最后一名，那么最后一名可能会是谁呢？&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;可能会是A3，因为A2比A3快，所以不会是A2&lt;/li&gt;
-&lt;li&gt;可能会是B2，因为A3和C1可能比B2快&lt;/li&gt;
-&lt;li&gt;可能会是C1，因为A3和B2可能比C1快&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;以上就是最后一名的所有可能性:A3或B2或C1&lt;/p&gt;
-
-&lt;p&gt;我们再分析:&lt;/p&gt;
-
-&lt;h5&gt;C1是最后一名的情况&lt;/h5&gt;
-
-&lt;p&gt;假设第七轮比赛的结果是A2、B1、A3、B2、C1(C1在最后即可，前面的顺序无所谓，可以自己举例)&lt;/p&gt;
-
-&lt;p&gt;那么A2、A3就是前两名，C1就是最后一名，此时我们可以直接淘汰C组、D组、E组，因为C1比D1、E1都快，C1又是C组中最快的，而我们再需要两匹马就可以了！但是A3、B2都比C1快，所以A3、B2就是第4、5名，但是这中结果不具有一般性！&lt;/p&gt;
-
-&lt;h5&gt;B2是最后一名的情况&lt;/h5&gt;
-
-&lt;p&gt;假设第七轮比赛的结果是B1、A2、C1、A3、B2(B2在最后即可，前面顺序无所谓，可以自己举例)&lt;/p&gt;
-
-&lt;p&gt;那么B1、A2就是前两名，于是剩下了C1、A3、B2，好了此时B2-B5可以全部淘汰了(因为我们最后在取两匹马就够了，比如C1、A3怎么取都轮不到B2和他后面的，所以直接pass)！&lt;/p&gt;
-
-&lt;p&gt;这时候剩下的马中那些会是前两名呢?&lt;/p&gt;
-
-&lt;p&gt;很有可能D1会比A3还快，剩下的马中的第一名一定是C1，第二名一定在A3和D1之间产生！&lt;/p&gt;
-
-&lt;h5&gt;A3是最后一名的情况&lt;/h5&gt;
-
-&lt;p&gt;假设第七轮比赛的结果是B1、A2、B2、C1、A3(A3在最后即可，前面顺序无所谓，可以自己举例)&lt;/p&gt;
-
-&lt;p&gt;那么B1、A2就是前两名，与上面的分析相似，B2一定是剩下的马中的第一名，那么谁会是第二名呢？&lt;/p&gt;
-
-&lt;p&gt;很有可能B3会比C1还快，所以第二名可能会是B3和C1&lt;/p&gt;
-
-&lt;p&gt;以上就是所有的可能性，大家也可以自己假设每一种情况，从上面的总结中我们可以看出，具有争夺5匹马中第四第五名的只有一下的&quot;选马&quot;:C1、A3、D1、B2、B3，刚好5匹马！刚好能进行一次比赛！&lt;/p&gt;
-
-&lt;p&gt;所以第八轮比赛可以这样来描述:&lt;/p&gt;
-
-&lt;p&gt;假设第七轮中的结果是&lt;strong&gt;n1、n2、n3、n4、n5&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;我们取n3、n4以及n3所在组的下一名马和n4所在组的下一名马以及D1来比赛，最终的前两名就是5匹马中的第四、第五名！&lt;/p&gt;
-
-&lt;h6&gt;题外话:&lt;/h6&gt;
-
-&lt;p&gt;这个问题前几天在网上找了半天都没有一个具体的！呵呵！今天被我做出来了！看来我的智商还是不错的！&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/about-horse-race/&quot;&gt;关于赛马问题的研究&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[TCP的拥塞控制]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/11/TCP-congestion/" />
-  <id>http://localhost:4000/2014/03/11/TCP-congestion</id>
-  <published>2014-03-11T00:00:00+00:00</published>
-  <updated>2014-03-11T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;h5&gt;拥塞控制四种算法:&lt;/h5&gt;
-
-&lt;ol&gt;
-&lt;li&gt;慢开始&lt;/li&gt;
-&lt;li&gt;拥塞避免&lt;/li&gt;
-&lt;li&gt;快速重传&lt;/li&gt;
-&lt;li&gt;快速恢复&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;p&gt;发送方维持一个叫做拥塞窗口cwnd的状态变量，拥塞窗口的大小取决于网络的拥塞程度，并且动态变化，发送方让自己的发送窗口为min(cwnd,rwnd);&lt;/p&gt;
-
-&lt;h6&gt;发送方控制拥塞窗口的原则是:&lt;/h6&gt;
-
-&lt;p&gt;只要网络没有出现拥塞，拥塞窗口就再增大一些，一遍把更多的分组发送出去;&lt;/p&gt;
-
-&lt;p&gt;只要网络出现阻塞，拥塞窗口就减小一些，以减少注入到网络中的分组数;&lt;/p&gt;
-
-&lt;h6&gt;发送方如何知道网络发生拥塞?&lt;/h6&gt;
-
-&lt;p&gt;当网络发生拥塞时,路由器就要丢弃分组，因此只要发送方没有按时收到应当到达的确认报文，就可以猜想网络可能出现了拥塞。&lt;/p&gt;
-
-&lt;h5&gt;慢启动算法的思路:&lt;/h5&gt;
-
-&lt;p&gt;当主机开始发送数据时，如果立即把大量数据字节注入到网络，那么就可能引起网络阻塞，因为现在并不清楚网络的负荷情况。&lt;/p&gt;
-
-&lt;p&gt;比较好的方法是先探测一下，也就是&lt;strong&gt;由小到大发送窗口&lt;/strong&gt;，也就是&lt;strong&gt;由小到大增大拥塞窗口值&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;p&gt;通常在刚刚开始发送报文段时，先将拥塞窗口cwnd设置为一个最大报文段MSS的数值，而在每收到一个对新报文段的确认后，把拥塞窗口添加一个MSS的数值，用这样的方法逐步增大发送方的拥塞窗口cwnd，可以使分组注入到网络的速率更加合理;&lt;/p&gt;
-
-&lt;h6&gt;使用慢开始算法后，每经过一个传输轮次，拥塞窗口cwnd就加倍;&lt;/h6&gt;
-
-&lt;p&gt;&lt;img src=&quot;/uploads/2014/03/001.gif&quot; alt=&quot;001&quot; /&gt;&lt;/p&gt;
-
-&lt;h5&gt;轮次传输:&lt;/h5&gt;
-
-&lt;p&gt;一个轮次所经历的时间其实就是往返时间RTT，不过&quot;传输轮次&quot;中:把拥塞窗口cwnd所允许发送的报文段都连续发送出去，并收到了对已发送的最后一个字节的确认。&lt;/p&gt;
-
-&lt;p&gt;例如:&lt;/p&gt;
-
-&lt;p&gt;拥塞窗口cwnd的大小是4个报文段，那么这时的往返时间RTT就是发送方连续发送4个报文段，并收到这4个报文段的确认总共经历的时间。&lt;/p&gt;
-
-&lt;h4&gt;慢开始门限:&lt;/h4&gt;
-
-&lt;p&gt;为了防止拥塞窗口cwnd增长过大引起网络拥塞，还需要设置一个慢开始门限ssthresh状态变量:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;当cwnd &amp;lt; ssthresh时，使用慢开始算法;&lt;/li&gt;
-&lt;li&gt;当cwnd &gt; ssthresh时，停止使用慢开始算法改用拥塞避免算法;&lt;/li&gt;
-&lt;li&gt;当cwnd &amp;lt; ssthresh时，既可以使用慢开始算法，也可以使用拥塞避免算法&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h4&gt;拥塞避免算法:&lt;/h4&gt;
-
-&lt;p&gt;拥塞避免算法的思路是让拥塞窗口cwnd缓慢增大，也就是每经过一个轮次就把发送方的拥塞窗口cwnd加1，而不是加倍。这样拥塞窗口cwnd按&lt;strong&gt;线性规律缓慢增长&lt;/strong&gt;，比慢开始算法的拥塞窗口增长速率慢的多；&lt;/p&gt;
-
-&lt;h5&gt;注意:&lt;/h5&gt;
-
-&lt;p&gt;&lt;strong&gt;无论是慢开始阶段还是拥塞避免阶段&lt;/strong&gt;一旦出现网络拥塞，那么执行下面两步:
-1. 将慢开始门限ssthresh设置为出现拥塞时发送方窗口值的一半(但是不能小于2);
-2. 将拥塞窗口cwnd设置为1，执行慢开始算法;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;这样做的目的&lt;/strong&gt;:迅速减少主机发送到网络中的分组数，是的发生拥塞的路由器有足够的事件把队列中积压的分组处理完毕。&lt;/p&gt;
-
-&lt;h4&gt;慢开始:&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;TCP连接初始化，设置拥塞窗口初始，不能大于两个报文段，一般为cwnd=1MSS，设置慢启动门限初值(cwnd为拥塞窗口);&lt;/li&gt;
-&lt;li&gt;TCP开始发送过程，发送窗口swnd按照swnd = min(cwnd, rwnd)来计算，一般通告窗口rwnd足够大，所以实际上swnd=cwnd;&lt;/li&gt;
-&lt;li&gt;每次传输都调节一次拥塞窗口，从而调节了发送窗口的大小。cwnd从初值1开始，每收到一个对新报文段的确认ACK，则cwnd = cwnd + 1.这样第一次传输完，受到1个ACK，cwnd增加到2;第二次传输完，受到2个ACK，cwnd增加到4(2+1+1);因此cwnd按照指数规律增长，也就是说每传输1次，cwnd加倍，直到cwnd&gt;ssthresh(ssthresh为慢启动门限)，进入拥塞避免;&lt;/li&gt;
-&lt;li&gt;当在某时刻发生了拥塞，则设置ssthresh = max(swnd/2, 2),也就是说ssthresh降到拥塞发生时swnd的一半，但是不能小于2,并设置cwnd为1,重新开始慢启动过程。&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;h5&gt;注意:&lt;/h5&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&quot;慢启动&quot;指每出现一次超时，拥塞窗口降低到1,使报文慢慢注入网络;&lt;/li&gt;
-&lt;li&gt;&quot;拥塞避免&quot;指超过门限窗口后指数增长率降为线性增长率;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h6&gt;慢的含义:&lt;/h6&gt;
-
-&lt;p&gt;不是指拥塞窗口增长速率慢，而是在TCP开始发送报文段时先设置cwnd = 1，使得发送方在开始时只发送一个报文段(目的是试探一下网络拥塞情况)，然后再逐渐增大cwnd，这当然比按照大的cwnd一下子将许多报文段突然注入到网络中要慢的很多！&lt;/p&gt;
-
-&lt;p&gt;拥塞窗口的单位是:报文段MSS的大小而不是1个字节&lt;/p&gt;
-
-&lt;h5&gt;慢开始与拥塞控制的完整过程&lt;/h5&gt;
-
-&lt;p&gt;&lt;img src=&quot;/uploads/2014/03/002.jpg&quot; alt=&quot;002&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;0.TCP连接进行初始化时候，将拥塞窗口设置为1,，图中的窗口单位不使用字节而使用报文段。慢开始门限的初始值设置为16个&lt;strong&gt;报文段&lt;/strong&gt;，ssthresh = 16；&lt;/p&gt;
-
-&lt;p&gt;1.在执行慢开始算法时，拥塞窗口cwnd初值为1，发送第一个报文段M0.&lt;/p&gt;
-
-&lt;p&gt;2.发送端每接收到一个确认，就把cwnd加1。于是发送端可以接着发送M1和M2两个报文段&lt;/p&gt;
-
-&lt;p&gt;3.接收端共发回两个确认，发送端每收到一个对新报文段的确认，就把发送端的cwnd加1，此时cwnd从2增大到4，并可接着发送后面的4个报文段&lt;/p&gt;
-
-&lt;p&gt;4.发送端每收到一个对新报文段的确认，就把发送端的拥塞窗口加1，因此拥塞窗口cwnd随着传输轮次按指数规律递增。&lt;/p&gt;
-
-&lt;p&gt;5.当拥塞窗口cwnd增长到慢开始门限值ssthresh时(也就是当cwnd = 16时候)，就改为执行拥塞避免算法，拥塞窗口按线性规律增长。&lt;/p&gt;
-
-&lt;p&gt;6.嘉定拥塞窗口的数值增长到24时。网络出现拥塞了。则执行两步操作:
-    1.将ssthresh的值变为max(swnd/2, 2) = 12；
-    2.将cwnd设置为1，执行慢开始算法；&lt;/p&gt;
-
-&lt;p&gt;7.当cwnd = 12时改为执行拥塞避免算法，拥塞窗口按线性规律增长，每经过一个往返时延就增加一个MSS的大小&lt;/p&gt;
-
-&lt;h4&gt;特别注意:&lt;/h4&gt;
-
-&lt;p&gt;如果在慢开始阶段(指数增长阶段)，如果2 * cwnd &gt; ssthresh,则下一个RTT的cwnd应该等于ssthresh，而不是2*cwnd，也就是说cwnd不能越过ssthresh值，例如图中第16个轮次cwnd=8，ssthresh=12，第17轮次时，cwnd=12，而不是16&lt;/p&gt;
-
-&lt;h5&gt;乘法减小:&lt;/h5&gt;
-
-&lt;p&gt;不论在慢开始阶段还是拥塞避免阶段，只要出现超时(很可能是因为网络拥塞)，就将慢开始门限值ssthresh设置为当前拥塞窗口的一半，与此同时，执行慢开始算法&lt;/p&gt;
-
-&lt;p&gt;当网络频繁出现拥塞时，ssthresh值就下降的很快，以大大减少注入到网络中的分组数&lt;/p&gt;
-
-&lt;h5&gt;加法增大:&lt;/h5&gt;
-
-&lt;p&gt;在执行拥塞避免算法后，在收到对所有报文段的确认后(经过一个RTT)，就将拥塞窗口cwnd增加一个MSS大小，使拥塞窗口缓慢增大，防止网络过早出现拥塞；&lt;/p&gt;
-
-&lt;p&gt;上面的两种算法合起来成为AIMD算法(加法增大乘法减小)&lt;/p&gt;
-
-&lt;h5&gt;注意:&lt;/h5&gt;
-
-&lt;p&gt;拥塞避免并非能够完全避免拥塞，而是说在拥塞避免阶段将拥塞窗口控制为按线性规律增长，使网络不容易出现拥塞。&lt;/p&gt;
-
-&lt;h4&gt;快重传&lt;/h4&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/11/TCP-congestion/&quot;&gt;TCP的拥塞控制&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 11, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[非阻塞connect的实现]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/09/nonblock-connect/" />
-  <id>http://localhost:4000/2014/03/09/nonblock-connect</id>
-  <published>2014-03-09T00:00:00+00:00</published>
-  <updated>2014-03-09T00:00:00+00:00</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;&lt;strong&gt;当非阻塞的socket调用connect，而连接又没有立即建立时候，这时候connect出错，设置errno的值为EINPROGRESS。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在这种情况下，我们可以调用select或是poll等函数来监听这个连接失败的socket上的可写事件。&lt;/p&gt;
-
-&lt;p&gt;当select、poll等函数返回后，再利用getsockopt来读取错误码并清除该socket上的数据，如果错误码是0，则表示连接建立成功，否则连接建立失败。&lt;/p&gt;
-
-&lt;p&gt;利用上面的非阻塞connect方式，我们就能同时发起多个连接并一起等待。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#include &amp;lt;sys/types.h&amp;gt;
-#include &amp;lt;sys/socket.h&amp;gt;
-#include &amp;lt;netinet/in.h&amp;gt;
-#include &amp;lt;assert.h&amp;gt;
-#include &amp;lt;sys/epoll.h&amp;gt;
-#include &amp;lt;arpa/inet.h&amp;gt;
-#include &amp;lt;fcntl.h&amp;gt;
-#include &amp;lt;unistd.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;errno.h&amp;gt;
-#include &amp;lt;string.h&amp;gt;
-#include &amp;lt;stdlib.h&amp;gt;
-#include &amp;lt;pthread.h&amp;gt;
-
-#define BUFFER_SIZE 1024
-int setnonblocking(int fd)
-{
-    int old_option = fcntl(fd, F_GETFL);
-    int new_option = old_option | O_NONBLOCK;
-    fcntl(fd, F_SETFL, new_option);
-    return old_option;
-}
-
-/*time是超时时间，函数成功则返回已经处于连接状态的socket，失败则返回-1*/
-int unblock_connect(const char* ip, int port, int time) 
-{
-    int ret = 0;
-    struct sockaddr_in address;
-    bzero(&amp;amp;address, sizeof(address));
-    address.sin_family = AF_INET;
-    address.sin_port  = htons(port);
-    inet_pton(AF_INET, ip, &amp;amp;address.sin_addr);
-
-
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    int fdopt = setnonblocking(sockfd);
-
-    ret = connect(sockfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
-    if (ret == 0) {
-        /*连接成功则恢复sockfd的属性，并立刻返回*/
-        printf(&quot;connect with server immediately\n&quot;);
-        fcntl(sockfd, F_SETFL, fdopt);
-        return sockfd;
-    } else if (errno != EINPROGRESS) {
-            printf(&quot;not EINPROGRESS\n&quot;);
-            exit(-1);
-        /*
-        *如果连接没有建立，那么只有当errno为EINPROGRESS时候
-        *才表示连接还在进行，否则就出错返回
+&lt;p&gt;假设有3台后端服务器，此时来了一个客户端请求，因此Nginx要针对该请求进行一轮选择，第一次选择了第一台服务器，结果后续连接失败，因此需要进行第二次选择，此时就不能在选择第一台服务器了，因为它已经被选择并尝试过了，所以只能选择第二台或第三台服务器，这个位图只是针对本轮选择，也就是如果又来了一个客户端请求，那么针对它的一轮选择对应的rrp-&gt;tried位图又是全新的，如果后端服务器个数少于一个nt类型变量可以表示的范围(32位就是32台)(因为要同时让非后备服务器和后备服务器两个列表都能使用，所以取两个列表中个数较大的那个值)，那么就直接使用已有的指针类型的data变量做位图即可，否则使用ngx_pcalloc函数申请对应的内存空间。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  对后端服务器进行一次选择    */
+/*  关于前面的last_cached相关代码是未实现的陈旧代码，不用去管它 */
+376 ngx_int_t
+377 ngx_http_upstream_get_round_robin_peer(ngx_peer_connection_t *pc, void *data)
+378 {
+379     ngx_http_upstream_rr_peer_data_t  *rrp = data;
+380 
+381     time_t                         now;
+382     uintptr_t                      m;
+383     ngx_int_t                      rc;
+384     ngx_uint_t                     i, n;
+385     ngx_connection_t              *c;
+386     ngx_http_upstream_rr_peer_t   *peer;
+387     ngx_http_upstream_rr_peers_t  *peers;
+388 
+389     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+390                    &quot;get rr peer, try: %ui&quot;, pc-&amp;gt;tries);
+391 
+392     now = ngx_time();
+393 
+394     /* ngx_lock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+395 
+396     /*  未实现的陈旧代码，不用去管他    */
+397     if (rrp-&amp;gt;peers-&amp;gt;last_cached) {
+398 
+399         /* cached connection */
+400         ...... 
+415     }
+416 
+417     pc-&amp;gt;cached = 0;
+418     pc-&amp;gt;connection = NULL;
+419 
+420     /*  判断是否只有一台后端服务器  */
+421     if (rrp-&amp;gt;peers-&amp;gt;single) {
+422         peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[0];
+423 
+424     } else {
+425 
+426         /* there are several peers */
+427     
+            /*  判断是否是第一次选择,第一次选择的机器数量就是后端服务器的数量*/
+            /*  表示在连接一个远端服务器时，当前连接出现异常失败后可以重试的次数，
+                也就是允许的最多失败次数,第一次链接时候可以重试的次数就是主机数  */
+428         if (pc-&amp;gt;tries == rrp-&amp;gt;peers-&amp;gt;number) {  /*  number是后端服务器的个数   */
+429 
+430             /* it&#39;s a first try - get a current peer */
+431 
+432             i = pc-&amp;gt;tries;
+433 
+434             for ( ;; ) {
+                    /*  返回权值最大的服务器下标，rrp-&amp;gt;current是经过选择的后端服务器的下标   */
+435                 rrp-&amp;gt;current = ngx_http_upstream_get_peer(rrp-&amp;gt;peers);  /*  get_peer是加权轮选的具体实现  */
+436                 /*  
+437                 ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+438                                &quot;get rr peer, current: %ui %i&quot;,
+439                                rrp-&amp;gt;current,
+440                                rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current].current_weight);
+441
+                    /*  如果机器数大于了32,那么就返回的是该后端服务器在位图中的第几个int块中，小于32就返回0    */
+442                 n = rrp-&amp;gt;current / (8 * sizeof(uintptr_t));
+
+                    /*  m代表的是该后端服务器在位图中的第几位 */
+443                 m = (uintptr_t) 1 &amp;lt;&amp;lt; rrp-&amp;gt;current % (8 * sizeof(uintptr_t));
+444 
+                    /*  对rrp-&amp;gt;tried的具体使用    */
+                    /*  判断tried位图中该机器是否可用，如果tried[n]为0则表示可用   */
+                    /*  位图标记过的就不要再去选择了，处于down机状态的也被排除 */
+445                 if (!(rrp-&amp;gt;tried[n] &amp;amp; m)) {
+446                     peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current];
+447                     
+448                     if (!peer-&amp;gt;down) {      /*  非down */ 
+449                             
+                            /*  一段时间内的最大失败次数进行判断    */
+450                         if (peer-&amp;gt;max_fails == 0
+451                             || peer-&amp;gt;fails &amp;lt; peer-&amp;gt;max_fails)   /*  fails是已经失败的次数*/
+452                         {
+453                             break;  
+454                         }
+455 
+456                         if (now - peer-&amp;gt;checked &amp;gt; peer-&amp;gt;fail_timeout) {
+457                             peer-&amp;gt;checked = now;
+458                             break;
+459                         }
+460                         
+                            /*  有问题的服务器，将权重设为0，让他先休息一会    */
+461                         peer-&amp;gt;current_weight = 0;
+462 
+463                     } else {    /*  down设置位图标记???   */
+464                         rrp-&amp;gt;tried[n] |= m;     /*  设置位图标记  */
+465                     }
+466                     
+                        /*  如果执行到这里说明没有执行break,表示检验不通过  */
+                        /*  tries表示该连接失败，可以重试机器数-1            */
+467                     pc-&amp;gt;tries--;    
+468                 }
+469                 
+                    /*  如果没有可以重试的机器了则错误   */
+470                 if (pc-&amp;gt;tries == 0) {
+471                     goto failed;
+472                 }
+473 
+474                 if (--i == 0) {
+475                     ngx_log_error(NGX_LOG_ALERT, pc-&amp;gt;log, 0,
+476                                   &quot;round robin upstream stuck on %ui tries&quot;,
+477                                   pc-&amp;gt;tries);
+478                     goto failed;
+479                 }
+480             }
+481             /*  break直接跳出来，当前权重减一，时时改变    */ 
+482             peer-&amp;gt;current_weight--;
+483 
+484         } else {
+485 
+                /*  非第一次进行选择,不是使用轮询，而是利用current进行遍历了    */
+486             i = pc-&amp;gt;tries;
+487 
+488             for ( ;; ) {
+                    /*rrp-&amp;gt;current此时是之前返回的权值最大的服务器下标+1(如果是第二次的话)*/
+489                 n = rrp-&amp;gt;current / (8 * sizeof(uintptr_t));
+490                 m = (uintptr_t) 1 &amp;lt;&amp;lt; rrp-&amp;gt;current % (8 * sizeof(uintptr_t));
+491 
+492                 if (!(rrp-&amp;gt;tried[n] &amp;amp; m)) {
+493 
+494                     peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current];
+495                     
+                        /*  与上面的判断类似    */
+496                     if (!peer-&amp;gt;down) {
+497 
+498                         if (peer-&amp;gt;max_fails == 0
+499                             || peer-&amp;gt;fails &amp;lt; peer-&amp;gt;max_fails)
+500                         {
+501                             break;
+502                         }
+503 
+504                         if (now - peer-&amp;gt;checked &amp;gt; peer-&amp;gt;fail_timeout) {
+505                             peer-&amp;gt;checked = now;
+506                             break;
+507                         }
+508 
+509                         peer-&amp;gt;current_weight = 0;
+510 
+511                     } else {
+512                         rrp-&amp;gt;tried[n] |= m;
+513                     }
+514 
+515                     pc-&amp;gt;tries--;
+516                 }
+517 
+518                 rrp-&amp;gt;current++;     /*  没有释放，所以要在这里自增 */
+519 
+                    /*  超过主机数量，就要从头开始 */
+520                 if (rrp-&amp;gt;current &amp;gt;= rrp-&amp;gt;peers-&amp;gt;number) {
+521                     rrp-&amp;gt;current = 0;
+522                 }
+523                 
+                    /*  可以尝试的主机数为0    */
+524                 if (pc-&amp;gt;tries == 0) {
+525                     goto failed;
+526                 }
+527 
+528                 if (--i == 0) {
+529                     ngx_log_error(NGX_LOG_ALERT, pc-&amp;gt;log, 0,
+530                                   &quot;round robin upstream stuck on %ui tries&quot;,
+531                                   pc-&amp;gt;tries);
+532                     goto failed;
+533                 }
+534             }
+535             
+                /*  权重值减少一  */
+536             peer-&amp;gt;current_weight--;
+537         }
+538         /*  无论是第一次还是第二次，都要将选择了的进行标记   */ 
+539         rrp-&amp;gt;tried[n] |= m;
+540     }
+541 
+542     pc-&amp;gt;sockaddr = peer-&amp;gt;sockaddr;
+543     pc-&amp;gt;socklen = peer-&amp;gt;socklen;
+544     pc-&amp;gt;name = &amp;amp;peer-&amp;gt;name;
+545 
+546     /* ngx_unlock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+547 
+548     if (pc-&amp;gt;tries == 1 &amp;amp;&amp;amp; rrp-&amp;gt;peers-&amp;gt;next) {
+549         pc-&amp;gt;tries += rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number;
+550 
+551         n = rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number / (8 * sizeof(uintptr_t)) + 1;
+552         for (i = 0; i &amp;lt; n; i++) {
+553              rrp-&amp;gt;tried[i] = 0;
+554         }
+555     }
+556 
+557     return NGX_OK;
+558 
+    /*  使用后备服务器(如果有的话)对错误情况进行处理   */
+559 failed:
+560 
+561     peers = rrp-&amp;gt;peers;
+562     
+        /*  如果非后备服务器都出错了，
+            此时如果有后备服务器就切换到后备服务器
+            如果连后备服务器都搞不定就返回NGX_BUSY   
         */
-    }
-
-
-    fd_set readfds;
-    fd_set writefds;
-    struct timeval timeout; 
-
-
-    FD_ZERO(&amp;amp;readfds);  
-    FD_ZERO(&amp;amp;writefds); 
-    FD_SET(sockfd, &amp;amp;writefds);
-
-    timeout.tv_sec = time;
-    timeout.tv_usec = 0;
-
-    ret = select(sockfd + 1, NULL, &amp;amp;writefds, NULL, &amp;amp;timeout);
-    if (ret &amp;lt;= 0) { /* 超时或是是出错都立刻返回 */
-        printf(&quot;connection time out\n&quot;);
-        close(sockfd);
-        return -1;
-    }
-
-    if (!FD_ISSET(sockfd, &amp;amp;writefds)) {
-        printf(&quot;no events on sockfd found\n&quot;);
-        close(sockfd);
-        return -1;
-    }
-
-
-    int error = 0;
-    socklen_t length = sizeof(errno);
-
-    /* getsockopt来获取并清除sockfd上的错误 */    
-    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &amp;amp;error, &amp;amp;length) &amp;lt; 0) {
-        printf(&quot;getsockopt error&quot;);
-        close(sockfd);
-        return -1;
-    }
-
-    /* errno不为0则表示出错 */
-    if (error != 0) {
-        printf(&quot;connection failed after select with the error:%d\n&quot;, error);
-        close(sockfd);
-        return -1;
-    }
-
-    /* 连接成功 */  
-    printf(&quot;connection ready after select with the socket: %d\n&quot;, sockfd);  
-    send(sockfd, &quot;12&quot;, 3, 0);
-    fcntl(sockfd, F_SETFL, fdopt);
-    return sockfd;
-
-
-}
-
-
-int main(int argc, char** argv)
-{
-    const char* ip = &quot;127.0.0.1&quot;;
-    int port = 80;
-
-    int sockfd = unblock_connect(ip, port, 10);
-
-    if (sockfd &amp;lt; 0) {
-        return 1;
-    }
-    close(sockfd);
-
-    return 0;
-}
+563     if (peers-&amp;gt;next) {
+564 
+565         /* ngx_unlock_mutex(peers-&amp;gt;mutex); */
+566 
+567         ngx_log_debug0(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0, &quot;backup servers&quot;);
+568 
+569         rrp-&amp;gt;peers = peers-&amp;gt;next;
+570         pc-&amp;gt;tries = rrp-&amp;gt;peers-&amp;gt;number;
+571         
+            /*  rrp-&amp;gt;peers-&amp;gt;number是后备服务器的数量   */
+572         n = rrp-&amp;gt;peers-&amp;gt;number / (8 * sizeof(uintptr_t)) + 1;
+573         for (i = 0; i &amp;lt; n; i++) {
+574              rrp-&amp;gt;tried[i] = 0; /*  位图清0  */
+575         }
+576 
+            /*  
+                对后备服务器执行函数ngx_http_upstream_get_round_robin_peer
+                对后备服务器进行相关非后备服务器的类似操作
+                如果连后备服务器都失败则rc==NGX_BUSY
+            */
+577         rc = ngx_http_upstream_get_round_robin_peer(pc, rrp);
+578              
+579         if (rc != NGX_BUSY) {
+580             return rc;
+581         }
+582 
+583         /* ngx_lock_mutex(peers-&amp;gt;mutex); */
+584     }
+585 
+586     /* all peers failed, mark them as live for quick recovery */
+587 
+588     for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+589         peers-&amp;gt;peer[i].fails = 0;
+590     }
+591 
+592     /* ngx_unlock_mutex(peers-&amp;gt;mutex); */
+593 
+594     pc-&amp;gt;name = peers-&amp;gt;name;
+595 
+596     return NGX_BUSY;
+597 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h5&gt;但是以上的代码存在移植性的问题:&lt;/h5&gt;
+&lt;p&gt;核心流程:&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;非阻塞的socket可能导致connect始终失败&lt;/li&gt;
-&lt;li&gt;select对处于EINPROGRESS状态下的socket可能不起作用&lt;/li&gt;
-&lt;li&gt;对于出错的socket，getsocketopt在有些系统上返回-1，但是有点系统上(比如伯克利的UNIX)上返回0&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/002.png&quot; alt=&quot;002&quot; /&gt;&lt;/p&gt;
 
+&lt;p&gt;对于只有一台后端服务器的情况，Nginx直接选择它并返回，如果有多台后端服务器，对于第一次选择，Nginx会循环调用函数ngx_http_upstream_get_peer()按照各台服务器的当前值进行选择，如果第一次选择的服务器因链接失败或是其他情况导致需要重新选择另外一台服务器，Nginx采用的就是简单的遍历，起始节点为rrp-&gt;current，但是这个值会在对第一次选择结果进行释放时自增1,也就是说起始节点和第一次选择节点并没有重复。&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/09/nonblock-connect/&quot;&gt;非阻塞connect的实现&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 09, 2014.&lt;/p&gt;</content>
+&lt;p&gt;图中没有给出对非后备服务器全部选择failed失败的情况，如果出现这种情况，则此时将尝试后备服务器，同样是对服务器列表进行选择，所以处理的情况与非后备服务器相似，只是将相关变量进行了切换,如果此时后备服务器也选择失败，那么函数将返回NGX_BUSY，这意味这没有后端服务器来处理该请求，Nginx将获得502错误，Nginx可以直接将这个错误发送到客户端，或者对它做替换处理。&lt;/p&gt;
+
+&lt;h4&gt;后端服务器的权值计算&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;600 static ngx_uint_t
+601 ngx_http_upstream_get_peer(ngx_http_upstream_rr_peers_t *peers)
+602 {
+603     ngx_uint_t                    i, n, reset = 0;
+604     ngx_http_upstream_rr_peer_t  *peer;
+605 
+606     peer = &amp;amp;peers-&amp;gt;peer[0];
+607 
+608     for ( ;; ) {
+609 
+610         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+611             
+                /*  已经休息的服务器不用计算    */
+612             if (peer[i].current_weight &amp;lt;= 0) {
+613                 continue;
+614             }
+615 
+616             n = i;
+617 
+618             while (i &amp;lt; peers-&amp;gt;number - 1) {
+619 
+620                 i++;
+621                 
+                    /*  
+                        如果都小于0,则都跳过了，此时i等于peers-&amp;gt;number-1，
+                        在执行for中的i++，i变为peers-&amp;gt;number
+                    */
+
+622                 if (peer[i].current_weight &amp;lt;= 0) {
+623                     continue;       
+624                 }
+625 
+                    /*  权重的核心计算   
+                        初始状态中peer[n].current_weight等于peer[n].weight
+                        peer[i].current_weight等于peer[i].weight
+                        乘以1000的目的是避免浮点运算，直接将除数放大1000倍，也就是间接的将精度提升到小数点后三位
+                        由于是比较大小，所以同时提高1000倍不会影响结果。
+                    */
+626                 if (peer[n].current_weight * 1000 / peer[i].current_weight
+627                     &amp;gt; peer[n].weight * 1000 / peer[i].weight)
+628                 {
+629                     return n;
+630                 }
+631 
+632                 n = i;
+633             }
+634 
+635             if (peer[i].current_weight &amp;gt; 0) {
+636                 n = i;
+637             }
+638             /*  如果权值都小于0,此处不会被执行    */ 
+639             return n;
+640         }   /*  for结束   */
+641
+            /*  当所有权值都小于0的时候，将他们进行重置，重置为配置文件中的权值  */
+642         if (reset++) {
+643             return 0;
+644         }
+645         /*  重置权值    */ 
+646         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+647             peer[i].current_weight = peer[i].weight;
+648         }
+649     }
+650 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;假设有三台后端服务器A、B、C,他们的初始权值为5、3、1,则初始状态中peer[n].current_weight等于peer[n].weight并且peer[i].current_weight等于peer[i].weight，所以Nginx选择服务器C，不过随着后续current_weight权重的改变，各个服务器的权值将会发生变化，客户端的请求也会按照5:3:1的形式分布到A、B、C上，并且相对空闲的服务器会有更多机会被选中&lt;/p&gt;
+
+&lt;h4&gt;释放后端服务器&lt;/h4&gt;
+
+&lt;p&gt;分两种情况:&lt;/p&gt;
+
+&lt;p&gt;1.连接后端服务器并且正常处理当前客户请求后释放后端服务器。这种的处理工作比较简单。&lt;/p&gt;
+
+&lt;p&gt;2.在某一轮选择中，某次选择的服务器因连接失败或请求处理失败二需要重新进行选择。这就需要一些额外的处理了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;653 void
+654 ngx_http_upstream_free_round_robin_peer(ngx_peer_connection_t *pc, void *data,
+655     ngx_uint_t state)
+656 {
+657     ngx_http_upstream_rr_peer_data_t  *rrp = data;
+658 
+659     time_t                       now;
+660     ngx_http_upstream_rr_peer_t  *peer;
+661 
+662     ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+663                    &quot;free rr peer %ui %ui&quot;, pc-&amp;gt;tries, state);
+664
+        /*  正常情况，直接返回了，对应情况1  */
+665     if (state == 0 &amp;amp;&amp;amp; pc-&amp;gt;tries == 0) {
+666         return;
+667     }
+668 
+669     /* TODO: NGX_PEER_KEEPALIVE */
+670 
+671     if (rrp-&amp;gt;peers-&amp;gt;single) {
+672         pc-&amp;gt;tries = 0;
+673         return;
+674     }
+675 
+676     peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current];
+677
+        /*  一下都是对失败情况进行处理,对应情况2       */
+678     if (state &amp;amp; NGX_PEER_FAILED) {
+679         now = ngx_time();
+680 
+681         /* ngx_lock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+682 
+683         peer-&amp;gt;fails++;              /*  已经失败的次数   */
+684         peer-&amp;gt;accessed = now;
+685         peer-&amp;gt;checked = now;
+686         
+            /*  设置了max_fails非0的话，默认就是1    */
+688             peer-&amp;gt;current_weight -= peer-&amp;gt;weight / peer-&amp;gt;max_fails;
+689         }
+690 
+691         ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+692                        &quot;free rr peer failed: %ui %i&quot;,
+693                        rrp-&amp;gt;current, peer-&amp;gt;current_weight);
+694         
+            /*  权重&amp;lt;0也将它置0,让他去休息吧！ */
+695         if (peer-&amp;gt;current_weight &amp;lt; 0) {
+696             peer-&amp;gt;current_weight = 0;
+697         }
+698 
+699         /* ngx_unlock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+700
+701     } else {
+702 
+703         /* mark peer live if check passed */
+704         /*  ???     */ 
+705         if (peer-&amp;gt;accessed &amp;lt; peer-&amp;gt;checked) {
+706             peer-&amp;gt;fails = 0;
+707         }
+708     }
+709 
+710     rrp-&amp;gt;current++; /*  自增1，current与第二次选择有关，可以看下第二次选择 */
+711     
+        /*  越界了，重新置为0,从头开始选择服务器   */
+712     if (rrp-&amp;gt;current &amp;gt;= rrp-&amp;gt;peers-&amp;gt;number) {
+713         rrp-&amp;gt;current = 0;
+714     }
+715     /*  可以尝试的次数又减少了   */ 
+716     if (pc-&amp;gt;tries) {
+717         pc-&amp;gt;tries--;
+718     }
+719 
+720     /* ngx_unlock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+721 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果连接失败(不管是连接失败还是请求处理失败)，此时需要更新fails等变量;&lt;/p&gt;
+
+&lt;p&gt;如果成功，则需要判断一个fail_timeout时间段已过，才能重置fails的值，如果不这样做，那么可能得到值两个错误&lt;/p&gt;
+
+&lt;p&gt;要么将当前fail_timeout时间段内的失败次数统计错误，要么将当前fail_timeout时间段内的失败次数累加到下一个fail_timeout时间段。&lt;/p&gt;
+
+&lt;p&gt;默认情况下。在一轮选择中，如果是链接错误或者是链接超时导致的失败，那么Nginx会尽量尝试每一台后端服务器进行请求处理，直到全部失败才会返回502错误。当然在配置文件中可以修改，例如proxy_next_upstream或是fastcgi_next_upstream.&lt;/p&gt;
+
+&lt;p&gt;例如:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fastcgi_next_upstream http_404;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使得Nginx仅仅在上一台后端服务器返回404错误的情况下，才会尝试重新选择，否中直接返回对应的错误，500或是502。
+也就是说只有返回的错误类型与指定的相同，才会尝试重新选择。&lt;/p&gt;
+
+&lt;p&gt;这部分由ngx_http_upstream_next来实现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2814 static void
+2815 ngx_http_upstream_next(ngx_http_request_t *r, ngx_http_upstream_t *u,
+2816     ngx_uint_t ft_type)
+2817 {
+                ......
+                /*  全部尝试完毕了，或者是u-&amp;gt;conf-&amp;gt;next_upstream与配置文件中指定的类型不同  */
+2883         if (u-&amp;gt;peer.tries == 0 || !(u-&amp;gt;conf-&amp;gt;next_upstream &amp;amp; ft_type)) {
+2884    
+                /*  最终的返回 */
+2904             ngx_http_upstream_finalize_request(r, u, status);
+2905             return;
+2906         }
+2907     }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;整个加权轮询的大体流程图:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/003.png&quot; alt=&quot;003&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/&quot;&gt;nginx的负载均衡--加权轮询的实现&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
-  <title type="html"><![CDATA[TCP与UDP协议]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/08/the-different-between-TCP-and-UDP/" />
-  <id>http://localhost:4000/2014/03/08/the-different-between-TCP-and-UDP</id>
-  <published>2014-03-08T00:00:00+00:00</published>
-  <updated>2014-03-08T00:00:00+00:00</updated>
+  <title type="html"><![CDATA[Nginx负载均衡--客户端请求的均衡与惊群问题]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-request</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
     <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;TCP相对与UDP的特点是:&lt;br/&gt;
-* 面向连接 &lt;br/&gt;
-* 字节流&lt;br/&gt;
-* 可靠传输&lt;br/&gt;
-* 全双工
-* 点对点&lt;/p&gt;
+  <content type="html">&lt;p&gt;一般情况下，配置Nginx执行时候，工作进程会有多个，由于各个工作进程相互独立的接收客户端请求、处理、响应，所以就出现了负载不均衡的情况，比如极端的情况会是1个工作进程当前有3000个请求等待处理;而另一个进程当前也之后300个请求等待处理。&lt;/p&gt;
 
-&lt;h1&gt;TCP服务的特点&lt;/h1&gt;
+&lt;h4&gt;客户端请求均衡&lt;/h4&gt;
 
-&lt;h4&gt;面向连接的运输层协议&lt;/h4&gt;
+&lt;h5&gt;惊群问题&lt;/h5&gt;
 
-&lt;ul&gt;
-&lt;li&gt;使用TCP协议通信的双方必须先建立连接，然后才能开始数据的读写，双方都必须为该连接分配必要的内核资源，用来管理连接的状态和连接上的数据传输。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Nginx工作进程的主要任务就是处理事件，而事件的最初源头来自监听套接口，所以一旦末个工作进程独自拥有末个监听套接口，那么所有来自该监听套接口的客户端请求都将被这个工作线程处理。&lt;/p&gt;
 
+&lt;p&gt;如果多个工作进程同时拥有某个监听套接字，那么一旦该监听套接字出现某客户端请求，此时就将引发所有拥有该监听套接字的工作进程去争抢这个请求，但是能够抢到的肯定只有某一个工作进程，而其他工作进程注定无功而返，这就是惊群现象。&lt;/p&gt;
 
-&lt;h4&gt;TCP提供全双工通信&lt;/h4&gt;
+&lt;p&gt;在高版本的Linux内核中已经解决了这个问题。&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;TCP连接是全双工的，也就是&lt;em&gt;通信双方的读写可以通过一个连接进行&lt;/em&gt;，完成数据交换后，通信双方必须断开连接释放系统资源。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Nginx中有一个ngx_use_accept_mutex的全局变量，这个变量可以说是Nginx均衡措施的根本所在，该变量是一个整形变量。&lt;/p&gt;
 
+&lt;pre&gt;&lt;code&gt;54 ngx_uint_t            ngx_use_accept_mutex;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4&gt;TCP连接是点对点的&lt;/h4&gt;
+&lt;p&gt;ngx_use_accept_mutex变量的赋值在ngx_event_process_init中，也就是每个工作进程开始时的初始化函数。&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;TCP协议是一对一的，所以基于广播和多播(目标地址是多个主机地址)的应用程序不能使用TCP服务，而无连接的UDP则非常的适合广播和多播。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;调用关系如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ngx_worker_process_cycyle()---&amp;gt;ngx_worker_process_init()---&amp;gt;ngx_event_process_init()
 
 
-&lt;h4&gt;字节流&lt;/h4&gt;
+584 ngx_event_process_init(ngx_cycle_t *cycle)
+585 {
+586     ngx_uint_t           m, i;
+587     ngx_event_t         *rev, *wev;
+588     ngx_listening_t     *ls;
+589     ngx_connection_t    *c, *next, *old;
+590     ngx_core_conf_t     *ccf;
+591     ngx_event_conf_t    *ecf;
+592     ngx_event_module_t  *module;
+593 
+594     ccf = (ngx_core_conf_t *) ngx_get_conf(cycle-&amp;gt;conf_ctx, ngx_core_module);
+595     ecf = ngx_event_get_conf(cycle-&amp;gt;conf_ctx, ngx_event_core_module);
+596 
+597     if (ccf-&amp;gt;master &amp;amp;&amp;amp; ccf-&amp;gt;worker_processes &amp;gt; 1 &amp;amp;&amp;amp; ecf-&amp;gt;accept_mutex) {
+598         ngx_use_accept_mutex = 1;
+599         ngx_accept_mutex_held = 0;
+600         ngx_accept_mutex_delay = ecf-&amp;gt;accept_mutex_delay;
+601 
+602     } else {
+603         ngx_use_accept_mutex = 0;
+604     }
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;ul&gt;
-&lt;li&gt;当发送端应用程序连续执行多次写操作时，TCP模块先将这些数据放入TCP发送缓冲区中，当TCP模块开始发送数据的时候，发送缓冲区中这些等待发送的数据可能被封装成一个或多个TCP报文段发出。所以TCP模块发送的TCP报文段的个数和应用程序执行的写操作次数之间没有固定的关系。&lt;/li&gt;
-&lt;li&gt;当接受端受到一个或多个TCP报文段后，TCP模块将他们携带的应用程序数据按照TCP报文段的序号一次放入TCP接受缓冲区中，并通知应用程序读取数据。接收端可以一次性将TCP接收缓冲区中数据全部读取，也可以分多次读取，这取决与用户指定的接受端读缓冲的大小。&lt;em&gt;因此程序执行读操作次数和接受端接受到的TCP报文端个数之间没有固定的数量关系，应用程序对数据的发送和接受是没有边界限制的&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;UDP中发送端没执行一次写操作，UDP模块就将其封装为一个UDP数据报并发送，接受端必须及时针对每一个UDP数据执行读操作，否则就会丢包(发生在较慢的服务器上),并且如果用户没有制定足够的应用程序缓冲来读取UDP数据，则UDP数据将会被截断&lt;br/&gt;
-发送端执行写操作次数和接受端执行的读操作次数之间没有任何数量关系，这就是字节流&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;可以看到(1)只有在多进程的模型下，并且(2)工作进程数大于1的情况下，(3)用户配置开启负载均衡的情况下,才会设置开启负载均衡。否则是不开启的(ngx_use_accept_mutex为0)&lt;/p&gt;
+
+&lt;p&gt;对于ecf-&gt;accept_mutex主要是提供用户便利，可以让用户关闭该功能，因为难保某些情况下因为本身的消耗得不偿失。所以可以让用户关闭这个功能。&lt;/p&gt;
+
+&lt;p&gt;这个字段默认为1,在初始化函数ngx_event_core_init_conf()内;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1252     ngx_conf_init_value(ecf-&amp;gt;multi_accept, 0);
+1253     ngx_conf_init_value(ecf-&amp;gt;accept_mutex, 1); /*  将accept_mutex设置为1.  */
+1254     ngx_conf_init_msec_value(ecf-&amp;gt;accept_mutex_delay, 500);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将ngx_use_accept_mutex值设置为1,也就开启了Nginx负载均衡策略，此时在每个工作进程的初始化函数ngx_event_process_init内，所有监听套接字都不会被加入到工作进程的事件监控机制里了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;826         rev-&amp;gt;handler = ngx_event_accept;
+827         
+            /*  如果开启了负载均衡，就跳过，不会将其加入到事件监控 */
+828         if (ngx_use_accept_mutex) {
+829             continue;
+830         }
+831 
+832         if (ngx_event_flags &amp;amp; NGX_USE_RTSIG_EVENT) {
+833             if (ngx_add_conn(c) == NGX_ERROR) {
+834                 return NGX_ERROR;
+835             }
+836 
+            /*  没有开启，就将其加入到事件监控中去 */
+837         } else {
+838             if (ngx_add_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR) {
+839                 return NGX_ERROR;
+840             }
+841         }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;真正将监听套接口加入到时间监控机制实在函数ngx_process_event_and_timers函数中.&lt;/p&gt;
+
+&lt;p&gt;工作进程的主要一个执行体就是一个无限for循环，而该循环内最重要的调用就是ngx_process_event_and_timers。&lt;/p&gt;
+
+&lt;p&gt;在该函数内动态的添加与删除监听套接口是一种很灵活的方式。&lt;/p&gt;
+
+&lt;p&gt;如果当前的工作的负载均衡比较小，就将监听套接字加入到自身的事件监控机制中，从而带来新的客户端请求;&lt;/p&gt;
+
+&lt;p&gt;如果当前工作进程负载比较大，就将套接字从自身的事件监控机制中删除，避免引入新的客户端请求而带来的更大的负载。&lt;/p&gt;
+
+&lt;p&gt;当然，加入、删除需要锁机制来做互斥与同步，既要避免监听套接字同时被加入到多个进程的事件监控机制里，又要避免监听套接字在某一时刻没有任何进程监控。&lt;/p&gt;
+
+&lt;h5&gt;post事件处理机制&lt;/h5&gt;
+
+&lt;p&gt;nginx设计了两个队列:ngx_posted_accept_events(存放新链接事件的队列)和ngx_posted_events队列(存放普通事件的队列)，这两个队列都是ngx_event_t类型的双链表。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;200 void
+201 ngx_process_events_and_timers(ngx_cycle_t *cycle)
+202 {
+203     ngx_uint_t  flags;
+204     ngx_msec_t  timer, delta;
+205 
+206     if (ngx_timer_resolution) {
+207         timer = NGX_TIMER_INFINITE;
+208         flags = 0;
+209 
+210     } else {
+211         timer = ngx_event_find_timer();
+212         flags = NGX_UPDATE_TIME;
+213 
+214 #if (NGX_THREADS)
+215 
+216         if (timer == NGX_TIMER_INFINITE || timer &amp;gt; 500) {
+217             timer = 500;
+218         }
+219 
+220 #endif
+221     }
+222     
+        /*  必须开启了才可以使用  */
+223     if (ngx_use_accept_mutex) {
+            /*  ngx_accept_disabled&amp;gt;0则处于过载状态  */
+224         if (ngx_accept_disabled &amp;gt; 0) {
+                /*  没有去抢那把锁，而是静静的去处理原来的负载，所以说自减1  */
+225             ngx_accept_disabled--;
+226 
+            /*  否则便是没有过载    */
+227         } else {
+                /*  没有过载就努力去争取锁   */
+228             if (ngx_trylock_accept_mutex(cycle) == NGX_ERROR) {
+229                 return;
+230             }
+231                 
+                /*  争取失败，判断是否本来就拥有锁   */
+                /*  如果当前拥有锁，那么就给flags加入标识NGX_POST_EVENTS,表示所有发生的事件都将咽喉处理  */
+232             if (ngx_accept_mutex_held) {
+233                 flags |= NGX_POST_EVENTS;
+234 
+235             } else {
+236                 if (timer == NGX_TIMER_INFINITE
+237                     || timer &amp;gt; ngx_accept_mutex_delay)
+238                 {
+239                     timer = ngx_accept_mutex_delay;
+240                 }
+241             }
+242         }
+243     }   // if end
+244 
+245     delta = ngx_current_msec;
+246         
+        /*  这个函数将所有的事件缓存了 */
+247     (void) ngx_process_events(cycle, timer, flags);
+248 
+249     delta = ngx_current_msec - delta;
+250 
+251     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+252                    &quot;timer delta: %M&quot;, delta);
+253 
+        /*  
+            如果其不为空链表，则处理新建链接的缓存事件
+            ngx_epoll_process_events函数中对这个链表进行了缓存，使得其不为空
+            先处理新建链接上的事件缓存，在处理其他的事件缓存
+
+        */
+254     if (ngx_posted_accept_events) {
+255         ngx_event_process_posted(cycle, &amp;amp;ngx_posted_accept_events);
+256     }
+257 
+        /*  处理完后就赶紧释放锁  */
+258     if (ngx_accept_mutex_held) {
+259         ngx_shmtx_unlock(&amp;amp;ngx_accept_mutex);
+260     }
+261 
+262     if (delta) {
+263         ngx_event_expire_timers();
+264     }
+265 
+266     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+267                    &quot;posted events %p&quot;, ngx_posted_events);
+268
+        /*  处理原本延时的事件队列(如果有的话)  */
+269     if (ngx_posted_events) {
+270         if (ngx_threaded) {
+271             ngx_wakeup_worker_thread(cycle);
+272 
+273         } else {
+274             ngx_event_process_posted(cycle, &amp;amp;ngx_posted_events);
+275         }
+276     }
+277 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_accept_disabled的值的含义&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;18 void
+19 ngx_event_accept(ngx_event_t *ev)
+20 {
+107         ngx_accept_disabled = ngx_cycle-&amp;gt;connection_n / 8
+108                               - ngx_cycle-&amp;gt;free_connection_n;
+109 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中ngx_cycle-&gt;connection_n表示一个工作进程的最大可承受连接数，可以通过配置文件的work_connections指令配置，默认值是512,在函数ngx_event_core_init_conf()中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;13 #define DEFAULT_CONNECTIONS  512
+
+1156 static char *
+1157 ngx_event_core_init_conf(ngx_cycle_t *cycle, void *conf)
+1158 {
+        /*  默认初始化成512了    */
+1244     ngx_conf_init_uint_value(ecf-&amp;gt;connections, DEFAULT_CONNECTIONS);
+1245     cycle-&amp;gt;connection_n = ecf-&amp;gt;connections;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;另一个ngx_cycle-&gt;free_connection_n表示当前可用连接数，假设当前活动连接数为x，那么该值为ngx_cycyle-&gt;connection_n - x;
+所以此时ngx_accept_disabled的值为:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ngx_accept_disabled = ngx_cycle-&amp;gt;connection_n/8 - (ngx_cycle-&amp;gt;connection_n - x)
+                    = x - (ngx_cycle-&amp;gt;connection_n * 7/8)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果ngx_accept_disabled &gt; 0表示过载，意思就是x - (ngx_cycle-&gt;connection_n * 7/8) &gt; 0，也就是说当前活动连接数(x)的值如果超过ngx_cycle-&gt;connection_n的7/8，则表示发生过载。变量ngx_accept_disabled将大于0,并且该值越大表示过载越大，当前进程负载越重。&lt;/p&gt;
+
+&lt;p&gt;当工作进程的负载达到这个临界点的时候他就不会尝试去获取互斥锁，从而让新来的负载可以均衡到其他工作进程。&lt;/p&gt;
+
+&lt;p&gt;可以看到只有在开启了负载均衡(ngx_use_accept_mutex=1)后才会生效。&lt;/p&gt;
+
+&lt;p&gt;首先判断变量ngx_accept_disabled是否大于0来判断当前进程是否已经过载。为什么这样继续向下看;&lt;/p&gt;
+
+&lt;p&gt;当处于过载状态的时候，所做的工作是使ngx_accept_disabled自减1,这表示既然经过了一轮处理，那么负载一定是减小的，所以要相应改变ngx_accept_disabled的值。&lt;/p&gt;
+
+&lt;p&gt;经过一段时间ngx_accept_disabled将会降到0以下，便又可以去争取新的请求连接。
+所以如下文所说的最大可承受连接数的7/8便是一个负载均衡点，当某进程的负载达到了这个临界点的时候它就不会去尝试获取互斥锁，从而让新增加的负载可以均衡到其他工作进程上去。&lt;/p&gt;
+
+&lt;p&gt;如果进程并没有处理过载状态，那么就会去争锁，实际上争取的是套接字接口的监控权，争锁成功就会把所有监听套接字加入到自身的事件监控机制中(如果原本不在);&lt;/p&gt;
+
+&lt;p&gt;如果争锁失败就会将所有监听套接字从自身的时间监控机制里删除(如果原本有的话),&lt;/p&gt;
+
+&lt;p&gt;注意:是所有套接字，因为他们总是作为一个整体本加入或是删除&lt;/p&gt;
+
+&lt;p&gt;NGX_POST_EVENTS标记表示所有发生的事件都将会延后处理,因为要尽快的释放锁。&lt;/p&gt;
+
+&lt;h4&gt;任何架构设计都必须遵守的约定，就是持锁者必须尽量缩短自身持有锁的时间,所以发生的大部分事件都要延迟到释放锁之后再去处理，以便把锁尽快释放，缩短自身持有锁的时间可以让其他进程尽可能的有机会获取到锁。&lt;/h4&gt;
+
+&lt;p&gt;如果当前进程没有获取到锁，那么就将监控机制阻塞点(例如epoll_wait)的超时时间限制在一个比较短的时间范围内，也就是ngx_accept_mutex_delay，默认是500毫秒.超时时间短了，所以超时更快，那么也就可以更频繁的从阻塞中跳出，也就有更多的机会去争取到锁了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;294 ngx_int_t
+295 ngx_trylock_accept_mutex(ngx_cycle_t *cycle)
+296 {
+297     if (ngx_shmtx_trylock(&amp;amp;ngx_accept_mutex)) {
+298 
+299         ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+300                        &quot;accept mutex locked&quot;);
+301 
+302         if (ngx_accept_mutex_held
+303             &amp;amp;&amp;amp; ngx_accept_events == 0
+304             &amp;amp;&amp;amp; !(ngx_event_flags &amp;amp; NGX_USE_RTSIG_EVENT))
+305         {
+306             return NGX_OK;
+307         }
+308 
+309         if (ngx_enable_accept_events(cycle) == NGX_ERROR) {
+310             ngx_shmtx_unlock(&amp;amp;ngx_accept_mutex);
+311             return NGX_ERROR;
+312         }
+313 
+314         ngx_accept_events = 0;
+315         ngx_accept_mutex_held = 1;
+316 
+317         return NGX_OK;
+318     }
+319 
+320     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+321                    &quot;accept mutex lock failed: %ui&quot;, ngx_accept_mutex_held);
+322 
+323     if (ngx_accept_mutex_held) {
+324         if (ngx_disable_accept_events(cycle) == NGX_ERROR) {
+325             return NGX_ERROR;
+326         }
+327 
+328         ngx_accept_mutex_held = 0;
+329     }
+330 
+331     return NGX_OK;
+332 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_trylock_accept_mutex的内部流程
+&lt;img src=&quot;/uploads/2014/05/006.png&quot; alt=&quot;006&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;拥有锁的进程对时间的处理，也就是之前所说的延迟处理，当一个事件发生时候，一般处理(不做延迟的话)会立即调用事件对应的回调函数，而延迟处理则会将该时间以链表的形式缓存起来&lt;/p&gt;
+
+&lt;p&gt;在函数ngx_process_events_and_timers中的ngx_process_events函数已经将所有事件都缓存了起来，接下来先处理新建链接&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    static ngx_int_t
+558 ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
+559 {
+            ......
+                /*  如果标记了延迟处理，则执行事件缓存 */
+672             if (flags &amp;amp; NGX_POST_EVENTS) {
+673                 queue = (ngx_event_t **) (rev-&amp;gt;accept ?
+674                                &amp;amp;ngx_posted_accept_events : &amp;amp;ngx_posted_events);
+                        /*  
+                                将其添加到ngx_posted_accept_events链表中
+                                新建连接事件，就是监听套接字上发生的可读事件
+                                在ngx_process_events_and_timers中的ngx_posted_accept_events就不为空了
+                        */
+675 
+676                 ngx_locked_post_event(rev, queue);
+677 
+                /*  否则直接调用对应的回调函数 */
+678             } else {
+679                 rev-&amp;gt;handler(rev);
+680             }
+681         }
+682 
+683         wev = c-&amp;gt;write;
+684 
+685         if ((revents &amp;amp; EPOLLOUT) &amp;amp;&amp;amp; wev-&amp;gt;active) {
+686 
+687             if (c-&amp;gt;fd == -1 || wev-&amp;gt;instance != instance) {
+688 
+689                 /*
+690                  * the stale event from a file descriptor
+691                  * that was just closed in this iteration
+692                  */
+693 
+694                 ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+695                                &quot;epoll: stale event %p&quot;, c);
+696                 continue;
+697             }
+698 
+699             if (flags &amp;amp; NGX_POST_THREAD_EVENTS) {
+700                 wev-&amp;gt;posted_ready = 1;
+701 
+702             } else {
+703                 wev-&amp;gt;ready = 1;
+704             }
+705             /*  对于标记了的单独进行处理    */ 
+706             if (flags &amp;amp; NGX_POST_EVENTS) {
+707                 ngx_locked_post_event(wev, &amp;amp;ngx_posted_events);
+708 
+709             } else {
+710                 wev-&amp;gt;handler(wev);
+711             }
+712         }
+713     }
+714 
+715     ngx_mutex_unlock(ngx_posted_events_mutex);
+716 
+717     return NGX_OK;
+718 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_process_events_and_timers函数中先处理新建连接缓存事件链表ngx_posted_accept_events，此时还不能释放锁，因为我们还在处理监听套接字上的事情，还要读取上面的请求数据，所以此时必须独占，一旦缓存的新链接事件表被全部处理完了就必须马上释放现有的锁了，因为连接套接字只可能被某一个进程自始至终占用，不会出现进程之间的相互冲突，所以对于链接套接口上事件ngx_posted_events的处理可以在释放锁之后进行，虽然对于他们的具体处理与响应是非常消耗时间的，但是在此之前已经释放了持有的锁，所以即使是慢一点也不会影响到其他进程，最多客户感觉慢了一点吧！&lt;/p&gt;
+
+&lt;h3&gt;注意:&lt;/h3&gt;
+
+&lt;p&gt;1.如果在办理新建链接时间的过程中，在监听套接字上又来了新的请求的时候怎么办？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;当前进程只会处理已经缓存的事件，新的请求将会被阻塞在监听套接字中，由于监听套接字是以水平方式加入到时间监控机制中的，所以等到下一轮的被那个进程争取到锁并且加到时间监控机制里时候才会被触发从而被抓取出来。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.第259行ngx_shmtx_unlock(&amp;amp;ngx_accept_mutex)只是释放锁，而并没有将监听套接字从事件监控机制中删除，所以有可能在接下来处理ngx_posted_events缓存时间的过程中，互斥锁被另外一个进程争抢到并且把所有的监听套接字加入到他的事件监控机制里面，因此严格来说，在同一时刻，监听套接字可能被多个进程拥有，但是在同一时刻，监听套接字只可能被一个进程监控(也就是epoll_wait这种)，因此进程在处理完ngx_posted_events缓存事件后去争抢锁，发现锁被其他进程占用而争用失败，会把所有监听套接字从自身的事件监控机制里删除，然后才进行事件监控。但在同一时刻，监听套接字只能被一个进程监控，这也就意味着Nginx根本不会受到惊群问题的影响。&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-request/&quot;&gt;Nginx负载均衡--客户端请求的均衡与惊群问题&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
 
 
-&lt;h4&gt;可靠传输&lt;/h4&gt;
+<entry>
+  <title type="html"><![CDATA[nginx负载均衡--ip_hash的实现]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;根据IP的哈希值来获取对应的后端服务器，Nginx1.2.0仅支持IPv4&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;TCP协议采用发送应答机制，即发送端发送的每个TCP报文段都必须得到接收方的应答，才会认为这个TCP报文段传输成功&lt;/li&gt;
-&lt;li&gt;TCP协议采用超时重传机制，发送端在发送出一个TCP报文段之后启动定时器，如果在定时器时间内没有收到应答，他将重发该报文段&lt;/li&gt;
-&lt;li&gt;因为TCP报文段最终是以IP数据报发送的，而IP数据报到达接受端可能乱序、重复，所以TCP协议还会对接收到的TCP报文段重排、整理，再提交给应用层。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;加权轮询是Nginx负载均衡的基础策略，所以一些初始化工作，比如配置值转储(配置文件中相关值存储到变量中),所以其他策略可以直接复用加权轮询的初始化工作。&lt;/p&gt;
 
+&lt;p&gt;path:src/http/modules/ngx_http_upstream_ip_hash_module.c&lt;/p&gt;
+
+&lt;h4&gt;初始化工作&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;79 ngx_int_t
+80 ngx_http_upstream_init_ip_hash(ngx_conf_t *cf, ngx_http_upstream_srv_conf_t *us)
+81 {
+        /*  直接使用round_robin的全局初始化   */
+82     if (ngx_http_upstream_init_round_robin(cf, us) != NGX_OK) {
+83         return NGX_ERROR;
+84     }
+85  
+        /*  设定客户端请求到来时候的初始化函数 */
+86     us-&amp;gt;peer.init = ngx_http_upstream_init_ip_hash_peer;
+87 
+88     return NGX_OK;
+89 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第86行是针对单个请求进行初始化的回调函数指针，当一个客户请求过来时，就调用ngx_http_upstream_init_ip_hash_peer做初始化。&lt;/p&gt;
+
+&lt;h4&gt;选择后端服务器&lt;/h4&gt;
+
+&lt;p&gt;客户端请求到来后，函数ngx_http_upstream_ip_hash_module进行初始化，它调用了加权轮询策略的初始函数ngx_http_upstream_init_round_robin_peer，之所以这样是因为在多次哈希选择失败之后，&lt;em&gt;Nginx将会选择策略退化为加权轮询&lt;/em&gt;,针对IP哈希锁做的初始化工作主要是将对应的客户端IP转存出来。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;92 static ngx_int_t
+93 ngx_http_upstream_init_ip_hash_peer(ngx_http_request_t *r,
+94     ngx_http_upstream_srv_conf_t *us)
+95 {
+96     u_char                                 *p;
+97     struct sockaddr_in                     *sin;
+98     ngx_http_upstream_ip_hash_peer_data_t  *iphp;
+99 
+100     iphp = ngx_palloc(r-&amp;gt;pool, sizeof(ngx_http_upstream_ip_hash_peer_data_t));
+101     if (iphp == NULL) {
+102         return NGX_ERROR;
+103     }
+104 
+105     r-&amp;gt;upstream-&amp;gt;peer.data = &amp;amp;iphp-&amp;gt;rrp;
+106 
+107     if (ngx_http_upstream_init_round_robin_peer(r, us) != NGX_OK) {
+108         return NGX_ERROR;
+109     }
+110     
+        /*  设置回调函数  */          /*  获取使用ip_hash策略   */
+        /*  修改了原本在ngx_http_upstream_init_round_robin_peer函数中的值    */
+111     r-&amp;gt;upstream-&amp;gt;peer.get = ngx_http_upstream_get_ip_hash_peer;
+112 
+113     /* AF_INET only */  /*  仅仅支持IPV4    */
+114 
+115     if (r-&amp;gt;connection-&amp;gt;sockaddr-&amp;gt;sa_family == AF_INET) {
+116 
+117         sin = (struct sockaddr_in *) r-&amp;gt;connection-&amp;gt;sockaddr;
+118         p = (u_char *) &amp;amp;sin-&amp;gt;sin_addr.s_addr;
+
+            /*  哈希方法仅仅需要ip地址的前三个字节即可    */
+119         iphp-&amp;gt;addr[0] = p[0];
+120         iphp-&amp;gt;addr[1] = p[1];
+121         iphp-&amp;gt;addr[2] = p[2];
+122 
+123     } else {
+            /*  IPV6的全部置为0,都分配到同一台机器了 */
+124         iphp-&amp;gt;addr[0] = 0;
+125         iphp-&amp;gt;addr[1] = 0;
+126         iphp-&amp;gt;addr[2] = 0;
+127     }
+128 
+        /*  哈希初始值 */
+129     iphp-&amp;gt;hash = 89;
+130     iphp-&amp;gt;tries = 0;
+        /*  哈希失败20次以上就会退化成加权轮询模式，调用iphp-&amp;gt;get_rr_peer  */
+131     iphp-&amp;gt;get_rr_peer = ngx_http_upstream_get_round_robin_peer;
+132 
+133     return NGX_OK;
+134 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;函数ngx_http_upstream_get_ip_hash_peer的实现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  选择后端服务器   */
+137 static ngx_int_t
+138 ngx_http_upstream_get_ip_hash_peer(ngx_peer_connection_t *pc, void *data)
+139 {
+140     ngx_http_upstream_ip_hash_peer_data_t  *iphp = data;
+141 
+142     time_t                        now;
+143     uintptr_t                     m; 
+144     ngx_uint_t                    i, n, p, hash;
+145     ngx_http_upstream_rr_peer_t  *peer;
+146 
+147     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+148                    &quot;get ip hash peer, try: %ui&quot;, pc-&amp;gt;tries);
+149 
+150     /* TODO: cached */
+151     
+        /*  哈希失败20次以上，或是单机模式    */
+152     if (iphp-&amp;gt;tries &amp;gt; 20 || iphp-&amp;gt;rrp.peers-&amp;gt;single) {
+            /*  退化为加权轮询   */
+153         return iphp-&amp;gt;get_rr_peer(pc, &amp;amp;iphp-&amp;gt;rrp);
+154     }
+155 
+156     now = ngx_time();
+157 
+158     pc-&amp;gt;cached = 0;
+159     pc-&amp;gt;connection = NULL;
+160 
+        /*      iphp-&amp;gt;hash初始值为89，质数       */
+161     hash = iphp-&amp;gt;hash;
+162 
+163     for ( ;; ) {
+164 
+            /*  一下是哈希的计算方法  */
+            /*  只需要ip的前三个字节所以i &amp;lt; 3    */
+165         for (i = 0; i &amp;lt; 3; i++) {
+166             hash = (hash * 113 + iphp-&amp;gt;addr[i]) % 6271;
+167         }
+168 
+            /*  p就是最后的哈希值，得到的p一定小于机器数量  */
+169         p = hash % iphp-&amp;gt;rrp.peers-&amp;gt;number;
+170             
+            /*  检测p机器在位图中是否被使用过了  */
+171         n = p / (8 * sizeof(uintptr_t));
+172         m = (uintptr_t) 1 &amp;lt;&amp;lt; p % (8 * sizeof(uintptr_t));
+173 
+            /*  对应的位为0表示没有使用过   */
+174         if (!(iphp-&amp;gt;rrp.tried[n] &amp;amp; m)) {
+175 
+176             ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+177                            &quot;get ip hash peer, hash: %ui %04XA&quot;, p, m);
+178 
+179             peer = &amp;amp;iphp-&amp;gt;rrp.peers-&amp;gt;peer[p];
+180 
+181             /* ngx_lock_mutex(iphp-&amp;gt;rrp.peers-&amp;gt;mutex); */
+182             
+                /*  如果机器可用，break便会跳出执行代码207行代码  */
+183             if (!peer-&amp;gt;down) {
+184 
+185                 if (peer-&amp;gt;max_fails == 0 || peer-&amp;gt;fails &amp;lt; peer-&amp;gt;max_fails) {
+186                     break;
+187                 }
+188 
+189                 if (now - peer-&amp;gt;checked &amp;gt; peer-&amp;gt;fail_timeout) {
+190                     peer-&amp;gt;checked = now;
+191                     break;
+192                 }
+193             }
+194 
+195             iphp-&amp;gt;rrp.tried[n] |= m;
+196 
+197             /* ngx_unlock_mutex(iphp-&amp;gt;rrp.peers-&amp;gt;mutex); */
+198 
+199             pc-&amp;gt;tries--;
+200         }
+201         
+            /*  失败了20次机上就退化   */
+202         if (++iphp-&amp;gt;tries &amp;gt;= 20) {
+203             return iphp-&amp;gt;get_rr_peer(pc, &amp;amp;iphp-&amp;gt;rrp);
+204         }
+205     }
+206 
+207     iphp-&amp;gt;rrp.current = p;
+208 
+209     pc-&amp;gt;sockaddr = peer-&amp;gt;sockaddr;
+210     pc-&amp;gt;socklen = peer-&amp;gt;socklen;
+211     pc-&amp;gt;name = &amp;amp;peer-&amp;gt;name;
+212 
+213     /* ngx_unlock_mutex(iphp-&amp;gt;rrp.peers-&amp;gt;mutex); */
+214 
+215     iphp-&amp;gt;rrp.tried[n] |= m;
+216     iphp-&amp;gt;hash = hash;
+217 
+218     return NGX_OK;
+219 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;哈希的计算很简单，就是通常的哈希规则，也就是相关数值，比如3、89、113、6271都是质数，这样使得哈希结果更加散列;&lt;/p&gt;
+
+&lt;p&gt;根据哈希值得到被选中的后端服务器，判断其是否可用，如果可用则break跳出，执行207行代码，否则将可重试次数减少1,再在上次哈希结果hash的基础上再进行哈希(就是那个for死循环的作用)！&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/005.png&quot; alt=&quot;005&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash/&quot;&gt;nginx负载均衡--ip_hash的实现&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx负载均衡两种策略的比较]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-compare/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-compare</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;h4&gt;加权轮询&lt;/h4&gt;
+
+&lt;h5&gt;优势:&lt;/h5&gt;
+
+&lt;p&gt;加权轮询的适用性更强，它不依赖于客户端的任何信息，而完全依靠后端服务器的情况进行选择;
+能把客户端的请求更合理更均匀的分配到各个后端服务器处理;&lt;/p&gt;
+
+&lt;h5&gt;劣势:&lt;/h5&gt;
+
+&lt;p&gt;同一个客户端的多次请求可能会被分配到不同的后端服务器进行处理，所以无法满足做会话保持的应用的需求。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4&gt;IP哈希&lt;/h4&gt;
+
+&lt;h5&gt;优势:&lt;/h5&gt;
+
+&lt;p&gt;能较好的将同一个客户的多次请求分配到同一后台服务器处理，避免了加权轮询策略无法使用会话保持的需求。&lt;/p&gt;
+
+&lt;h5&gt;劣势:&lt;/h5&gt;
+
+&lt;p&gt;IP哈希是根据客户端的IP地址来对后端服务器选择，如果某个时刻，来自某个IP的请求特别多，那么将导致谋台后端服务器的压力非常大，而其他后端服务器却还是很空闲的不均匀情况。&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-compare/&quot;&gt;nginx负载均衡两种策略的比较&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[解决vsftpd无法上传文件的问题]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/soft-vsftpd/" />
+  <id>http://localhost:4000/2014/05/04/soft-vsftpd</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;将vsftp的配置文件/etc/vsftpd/vsftpd.conf中该设置的都设置了，但是上传文件时候就是不成功,如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ftp&amp;gt; mput rc.tar.gz 
+mput rc.tar.gz? y
+227 Entering Passive Mode (127,0,0,1,141,205).
+553 Could not create file.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;vsftp的默认目录在/var/ftp，只要将这个目录的权限改成0777即可&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chmod 0777 /var/ftp
+
+ftp中哪个目录中中如果无法上传就只要修改这个目录的权限即可
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/soft-vsftpd/&quot;&gt;解决vsftpd无法上传文件的问题&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[shell中的一些变量]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/shell-var/" />
+  <id>http://localhost:4000/2014/05/04/shell-var</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;1获取字符串的长度&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var=1234567890
+echo ${#var}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2识别当前shell版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo $SHELL
+echo $0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3检测当前用户是否为超级用户&lt;/p&gt;
+
+&lt;p&gt;UID是一个重要的环境变量用于检测当前脚本是以超级用户还是普通用户运行的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if [ $UID -ne 0 ]; then
+echo Non root user.Please run as root.
+else
+echo Root user
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4修改bash的提示符&lt;/p&gt;
+
+&lt;p&gt;运行bash时候会看到[root@localhost script]#这样的提示字符串，我们可以利用PS1环境变量来第年至提示文本，默认的shell提示文本是~/.bashrc中设置的(全局的在/etc/bashrc中)&lt;/p&gt;
+
+&lt;p&gt;我们可以使用类似于\e[1;31的特定转义序列来设置彩色的提示字符串。&lt;/p&gt;
+
+&lt;p&gt;还有一些特殊的字符可以扩展为系统参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;\u可以扩展为用户名；
+\h可以扩展为主机名；
+\w可以扩展为当前工作目录的完全路径
+\W可以扩展为当前工作目录(没有路径)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PS1=&quot;[\u@ \W]\$ &quot;&lt;/p&gt;
+
+&lt;p&gt;后面的\$的作用就是显示#或$的&lt;/p&gt;
+
+&lt;p&gt;数组&lt;/p&gt;
+
+&lt;p&gt;数组定义的方法有很多种类，可以在单行中使用一列值来定义一个数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array_var=(1 2 3 4 5 6 7 8 9)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还可以将数组定义为一组索引值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array_var[0]=&quot;test1&quot;
+array_var[1]=&quot;test2&quot;
+array_var[2]=&quot;test3&quot;
+array_var[3]=&quot;test4&quot;
+array_var[4]=&quot;test5&quot;
+array_var[5]=&quot;test6&quot;
+打印出数组中的值
+
+#echo ${array_var[1]}
+test2
+#index=5
+#echo ${array_var[$index]}
+test6
+#echo ${array_var[*]}   #以清单的形式打印出数组中所有的值
+test1 test2 test3 test4 test5 test6 
+#echo ${#array_var[*]}  #打印数组的长度
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;6关联数组&lt;/p&gt;
+
+&lt;p&gt;在关联数组中我们可以使用任意的文本作为数组索引，而在普通数组中只能用整数作为数组索引
+首先需要一个单独的声明语句将一个变量名声明为关联数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#declare -A ass_array
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;声明之后可以使用两种方法将元素添加到关联数组中&lt;/p&gt;
+
+&lt;p&gt;(1)内嵌索引-值列表法，提供一个索引-值列表&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#ass_array=([index1]=val1 [index2]=val2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(2)独立的索引-值进行赋值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#ass_array[index1]=val1
+#ass_array[index2]=val2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;实例:&lt;/h5&gt;
+
+&lt;p&gt;用关联数组为水果定制价格&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#declare -A friutes_value
+#friutes_value=([apple]=&#39;100 dollars&#39; [orange]=&#39;150 dollars&#39;)
+#echo &quot;Apple costs ${friutes_value[apple]}&quot;
+Apple costs 150 dollars
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;列出数组索引&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#echo ${!friutes_value[*]} 
+orange apple
+#echo ${!friutes_value[@]} 
+orange apple
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/shell-var/&quot;&gt;shell中的一些变量&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[自动作业处理]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/shell-crontab/" />
+  <id>http://localhost:4000/2014/05/04/shell-crontab</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;h5&gt;crontab&lt;/h5&gt;
+
+&lt;p&gt;启动crontab进程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service crontab start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;停止crontab进程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service crontab stop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新启动crontab进程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service crontab restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;crontab的选项&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;crontab [-u user] [-e] [-l] [-r] [-i]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-e  编辑用户的crontab文件&lt;/p&gt;
+
+&lt;p&gt;-l  列出用户在crontab中设定的任务&lt;/p&gt;
+
+&lt;p&gt;-r  删除用户在crontab中的任务&lt;/p&gt;
+
+&lt;p&gt;-i  交互模式，删除用户设定的任务前进行提示&lt;/p&gt;
+
+&lt;p&gt;-u user&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;分钟:每小时第几分钟执行，取值0-59&lt;/p&gt;
+
+&lt;p&gt;小时:每天第几小时执行，取值0-23&lt;/p&gt;
+
+&lt;p&gt;日期:每月第几天执行，取值0-31&lt;/p&gt;
+
+&lt;p&gt;月份:每年的第几月执行，取值0-12或英文缩写May、Feb、Nov等&lt;/p&gt;
+
+&lt;p&gt;星期:每周第几天执行，取值0-6或英文缩写Sun、Mon、Tue&lt;/p&gt;
+
+&lt;p&gt;用户:执行该命令的用户，root等&lt;/p&gt;
+
+&lt;p&gt;命令:定期执行的命令，date等&lt;/p&gt;
+
+&lt;p&gt;在时间域中，可以使用&#39;-&#39;代表一段时间，例如在小时后输入6-12表示每小时的6、7、8、9、10、11、12分钟;&lt;/p&gt;
+
+&lt;p&gt;可以使用&#39;&lt;em&gt;&#39;表示全部时间，例如在日期字段输入&#39;&lt;/em&gt;&#39;则表示每个月的每一天都执行该命令;&lt;/p&gt;
+
+&lt;p&gt;使用&#39;,&#39;表示特定时间，例如:在月份中输入&#39;3,5,12&#39;,则表示一年的3月、5月、12月;&lt;/p&gt;
+
+&lt;p&gt;使用&#39;/&#39;表示每隔,例如:在分钟字段中输入*/5表示每隔5分钟。&lt;/p&gt;
+
+&lt;p&gt;修改crontab文件之后不需要重新启动crontab服务程序，crontab会自动根据文件内容刷新任务里表&lt;/p&gt;
+
+&lt;p&gt;实例:&lt;/p&gt;
+
+&lt;p&gt;使用crontab -e添加新的任务&lt;/p&gt;
+
+&lt;p&gt;每隔5分钟将系统时间写入~/work/cron_test&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;*/5 * * * * date &amp;gt;&amp;gt; ~/work/cron_test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每月的3日23:30自动删除/var/log/httpd目录下所有文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;30 23 3 * * root rm -rf /var/log/httpd/*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每隔5分钟查询一次系统中当前运行的进程，并保存到~/work/cron_test&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;*/5 * * * * * ps aux &amp;gt; ~/work/cron_test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每周一的1:00 3:00 8:00各自查询一次根目录结构，并保存到~/work/cron_test&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;0 1,3,8 * * * ls -l &amp;gt; ~/work/cron_test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不带-u选项使用crontab命令，系统默认认为当前用户创建任务，如果为其他用户设定只要在-u后面指定用户，例如，编辑用户Test的任务时候&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#crontab -e -u Test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-l选项可以列出所有任务的列表，例如列出root用户的列表&lt;/p&gt;
+
+&lt;h4&gt;at&lt;/h4&gt;
+
+&lt;p&gt;at也是一种任务管理工具，不过与crontab不同的是，at命令设置的任务只在某个时刻执行，并且只执行一次，如果要使用at命令调度程序，必须先启动atd守护进程,atd启动之后可以使用at命令设定任务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;at [-c] [-V] [-q queue] [-f file] [-m] [-l] [-d] [-v] TIME
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-m: 当指定的任务被完成之后，将给用户发送邮件，即使没有标准输出;&lt;/p&gt;
+
+&lt;p&gt;-l: 等同于atq命令&lt;/p&gt;
+
+&lt;p&gt;-d: 等同于atrm命令&lt;/p&gt;
+
+&lt;p&gt;-v: 显示任务被执行的时间&lt;/p&gt;
+
+&lt;p&gt;-V: 版本信息&lt;/p&gt;
+
+&lt;p&gt;-q queue:   使用指定的队列&lt;/p&gt;
+
+&lt;p&gt;-f file:    从指定文件读入任务，而不是从标准输入读入&lt;/p&gt;
+
+&lt;p&gt;TIME:       指定任务执行的时间&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#输入命令后使用Ctrl+D退出at模式
+#00:02执行ls -l，并保存
+[root@ Note]# at 00:02
+at&amp;gt; ls -l &amp;gt; ~/work/at
+at&amp;gt; &amp;lt;EOT&amp;gt;
+job 5 at Thu May  8 00:02:00 2014
+[root@ Note]#
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;时间的设定可以是多种格式,例如:
+8:50pm、+10days、tomorrow、now、noon、midnight等&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#一分钟后执行某命令
+[root@ Note]# at +1
+
+#明天下午4点执行某任务
+[root@ Note]# at 4pm tomorrow
+
+#两天后早上九点执行
+[root@ Note]# at 9am+2days
+
+#查询已分配的任务
+[root@ Note]# at -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;batch命令:批处理&lt;/h4&gt;
+
+&lt;p&gt;batch命令用来实现批处理，即一次连接执行多个命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ batch]# ls
+test1.doc  test2.doc  test3.doc
+#批处理，删除当前目录下test1.doc test2.doc文件
+[root@ batch]# batch
+at&amp;gt; rm test1.doc
+at&amp;gt; rm test2.doc
+at&amp;gt; &amp;lt;EOT&amp;gt;
+job 8 at Wed May  7 00:13:00 2014
+[root@ batch]# ls
+test3.doc
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/shell-crontab/&quot;&gt;自动作业处理&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[mysql常用语句]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/mysql-use/" />
+  <id>http://localhost:4000/2014/05/04/mysql-use</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;字符串数据类型一般用来存放较短的字符串&lt;/p&gt;
+
+&lt;p&gt;需要存储大串字符时，应该使用文本型数据，文本型数据，可以存放超过过二十亿个字符的字符串&lt;/p&gt;
 
 &lt;h5&gt;注意:&lt;/h5&gt;
 
-&lt;p&gt;TCP点对点中端点是指套接字(socket)&lt;/p&gt;
+&lt;p&gt;文本型字段既大又慢，所以不能随意使用&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/08/the-different-between-TCP-and-UDP/&quot;&gt;TCP与UDP协议&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 08, 2014.&lt;/p&gt;</content>
+&lt;p&gt;数值类型可以存储整数、实数、浮点数&lt;/p&gt;
+
+&lt;p&gt;逻辑型也称为布尔型，只能取两个值0、1,即TRUE或是FALSE&lt;/p&gt;
+
+&lt;h4&gt;记录操作&lt;/h4&gt;
+
+&lt;p&gt;插入记录:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;insert into &amp;lt;表名&amp;gt;
+[(列名1,列名2....)]
+values (&amp;lt;列对应的值&amp;gt;)
+
+&amp;gt;insert into student_info (stu_id, stu_name, stu_sex, stu_age) 
+    values (101, &quot;Zhangsan&quot;,&#39;M&#39;, 22)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更新记录:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;update &amp;lt;表名&amp;gt;
+set &amp;lt;列名&amp;gt;=&amp;lt;表达式&amp;gt;
+[ where &amp;lt;条件&amp;gt;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除记录:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;delete from &amp;lt;表名&amp;gt; [where &amp;lt;条件&amp;gt;]
+
+&amp;gt;delete from student_info where stu_id=1001
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:&lt;/h4&gt;
+
+&lt;p&gt;如果使用delete时候不设定where从句，则表格中的所有记录将被全部删除&lt;/p&gt;
+
+&lt;h4&gt;查询:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;select [all|distinct] &amp;lt;目标列表达式&amp;gt; [,&amp;lt;目标列表达式&amp;gt;]...
+from &amp;lt;表名或视图&amp;gt; [,&amp;lt;表名或视图&amp;gt;]
+[where &amp;lt;条件表达式&amp;gt;]
+[group by &amp;lt;列名&amp;gt; [having &amp;lt;条件表达式&amp;gt;] ]
+[order by &amp;lt;列名&amp;gt; [asc | desc]];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;select还可以使用as作为额别名&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;select * from student_info
+
+&amp;gt;select stu_id as ID , stu_name as NAME from student_info
+
+&amp;gt;select stu_id, stu_name from student_info order by stu_age
+
+&amp;gt;select * from student_info where stu_age&amp;gt;20
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;having 子句必须出现在group by之后，order by之前
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;修改表的结构&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;alter table &amp;lt;表名&amp;gt;
+[ ADD &amp;lt;新列名&amp;gt; &amp;lt;数据类型&amp;gt; &amp;lt;完整性约束&amp;gt; ]
+[ DROP &amp;lt;完整性约束&amp;gt; ]
+[ ALTER COLUMN &amp;lt;列名&amp;gt; &amp;lt;数据类型&amp;gt; ]
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/mysql-use/&quot;&gt;mysql常用语句&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
-  <title type="html"><![CDATA[Address family not supported by protocol]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/01/address-family-not-supported-by-protocol/" />
-  <id>http://localhost:4000/2014/03/01/address-family-not-supported-by-protocol</id>
-  <published>2014-03-01T06:18:20Z</published>
-  <updated>2014-03-01T06:18:20Z</updated>
+  <title type="html"><![CDATA[mysql的基本配置]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/mysql-config/" />
+  <id>http://localhost:4000/2014/05/04/mysql-config</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
     <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;今天看非阻塞connect时候自己写了一个小例子，结果却出现了&lt;/p&gt;
+  <content type="html">&lt;h5&gt;Mysql的密码修改:&lt;/h5&gt;
 
-&lt;blockquote&gt;&lt;p&gt;Address family not supported by protocol&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;p&gt;看到这个提示一下了懵掉了！这又是怎么回事！
-我以为是那里写错了又重新写了一个connect的例子，结果还是一样的错误！&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;int main(int argc, char** argv)
-{
-        const char* ip = &quot;127.0.0.1&quot;;
-        int port = 80; 
-        struct sockaddr_in address;
-        address.sin_family = AF_INET;
-        address.sin_port = htons(port);
-        inet_pton(AF_INET, &quot;127.0.0.1&quot;, &amp;amp;address.sin_addr);
-/*      inet_pton(AF_INET, &quot;127.0.0.1&quot;, (struct sockaddr*)&amp;amp;address);  */
-
-        int sockfd = socket(AF_INET, SOCK_STREAM, 0); 
-        assert(-1 != sockfd);
-
-        int ret = connect(sockfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
-
-        if (-1 == ret) {
-                perror(&quot;connect error&quot;);
-                exit(-1);
-        }
-
-        char buf[100] = &quot;this is a test line&quot;;
-        int len = strlen(buf);
-
-        ret = send(sockfd, buf, len + 1, 0); 
-        if (ret != len + 1) {
-                perror(&quot;send eror&quot;);
-                exit(-1);
-        }
-
-        close(sockfd);
-        return 0;
-}
+&lt;pre&gt;&lt;code&gt;#mysqladmin -u root password 123456
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;我随手一写就写成了&lt;/p&gt;
+&lt;p&gt;连接Mysql数据库&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;inet_pton(AF_INET, &quot;127.0.0.1&quot;, (struct sockaddr*)&amp;amp;address);
+&lt;pre&gt;&lt;code&gt;#mysql -u root -p 然后输入密码
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;老了老了！记忆力不行了！&lt;/p&gt;
+&lt;p&gt;显示数据库列表:&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/01/address-family-not-supported-by-protocol/&quot;&gt;Address family not supported by protocol&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 01, 2014.&lt;/p&gt;</content>
+&lt;pre&gt;&lt;code&gt;&amp;gt;show databases;
+#默认自带两个数据库mysql和test，mysql中存储用户相关信息
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;选择一个数据库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;use mysql;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看一个数据库中所有的表&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;show tables;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除所有的数据表:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;drop table worker;
+
+如果不能肯定一个表是否存在，可以在drop语句中增加if exists 语句
+
+&amp;gt;drop table if exists worker
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除数据库:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;drop database company;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:都是drop，不是delete&lt;/h4&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/mysql-config/&quot;&gt;mysql的基本配置&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
-  <title type="html"><![CDATA[epoll编程实例]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/27/use-epoll/" />
-  <id>http://localhost:4000/2014/02/27/use-epoll</id>
-  <published>2014-02-27T14:41:16Z</published>
-  <updated>2014-02-27T14:41:16Z</updated>
+  <title type="html"><![CDATA[until语法]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-until/" />
+  <id>http://localhost:4000/2014/05/03/shell-until</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
     <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;pre&gt;&lt;code&gt;#include &quot;sys/types.h&quot;
-#include &quot;sys/socket.h&quot;
-#include &quot;netinet/in.h&quot;
-#include &quot;assert.h&quot;
-#include &quot;sys/epoll.h&quot;
-#include &quot;arpa/inet.h&quot;
-#include &quot;fcntl.h&quot;
-#include &quot;unistd.h&quot;
-#include &quot;stdio.h&quot;
-#include &quot;errno.h&quot;
-#include &quot;string.h&quot;
-#include &quot;stdlib.h&quot;
-#include &quot;pthread.h&quot;
+  <content type="html">&lt;pre&gt;&lt;code&gt;until
+    命令表1
+test 表达式 
+do
+    命令表2
+done
+&lt;/code&gt;&lt;/pre&gt;
 
-#define MAX_EVENT_NUMBER    1024
-#define BUFFER_SIZE         10
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;命令表1在循环开始前执行，且每一次循环结束后再次执行&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;表达式作为循环控制条件.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;do..done之间为until循环的循环体，每次循环时执行其中的命令表2&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;until循环结束后将执行done后的语句&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-/*  设置套接字为非阻塞     */
-int setnonblocking( int fd )
+
+&lt;p&gt;until执行的步骤:&lt;/p&gt;
+
+&lt;p&gt;执行命令表1，并检测表达式的值，若表达式非0,则执行循环体命令表2一次，然后返回再次执行命令表1，并再次检验表达式的值，反复，直到表达式为0,循环结束&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+i=1
+echo &quot;enter N&quot;
+read N
+until
+    echo &quot;hello&quot;    #hello输出次数比下面的echo多1
+test $i -gt $N  #检测条件是i&amp;lt;N就执行
+do
+    RESULT=`expr $i \* $i`  
+    echo &quot;$i--------------$RESULT&quot;
+    i=$(($i+1))
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-until/&quot;&gt;until语法&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[sed总结]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-sed/" />
+  <id>http://localhost:4000/2014/05/03/shell-sed</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;sed [-n] program [file-list]
+sed [-n] [-f] program-file file-list&lt;/p&gt;
+
+&lt;p&gt;-n 表示除非sed使用了p指令或者是标识，否则不会将文本复制到标准输出。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# cat example 
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+第七行
+这是第八行
+
+[root@ sed]# sed -n &#39;2,8 p&#39; example
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;地址作用&lt;/h4&gt;
+
+&lt;p&gt;通过地址来确定需要处理的数据行，地址可以通过数字正则表达式或二者结合的方式。&lt;/p&gt;
+
+&lt;p&gt;当地址由数字构成的时候，数字表示行号，二行号作为地址可以用来选择某一行，作为一个特列，符号$表示出入中的最后一行。&lt;/p&gt;
+
+&lt;p&gt;用逗号分隔的两个行号表示以这两行为起止的行的范围(包括行数表示的那两行)。&lt;/p&gt;
+
+&lt;p&gt;正则表达式作为地址可以用来选择那些包含与正则表达式相匹配的字符串的行。&lt;/p&gt;
+
+&lt;p&gt;如果没有地址，sed将会选择所有的行&lt;/p&gt;
+
+&lt;h4&gt;指令&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;d   删除指令
+
+n   下一条指令
+
+a   追加指令
+
+i   插入指令
+
+c   修改指令
+
+s   替换指令
+
+p   打印指令
+
+w file  写指令
+
+r file  读取指令
+
+q   退出
+
+
+
+
+[root@ sed]# sed &#39;2,6 d&#39; example
+这是第一行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;追加指令&lt;/h5&gt;
+
+&lt;p&gt;a指令会在当前选择的行之后插入一行或多行文本。如果a指令前有两个地址，则会在每个地址之后添加文本&lt;/p&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;p&gt;除最后一行外，所有添加的文本的每一行都必须以反斜杠结尾，反斜杠用于指袋行末的换行符。没有反斜杠结尾的行被是做要添加到文本的末尾&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#filename:append
+#分贝在第四行和最后一行添加分隔符
+
+4 a\
+----------------    #指令的最后一行，所以不用添加\
+$ a\
+----------------
+
+
+[root@ sed]# sed -f append  example
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+----------------
+这是第五行
+六行
+第七行
+这是第八行
+----------------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;打印指令&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# sed &#39;/六/p&#39; example
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+六行
+第七行
+这是第八行
+
+
+由于没有使用-n选项，所有的行都被显示输出
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;p&gt;除非制定了-n否则sed将会在标准输出上打印所有的行，无论是否满足条件。使用-n选项后，sed仅仅在标准输出上打印满足的行。例如被p指令选定的行。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sed -f
+#filename:change
+#将第三行的内容修改为aaaaaaaaa
+#将第四行的内容修改为bbbbbbbbb
+#将第五行的内容修改为ccccccccc
+#
+3,5 c\
+aaaaaaaa\
+bbbbbbbb\
+cccccccc 
+
+
+[root@ sed]# ./change example
+这是第一行
+这是第二行
+aaaaaaaa
+bbbbbbbb
+cccccccc
+六行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;替换指令&lt;/h5&gt;
+
+&lt;p&gt;替换指令与vim中的非常相似&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[address [,address] ] s/pattern/replacement-string/[g][p][w file]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;g标识:sed的s指令对选定行的所有匹配字符串进行替换&lt;/p&gt;
+
+&lt;p&gt;p标识:将所有应用了替换操作的行输出到标准输出&lt;/p&gt;
+
+&lt;p&gt;w标识:他将输出送入file指定的文件中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# sed -n &#39;s/这是/This is/p&#39; example
+This is第一行
+This is第二行
+This is第五行
+This is第八行
+
+
+[root@ sed]# sed &#39;s/这是/This is/w temp&#39; example
+This is第一行
+This is第二行
+第三行
+第四行,文件的中部
+This is第五行
+六行
+第七行
+This is第八行
+
+[root@ sed]# cat temp
+This is第一行
+This is第二行
+This is第五行
+This is第八行
+[root@ sed]#
+
+
+
+#!/bin/bash
+#filename:
+
+for file    #默认以命令行参数作为in的对象
+do
+    echo $file
+    cp $file ftemp
+    #将ftemp中所有的is替换为IS，
+    #MY替换为my，PAPER替换为paper
+    sed &#39;s/is/IS/g
+         s/MY/my/g
+         s/PAPER/paper/g
+        &#39;  ftemp &amp;gt; $file
+done 
+rm -rf ftemp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;插入指令&lt;/h5&gt;
+
+&lt;p&gt;插入指令是将文本添加到选定行之前&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/第/ i\
+-----下一行有&quot;第&quot;字出现------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;下一条指令&lt;/h5&gt;
+
+&lt;p&gt;n指令输出当前选择的行，然后从输入中读取下一行，并且从sed程序中的下一条指令开始对新读入的行进行处理&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#使用n指令跳过文件中的第3行
+#表示对如果是第三行则使用n指令，然后使用p指令，其他行直接使用p指令
+[root@ sed]# cat next
+3n
+p
+[root@ sed]# sed -n -f next example
+这是第一行
+这是第二行
+第四行,文件的中部
+这是第五行
+六行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;文件读入指令&lt;/h5&gt;
+
+&lt;p&gt;r指令读出指定文件的内容并添加到选定的行之后&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#在文件example中出现&#39;六&#39;的行下方读入文件example
+[root@ sed]# sed &#39;/六/r next&#39; example
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+3 n
+p
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;控制结构&lt;/h5&gt;
+
+&lt;p&gt;!取反操作:使得sed后面与其同一行的指令作用于没有被该指令选择的每一行地址上&lt;/p&gt;
+
+&lt;p&gt;3!d:删除除了第三行以外的所有的行
+3,6 !w file :将除3-6行以外所有额行写入到file中&lt;/p&gt;
+
+&lt;h5&gt;Hold和Pattern&lt;/h5&gt;
+
+&lt;p&gt;sed有两个缓冲区，Pattern和Hold区，所有的命令都是工作在Pattern区。Pattern区保存着sed刚刚从输入中读取的行。&lt;/p&gt;
+
+&lt;p&gt;Hold作为临时缓冲区，可以在操作Pattern时候用来暂存数据。将数据放入Hold区之前内容为空&lt;/p&gt;
+
+&lt;p&gt;Pattern和Hold之间传送数据的指令:&lt;/p&gt;
+
+&lt;p&gt;g   将Hold区中的内容复制到Pattern中，Pattern中原来的内容将会丢失&lt;/p&gt;
+
+&lt;p&gt;G   将一个换行符和Hold区中的内容追加到Pattern区的内容之后&lt;/p&gt;
+
+&lt;p&gt;h   将Pattern区的内容复制到Hold区，Hold中原来的数据会丢失&lt;/p&gt;
+
+&lt;p&gt;H   将一个换行符和Pattern区中的内容附加到Hold区中的内容之后&lt;/p&gt;
+
+&lt;p&gt;x   交换Pattern和Hold缓冲区的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# sed &#39;G&#39; example
+这是第一行
+
+这是第二行
+
+第三行
+
+第四行,文件的中部
+
+这是第五行
+
+六行
+
+第七行
+
+这是第八行
+
+[root@ sed]# 
+
+
+
+
+[root@ sed]# cat pandh
+2,$G
+h
+$!d
+[root@ sed]# sed -f pandh example
+这是第八行
+第七行
+六行
+这是第五行
+第四行,文件的中部
+第三行
+这是第二行
+这是第一行
+[root@ sed]#
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将Pattern和Hold区域配合使用，反序输出文件example中的内容&lt;/p&gt;
+
+&lt;p&gt;$表示最后一行&lt;/p&gt;
+
+&lt;p&gt;2,$表示2到最后一行&lt;/p&gt;
+
+&lt;p&gt;!表示取反&lt;/p&gt;
+
+&lt;p&gt;$!表示除最后一行的其他行&lt;/p&gt;
+
+&lt;p&gt;具体的步骤:&lt;/p&gt;
+
+&lt;p&gt;1).sed将输入的第一行(&quot;这是第一行&quot;)内容读入到Pattern中&lt;/p&gt;
+
+&lt;p&gt;指令2,$G不会处理第一行，G只会处理2到最后一行&lt;/p&gt;
+
+&lt;p&gt;h指令将第一行从Pattern复制到Hold&lt;/p&gt;
+
+&lt;p&gt;$!d删除了Pattern中的内容，所以Pattern中没有任何内容，所以sed什么也不显示&lt;/p&gt;
+
+&lt;p&gt;2).sed将输入中的第二行(&quot;这是第二行&quot;)读入到Pattern&lt;/p&gt;
+
+&lt;p&gt;指令2,$G会将Hold中的内容(&quot;这是第一行&quot;),添加到Pattern，此时Pattern中的内容是&quot;这是第二行\n这是第一行&quot;&lt;/p&gt;
+
+&lt;p&gt;指令h将Pattern中的内容复制到Hold&lt;/p&gt;
+
+&lt;p&gt;$!d删除了输入中的第二行内容，所以sed什么也不显示。&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-sed/&quot;&gt;sed总结&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[shell中获取变量的长度]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-length-var/" />
+  <id>http://localhost:4000/2014/05/03/shell-length-var</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;pre&gt;&lt;code&gt;var=&quot;1234567890&quot;
+length=${#var}
+echo length
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;打印数组长度&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo ${#array[*]}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;打印数组中所有的值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo ${array[*]}
+或是
+echo ${array[@]}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;列出数组索引&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo ${!array[*]}
+或是
+echo ${!array[@]}
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-length-var/&quot;&gt;shell中获取变量的长度&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[function]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-function/" />
+  <id>http://localhost:4000/2014/05/03/shell-function</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;函数定义的格式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[function] 函数名
 {
-    int old_option = fcntl(fd, F_GETFL);
-    int new_option = old_option | O_NONBLOCK;
-    fcntl(fd, F_SETFL, new_option);
-    return old_option;
+    命令表
+    [return]
 }
 
-/*将fd的EPOLLIN事件加入到epoll中，参数enable_et用来控制是否使用ET模式*/
-void addfd(int epollfd, int fd, bool enable_et)
-{
-    epoll_event event;
-    event.data.fd   = fd;
-    event.events    = EPOLLIN;
-    if(enable_et) {
-        event.events |= EPOLLET;
-    }
 
-    epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &amp;amp;event);
-    setnonblocking(fd);
+[root@ 06]# function showuser()
+&amp;gt; {
+&amp;gt; date
+&amp;gt; echo -n &quot;当前登录用户名: &quot;
+&amp;gt; echo &quot;$LOGNAME&quot;
+&amp;gt; }
+[root@ 06]# showuser
+Mon May  5 10:57:48 CST 2014
+当前登录用户名: root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过命令行定义的函数在用户推出登录时将自动删除，如果希望函数总是可用，而不是每次登录都要重新输入，可以将函数的定义放在~/.bash_profile中，使用sourc或.使之立即生效。&lt;/p&gt;
+
+&lt;p&gt;第一次写函数的时候出现了一下的错误&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;syntax error: unexpected end of file
+
+
+
+#!/bin/bash
+
+function showmessage ()
+{
+    echo &quot;当前登录用户名: &quot;
+    echo &quot;$LOGNAME &quot;
 }
-/*  LT模式的处理方式 */
-void lt(epoll_event* events, int number, int epollfd, int listenfd) 
+
+echo &quot;----第一次调用----&quot;
+
+showmessage ()
+
+#echo &quot;----第二次调用----&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;错误就在于调用showmessage函数的时候加上了()，去掉括号就OK，真坑我！！！&lt;/p&gt;
+
+&lt;h4&gt;函数参数的传递&lt;/h4&gt;
+
+&lt;p&gt;函数可以通过位置变量来传递参数，位置变量是依据出现在函数名之后的参数的位置来确定的变量&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;函数名 参数1 参数2 参数3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当函数被执行时，会将位置变量与调用该函数的命令行中的每一个参数关联，依次是&lt;/p&gt;
+
+&lt;p&gt;$1:对应第1个位置参数&lt;/p&gt;
+
+&lt;p&gt;$2:对应第2个位置参数&lt;/p&gt;
+
+&lt;p&gt;$3:对应第3个位置参数&lt;/p&gt;
+
+&lt;p&gt;......&lt;/p&gt;
+
+&lt;p&gt;$9:对应第9个位置参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+function show ()
 {
-    char buf[BUFFER_SIZE];
-    for (int i = 0; i &amp;lt; number; i++) {
-        int     sockfd = events[i].data.fd;
-        if(sockfd == listenfd) {
-            struct sockaddr_in client_address;  
-            socklen_t client_addrlength = sizeof(client_address);
-            int connfd = accept(listenfd, (struct sockaddr*)&amp;amp;client_address, &amp;amp;client_addrlength);
-            addfd(epollfd, connfd, false);
+    echo $a $b $c $d
+    echo $1 $2 $3 $4
+}
 
-        } else if (events[i].events &amp;amp; EPOLLIN) {
-            /*只要socket中还有数据没有读取这段代码就触发*/
-            printf(&quot;event trigger once\n&quot;);     
-            memset(buf, 0, BUFFER_SIZE);
-            int ret = recv(sockfd, buf, BUFFER_SIZE - 1 , 0);
-            if ( ret &amp;lt;= 0) {
-                close(sockfd);
-                continue;
-            }
-            printf(&quot;get %d bytes of content: %s\n&quot;, ret, buf);
+a=111
+b=222
+c=333
+d=444
 
-        } else {
-            printf(&quot;something else happened\n&quot;);    
+echo &quot;Function Begin&quot;
+show a b c d 
+echo &quot;-------------&quot;
+show $a $b $c $d 
 
+echo &quot;Function End&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;程序输出:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ 06]# ./func.sh
+Function Begin
+111 222 333 444
+a b c d     #这里$1 $2对应的是变量的名字，因为传入的并不是值$a
+-------------
+111 222 333 444
+111 222 333 444
+Function End
+
+
+
+#!/bin/bash
+#filename:
+
+function verify()
+{
+    if [ &quot;$1&quot; = &quot;root&quot; -a &quot;$2&quot; = &quot;1234&quot; ] ; then
+        echo &quot;pass&quot;
+    else
+        echo &quot;Reject!wrong account!&quot;
+    fi
+}
+
+verify $1 $2    #将命令行中的参数传入
+
+
+
+
+#!/bin/bash
+
+function stringcat ()
+{
+    echo $1$2
+}
+
+echo &quot;Enter first string&quot;
+read STR1
+echo &quot;Enter second string&quot;
+read STR2
+echo &quot;stringcat...&quot;
+stringcat STR1 STR2 #输出的是参数的名字
+stringcat $STR1 $STR2
+
+
+执行结果
+
+[root@ 06]# ./strcat.sh
+Enter first string
+123
+Enter second string
+456
+stringcat...
+STR1STR2
+123456
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;函数的载入:&lt;/h4&gt;
+
+&lt;p&gt;函数的定义可以放在~/.bash_profile文件中，或者是直接放入命令行中，也可以放在脚本文件中，可以通过source命令来把他们装入内存，以供当前脚本使用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+#filename:square.sh
+
+function square
+{
+    local temp
+    let temp=$1*$1
+    echo &quot;$1平方是: $temp&quot;
+}
+
+function cube
+{
+    local temp
+    let temp=$1*$1*$1
+    echo &quot;$1立方是: $temp&quot;
+}
+
+
+
+#!/bin/bash
+#filename:source.sh
+
+source square.sh    #使用source命令将函数装入内存中去。
+echo &quot;请输入一个整数:&quot;
+read N
+i=1
+while [ $i -le $N ] 
+do
+    square $i
+    i=$(($i+1))
+done
+echo &quot;-----------&quot;
+i=1
+while [ $i -le $N ]
+do
+    cube $i
+    i=$(($i+1))
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;函数的删除&lt;/h4&gt;
+
+&lt;p&gt;使用命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;unset -f 函数名
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以从shell内存中删除函数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;declare -f
+查看内存中存在的shell函数
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;函数的作用域&lt;/h4&gt;
+
+&lt;p&gt;全局变量可以在主程序中定义，可以在函数中定义&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function testvar ()
+{
+    a=&quot;这是在函数中定义的全局变量&quot;
+    echo &quot;在函数中输出: $a&quot;
+}
+
+testvar
+echo &quot;在主程序中输出: $a&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在函数中使用关键字local声明的变量为函数的局部变量，局部变量的作用域限制在本函数内&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function testvar()
+{
+    local a=&quot;这是在函数中定义的局部变量&quot;
+    echo &quot;在函数中输出: $a&quot;
+}
+
+testvar
+echo &quot;在主程序中输出: $a&quot;    # 执行时，$a为空
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;函数嵌套&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;function first 
+{
+    function second 
+    {
+        function third 
+        {
+            echo &quot;这是第三层&quot;
         }
+
+        echo &quot;这是第二层&quot;
+        third
     }
+    echo &quot;这是第一层&quot;
+    second
 }
 
-/*  ET模式的处理方式 */
-void et (struct epoll_event* events, int number, int epollfd, int listenfd)
+echo &quot;开始函数调用&quot;
+first
+
+
+
+[root@ 06]# ./func.sh
+开始函数调用
+这是第一层
+这是第二层
+这是第三层
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;函数的递归&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+#filename:
+
+function reverse ()
 {
-
-        char buf[BUFFER_SIZE];
-        for (int i = 0; i &amp;lt; number; i++) {
-                int     sockfd = events[i].data.fd;
-                if(sockfd == listenfd) {
-                        struct sockaddr_in client_address;    
-                        socklen_t client_addrlength = sizeof(client_address);
-                        int connfd = accept(listenfd, (struct sockaddr*)&amp;amp;client_address, &amp;amp;client_addrlength);
-                        addfd(epollfd, connfd, false);
-
-                } else if (events[i].events &amp;amp; EPOLLIN) {
-            printf(&quot;event trigger once\n&quot;);
-
-            while (1) {
-            memset(buf, 0, BUFFER_SIZE);
-            int ret = recv(sockfd, buf, BUFFER_SIZE - 1 , 0);
-                        if ( ret &amp;lt; 0) {
-                        /*errno为EAGAIN才表示读取完毕*/
-                if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
-                    printf(&quot;read later\n&quot;);
-                    break;
-                }
-                close(sockfd);
-                break;
-
-                        } else if (ret == 0) {
-                close(sockfd);
-
-            } else {
-                printf(&quot;get %d bytes of content: %s\n&quot;, ret, buf);  
-            }
-
-            }
-
-        } else {
-            printf(&quot;something else happened \n&quot;);       
-        }
-    }
+    local t
+    echo $1
+    if [ $1 -gt 0 ] ; then 
+        t=$(($1-1))
+        reverse $t
+    fi
 }
+&lt;/code&gt;&lt;/pre&gt;
 
-int main(int argc, char** argv)
-{
+&lt;p&gt;reverse 10&lt;/p&gt;
 
-    if (argc &amp;lt;= 2) {     
-        printf(&quot;usage: %s ip_address port_number\n&quot;, basename(argv[0]));    
-        return 1;     
-    }    
-    const char* ip = argv[1];     
-    int port = atoi(argv[2]);     
-    int ret = 0;    
-    struct sockaddr_in  address;    
-    bzero(&amp;amp;address, sizeof(address));     
-    address.sin_family = AF_INET;     
-    address.sin_port = htons(port);     
-    inet_pton(AF_INET, ip, &amp;amp;address.sin_addr);     
-    int listenfd = socket(AF_INET, SOCK_STREAM, 0);     
-    assert(listenfd &amp;gt;= 0);
-    /*  地址重用    */
-    int on = 1;
-    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;amp;on, sizeof(on)) == -1) {
-       perror(&quot;setsockopt error&quot;);
-    }
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-function/&quot;&gt;function&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
 
-    ret = bind(listenfd, (struct sockaddr*)&amp;amp;address, sizeof(address));
-    assert(ret != -1);
 
-    ret = listen(listenfd, 5);
-    assert(ret != -1);
+<entry>
+  <title type="html"><![CDATA[break与continue]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-break/" />
+  <id>http://localhost:4000/2014/05/03/shell-break</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;break可以结束while、for、until、select等结构的执行，就是从结构中跳出。退出循环后将转到done语句后继续执行。&lt;/p&gt;
 
-    epoll_event events[MAX_EVENT_NUMBER];
-    int epollfd = epoll_create(5);
-    assert(-1 != epollfd);
-//  addfd(epollfd, listenfd, true);    /*   开启et模式  */
-    addfd(epollfd, listenfd, false);   /*   不开启et模式   */
+&lt;p&gt;对于多层嵌套，还可以在break关键字后面加上数字，指明要跳出结构的层数，单独使用break的话就是从当前结构中跳出，相当于&quot;break 1&quot;&lt;/p&gt;
 
-    while(1) {
-    int ret = epoll_wait(epollfd, events, MAX_EVENT_NUMBER, -1);
-    if (ret &amp;lt; 0) {
-        printf(&quot;epoll failure&quot;);
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+i=1
+while [ $i -lt 10 ]
+do
+    echo &quot;------外层第$i次循环--------&quot;
+    j=1
+    while [ $j -lt 10 ] 
+    do
+        if [ $j -eq 5 ] ;then
+            break 2
+        fi
+
+        echo &quot;-----内层第$j次循环-------&quot;
+        j=$(($j+1))
+    done
+
+    if [ $i -eq 2 ] ; then
         break;
-    }
-//  et(events, ret, epollfd, listenfd);    /*et模式的处理方式*/
-    lt(events, ret, epollfd, listenfd);    /*lt模式的处理方式*/
+    fi
+    i=$(($i+1))
+done
 
-    }
-    close(listenfd);
 
-    return 0;
+
+[root@ 05]# ./while.sh
+------外层第1次循环--------
+-----内层第1次循环-------
+-----内层第2次循环-------
+-----内层第3次循环-------
+-----内层第4次循环-------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;continue与break一样，后面可以接收一个数字来决定跳出几层循环&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+#filename:
+
+i=1
+while [ $i -lt 10 ] 
+do
+    echo &quot;------进入第一层循环--------&quot;
+    while [ $i -lt 10 ]
+    do
+        echo &quot;------进入第二层循环--------&quot;
+
+
+        while [ $i -lt 10 ]
+        do
+            i=10
+            echo &quot;------进入第三层循环--------&quot;
+
+            echo &quot;-----------------------------&quot;
+
+            echo &quot;------离开第三层循环--------&quot;
+
+
+        done
+        echo &quot;------离开第二层循环--------&quot;
+
+    done
+    echo &quot;------离开第一层循环--------&quot;
+
+done
+
+
+
+[root@ 05]# ./continue.sh
+------进入第一层循环--------
+------进入第二层循环--------
+------进入第三层循环--------
+-----------------------------
+------离开第三层循环--------
+------离开第二层循环--------
+------离开第一层循环--------
+
+如果在第三层使用continue 2,则可以跳出两侧循环，直接跳到第一层循环的尾部继续执行。
+
+
+
+#!/bin/bash
+#filename:
+
+i=1
+while [ $i -lt 10 ] 
+do
+    echo &quot;------进入第一层循环--------&quot;
+    while [ $i -lt 10 ]
+    do
+        echo &quot;------进入第二层循环--------&quot;
+
+
+        while [ $i -lt 10 ]
+        do
+            i=10
+            echo &quot;------进入第三层循环--------&quot;
+
+            echo &quot;-----------------------------&quot;
+            continue 2
+
+            echo &quot;------离开第三层循环--------&quot;
+
+
+        done
+        echo &quot;------离开第二层循环--------&quot;
+
+    done
+    echo &quot;------离开第一层循环--------&quot;
+
+done
+
+
+
+[root@ 05]# ./continue.sh
+------进入第一层循环--------
+------进入第二层循环--------
+------进入第三层循环--------
+-----------------------------
+------离开第一层循环--------
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-break/&quot;&gt;break与continue&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[awk]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-awk/" />
+  <id>http://localhost:4000/2014/05/03/shell-awk</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;awk的格式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    pattern {action}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;awk将来自文件的第一行与每个模式相比较，如果匹配莫个模式的话，awk就会执行相关{atcion}操作，如果没有匹配的行，awk不进行操作。
+当awk完成了对输入中第一行文本比较之后，将对输入中的下一行重复上面的过程，直到读完所有的输入。&lt;/p&gt;
+
+&lt;p&gt;如果多个模型匹配了同一行，awk将按照模式出现的顺序分贝执行每个模式想对应的动作。&lt;/p&gt;
+
+&lt;p&gt;如果编写的awk程序比较长，可以将程序放在一个文件中，然后在命令行上引用该文。或者在程序头加入#!/bin/awk -f，同时为文件执行执行权限。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#filename:head_student
+BEGIN { 
+    print &quot;         学生基本信息统计    &quot;
+    print &quot;-----------------------------------------------------&quot;
+}
+{print}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    awk -f head_student example 
+
+#!/bin/awk -f
+BEGIN {
+    print &quot;         学生基本信息统计    &quot;
+    print &quot;-----------------------------------------------------&quot;
+}
+{print}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    chmod +x head_student
+    ./head_student example
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;awk中使用//用正则表达式来做模式
+awk中使用~来测试某个字段或变量是否匹配正则表达式
+运算符用于测试不匹配&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ awk]# cat example
+Lichang                 1989    male    math 99
+Wanglijiang             1987    female  chinses               78
+Zhangsansan             1977    male    computer      88
+Langxuebing             1978    male    math 86
+Lisikai                 1989    male    math 99
+Xiaohai                 1990    female  chinese               78
+Zhangsan                1977    male    computer      85
+Lsi                     1988    male    math 99
+Wanglijiang             1989    female  chinese               78
+Xuxing                  1979    male    economic      81
+Xuxin                   1985    female  english               90
+Wangxuebing             1970    male    math 94
+
+#匹配含有math关键字的行
+[root@ awk]# awk &#39;/math/&#39; example
+Lichang                 1989    male    math            99
+Langxuebing             1978    male    math            86
+Lisikai                 1989    male    math            99
+Lsi                     1988    male    math            99
+Wangxuebing             1970    male    math            94
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;逗号，是范围运算符，如果在awk程序上使用逗号将两个模式分开，则awk选取的第一行是匹配第一个模式的文本行，选取的最后一行是匹配第二个模式的文本行，如果没有匹配第二个模式的文本行，awk将选取直到输入数据末尾的所有文本行。&lt;/p&gt;
+
+&lt;p&gt;当awk找到第二个模式之后，将再次查找第一个模式以再次开始这个过程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ awk]# awk -F : &#39;/1978/,/1988/&#39; example
+Langxuebing             1978    male    math            86
+Lisikai                 1989    male    math            99
+Xiaohai                 1990    female  chinese         78
+Zhangsan                1977    male    computer        85
+Lsi                     1988    male    math            99
+显示以1978开始，到1988结束的范围内的数据
+
+
+
+[root@ awk]# awk -F : &#39;/Zhangsan/,/Zhangsansan/&#39; example
+Zhangsansan             1977    male    computer        88
+Zhangsan                1977    male    computer        85
+Lsi                     1988    male    math            99
+Wanglijiang             1989    female  chinese         78
+Xuxing                  1979    male    economic        81
+Xuxin                   1985    female  english         90
+Wangxuebing             1970    male    math            94
+
+Zhangsan匹配了Zhangsansan，第二个没有匹配，所以就全部打印
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;awk中的BEGIN和END分贝是在awk开始处理之前和处理之后要执行的命令。
+在处理所有输入之前awk执行BEGIN模式相关的操作，处理完所有输入之后awk执行END模式相关的操作。&lt;/p&gt;
+
+&lt;p&gt;awk的重定向&lt;/p&gt;
+
+&lt;p&gt;将print命令的输出&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;发送到文件&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;追加到文件&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;| 利用管道发送给另一个程序的输入&lt;/p&gt;
+
+&lt;p&gt;将1988年的输入到文件year1988中去&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#filename:redirectout
+/1988/ {print &amp;gt; &quot;year1988&quot;}
+/1978/ {print &amp;gt; &quot;year1978&quot;}
+END {
+    print &quot;输出完毕&quot;
+}
+
+执行
+awk -f redirectout example
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;字段分隔符&lt;/h4&gt;
+
+&lt;p&gt;默认输出字段分隔符为空格，保存在变量OFS中，用print语句打印时，指定的多个字段之间用逗号分隔，而逗号表示的就是OFS的值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# $2与$3之间有逗号，所以输出的第二个第三个字段之间有空格
+#-F[:]指定字段的分界为:
+awk -F[:] &#39;/Tom/{print $2,$3}&#39; student 
+10501163 93-09-11
+10501166 88-01-11 
+
+#由于没有使用逗号分隔，所有字符都挤在一起了
+awk -F[:] &#39;/Tom/{print $2,$3}&#39; student
+1050116393-09-11
+1050116688-01-11
+
+
+#FS设置字段使用的分隔符，默认为空格或Tab，可以使用-F[]命令修改
+[rot@ awk]# awk &#39;BEGIN{FS=&quot;:&quot;;OFS=&quot;\t&quot;} {print $1,$2,$3}&#39;  student
+ Tom Helleen     10501163        93-09-11
+ Tom Changle     10501166        88-01-11
+ Billy Black     10501165        93-02-11
+ Jojn Hellen     10501162        93-04-13
+ Sam Possion     10501171        98-11-19
+ Mary Degens     10501169        95-05-22
+ Suli Vanlen     10501170        90-09-17
+
+
+
+
+
+[root@ awk]# cat student  
+Tom Helleen:10501163:93-09-11:Harbin
+Tom Changle:10501166:88-01-11:Harbin
+Billy Black:10501165:93-02-11:Harbin
+Jojn Hellen:10501162:93-04-13:Harbin
+Sam Possion:10501171:98-11-19:Harbin
+Mary Degens:10501169:95-05-22:Harbin
+Suli Vanlen:10501170:90-09-17:Harbin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果分隔符由多个字段组成，可以将其放在方括号内指定，力图下例中的将:和-均视为字段分隔符，用于提取所有学生的出生年月(也就是以:或是-为分隔符的第三个字段)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ awk]# awk -F[:] &#39;{print $3}&#39; student
+93-09-11
+88-01-11
+93-02-11
+93-04-13
+98-11-19
+95-05-22
+90-09-17
+
+
+[root@ awk]# awk -F[:-] &#39;{print $3}&#39; student
+93
+88
+93
+93
+98
+95
+90
+
+# $0表示当前文本行
+#length函数返回当前文本行中的字符个数，包括字符分隔符
+#下面将当前文本行中字符个数打印到最前面，后面跟文本行
+
+[root@ awk]# awk &#39;{print length, $0}&#39; example
+28 Lichang                      1989    male    math            99
+36 Wanglijiang          1987    female  chinses         78
+35 Zhangsansan          1977    male    computer        88
+31 Langxuebing          1978    male    math            86
+28 Lisikai                      1989    male    math            99
+33 Xiaohai                      1990    female  chinese         78
+32 Zhangsan             1977    male    computer        85
+24 Lsi                  1988    male    math            99
+36 Wanglijiang          1989    female  chinese         78
+31 Xuxing                       1979    male    economic        81
+31 Xuxin                        1985    female  english         90
+31 Wangxuebing          1970    male    math            94
+
+
+
+[root@ awk]# awk &#39;{print length}&#39; example
+28
+36
+35
+31
+28
+33
+32
+24
+36
+31
+31
+31
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;用于关联数组的for&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;awk &#39;{name[$1]=$5}
+END {
+    for (elem in name) {
+        print elem &quot;的成绩为:&quot; name[elem]   
+    }
+}&#39; example
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;for (elem in name)可以循环从name中取得每个元素的索引(下标)付给elem&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+if [ $# != 2 ] ; then
+    echo &quot;Usage: ./array number file&quot;
+    exit 1
+fi
+
+#$1表示的是字段1的内容，也就是名字那个字段
+#$&#39;$1&#39;表示用位置参数1的值来指定索引字段,就是我们在命令行输入的第一个参数的值所代表的字段
+awk -F[:]&amp;lt;$2 &#39;{arr[$&#39;$1&#39;]=$1}
+END {
+    for (elem in arr) {
+        print elem &quot;&amp;lt;-------&amp;gt;&quot; arr[elem]
+    }
+}
+&#39;
+
+
+
+$1就是2 , $&#39;$1&#39;就是以第二个字段的值作为索引
+[root@ awk]# ./array.sh 2 student                        10501162&amp;lt;-------&amp;gt;Jojn Hellen
+10501163&amp;lt;-------&amp;gt;Tom Helleen
+10501165&amp;lt;-------&amp;gt;Billy Black
+10501166&amp;lt;-------&amp;gt;Tom Changle
+10501169&amp;lt;-------&amp;gt;Mary Degens
+10501170&amp;lt;-------&amp;gt;Suli Vanlen
+10501171&amp;lt;-------&amp;gt;Sam Possion
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;统计每个城市出现的次数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+FS=&quot;:&quot;
+count[$4]++
+
+}
+
+END {
+    for (item in count) {
+        if (count[item] &amp;gt;= 0) {
+            printf &quot;城市%-20s出现了%3s次\n&quot;, item, count[item]
+        }
+    }
+}
+
+[root@ awk]# awk -f printf.awk student 
+城市                    出现了  1次
+城市Harbin              出现了  3次
+城市Tianjin             出现了  1次
+城市Peking              出现了  2次
+
+第一行是空，并且Harbin出现了4次才对，错误原因还不清楚
+
+
+#改成这样的即可正确输出
+BEGIN {
+    FS=&quot;:&quot;
+}
+
+{
+    count[$4]++
+
+}
+
+END {
+    for (item in count) {
+        if (count[item] &amp;gt; 0) {
+            printf &quot;城市%-20s出现了%3s次\n&quot;, item, count[item]
+        }
+    }
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;总的来说不难，主要的工作流程同select类似:&lt;br/&gt;
-1. 建立socket&lt;br/&gt;
-2. bind绑定地址&lt;br/&gt;
-3. listen监听&lt;br/&gt;
-4. epoll_create建立epoll&lt;br/&gt;
-5. epoll_ctl将监听的sockfd加入epoll&lt;br/&gt;
-6. epoll_wait等待
-* 当发生事件的是sockfd时候，表示有连接上来了，将连接上的描述符加入epoll中&lt;br/&gt;
-* 如果发生事件的不是sockfd时候，表示是客户端发送了数据，读取数据即可&lt;/p&gt;
+&lt;h4&gt;关系运算符&lt;/h4&gt;
 
-&lt;h4&gt;需要注意的是:&lt;/h4&gt;
+&lt;p&gt;&amp;lt;   小于&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;=  小于等于&lt;/p&gt;
+
+&lt;p&gt;==  等于&lt;/p&gt;
+
+&lt;p&gt;!=  不等&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#查找student中所有城市为Harbin的记录
+#由于是字符串间比较，所以Harbin加了双引号
+#如果是数字就不用加
+#感觉和awk -F[:] /Harbin/ student相同
+[root@ awk]# awk -F[:] &#39;$4==&quot;Harbin&quot;&#39; student 
+Tom Helleen:10501163:93-09-11:Harbin
+Billy Black:10501165:93-02-11:Harbin
+Jojn Hellen:10501162:93-04-13:Harbin
+Sam Possion:10501171:98-11-19:Harbin
+
+
+#找出编号大于10501165的记录
+[root@ awk]# awk -F[:] &#39;$2 &amp;gt; 10501165&#39; student 
+Tom Changle:10501166:88-01-11:Peking
+Sam Possion:10501171:98-11-19:Harbin
+Mary Degens:10501169:95-05-22:Peking
+Suli Vanlen:10501170:90-09-17:Tianjin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;算术运算符&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;对于ET模式一定要一次性读完所有的数据，errno为EAGAIN才表示读取完毕&lt;/li&gt;
-&lt;li&gt;对于LT模式只要正常读取即可，因为假如有数据没有读取完毕，那么epoll_wait会一直通知你让你去读&lt;/li&gt;
+&lt;li&gt;&lt;ul&gt;
+&lt;li&gt;&lt;ul&gt;
+&lt;li&gt;/ % ++(前自增) --(前自减) += -= ×= /= %=&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;errno参考文章&lt;a href=&quot;http://ucshell.com/archives/1339&quot;&gt;《errno中EAGAIN的含义》&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;流程控制语句&lt;/h4&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/27/use-epoll/&quot;&gt;epoll编程实例&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 27, 2014.&lt;/p&gt;</content>
+&lt;p&gt;if...else&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if ( condtion ) {
+    commands
+
+
+} else {
+    commands    
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;while循环结构&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;while ( condtion ) {
+    commands
+}
+
+# while.awk
+#求2-9的平方
+BEGIN {
+    n=2
+    while (n &amp;lt;= 9) {
+        print &quot;2^&quot; n &quot;=&quot;,2**n
+        n++
+    }
+}
+
+awk -f while.awk
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;for循环结构&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;for ( init; condtion; increment ) {
+    commands
+}
+
+#关联数组的for循环
+for ( elem in array ) {
+    commands
+}
+
+#for.awk
+BEGIN {
+    for (n=2; n&amp;lt;9; n++) {
+        print &quot;2^&quot;n&quot;=&quot;2**n
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;getline&lt;/h4&gt;
+
+&lt;p&gt;getline用于读取一行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#getline.awk
+BEGIN {
+    getline kk
+    print kk
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;注意:getline只能读取一行，如果文件中多余一行，也仅仅处理第一行数据。&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ awk]# cat testdata
+1111111111111
+2222222222222
+3333333333333
+4444444444444
+5555555555555
+[root@ awk]# awk -f getline.awk &amp;lt; testdata
+1111111111111
+
+
+#使用while循环读取到LINE中
+BEGIN {
+    i=1
+    while ( getline  LINE ) {
+        print i&quot;:&quot;LINE  
+        i++
+    }
+}
+
+
+[root@ awk]# awk -f getline.awk &amp;lt; testdata
+2:1111111111111
+3:2222222222222
+4:3333333333333
+5:4444444444444
+6:5555555555555
+
+
+#使用NR来替代i表示行号，更简洁
+BEGIN {
+    while ( getline  LINE ) {
+        print NR&quot;:&quot;LINE 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;协进程&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;协进程是指与另一个进程并行运行的进程，协进程方式直接与某个后台进程进行信息交换。
+
+awk通过在程序名称前面添加双向管道运算符|&amp;amp;来标识在后台运行的协进程，协进程在每完成一行的数据处理之后会清空输出，而不是缓存了多行数据后在统一输出。
+
+awk中使用双向管道建立协进程的链接，可以从协进程中读取或写入数据。
+#getline.awk    
+{
+print $0 |&amp;amp; &quot;./toupper.sh&quot;  
+#将当前行通过双向管道|&amp;amp;输出到当前目录下的程序toupper.sh中进行处理，其中$0表示当前记录行，程序名两边必须带双引号
+&quot;./toupper.sh&quot; |&amp;amp; getline LINE
+#将来自./toupper.sh的标准输出通过双向管道|&amp;amp;传递给getline命令，getline将获得的数据保存到变量LINE中
+print LINE
+}
+
+[root@ awk]# awk -f getline.awk &amp;lt;example
+LICHANG 1989 MALE MATH 99
+WANGLIJIANG 1987 FEMALE CHINSES 78
+ZHANGSANSAN 1977 MALE COMPUTER 88
+LANGXUEBING 1978 MALE MATH 86
+LISIKAI 1989 MALE MATH 99
+XIAOHAI 1990 FEMALE CHINESE 78
+ZHANGSAN 1977 MALE COMPUTER 85
+LSI 1988 MALE MATH 99
+WANGLIJIANG 1989 FEMALE CHINESE 78
+XUXING 1979 MALE ECONOMIC 81
+XUXIN 1985 FEMALE ENGLISH 90
+WANGXUEBING 1970 MALE MATH 94
+[root@ awk]# vim getline.awk
+[root@ awk]# awk -f getline.awk &amp;lt;example
+LICHANG 1989 MALE MATH 99
+WANGLIJIANG 1987 FEMALE CHINSES 78
+ZHANGSANSAN 1977 MALE COMPUTER 88
+LANGXUEBING 1978 MALE MATH 86
+LISIKAI 1989 MALE MATH 99
+XIAOHAI 1990 FEMALE CHINESE 78
+ZHANGSAN 1977 MALE COMPUTER 85
+LSI 1988 MALE MATH 99
+WANGLIJIANG 1989 FEMALE CHINESE 78
+XUXING 1979 MALE ECONOMIC 81
+XUXIN 1985 FEMALE ENGLISH 90
+WANGXUEBING 1970 MALE MATH 94
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-awk/&quot;&gt;awk&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
-  <title type="html"><![CDATA[errno中EAGAIN含义]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/27/errno-EAGIN/" />
-  <id>http://localhost:4000/2014/02/27/errno-EAGIN</id>
-  <published>2014-02-27T13:39:59Z</published>
-  <updated>2014-02-27T13:39:59Z</updated>
+  <title type="html"><![CDATA[Fedora20安装mysql]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/04/29/mysql-install/" />
+  <id>http://localhost:4000/2014/04/29/mysql-install</id>
+  <published>2014-04-29T00:00:00+00:00</published>
+  <updated>2014-04-29T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
     <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;从字面上来看，是提示再试一次。这个错误经常出现在当应用程序进行一些非阻塞(non-blocking)操作(对文件或socket)的时候。&lt;/p&gt;
+  <content type="html">&lt;p&gt;yum install mysql mysql-server mysql-devel&lt;/p&gt;
 
-&lt;p&gt;例如:&lt;/p&gt;
-
-&lt;p&gt;以O_NONBLOCK的标志打开文件socket，如果你连续read而没有数据可读。&lt;/p&gt;
-
-&lt;p&gt;此时程序不会阻塞起来等待数据准备就绪返回，read函数会返回一个错误EAGAIN，提示你的应用程序现在没有数据可读请稍后再试。&lt;/p&gt;
-
-&lt;p&gt;例如:&lt;/p&gt;
-
-&lt;p&gt;当一个系统调用(比如fork)因为没有足够的资源(比如虚拟内存)而执行失败，返回EAGAIN提示其再调用一次(也许下次就能成功)。&lt;/p&gt;
-
-&lt;p&gt;在linux进行非阻塞的socket接收数据时经常出现Resource temporarily unavailable，errno代码为11(EAGAIN)&lt;/p&gt;
-
-&lt;p&gt;这表明你在非阻塞模式下调用了阻塞操作，在该操作没有完成就返回这个错误，这个错误不会破坏socket的同步，不用管它，下次循环接着recv就可以。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;对非阻塞socket而言，EAGAIN不是一种错误&lt;/strong&gt;。在VxWorks和Windows上，EAGAIN的名字叫做&lt;strong&gt;EWOULDBLOCK&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;如果出现EINTR即errno为4(EINTR)，错误描述Interrupted system call(系统调用)，不必管他，操作也应该继续。&lt;/p&gt;
-
-&lt;p&gt;最后，如果recv的返回值为0，那表明连接已经断开，我们的接收操作也应该结束。&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/27/errno-EAGIN/&quot;&gt;errno中EAGAIN含义&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 27, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/04/29/mysql-install/&quot;&gt;Fedora20安装mysql&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on April 29, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
-  <title type="html"><![CDATA[Fedora19安装Monaco字体]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/26/fedora19-install-monaco/" />
-  <id>http://localhost:4000/2014/02/26/fedora19-install-monaco</id>
-  <published>2014-02-26T13:12:28Z</published>
-  <updated>2014-02-26T13:12:28Z</updated>
+  <title type="html"><![CDATA[tcp长连接]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/04/20/tcp-%E9%95%BF%E8%BF%9E%E6%8E%A5/" />
+  <id>http://localhost:4000/2014/04/20/tcp-长连接</id>
+  <published>2014-04-20T00:00:00+00:00</published>
+  <updated>2014-04-20T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
     <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;最近使用终端发现字体有一种说不出来的别扭，以前看到过一篇文章是推荐编程字体的！&lt;/p&gt;
+  <content type="html">&lt;h5&gt;TCP的短连接:&lt;/h5&gt;
 
-&lt;p&gt;找了一下，就是Monaco字体，原来是苹果系统专用的！&lt;/p&gt;
+&lt;p&gt;当client向server发起链接请求的时候，server收到请求，然后双方建立链接，client想server发送消息，server回应client，然后一次读写就完成了，这时候双方任何一个都可以发起close操作，不过一般是client先发起close操作，因为一般的sever不会回复完client后立即关闭链接。短连接一般只会在client/server间进行一次数据传输&lt;/p&gt;
 
-&lt;p&gt;字体下载:
-http://www.gringod.com/wp-upload/MONACO.TTF&lt;/p&gt;
+&lt;p&gt;短链接的优点:管理起来比较简单，存在的链接都是有用的链接，不需要额外的控制手段;&lt;/p&gt;
 
-&lt;p&gt;安装&lt;/p&gt;
+&lt;h5&gt;TCP长连接:&lt;/h5&gt;
 
-&lt;pre&gt;&lt;code&gt;cd /usr/share/fonts/
+&lt;p&gt;client向server发起连接，server接受client链接，双方建立链接，client与server完成一次读写后，他们之间的链接并不会主动关闭，后续的读希操作会继续使用这个链接。&lt;/p&gt;
 
-sudo cp $HOME/MONACO.TTF .      #拷贝MONACO字体到/usr/share/fonts/文件中
+&lt;p&gt;TCP长链接要求客户端数量不能太多，否则随着客户端数目的增多，server早晚会有抗不住的时候;
+TCP长链接一般使用在点对点聊天的情况下;&lt;/p&gt;
 
-sudo fc-cache -v -f .
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;TCP的长连接其实就是利用一个心跳包来保持连接&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/26/fedora19-install-monaco/&quot;&gt;Fedora19安装Monaco字体&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 26, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/04/20/tcp-%E9%95%BF%E8%BF%9E%E6%8E%A5/&quot;&gt;tcp长连接&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on April 20, 2014.&lt;/p&gt;</content>
 </entry>
 
 
 <entry>
-  <title type="html"><![CDATA[epoll模型]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/26/epoll/" />
-  <id>http://localhost:4000/2014/02/26/epoll</id>
-  <published>2014-02-26T12:01:34Z</published>
-  <updated>2014-02-26T12:01:34Z</updated>
+  <title type="html"><![CDATA[expected unqualified-id before ‘delete’]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/04/03/error-cpp/" />
+  <id>http://localhost:4000/2014/04/03/error-cpp</id>
+  <published>2014-04-03T00:00:00+00:00</published>
+  <updated>2014-04-03T00:00:00+00:00</updated>
   <author>
     <name>Neo</name>
     <uri>http://localhost:4000</uri>
     <email>ucshell.neo@gmail.com</email>
   </author>
-  <content type="html">&lt;p&gt;设想这样的一个场景:
-有100万用户同时与一个进程保持TCP连接，而每一时刻只有几十或是几百个TCP连接是活跃的(接收到TCP包)，也就是说在每一个时刻，进程只要处理这100万连接中的一小部分连接，那么如何才能高效的处理这种场景呢？&lt;/p&gt;
+  <content type="html">&lt;p&gt;今天写C++程序，编译的时候发现了一个以前从来没有见到过的错误&lt;/p&gt;
 
-&lt;p&gt;如果进程每次询问操作系统以便收集有事件发生的TCP连接，那么首先要将这100万个连接告诉操作系统，然后由操作系统找出其中有事件发生的几百个连接，但是这100万个连接中大部分都是没有事件发生的！因此每次收集有事件发生的TCP连接时，都要把这100万连接的套接字传递给操作系统，首先这是从用户态内存到内核态内存的大量复制，而操作系统去寻找这些连接上有没有未处理的事件，将会是巨大的资源浪费，但是之前的select和poll就是这样做的，所以他们最多只能处理几千个并发连接。&lt;/p&gt;
-
-&lt;p&gt;epoll并不是这样做的，他在linux内核申请了一个简易的文件系统，将原先的一个select或者poll分成了3部分:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;调用epoll_create建立一个epoll对象(在epoll文件系统中为这个句柄分配资源);&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;调用epoll_ctl向epoll对象添加这100万个连接的套接字;&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;调用epoll_wait收集发生事件的连接&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-
-&lt;p&gt;这样只需要在进程启动时建立一个epoll对象，并在需要的时候向他添加或删除连接就可以了
-所以在收集事件时候，epoll_wait的效率就非常高，因为epoll_wait并没有向操作系统传递这100万个连接，内核也不需要去遍历全部连接。&lt;/p&gt;
-
-&lt;p&gt;epoll模型的好处在于他不会随着被监控描述符数目的增长而导致效率急剧下降;
-select模型是采用便利扫描来判断每个描述符是否有事件发生，当监控的描述符的数目越多，自然耗时越大，而且由于受系统默认限制(依赖的__FD_SETSIZE宏被定义为1024)，select模型最多能同时监控1024个描述符。
-epoll没有以上的缺点，即同时监控的描述符的个数不受限制(其实是受进程可打开文件描述符个数限制，但是这个数字一般比较大，可以通过命令 &lt;code&gt;cat /proc/sys/fs/file-max&lt;/code&gt;查看);&lt;/p&gt;
-
-&lt;p&gt;epoll对事件的响应是触发式的，也就是无需对整个监控描述符列表做扫描，只需要对有事件发生的描述符做处理即可&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;使用epoll&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;int epoll_create(int size);
-
-int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
-
-int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
-
-int epoll_pwait(int epfd, struct epoll_event *events, int maxevents, int timeout,
-         const sigset_t *sigmask);
+&lt;pre&gt;&lt;code&gt;expected unqualified-id before ‘delete’
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h5&gt;epoll_create:&lt;/h5&gt;
+&lt;p&gt;搞了半天才搞明白了，原来函数的括号写错了，将delete写到了函数的外面&lt;/p&gt;
 
-&lt;p&gt;epoll_create会返回一个句柄，之后epoll的使用都将使用这个句柄来标识。&lt;/p&gt;
-
-&lt;p&gt;参数size是告诉epoll所要处理的大致事件数目。&lt;/p&gt;
-
-&lt;h5&gt;注意:&lt;/h5&gt;
-
-&lt;p&gt;size仅仅是告诉内核这个epoll对象会处理事件的大致数目，而不是能够处理的事件的最大个数，Since Linux 2.6.8, the size argument is ignored, but must begreater than zero;&lt;/p&gt;
-
-&lt;h5&gt;epoll_ctl:&lt;/h5&gt;
-
-&lt;p&gt;epoll_ctl向epoll对象中添加、修改或者删除感兴趣的事件;&lt;/p&gt;
-
-&lt;p&gt;成功则返回，0失败返回-1，此时需要根据errno错误码来判断错误类型&lt;/p&gt;
-
-&lt;p&gt;参数epfd是epoll_create返回的句柄;&lt;/p&gt;
-
-&lt;p&gt;op取值如下:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;EPOLL_CTL_ADD    添加新事件到epoll    
-EPOLL_CTL_MOD    修改epoll中的事件
-EPOLL_CTL_DEL    删除epoll中的事件
+&lt;pre&gt;&lt;code&gt;Your delete is outside a function body.
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;fd是带检测的连接套接字&lt;/p&gt;
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/04/03/error-cpp/&quot;&gt;expected unqualified-id before ‘delete’&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on April 03, 2014.&lt;/p&gt;</content>
+</entry>
 
-&lt;p&gt;event参数是告诉epoll对什么样的事件感兴趣&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;struct epoll_event{
-    __uint32_t events;
-    epoll_data_t data;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;events的取值如下:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;EPOLLIN        表示对应的连接上有数据可以读出(TCP连接的远端主动关闭连接，也相当于可读，因为需要处理发送来的FIN包)
-
-EPOLLOUT       表示对应的连接上可以写入数据发送(主动向上游服务器发起非阻塞的TCP连接，连接建立成功的事件相当于可写事件)
-
-EPOLLRDHUP     表示TCP连接的远端关闭或是半关闭连接
-
-EPOLLPRI       表示对应的连接上有紧急数据需要读取
-
-EPOLLERR       表示对应的连接上发生错误
-
-EPOLLHUP       表示对应的连接被挂起
-
-EPOLLLET       表示将出发方式设置为边缘触发(ET),系统默认为水平触发(LT)
-
-EPOLLONESHOT   表示对这个事件只处理一次，下次需要处理时需重新加入epoll
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;data成员结构如下:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;typedef union epoll_data{
-    void*        ptr;
-    int          fd;
-    uint32_t     u32;
-    uint64_t     u64;
-}epoll_data_t;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;epoll_wait:&lt;/p&gt;
-
-&lt;p&gt;收集在epoll监控的事件中已经发生的事情，如果epoll中没有任何一个事件发生，则最多等待timeout毫秒后返回。&lt;/p&gt;
-
-&lt;p&gt;epoll_wait的返回值表示当前发生的事件个数;&lt;/p&gt;
+<entry>
+  <title type="html"><![CDATA[死锁]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/03/20/%E6%AD%BB%E9%94%81/" />
+  <id>http://localhost:4000/2014/03/20/死锁</id>
+  <published>2014-03-20T00:00:00+00:00</published>
+  <updated>2014-03-20T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;死锁产生的原因:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;如果返回为0则表示本次调用中没有事情发生(等待超时仍然没有事情发生);&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;如果返回-1.则表示出现错误,需要检查errno错误码判断错误类型&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;系统资源的竞争&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;进程推进顺序非法&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;epfd是epoll的描述符&lt;/p&gt;
+&lt;h4&gt;系统资源的竞争&lt;/h4&gt;
 
-&lt;p&gt;events是分配好的epoll_event结构体数组，epoll将会把发生的事件复制到events数组中(&lt;strong&gt;events不可以是空指针&lt;/strong&gt;，内核仅仅负责将数据复制到events数组中，不会帮助我们在用户态中分配内存，这样的效率很高)。&lt;/p&gt;
+&lt;p&gt;通常系统中拥有不可剥夺的资源，其数量不足以满足多个进程运行的需要，是的进程在运行过程中，会因为资源争夺而陷入僵局，例如打印机。
+只有对不可剥夺资源的竞争才会产生死锁，对可剥夺资源的竞争是不会产生死锁的。&lt;/p&gt;
 
-&lt;p&gt;maxevents表示本次可以返回的最大事件数目，通常与预先分配的enents数组的大小是相等的;但是不能超过epoll_create的参数size，同时也必须大于0;&lt;/p&gt;
+&lt;h4&gt;进程推进顺序非法&lt;/h4&gt;
 
-&lt;p&gt;timeout表示在没有检测到事件发生时最多等待的时间(单位毫秒)，如果为0,则表示epoll_wait在没有检测到事件发生时会立刻发挥，不会等待(有则获取，没有也不会阻塞等待)，取值-1则表示无限等待&lt;/p&gt;
+&lt;p&gt;进程在运行过程中，请求和资源释放顺序不当。例如:并发进程中P1、P2分别保持了资源R1、R2，而进程P1申请资源R2，进程P2申请资源R1，两者都会因为所需要的资源被占用而造成阻塞；&lt;/p&gt;
 
-&lt;p&gt;epoll_wait与epoll_pwait的区别是epoll_pwait可以通过最后一个参数设置阻塞过程中的信号屏蔽字&lt;/p&gt;
+&lt;p&gt;信号量使用不当也会造成死锁，进程间彼此相互等待对方发来的消息，结果也会使得进程间无法继续向前推进。例如:进程A等待进程B发的消息，进程B又在等待进程A发的消息，可以看出进程A和进程B不是为竞争同一资源，而是在等待对方的资源导致死锁。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;ready = epoll_pwait(epfd, &amp;amp;events, maxevents, timeout, &amp;amp;sigmask);
+&lt;h3&gt;死锁产生的必要条件&lt;/h3&gt;
 
-等价于以下调用
+&lt;p&gt;死锁的产生必须同时满足一下四个条件，其中任意一个条件不成立，死锁就不会发生:&lt;/p&gt;
 
-sigset_t origmask;
-sigprocmask(SIG_SETMASK, &amp;amp;sigmask, &amp;amp;origmask);
-ready = epoll_wait(epfd, &amp;amp;events, maxevents, timeout);
-sigprocmask(SIG_SETMASK, &amp;amp;origmask, NULL);
-&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;1.互斥条件:&lt;/h4&gt;
 
-&lt;p&gt;注意:不再使用epoll时，必须使用close来关闭句柄&lt;/p&gt;
+&lt;p&gt;进程要求对所分配的资源进行排他性控制，即在某一时间段内某个资源仅为一个进程占用，如果此时其他进程请求该资源，则请求进程只能等待。&lt;/p&gt;
+
+&lt;h4&gt;2.不可剥夺条件(不可抢占)&lt;/h4&gt;
+
+&lt;p&gt;进程所获得的资源在未使用完毕之前不能被其他进程强行夺走，即只能由获得该资源的进程自己来释放(只能主动释放)&lt;/p&gt;
+
+&lt;h4&gt;3.请求和保持条件(占有和等待)&lt;/h4&gt;
+
+&lt;p&gt;进程已经保持了至少一个资源，但又提出了新的资源请求，而该资源已经被其他进程占用，此时请求进程被阻塞，但对自己已经获得的资源保持不放&lt;/p&gt;
+
+&lt;h4&gt;4.循环等待条件(环路等待)&lt;/h4&gt;
+
+&lt;p&gt;存在一种进程资源的循环等待链，链中每个进程已经获得的资源同时被链中下一个进程所等待;&lt;/p&gt;
+
+&lt;h3&gt;死锁的处理&lt;/h3&gt;
+
+&lt;p&gt;为使系统不发生死锁，必须设法破坏产生死锁的四个必要条件之一，或者允许死锁产生，但是当死锁发生时候能够检测出死锁，并有能力实现恢复&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;鸵鸟算法&lt;/li&gt;
+&lt;li&gt;预防死锁&lt;/li&gt;
+&lt;li&gt;死锁避免&lt;/li&gt;
+&lt;li&gt;死锁检测与解除&lt;/li&gt;
+&lt;/ul&gt;
+
 
 &lt;hr /&gt;
 
-&lt;p&gt;epoll有两种工作模式:&lt;strong&gt;LT(level-triggered)模式和ET(edge-triggered)模式&lt;/strong&gt;&lt;/p&gt;
+&lt;h4&gt;鸵鸟算法:&lt;/h4&gt;
 
-&lt;p&gt;默认情况下epoll采用LT模式，同时支持阻塞(block I/O)和非阻塞(no-block I/O)套接字&lt;/p&gt;
+&lt;p&gt;最简单的解决方法:将头埋进社会自里，假装没有问题发生，意思就是忽略该问题；&lt;/p&gt;
 
-&lt;p&gt;ET模式的效率比LT的更高一些(高速模式)，但是只支持非阻塞套接字(no-block I/O);&lt;/p&gt;
+&lt;hr /&gt;
 
-&lt;p&gt;epoll_event中的events参数EPOLLET表示将一个事件改为ET模式;&lt;/p&gt;
+&lt;h4&gt;1.预防死锁&lt;/h4&gt;
 
-&lt;h5&gt;ET与LT模式的区别在于:&lt;/h5&gt;
+&lt;p&gt;设置某些限制条件，破坏产生死锁的四个必要条件中的一个或几个，以防止发生死锁&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;当一个新的事件到来时，ET模式下当然可以从epoll_wait调用中获得这个事件，但是如果这次没有把这个事件对应的套接字缓冲区处理完，在这个套接字没有新的事件再次到来的时，ET模式下是没有办法再次从epoll_wait调用中获取这个事件的;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;LT模式刚好相反，只要一个事件对应的套接字缓冲区还有数据，就总能从epoll_wait中获得这个事件;因此LT模式下开发epoll应用要简单一些，而ET模式下事件发生时，如果没有彻底将缓冲区数据处理完，则会导致缓冲区中的用户请求得不到响应&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;LT模式下，当描述符从未就绪变为就绪时，则内核会持续通知，知道这件事处理完成;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;ET模式下，当描述符从未就绪变为就绪时，则内核通过epoll告诉进程该描述符有事情发生，之后就算进程一直不对这个就绪状态的事件进行任何操作，内核也不会再发送更多的通知(除非，该I/O又有新的事件发生)，也就是说内核仅在I/O描述符状态发生变化的那个突变边缘对进程进行一次通知&lt;/li&gt;
-&lt;/ol&gt;
+&lt;h5&gt;1.破坏互斥条件:&lt;/h5&gt;
 
+&lt;p&gt;如果资源不被一个进程所独占，那么死锁一定不会产生，当然，如果允许连个进程同时使用打印机会造成混乱，采用脱假打印技术可以允许若干个进程同时产生输出，该模型中唯一真正请求使用物理打印机的进程是打印机守护进程，由于守护进程据对不会请求别的资源，所以不会因为打印机产生死锁:&lt;/p&gt;
 
-&lt;p&gt;举个例子:&lt;/p&gt;
+&lt;p&gt;假设守护进程被设计成在所有输出进入脱假机之前就开始打印，如果一个输出进程在头一轮打印之后决定等待几个小时，打印机就会被空置。为了避免这种现象，一般讲守护进程设计成只有完整的输出文件就绪后才开始打印。
+例如，如果两个进程分别占用了可用的脱假机磁盘空间的一般用于输出，而任何一个也没有能够完成输出全部文件，这种情况下，每一个进程都完成了部分输出，但不是他们的全部输出，于是无法继续进行下去，没有一个进程能够完成，结果在磁盘上就出现了死锁。&lt;/p&gt;
 
-&lt;p&gt;假设在进程A和B之间通过pipe P进行通信，那么可能会有如下场景:&lt;/p&gt;
+&lt;p&gt;但有些资源根本不可能同时访问，比如打印机等临界资源根本不能互斥的使用，所以，破坏互斥条件的预算死锁的方法不太可行，而且在有的场合应该保护这种互斥性；&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;进程A将P的读端描述符rfd以ET的方式加入到自己epoll监控中，并调用epoll_wait函数阻塞;&lt;/li&gt;
-&lt;li&gt;进程B向P的写端写入2KB数据;&lt;/li&gt;
-&lt;li&gt;进程A的描述符rfd上触发可读事件，因此epoll_wait函数返回;&lt;/li&gt;
-&lt;li&gt;进程A从描述符上读取1KB的数据;&lt;/li&gt;
-&lt;li&gt;进程A调用epoll_wait函数;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;h5&gt;2.破坏不可剥夺条件(不可抢占):&lt;/h5&gt;
 
+&lt;p&gt;当一个已保持了某些不可剥夺资源的进程请求信的资源而得不到满足的时候，他必须释放已经保持的所有资源，待以后需要时在重新申请。这意味着，一个进程已占有的资源会被暂时释放，或者说是被剥夺了，从而破坏了不可剥夺条件&lt;/p&gt;
 
-&lt;p&gt;在第5步中，进程A调用epoll_wait函数后会阻塞而不会处罚可读事件，即便是我们知道当前pipe P中仍然有1KB的数据没有读取，假如此时进程B在等待进程A读完全部数据后给出的响应，而没有写入新的数据，那么将会导致ABBA的&quot;假死锁&quot;异常状态;
-假如进程B不管A是否已读完所有数据，进行第6步&lt;/p&gt;
+&lt;h5&gt;3.破坏请求和保持条件:(占有和等待)&lt;/h5&gt;
 
-&lt;p&gt;6.进程B往P的写端又写入2KB数据&lt;/p&gt;
+&lt;p&gt;采用预先静态分配方法，即进程在运行前一次申请完它所需要的所有资源，在他的资源未满足前不能将它投入运行，一旦投入运行后，这些资源就一直归它所有，也不再提出其他的资源申请，这样就可以保证系统不会发生死锁。&lt;/p&gt;
 
-&lt;p&gt;那么此时A进程的epoll_wait函数仍然会捕获rfd上的可读事件&lt;/p&gt;
+&lt;p&gt;这种运行方式实现简单，但是缺点是&lt;strong&gt;系统资源浪费严重&lt;/strong&gt;，其中有些资源可能仅在运行初期或是运行快结束时候才被使用，甚至根本用不到。而且还会导致饥饿现象，当由于个别资源被其他进程占用时候，将导致等待该资源的进程迟迟不能开始运行。&lt;/p&gt;
 
-&lt;p&gt;根据边缘触发方式的特性，epoll模型工作在ET模式时，必须使用非阻塞文件描述符，以避免由于一个文件描述符的阻塞读/写操作而导致需处理的其他多个文件描述符人物被&quot;饿死&quot;。&lt;/p&gt;
+&lt;p&gt;另一种方案是当一个进程请求资源时候，先暂时释放其当前占用的所有资源，然后尝试一次获得所需的全部资源；&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;使用ET模式时候，推荐步骤如下:&lt;/strong&gt;&lt;/p&gt;
+&lt;h5&gt;4.破坏循环等待条件(环路等待)&lt;/h5&gt;
 
-&lt;ol&gt;
-&lt;li&gt;基于非阻塞文件描述符:即将待加入到epoll模型里的描述符都设置为no-block&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;只有当read()或write()返回EAGIN或是read()或write()读到/写出的数据长度小于请求的数据长度&lt;/strong&gt;(对于面向流的文件，例如pipe、FIFO、流套接字)时才需要挂起等待下一个事件，否则可能会出现意想不到的逻辑异常&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;为了破坏循环等待条件，可是使用顺序资源分配法。首先给系统中的资源编号，规定每个进程必须按照编号递增顺序请求资源，同类资源一次申请完，也就是说只要进程提出申请分配资源Ri，则该进程在以后的资源申请中，只能申请编号大于Ri资源；这样就一定不会出现环。
+假设A编号已经获得了资源i，B编号已经获得了资源j，此时只有A申请资源j，B申请资源i的时才会出现死锁，如果i&gt;j，那么A就不允许请求j，如果i&amp;lt;j则B不允许请求i，因为这个编号小于B已有的资源编号。所以无论哪种情况都不会产生死锁。&lt;/p&gt;
 
+&lt;p&gt;这种方法的问题是，编号必须相对稳定，这就限制了新类型设备的增加;尽管在为资源编号时已考虑到了大多数作业实际使用这些资源的顺序，但是也经常发生作业使用资源的顺序与系统规定的顺序不同的情况，造成资源的浪费；&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/26/epoll/&quot;&gt;epoll模型&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 26, 2014.&lt;/p&gt;</content>
-</entry>
+&lt;h4&gt;死锁的预防方法总结:&lt;/h4&gt;
 
-
-<entry>
-  <title type="html"><![CDATA[Realplay cannot open the audio device]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/25/realplay-cannot-open-the-audio-device/" />
-  <id>http://localhost:4000/2014/02/25/realplay-cannot-open-the-audio-device</id>
-  <published>2014-02-25T15:33:54Z</published>
-  <updated>2014-02-25T15:33:54Z</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;p&gt;Realplay cannot open the audio device, Another application may be using it&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;yum install alsa-oss application
-
-vim /usr/share/applications/realplay.desktop
-
-change 
-&quot;Exec=realplay&quot; to &quot;Exec=aoss realplay&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/25/realplay-cannot-open-the-audio-device/&quot;&gt;Realplay cannot open the audio device&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 25, 2014.&lt;/p&gt;</content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[[Nginx学习]HTTP头的分析]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/02/25/Nginx-http-header/" />
-  <id>http://localhost:4000/2014/02/25/Nginx-http-header</id>
-  <published>2014-02-25T13:16:53Z</published>
-  <updated>2014-02-25T13:16:53Z</updated>
-  <author>
-    <name>Neo</name>
-    <uri>http://localhost:4000</uri>
-    <email>ucshell.neo@gmail.com</email>
-  </author>
-  <content type="html">&lt;pre&gt;&lt;code&gt;struct ngx_http_request_s {
-    ……
-    ngx_uint_t                        method;   
-    ngx_uint_t                        http_version;
-
-    ngx_str_t                         request_line;
-    ngx_str_t                         uri;
-    ngx_str_t                         args;
-    ngx_str_t                         exten;
-    ngx_str_t                         unparsed_uri;
-
-    ngx_str_t                         method_name;
-    ngx_str_t                         http_protocol;
-
-    u_char                           *uri_start;
-    u_char                           *uri_end;
-    u_char                           *uri_ext;
-    u_char                           *args_start;
-    u_char                           *request_start;
-    u_char                           *request_end;
-    u_char                           *method_end;
-    u_char                           *schema_start;
-    u_char                           *schema_end;
-
-    ……
-};
+&lt;pre&gt;&lt;code&gt;```
+-----------------------------------------
+条件      |   处理方式        |
+-----------------------------------------
+互斥:     |一切都使用脱假机技术 |
+-----------------------------------------
+占有和等待:    |在开始就请求全部资源 |
+-----------------------------------------
+不可抢占:   |抢占资源       |
+-----------------------------------------
+环路等待:   |对资源按序编号      |
+-----------------------------------------
+```
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;hr /&gt;
 
-&lt;h5&gt;方法名的获取:&lt;/h5&gt;
+&lt;h4&gt;2.避免死锁&lt;/h4&gt;
 
-&lt;p&gt;method是Nginx忽略大小写等情形解析出来的用户请求后得到的方法类型，取值范围如下:&lt;/p&gt;
+&lt;p&gt;在资源的动态分配过程中，用某种方法防止系统进入不安全的状态，从而避免死锁；&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;#define NGX_HTTP_UNKNOWN                   0x0001
-#define NGX_HTTP_GET                       0x0002
-#define NGX_HTTP_HEAD                      0x0004
-#define NGX_HTTP_POST                      0x0008
-#define NGX_HTTP_PUT                       0x0010
-#define NGX_HTTP_DELETE                    0x0020
-#define NGX_HTTP_MKCOL                     0x0040
-#define NGX_HTTP_COPY                      0x0080
-#define NGX_HTTP_MOVE                      0x0100
-#define NGX_HTTP_OPTIONS                   0x0200
-#define NGX_HTTP_PROPFIND                  0x0400
-#define NGX_HTTP_PROPPATCH                 0x0800
-#define NGX_HTTP_LOCK                      0x1000
-#define NGX_HTTP_UNLOCK                    0x2000
-#define NGX_HTTP_PATCH                     0x4000
-#define NGX_HTTP_TRACE                     0x8000
-&lt;/code&gt;&lt;/pre&gt;
+&lt;h5&gt;1.安全状态:&lt;/h5&gt;
 
-&lt;p&gt;如果要了解用户请求中的HTTP方法时，应该使用r-&gt;method与对应的宏进行比较，这样是最快的，如果使用method_name成员与字符串做比较，那么效率会差很多。&lt;/p&gt;
+&lt;p&gt;比如系统现在一共有10个资源，A有3个资源师空闲的，但最终需要9个资源实例，B拥有2个资源实例，但是最终需要4个资源实例，C拥有2个资源实例，还需要5个资源实例，系统共有10个资源实例，7个已经分配，还有3个资源是空闲的&lt;/p&gt;
 
-&lt;p&gt;还可以使用method_name取得请求中的方法名字符串，method_name是ngx_str_t类型的字符串，直接使用printf(&quot;%*s&quot;, r-&gt;method.len, r-&gt;method.data)即可;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\013.jpg&quot; alt=&quot;013&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;或者联合使用request_start与method_end取得方法名:&lt;/p&gt;
+&lt;p&gt;a状态时安全的，因为存在一个分配序列是的所有进程都能够完成，也就是说这个状态可以单独的运行B进程，直到他请求并获得另外两个资源实例，从而达到b状态.当B完成后，就到了C状态，然后调度程序可以运行C，到达d状态，到C完成后，达到e状态，现在A可以获得它需要的6个资源实例，并且完成，这样系统通过仔细调度，就能够避免死锁所以a状态时安全的&lt;/p&gt;
 
-&lt;p&gt;request_start指向用户请求的首地址，提示也是方法名的首地址;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\014.jpg&quot; alt=&quot;014&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;method_end指向方法名的最后一个字符，注意这个与其他xx_end指针不同。&lt;/p&gt;
+&lt;p&gt;现在假设出事状态如图所示这次A请求并获得了一个资源，达到b状态，此时调度程序可以运行B，直到B获取资源，进程B完成后进入d状态，此时进入困境了，只有4个资源实例，并且所有的进程都需要5个资源实例，任何分配资源实例的序列都无法保证工作的完成，所以从a到d状态的分配方案，从安全状态进入了不安全状态。从c状态出发运行进程A或C也不行，然后回过头来看，A的请求不应该通过；&lt;/p&gt;
 
-&lt;p&gt;使用方法是从request_start开始向后遍历，直到地址与method_end相同为止，这段内存存储这方法名&lt;/p&gt;
+&lt;h5&gt;注意：&lt;/h5&gt;
 
-&lt;h5&gt;注意:&lt;/h5&gt;
+&lt;p&gt;不安全状态并不是死锁，从b出发系统可以运行一段时间，甚至B进程可以执行完毕。而且在A请求其他资源实例前，A可能先释放一个资源实例，这样就可以然C完成从而避免死锁。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Nginx为了避免不必要的内存开销，许多需要用到的成员都不是重新分配内存后存储的，而是直接指向用户请求中的相应地址;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;安全状态与不安全状态的区别是:从安全状态出发，系统能保证所有进程都能完成，而从不安全状态出发，就没有这样的保证。&lt;/p&gt;
 
-&lt;p&gt;例如:&lt;/p&gt;
+&lt;h4&gt;银行家算法:&lt;/h4&gt;
 
-&lt;p&gt;method_name.data、request_start这两个指针实际指向的都是同一地址，而且因为他们只是简单的内存指针，而不是真正的字符串指针，所以，不能直接将这些u_char*指针当作字符串来使用。&lt;/p&gt;
+&lt;h5&gt;单个资源的银行家算法:&lt;/h5&gt;
 
-&lt;hr /&gt;
+&lt;p&gt;该模型基于一个小城镇的银行家，他向客户分别承诺了一定的贷款额度，算法要做的是判断对请求的满足是否会进入不安全状态，如果是，就拒绝请求，如果满足请求后系统仍然是安全的，就予以分配。&lt;/p&gt;
 
-&lt;p&gt;URI
-补充一点知识:什么是URI&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\015.jpg&quot; alt=&quot;015&quot; /&gt;
+客户们自己做自己的生意，但某些时刻需要贷款(请求资源)。在某一时刻，如图中b状态，此时这个状态时安全的，由于保留了两个单位，银行家能够拖延除C意外的其他请求，因为可以让C先来完成，然后释放C所占的4个资源单位，有了这四个单位的资源，银行家就可以给D或B分配所需要的贷款单位。&lt;/p&gt;
 
-&lt;p&gt;Web上可用的每种资源 -HTML文档、图像、视频片段、程序等 - 由一个通用资源标识符（Uniform Resource Identifier, 简称&quot;URI&quot;）进行定位。&lt;/p&gt;
+&lt;p&gt;假如向B提供了一个他所请求的贷款单位，如图状态B那么我们就有了c状态，但是这个状态时不安全的，如果忽然所有客户都请求最大的限额，而银行家无法满足其中任何一个的要求，那么就会产生死锁，不安全状态不一定会引起死锁，由于客户不一定需要其最大贷款额度，但是银行家不敢抱有这种侥幸心理。&lt;/p&gt;
 
-&lt;p&gt;ngx_str_t类型的uri成员指向用户请求&lt;/p&gt;
+&lt;p&gt;银行家算法对每一个请求进行检查，检查如果满足了这个请求是否会达到安全状态，如果是，那么久满足该请求；如果不是，就推迟对这一请求的满足，为了查看状态是否安全，银行家看他是否有足够的资源满足某一个客户，如果可以，那么这笔投资认为是能够收回的，并且接着检查最接近最大限额的一个客户，一次类推，如果所有的投资最终都被收回，那么该状态时安全的，最初的请求可以批准。&lt;/p&gt;
 
-&lt;p&gt;u_char*类型的uri_start和uri_end与request_start和method_end的用法相同，&lt;/p&gt;
+&lt;h5&gt;多个资源的银行家算法:&lt;/h5&gt;
 
-&lt;p&gt;唯一的不同在于method_end指向方法名的最后一个字符，而uri_end指向URI结束后的下一个地址，也就是最后一个字符的下一个字符地址，这是大部分哦u_char*类型指针对xxx_start和xxx_end变量的用法&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\016.jpg&quot; alt=&quot;016&quot; /&gt;
+图中的两个矩阵，左边的显示了5个进程分别已经分配了的资源，右边的矩阵显示了使各进程完成运行所需的各种资源数。
+和一个资源的情况一样，所以任意系统中每一步都可以计算出右边的矩阵。&lt;/p&gt;
 
-&lt;p&gt;ngx_str_t类型的exten成员指向用户请求的文件扩展名，例如在访问&quot;GET/a.txt HTTP/1.1&quot;时，exten的值为{len=3, data=&#39;txt&#39;}&lt;/p&gt;
+&lt;p&gt;图中最右边的三个向量分别表示现有资源E、已分配资源P和可用资源A；&lt;/p&gt;
 
-&lt;p&gt;当访问&quot;GET/a HTTP/1.1&quot;时，exten当值为空{len=0, data=NULL}&lt;/p&gt;
+&lt;p&gt;由E可知系统中共有6台磁带机，3台绘图仪，4台打印机和两台CD-ROM驱动器；&lt;/p&gt;
 
-&lt;p&gt;uri_ext指针指向当地址与extern.data相同&lt;/p&gt;
+&lt;p&gt;由P可知当前已分配5台磁带机，3台绘图仪，2台打印机和2台CD-ROM；&lt;/p&gt;
 
-&lt;p&gt;unparsed_uri表示没有进行URL解码的原始请求，例如，当uri为&quot;/a b&quot;时，unparsed_uri为&quot;/a%20b&quot;(空格字符做完编码后为%20)&lt;/p&gt;
+&lt;p&gt;可用资源为E-P；&lt;/p&gt;
 
-&lt;hr /&gt;
+&lt;p&gt;检查一个算法是否安全算法如下:&lt;/p&gt;
 
-&lt;p&gt;URL参数
-arg指向用户请求的URL参素
-args_start指向URL参数的起始地址，配合uri_end使用也可以获得URL参数&lt;/p&gt;
+&lt;h5&gt;1.找出右边矩阵中是否有一行，其没有被满足的资源数&lt;strong&gt;均&lt;/strong&gt;小于等于A，如果不存在这样的行，那么系统将会死锁，因为任何进程都无法运行结束(假定进程会一直占用资源直到他们结束为止)&lt;/h5&gt;
+
+&lt;h5&gt;2.假如找到这一行，那么可以假设他获得所需要的剩余资源并运行结束，将该进程标记为终止，并将其资源加到向量A上。&lt;/h5&gt;
+
+&lt;h5&gt;3.重复以上两步，或者直到所有的进程都标记为终止，则其初始状态时安全的；或者所有进程的资源需求都得不到满足，此时就是发生了死锁。&lt;/h5&gt;
+
+&lt;p&gt;如果在第一步中同时有若干进程均符合条件，那么不管挑选哪一个运行都没有关系，因为可用资源或者会增多(进程结束会释放资源)，或者保持不变&lt;/p&gt;
+
+&lt;p&gt;图中所示的状态时安全的，如果进程B现在再请求一台打印机，可以满足他的请求，因为所得的系统状态仍然是安全的(进程D可以结束，然后是A或E结束，剩下的进程相继结束)&lt;/p&gt;
+
+&lt;p&gt;假设进程B获得两台可用打印机中的一台之后，E师徒获得最后一台打印机，如果分配给E，可用资源向量A会减少到(1 0 0 0),这是会引起死锁，显然E的请求不能满足，必须延迟一段时间；&lt;/p&gt;
+
+&lt;p&gt;银行家算法虽然很有意义，但是缺乏实用价值，因为看很少有进程能够在运行前就知道其所需资源的最大值，而且进程数也不固定，往往在不断的变化，并且本来可用的资源有可能突然间变得不可用，实际中很少有系统使用银行家算法；&lt;/p&gt;
+
+&lt;p&gt;以上死锁预防和避免算法都是在进程分配资源时，施加限制条件或进行检测，若系统为进程分配资源时不采取任何措施，则应该提供死锁检测盒解除的手段&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;协议版本
-http_protocol指向用户请求中HTTP的起始地址。&lt;/p&gt;
+&lt;h3&gt;3.死锁的检测以及解除&lt;/h3&gt;
 
-&lt;p&gt;http_version是Nginx解析过的协议版本，取值范围如下:&lt;/p&gt;
+&lt;p&gt;无需任何限制措施，允许进程在运行中发生死锁，通过系统检测机制检测出死锁的发生，然后采取某种措施解除死锁。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;#define NGX_HTTP_VERSION_9                 9
-#define NGX_HTTP_VERSION_10                1000
-#define NGX_HTTP_VERSION_11                1001
-&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;1.资源分配图:&lt;/h4&gt;
 
-&lt;hr /&gt;
+&lt;p&gt;系统死锁，可利用资源分配图来描述，使用圆圈代表一个进程，用框代表一类资源，由于一种资源可能有几个，用框中的一个点代表一类资源中的一个资源，从进程到资源的有向边叫请求边，表示该进程申请一个单位的该类资源；从资源到进程的边叫分配边，表示该类资源已经有一个资源被分配给了该进程；&lt;/p&gt;
 
-&lt;p&gt;使用request_start和request_end可以获取原始用户的请求行&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\017.jpg&quot; alt=&quot;017&quot; /&gt;&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/02/25/Nginx-http-header/&quot;&gt;[Nginx学习]HTTP头的分析&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on February 25, 2014.&lt;/p&gt;</content>
+&lt;p&gt;进程P1已经分配两个R1资源，又请求一个R2资源；
+进程P2已经分得一个R1和R2资源，并又请求一个R1资源；&lt;/p&gt;
+
+&lt;h4&gt;2.死锁定理&lt;/h4&gt;
+
+&lt;p&gt;S为死锁的条件是当且仅当S状态的资源分配图是不可完全简化的，该条件为死锁定理;&lt;/p&gt;
+
+&lt;p&gt;可以使将资源分配图讲话的方法来检测系统状态S是否为死锁状态:&lt;/p&gt;
+
+&lt;h6&gt;1.在资源分配图中，找出既不阻塞又不是孤点的进程Pi(就是找出一条有向边与他相连，而且该有向边对应资源的申请数量小于等于系统现有空闲资源数量，若所有的连接该进程的边均满足以上条件，则这个进程能继续运行直到完成，然后释放他所占有的所有资源)。消去它所有请求边和分配边，使之成为孤立的点，例如下图a中，P1是满足这个条件的进程节点，将P1的所有边消去，得到b的情况&lt;/h6&gt;
+
+&lt;h5&gt;2.进程Pi所释放的资源，可以唤醒某些因等待这些资源而阻塞的进程，原来的阻塞进程可能变为非阻塞进程。&lt;/h5&gt;
+
+&lt;p&gt;根据1中的方法进行一系列简化后，若能消去图中所有的边，则称该图是可以完全简化的。&lt;/p&gt;
+
+&lt;p&gt;如图:
+a中P1是满足1条件的进程，它申请资源数为1，等于系统中空闲资源数1，所以讲P1的边消去，然后P2解除阻塞，此时P2申请的资源为1，小于空闲资源2，所以将P2的边也消去，消去了所有的边就说明该图是可以简化的！&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;\uploads\2014\03\018.jpg&quot; alt=&quot;018&quot; /&gt;&lt;/p&gt;
+
+&lt;h4&gt;3.死锁的解除:&lt;/h4&gt;
+
+&lt;p&gt;一旦检测到了死锁，就赢采取某些相应的措施，以解除死锁，解除死锁的方法有:&lt;/p&gt;
+
+&lt;h5&gt;1.资源剥夺法:&lt;/h5&gt;
+
+&lt;p&gt;挂起某些死锁进程，并抢占他的资源，将这些资源分配给其他死锁进程，但应防止被挂起的进程长时间得不到资源，而处于资源匮乏状态;&lt;/p&gt;
+
+&lt;h5&gt;2.撤销进程法:&lt;/h5&gt;
+
+&lt;p&gt;强制撤销部分、甚至全部死锁进程并剥夺这些进程的资源。撤销的原则可以按进程的优先级和撤销进程代价的高低进行&lt;/p&gt;
+
+&lt;h5&gt;3.进程回退法:&lt;/h5&gt;
+
+&lt;p&gt;让一(多)个进程会退到足以回避死锁的地步，进程回退时自愿释放资源而不是被剥夺，要求系统保持进程的历史信息，设置还原点；&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/03/20/%E6%AD%BB%E9%94%81/&quot;&gt;死锁&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on March 20, 2014.&lt;/p&gt;</content>
 </entry>
 
 </feed>

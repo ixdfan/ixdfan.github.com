@@ -137,6 +137,10 @@
 <p>awk中常用内建变量</p>
 
 <pre><code>==============================================================
+$0          当前记录
+
+$1-$n       当前记录中嗯的字段
+
 FILENAME    当前输入文件的名称
 
 FNR     当前输入文件的记录数目
@@ -152,6 +156,7 @@ OFS     输出字段分隔符
 ORS     输出记录分隔字符(默认为‘\n’)
 
 RS      输入记录分隔字符
+
 ==============================================================
 </code></pre>
 
@@ -379,11 +384,11 @@ BEGIN{
   <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
     
     </ul>
     <hr />

@@ -1,0 +1,559 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>有限状态机 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有限状态机">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/15/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/15/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>有限状态机</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>有限状态机是逻辑单元内部当一种高效编程方式;</p>
+
+<p>有的应用层协议头部包含数据包类型字段，每种类型可以映射为逻辑单元当一种执行状态，服务器可以根据他来编写相应当处理逻辑，代码如下:</p>
+
+<pre><code>STATE_MACHINE(Package _pack)
+{
+    Package _type = _pack.GetType();
+    switch (_type) {
+        case type_A:
+            process_package_A(_pack);
+            break;
+        case type_B:
+            process_package_B(_pack);
+            break;
+    }
+}
+</code></pre>
+
+<p>这是一种简单的有限状态机，只不过状态机的每个状态都是相互独立的，也就是状态之间没有任何关系;</p>
+
+<p>状态之间当转移是需要内部驱动的:</p>
+
+<pre><code>STATE_MACHINE()
+{
+
+    State cur_state = type_A;
+    while (cur_state != type_C) {
+        Package _pack = getNewPackage();
+
+        switch (cur_state) {
+            case type_A:
+                process_package_state_A(_pack);
+                cur_state = type_B;
+                break;
+            case type_B:
+                process_package_state_B(_pack);
+                cur_state = type_C;
+                break;
+        }
+    }
+}
+</code></pre>
+
+<p>该状态机有三种状态:type_A,type_B,type_C;</p>
+
+<p>其中type_A是状态机当开始状态，type_C是状态机的结束状态;</p>
+
+<p>状态机当当前状态记录在cur_state变量中;</p>
+
+<p>在一次循环过程中，状态机先通过getNewPackage方法获得一个新的数据包，然后根据cur_state的值来判断该如何处理该数据包;</p>
+
+<p>数据包处理完成后，状态机通过给cur_state变量传递目标状态值来实现状态转移;</p>
+
+<p>当状态机进入下一次循环时，他将执行新的状态对应当逻辑;</p>
+
+<h5>有限状态机的一个实例: HTTP请求的读取和分析</h5>
+
+<p>很多网络协议包括TCP协议和IP协议，都在头部中提供头部长度字段，程序根据该字段当值就可以知道是否接受到来一个完整的协议头部.但是HTTP协议并未提供这样的头部长度字段，并且其头部长度变化也很大，可以只有十几个字节，也可以有上百个字节。</p>
+
+<p>根据协议当规定，我们判断HTTP头部结束当依据是遇到一个空行，该空行仅包含一对回车换行(<CR><LF>);</p>
+
+<p>如果一次读操作没有读入HTTP请求的整个头部，也就是没有遇到空行，那么我们必须等待客户继续写数据并再次读入。因此我们每完成一次读操作就要分析新读入的数据中是否有空行。不过在寻找空行当过程中，我们同样可以完成对整个HTTP头部当分析（空行前面还有请求行和控制域)，用来提高解析HTTP请求当效率;</p>
+
+<p>代码如下:</p>
+
+<pre><code>#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;sys/epoll.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;pthread.h&gt;
+
+#define BUFFER_SIZE 4096 /* 读写缓冲区大小 */
+
+/* 主状态机当两种可能状态，分别表示:当前正在分析请求行，当前正在分析请求头部字段 */
+enum CHECK_STATE {CHECK_STATE_REQUESTLINE = 0, CHECK_STATE_HEADER};
+
+/* 从状态机当三种可能状态(即行当读取状态)，分别表示:读取到一个完整的行、行出错、行数据尚不完整 */
+enum LINE_STATE {LINE_OK = 0, LINE_BAD, LINE_OPEN};
+
+/* 服务器处理HTTP请求结果:
+* NO_REQUEST:表示请求不完整，需要继续读取客户数据
+* GET_REQUEST:表示获得了一个完整当客户请求
+* BAD_REQUEST:表示客户请求有语法错误 
+* FORBIDDEN_REQUEST:表示客户对资源没有足够的访问权限
+* INTERNAL_ERROR:表示服务器内部有错误
+* CLOSED_CONNECTION:表示客户端已经关闭链接
+*/
+enum HTTP_CODE {NO_REQUEST, GET_REQUEST, BAD_REQUEST, FORBIDDEN_REQUEST, INTERNAL_ERROR, CLOSED_CONNECTION};
+
+/* 简化表示，没有给客户端发送一个完整当HTTP应答报文，只是根据服务器当处理结果来发送成功或是失败信息 */    
+static const char* szret[] = {"I'm get a correct result\n", "something wrong\n"};
+
+/* 从状态机，用于解析出一样请求内容 */
+LINE_STATE parse_line(char* buffer, int&amp; checked_index, int&amp; read_index)
+{
+    /*
+     * checked_index指向buffer中当前正在分析当字节  
+     * read_index指向buffer中客户数据最后一个字节当下一个字节    
+     * buffer中0～checked_index字节都已经分析完毕
+     * checked_index～(read_index-1)字节由下面当程序来挨个分析
+     */
+
+    char temp;
+
+    for (; checked_index &lt; read_index; ++checked_index) {
+
+        /* 获取当前需要分析当字节 */ 
+        temp = buffer[checked_index]; 
+
+        /* 如果当前字节是'\r'，说明有可能读取到了一个完整当行 */
+        if (temp == '\r') {
+
+            /* 如果'\r'碰巧是读入当最后一个字符，那么这次分析没有读取到一个完整当行，
+                返回LINE_OPEN表示还需要继续读取客户数据才能进一步分析 */
+            if ((checked_index + 1) == read_index) {
+
+                return LINE_OPEN;
+
+            /* 如果下一个字符是'\n', 则说明我们成功读取到了一个完整当行 */
+            } else if (buffer[checked_index + 1] == '\n') {
+                buffer[checked_index++] = 0;
+                buffer[checked_index++] = 0;
+
+                return LINE_OK; 
+            }
+
+            /* 否则当话就是客户发送当HTTP请求存在错误 */
+            return LINE_BAD;
+
+            /* 如果当前字节是'\n',则也说明可能读取到一个完整的行 */
+        } else if (temp == '\n') {
+            /* 如果前一个字符是'\r' 并且至少当前检测的位置&gt;1才表示正确 */
+            if ((checked_index &gt; 1) &amp;&amp; buffer[checked_index - 1] == '\r') {
+                buffer[checked_index-1] = 0;
+                buffer[checked_index++] = 0;
+
+                return LINE_OK; 
+            }
+            return LINE_BAD;
+        }
+
+    }
+    /* 所有内容都分析完也没有遇到'\r'字符，返回LINE_OPEN，表示还需要继续读取数据才能进一步分析 */  
+    return LINE_BAD;
+}
+
+
+
+/* 分析请求行 */   
+HTTP_CODE parse_requestline(char* temp, CHECK_STATE&amp; checkstate) 
+{
+    char* url = strpbrk(temp, " \t");
+
+    /* 如果行中没有空白字符或是'\t'字符则HTTP请求必有问题 */
+    if ( !url ) {
+        return BAD_REQUEST;
+
+    }
+    *url++ = 0;
+
+    char* method = temp;
+    /* 仅支持GET方法 */
+    if (strcasecmp(method, "GET") == 0) {
+        printf("The request method is GET\n");
+
+    } else {
+        return BAD_REQUEST;
+    }
+
+    url += strspn(url, " \t");
+    char* version = strpbrk(url, " \t");
+    if (!version) {
+        return BAD_REQUEST;
+    }
+
+    *version++ = 0;
+    version += strspn(version, " \t");
+
+    /* 仅支持HTTP1.1 */  
+    if (strcasecmp(version, "HTTP/1.1") != 0) {
+        return BAD_REQUEST;
+
+    }
+    /* 检测URL是否合法 */ 
+    if (strncasecmp(url, "http://", 8) == 0) {
+        url += 7;
+        url = strchr(url, '/');
+    }
+
+    if (!url || url[0] != '/') {
+        return BAD_REQUEST;
+    }
+
+    printf("The request URL is : %s\n", url);
+
+    /* HTTP请求行处理完毕，状态转移到头部字段当分析 */
+    checkstate = CHECK_STATE_HEADER;
+    return NO_REQUEST;
+
+}
+
+
+/* 头部字段分析 */    
+HTTP_CODE parse_headers(char* temp)
+{
+    /* 遇到空行说明我们得到一个正确当HTTP请求 */
+    if (temp[0] == 0) {
+        return GET_REQUEST;
+
+    /* 处理HOST头部字段 */
+    } else if (strncasecmp(temp, "Host:", 5) == 0) {
+        temp += 5;
+        temp += strspn(temp, " \t");
+        printf("the request host is : %s\n", temp);
+
+    } else { /* 其他头部字段不做处理 */
+        printf("I can not handle this header\n");
+    }
+
+    return NO_REQUEST;
+}
+
+/* 分析HTTP请求当入口函数 */   
+HTTP_CODE parse_content(char* buffer, int&amp; checked_index, 
+            CHECK_STATE&amp; checkstate, int&amp; read_index, int&amp; start_line)
+{
+
+    LINE_STATE linestatus = LINE_OK;    /* 记录当前行当读取状态，初始化默认值为LINE_OK */
+    HTTP_CODE retcode = NO_REQUEST;     /* 记录当前HTTP请求当处理结果 */
+
+    /* 主状态机，用于从buffer中取出所有完整当行 */ 
+    while ((linestatus = parse_line(buffer, checked_index, read_index)) == LINE_OK) {
+
+        /* start_line是行在buffer中的起始位置 */
+        char* temp = buffer + start_line;  
+
+        /* 记录下一行起始位置 */
+        start_line = checked_index;
+
+        /* checkstate记录主状态机当前当状态 */   
+        switch (checkstate) {
+
+            /* 第一个状态，分析请求行 */
+            case CHECK_STATE_REQUESTLINE: 
+                retcode = parse_requestline(temp, checkstate);
+                if (BAD_REQUEST == retcode) {
+                    return BAD_REQUEST;
+                }
+                break;
+
+            /* 第二个状态，分析头部字段 */  
+            case CHECK_STATE_HEADER:
+                retcode = parse_headers(temp);  
+                if (retcode == BAD_REQUEST) {
+                    return BAD_REQUEST;
+
+                } else if (retcode == GET_REQUEST) {
+                    return GET_REQUEST;
+                }
+                break;
+
+            default:
+                return INTERNAL_ERROR;
+        }
+    }
+
+    /* 如果没有读取到一个完整当行，则表示还需要继续读取客户数据才能进一步分析 */ 
+    if (linestatus == LINE_OPEN) {
+        return NO_REQUEST;
+
+    } else {
+        return BAD_REQUEST;
+    }
+}
+
+
+
+int main(int argc, char** argv)
+{
+    const char* ip = "127.0.0.1";
+    int port = 80;
+
+    struct sockaddr_in address;
+    memset(&amp;address, 0, sizeof(address));   
+    address.sin_family = AF_INET;
+    address.sin_port = htons(port);
+    inet_pton(AF_INET, ip, &amp;address.sin_addr);
+
+    int listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    assert(-1 != listenfd);
+
+    int on = 1;
+    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on) ) &lt; 0) {
+        printf("setsockopt error\n");       
+    }
+
+    int ret = bind(listenfd, (struct sockaddr*)&amp;address, sizeof(address));
+    assert(ret != -1);
+
+    ret = listen(listenfd, 5);
+    assert(ret != -1);
+
+    struct sockaddr_in client_address;
+    memset(&amp;client_address, 0, sizeof(client_address));
+    socklen_t client_addrlength = sizeof(client_address);
+
+
+    int fd = accept(listenfd, (struct sockaddr*)&amp;client_address, &amp;client_addrlength);
+
+    if (fd &lt; 0) {
+        printf("errno is %s\n", strerror(errno));
+
+    } else {
+        char buffer[BUFFER_SIZE];
+        memset(buffer, 0, BUFFER_SIZE);
+
+        int data_read = 0;  
+        int read_index = 0; /* 当前已经读取了多少字节的客户数据    */
+        int checked_index = 0;  /* 当前已经分析完来多少字节当客户数据  */
+        int start_line = 0; /* 行在buffer中的起始位置       */
+
+        /* 设置主状态机当初始状态 */ 
+        CHECK_STATE checkstate = CHECK_STATE_REQUESTLINE;
+
+        while (1) {     /* 循环读取客户数据并分析之 */
+            data_read = recv(fd, buffer + read_index, BUFFER_SIZE - read_index, 0);
+            if (data_read == -1) {
+                printf("reading failing\n");
+                break;
+
+            } else if (0 == data_read) {
+                printf("remote client has closed the connection\n");
+                break;
+            }
+
+            read_index += data_read;
+            /* 分析目前已经获得的所有客户数据 */
+
+            HTTP_CODE result = parse_content(buffer, checked_index, checkstate, read_index, start_line);
+
+            /* 尚未得到一个完整的HTTP请求 */
+            if (NO_REQUEST == result) {
+                continue;
+
+            /* 得到一个完整当、正确当HTTP请求 */
+            } else if (GET_REQUEST == result) {
+                send(fd, szret[0], strlen(szret[0]), 0);
+                break;
+
+            /* 其他情况表示有错误发生 */
+            } else {
+                send(fd, szret[0], strlen(szret[0]), 0);
+                break;
+
+            }
+        }
+        close(fd);
+    }
+    close(listenfd);
+
+
+    return 0;
+}
+</code></pre>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>有限状态机</strong> was published on <time datetime="2014-03-15T00:00:00+00:00">March 15, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>统一事件源 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="统一事件源">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/01/22/signal-%E7%BB%9F%E4%B8%80%E4%BA%8B%E4%BB%B6%E6%BA%90/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/01/22/signal-%E7%BB%9F%E4%B8%80%E4%BA%8B%E4%BB%B6%E6%BA%90/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>统一事件源</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>信号是一种异步事件:信号处理函数和程序主循环是两条不同的执行线路，信号处理函数需要尽可能快的执行完毕，以确保该信号不会被屏蔽太久;</p>
+
+<h5>一种典型的解决方法:</h5>
+
+<p>把信号的主要处理逻辑放到程序主循环中，当信号处理函数被触发时，它只是简单的通知主循环接收信号，并将信号值传递给主循环，主循环根据接收到的信号值执行目标信号对应的逻辑代码。</p>
+
+<p>信号处理函数通常使用管道来将信号传递给主循环;</p>
+
+<p>信号处理函数向管道的写端写入信号值，主循环则从管道的读端读出该信号值，同时使用I/O复用系统调用来监听管道的读端文件描述符上的可读时间。这样以来，信号事件就能和其他I/O一样被处理，这就是统一事件源</p>
+
+<h5>主要流程:</h5>
+
+<ul>
+<li><p>建立socket</p></li>
+<li><p>建立管道socketpair</p></li>
+<li><p>将读管道加入epoll</p></li>
+<li><p>使用epoll_wait等待</p></li>
+<li><p>如果事件是管道上的，那么就处理信号</p></li>
+<li><p>如果事件是socket上的，则处理客户链接</p>
+
+<p>  #include &lt;sys/types.h>
+  #include &lt;sys/socket.h>
+  #include &lt;netinet/in.h>
+  #include &lt;assert.h>
+  #include &lt;sys/epoll.h>
+  #include &lt;arpa/inet.h>
+  #include &lt;fcntl.h>
+  #include &lt;unistd.h>
+  #include &lt;stdio.h>
+  #include &lt;errno.h>
+  #include &lt;string.h>
+  #include &lt;stdlib.h>
+  #include &lt;pthread.h>
+  #include &lt;signal.h></p>
+
+<p>  #define MAX_EVENT_NUMBER 1024
+  static int pipefd[2];</p>
+
+<p>  int setnonblocking(int fd)
+  {
+      int old_option = fcntl(fd, F_GETFL);
+      int new_option = old_option | O_NONBLOCK;
+      fcntl(fd, F_SETFL, new_option);
+      return old_option;
+  }</p>
+
+<p>  void addfd(int epollfd, int fd)
+  {
+      struct epoll_event event;
+      event.data.fd = fd;
+      event.events = EPOLLIN | EPOLLET;
+      epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &amp;event);
+      setnonblocking(fd);
+  }</p>
+
+<p>  void sig_handler(int sig)
+  {
+      /<em> 保留原来的errno，在函数最后恢复，保证函数的可重入性 </em>/
+      int save_errno = errno;
+      int msg = sig;
+      /<em> 将信号写入管道 </em>/
+      send(pipefd[1], (char*)msg, 1, 0);
+      errno = save_errno;
+  }</p>
+
+<p>  void addsig(int sig)
+  {
+      struct sigaction sa;
+      memset(&amp;sa, 0, sizeof(sa));
+      sa.sa_handler = sig_handler;
+      sa.sa_flags |= SA_RESTART;  /<em> 中断后重启  </em>/
+      sigfillset(&amp;sa.sa_mask);    /<em> 屏蔽所有信号 </em>/
+      int ret = sigaction(sig, &amp;sa, NULL);
+      assert(ret != -1);
+  }</p>
+
+<p>  int main(int argc, char<em>* argv)
+  {
+      const char</em> ip  = "127.0.0.1";
+      int port = 80;
+      int ret = 0;</p>
+
+<pre><code>  struct sockaddr_in address;
+  address.sin_family = AF_INET;
+  address.sin_port = htons(port);
+  inet_pton(AF_INET, ip, &amp;address.sin_addr);
+
+  int listenfd = socket(AF_INET, SOCK_STREAM, 0);
+  assert(listenfd != -1);
+
+  ret = bind(listenfd, (struct sockaddr*)&amp;address, sizeof(address));
+  if (ret &lt; 0) {
+      perror("error:");   
+      exit(-1);
+  }
+  ret = listen(listenfd, 5);
+  assert(ret != -1);
+
+  epoll_event events[MAX_EVENT_NUMBER];
+  int epollfd = epoll_create(5);
+  assert(epollfd != -1);
+  addfd(epollfd, listenfd);
+
+  /* 使用socketpair创建管道，注册pipefd[0]上的可读事件 */
+  ret = socketpair(AF_UNIX, SOCK_STREAM, 0, pipefd);
+  assert(ret != -1);
+  setnonblocking(pipefd[1]);
+  addfd(epollfd, pipefd[0]);
+
+  /* 设置一些信号处理函数 */
+  addsig(SIGHUP);
+  addsig(SIGCHLD);
+  addsig(SIGTERM);
+  addsig(SIGINT);
+
+  bool stop_server = false;
+
+  while (!stop_server) {
+      int number = epoll_wait(epollfd, events, MAX_EVENT_NUMBER, -1);
+      if ((number &lt; 0) &amp;&amp; (errno != EINTR)) {
+          printf("epoll failed\n");
+          break;
+      }
+
+      for (int i = 0; i &lt; number; i++) {
+          int sockfd = events[i].data.fd;
+
+          if (sockfd == listenfd) {
+              struct sockaddr_in client_address;
+              socklen_t client_addrlength = sizeof(client_address);
+              int connfd = accept(sockfd, (struct sockaddr*)&amp;client_address, &amp;client_addrlength);
+              addfd(epollfd, connfd);
+
+              /* 如果就绪文件描述符是pipefd[0]，则处理信号 */
+          } else if ((sockfd == pipefd[0]) &amp;&amp; (events[i].events &amp; EPOLLIN)) {
+
+              int sig;
+              char signals[1024];
+              memset(signals, 0, sizeof(signals));
+
+              ret = recv(pipefd[0], signals, sizeof(signals), 0);
+              if (ret == -1) {
+                  continue;
+
+              } else if (ret == 0) {
+                  continue;
+
+              } else {
+                  /* 
+                   * 因为每个信号值占用1个字节，所以按字节来逐个接收信号 
+                   * 用SIGTERM来说明如何安全的终止服务器主循环
+                  */
+                  for (int i = 0; i &lt; ret; i++) {
+                      switch (signals[i]) {
+
+                          case SIGCHLD:
+                          case SIGHUP:{
+                              continue;
+                          }
+
+                          case SIGTERM:
+                          case SIGINT:{
+                              stop_server = true;
+                          }
+                      }
+                  }
+              }
+          } else {
+
+          }
+
+      }   
+  }
+
+  printf("close fds\n");
+  close(listenfd);
+  close(pipefd[0]);
+  close(pipefd[1]);
+  return 0;
+</code></pre>
+
+<p>  }</p></li>
+</ul>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>统一事件源</strong> was published on <time datetime="2014-01-22T00:00:00+00:00">January 22, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

@@ -122,38 +122,41 @@
 
 <p>条件量是对互斥锁的补充，他允许线程阻塞并等待另一个线程发送的信号。当收到信号时，阻塞的线程就被唤醒并试图锁定与之相关的互斥锁。</p>
 
+<p>如果说互斥锁是用于同步线程对共享数据的访问的话，那么条件变量则是用于在线程之间同步共享数据的值;
+条件变量提供了一种线程间的通知机制，当某个共享数据达到某个值的时候，唤醒等待这个共享数据的线程;</p>
+
 <hr />
 
 <p>条件量模型：
-    1.定义条件量
-    2.初始化条件量
-    3.等待条件量
-    4.其他线程修改条件量
-    5.释放条件量</p>
+* 1.定义条件量
+* 2.初始化条件量 pthread_cond_init
+* 3.等待条件量 pthread_cond_wait
+* 4.其他线程修改条件量
+* 5.释放条件量 pthread_cond_destroy</p>
 
 <hr />
 
-<p>1.互斥量的初始化</p>
+<p>1.条件量的初始化</p>
 
 <pre><code>int pthread_cond_init(pthread_cond_t *restrict cond,const pthread_condattr_t *restrict attr);
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 </code></pre>
 
-<h5>注意：</h5>
+<h6>注意：</h6>
 
 <p>对于静态初始化的方式可以不用destroy函数。</p>
 
 <p>多线程不能同时初始化同一个条件变量，如果一个条件变量正在使用他不能被重新初始化。</p>
 
-<p>2.互斥量的销毁</p>
+<p>2.条件量的销毁</p>
 
 <pre><code>int pthread_cond_destroy(pthread_cond_t *cond);
 </code></pre>
 
-<hr />
-
 <ol>
-<li><p>int pthread_cond_wait(pthread_cond_t <em>restrict cond, pthread_mutex_t </em>restrict mutex);</p></li>
+<li><p>条件量的等待</p>
+
+<p> int pthread_cond_wait(pthread_cond_t <em>restrict cond, pthread_mutex_t </em>restrict mutex);</p></li>
 </ol>
 
 
@@ -164,8 +167,6 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 <p><strong>线程将阻塞直到条件量被信号唤醒，它在阻塞前自动释放互斥锁，在返回前在自动获得它。</strong></p>
 
 <p>如果有多个线程关于条件量阻塞，其退出阻塞状态的顺序将不确定。</p>
-
-<hr />
 
 <ol>
 <li><p>int pthread_cond_timedwait(pthread_cond_t  <em>restrict cond,
@@ -312,7 +313,7 @@ int main()
 
 <p>(b->writepos == b->readpos)含义：当读位置与写位置相同时，表示的也就是现在为空</p>
 
-<h1>(b->writepos+1) % BUFFER_SIZE == b->readpos)含义：当写位置处于读位置的后面一个位置时，表明此时已经写满了，需要被读取</h1>
+<p>(b->writepos+1) % BUFFER_SIZE == b->readpos)含义：当写位置处于读位置的后面一个位置时，表明此时已经写满了，需要被读取</p>
 
 <p>输出如下：</p>
 
@@ -372,11 +373,11 @@ Consumer:--&gt;9
   <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
     
     </ul>
     <hr />

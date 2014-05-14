@@ -1,0 +1,254 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>epoll与select和poll当区别 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="epoll">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="epoll与select和poll当区别">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/15/epoll-select-poll/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/15/epoll-select-poll/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>epoll与select和poll当区别</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>select、poll、epoll三组I/O复用函数都是通过某种结构体变量来告诉内核监听那些文件描述符上的哪些事件，并使用该结构体类型的参数来获取内核处理的结果。</p>
+
+<p>select的参数类型fd_set没有将文件描述符和事件绑定，他仅仅是一个文件描述符的集合，因此select需要提供3个这种类型的参数来分别传入和输出事件(可读、可写、异常);一方面使得select不能处理更多类型的事件，另一方面由于内核对fd_set集合的在线修改，应用程序下次调用select前不得不重置这3个fd_set集合;</p>
+
+<p>poll对参数类型pollfd则"聪明"了一点，他将文件描述符和事件都定义其中，任何事件都被统一处理。从而使得编程接口简洁了很多，并且内核每次修改的是poll反对结构体中revents成员，而events成员保持不变。因此下次嗲用poll时应用程序无需重置pollfd类型的事件集和参数。由于每次select和poll调用都返回整个用户注册的事件集合(其中包括就绪和未就绪的)，所以应用程序索引就绪文件描述符的时间复杂度为O(n);</p>
+
+<p>epoll则采用了与select和poll完全不同的方式来管理用户注册的事件，他在内核中维护一个事件表，bing提供一个独立的系统调用epoll_ctl来控制往其中添加、删除、修改事件。这样每次epoll_wait调用都直接从该内核事件表中取得用户注册的事件，而无需反复从用户空间读入这些事件;epoll_wait的events参数仅用来返回就绪的事件，这就使得应用程序索引就绪文件描述符的事件复杂度达到了O(1);</p>
+
+<p>poll和epoll_wait分别用nfds和maxevents参数指定最多监听多少个文件描述符和事件;
+这两个数值都达到了喜用允许打开的最大文件描述符数目(cat /proc/sys/fs/file-max);
+但是select允许监听的最大文件描述符数量是有限制的，虽然用户可以修改这个限制，但是这可能导致不可预期的后果;</p>
+
+<p>select和poll都只能工作在相对低效的LT模式，而epoll则可以工作在ET高速模式。并且epoll还支持EPOLLONESHOT事件，该事件能进一步减少可读、可写、异常等事件被触发的次数;</p>
+
+<p>从实现原理来说，select和poll才用的都是轮询的方式，即每次调用都要扫描整个注册文件描述符集合，并将其中就绪的文件描述符返回给用户程序，因此他们检测就绪事件的算法的事件复杂度为O(n)。epoll_wait则不同，他才用的是回调的方式，内核检测到就绪的文件描述符将触发回调函数，回调函数就将该文件描述符上对应的事件插入内核就绪事件队列。内核最后在适当的时机将就绪事件队列中的内容拷贝都用户空间。因此epoll_wait无需轮询整个文件描述符集合来检测那些事件已经就绪，其算法时间复杂度为O(1);</p>
+
+<p>但是，当活动链接比较多的时候epoll_wait的效率未必比select和poll高，因此此时回调函数被触发的过于频繁，所有epoll_wait适于链接数量多但是活动连接较少的情况</p>
+
+<p>select、poll和epoll的区别</p>
+
+<h5>1.select:</h5>
+
+<h5>事件集合:</h5>
+
+<p>用户通过三个参数分别传入感兴趣的可读、可写以及异常等事件，内核通过对这些参数的在线修改来反馈其中就绪事件，这使得用户每次调用select都要重置这三个参数</p>
+
+<h5>应用程序索引就绪文件描述符的事件复杂度: O(n)</h5>
+
+<h5>最大支持文件描述符数目:一般有最大值限制</h5>
+
+<h5>工作模式:LT</h5>
+
+<h5>内核实现和工作效率:</h5>
+
+<p>采用轮询方式来检测就绪事件算法时间复杂度为O(n)</p>
+
+<h5>2.poll:</h5>
+
+<h5>事件集合:</h5>
+
+<p>统一处理所有事件类型，因此只需要一个事件集参数，用户通过pollfd.events传入感兴趣的事件，内核通过修改poll.revents反馈其中就绪的事件;</p>
+
+<h5>应用程序索引就绪文件描述符的事件复杂度:O(n)</h5>
+
+<h5>最大支持文件描述符数目:cat /porc/sys/fs/file-max</h5>
+
+<h5>工作模式:LT</h5>
+
+<h5>内核实现和工作效率:</h5>
+
+<p>采用轮询方式来检测就绪事件算法时间复杂度为O(n)</p>
+
+<h5>epoll</h5>
+
+<h5>事件集合:</h5>
+
+<p>内核通过一个事件表直接管理用户感兴趣的所有事件，因此每次调用epoll_wait时，无需反复传入用户感兴趣的事件，epoll_wait系统调用的参数events仅仅用来反快就绪的事件;</p>
+
+<h5>应用程序索引就绪文件描述符的事件复杂度:O(1)</h5>
+
+<h5>最大支持文件描述符数目:cat /porc/sys/fs/file-max</h5>
+
+<h5>工作模式:ET</h5>
+
+<h5>内核实现和工作效率:</h5>
+
+<p>采用回调方式来检测就绪事件，算法时间复杂度为O(1)</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>epoll与select和poll当区别</strong> was published on <time datetime="2014-03-15T00:00:00+00:00">March 15, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

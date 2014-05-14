@@ -1,0 +1,356 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>EPOLLONESHOT事件 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="epoll">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EPOLLONESHOT事件">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/15/epoll-one-shot/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/15/epoll-one-shot/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>EPOLLONESHOT事件</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>在使用ET模式，一个socket上的某个事件可能被触发多次，在并发程序中就会引起一个问题;</p>
+
+<p>比如一个线程在读取完某个socket上的数据后开始处理这些数据，而在数据的处理过程中该socket上又有新数据可读(EPOLLIN再次被触发)，此时另外一个线程被唤醒来读取这些新的数据。于是就出现了两个线程操作同一个socket的局面。</p>
+
+<p>我们期望的是一个socket链接在任一时候都只被一个线程处理，这一点我们可以使用epoll的EPOLLONESHOT事件来处理</p>
+
+<p>对于注册了EPOLLONESHOT事件的文件描述符，操作系统最多触发其上注册的一个可读、可写或者异常事件，并且只触发一次;</p>
+
+<p>除非我们使用epoll_ctl函数重置该文件描述符上注册的EPOLLONESHOT事件;</p>
+
+<p>这样当一个线程在处理某个socket时，其他线程是不可能有机会操作该socket的;</p>
+
+<p>注册了EPOLLONESHOT事件的socket一旦被某个线程处理完毕，该线程就应该立即重置这个socket上的EPOLLONESHOT事件，以确保这个socket下一次可读时，其EPOLLIN事件能被触发，进而让其他工作线程偶机会继续处理这个socket</p>
+
+<pre><code>#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/epoll.h&gt;
+#include &lt;pthread.h&gt;
+
+#define MAX_EVENT_NUMER     1024
+#define BUFFER_SIZE         10
+
+struct fds{
+    int epollfd;
+    int sockfd;
+};
+
+int setnonblocking(int fd) 
+{
+    int old_option = fcntl(fd, F_GETFL);
+    int new_option = old_option | O_NONBLOCK;
+    fcntl(fd, F_SETFL, new_option);
+    return old_option;
+}
+
+
+void addfd(int epollfd, int fd, bool oneshot)
+{
+    epoll_event event;  
+    event.data.fd = fd;
+    event.events = EPOLLIN;// | EPOLLET;
+
+    if (oneshot) {
+        event.events |=  EPOLLONESHOT;
+
+    }
+    epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &amp;event);
+    setnonblocking(fd);
+}
+
+void reset_oneshot(int epollfd, int fd)
+{
+    epoll_event event;
+    event.data.fd = fd;
+    event.events = EPOLLIN | EPOLLET | EPOLLONESHOT;
+    epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &amp;event);
+}
+
+void* worker(void* arg) 
+{
+    int sockfd = ((fds*)arg)-&gt;sockfd;
+    int epollfd =((fds*)arg)-&gt;epollfd;
+    printf("start new thread to receive data on fd: %d\n", sockfd); 
+    char buf[BUFFER_SIZE];
+    memset(buf, 0, BUFFER_SIZE);
+
+    /*  要全部读取完毕才可以  */  
+    while (1) {
+        int ret = recv(sockfd, buf, BUFFER_SIZE - 1, 0);
+        if(0 == ret) {
+            close(sockfd);
+            printf("foreiner closed the connection\n");
+            break;
+        } else if (ret &lt; 0) {
+            if (errno == EAGAIN) {
+        /*  当读取完毕的时候要重新设置epollfd  */
+                reset_oneshot(epollfd, sockfd); 
+                printf("read later\n");
+                break;
+            }
+        } else {
+            printf("get connect:\n %s\n", buf);
+            sleep(5);
+        }
+    }
+    printf("end thread receiving data on fd: %d\n", sockfd);
+}
+
+
+int main(int argc, char** argv)
+{
+    const char*         ip  = "127.0.0.1";
+    int             port    = 80;
+    int             ret = 0;
+    struct sockaddr_in  address;
+    bzero(&amp;address, sizeof(address));
+
+    address.sin_family  = AF_INET;
+    address.sin_port    = htons(port);
+    inet_pton(AF_INET, ip, &amp;address.sin_addr);
+
+    int listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    assert(-1 != listenfd);
+
+    int on  = 1;
+    ret = setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on));
+    assert(-1 != ret);
+
+    ret = bind(listenfd, (struct sockaddr*)&amp;address, sizeof(address));
+    assert(-1 != ret);
+
+    ret = listen(listenfd, 5);      
+    assert(-1 != ret);
+
+    epoll_event events[MAX_EVENT_NUMER];
+    int epollfd = epoll_create(5);
+    assert(-1 != epollfd);
+
+    addfd(epollfd, listenfd, false);    
+
+
+    while (1) {
+        int ret = epoll_wait(epollfd, events, MAX_EVENT_NUMER, -1);
+        if (ret &lt; 0) {
+            printf("epoll_wait failure\n");
+            break;
+        }
+
+        for(int i =0; i &lt; ret; i++) {
+            int sockfd = events[i].data.fd;
+
+            if (sockfd == listenfd) {
+                struct sockaddr_in client_address;
+                socklen_t client_addrlength = sizeof(client_address);
+                int connfd = accept(listenfd, (struct sockaddr*)&amp;client_address, &amp;client_addrlength);   
+                addfd(epollfd, connfd, true);
+            } else if (events[i].events &amp; EPOLLIN) {
+                pthread_t thread;
+                fds fds_for_new_worker;     
+                fds_for_new_worker.epollfd = epollfd;
+                fds_for_new_worker.sockfd = sockfd;
+                pthread_create(&amp;thread, NULL, worker, &amp;fds_for_new_worker);
+
+            } else {
+                printf("something else happened\n");
+            }
+        }
+    }
+
+
+    close(listenfd);
+    close(epollfd);
+    return 0;
+
+
+}
+</code></pre>
+
+<p>从工作线程函数worker来看，如果一个工作线程处理完某个socket上的一次请求(我们用休眠5s来模拟这个过程)之后，有接收到该socket上心的客户请求，则该线程将继续为这个socket服务。并且因为该socket上注册了EPOLLONESHOT事件，其他线程没有机会接触这个socket，如果工作线程等待5s后仍然没有受到该socket上的下一批客户数据，则它就昂放弃为该socket服务，同时他调用reset_oneshot函数来重置该socket上注册事件，这将使epoll有机会再次检测到该socket上的EPOLLIN事件，进而使得其他线程有机会为该socket服务;
+尽管一个socket在不同事件可能被不同的的线程处理，但同一时刻肯定只有一个线程在为它服务，这就保证了连接的完整性，从而避免了很多可能的竞态条件</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>EPOLLONESHOT事件</strong> was published on <time datetime="2014-03-15T00:00:00+00:00">March 15, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

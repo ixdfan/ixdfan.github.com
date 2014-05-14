@@ -120,7 +120,7 @@
 pid_t waitpid(pid_t pid, int *status, int options);
 </code></pre>
 
-<p>返回的都是结束的子进程的ID</p>
+<p>返回的都是结束的子进程的ID,如果错误,返回-1</p>
 
 <hr />
 
@@ -141,30 +141,38 @@ pid_t waitpid(pid_t pid, int *status, int options);
 
 <hr />
 
-<pre><code>int main()
+<pre><code>int main(int argc, char** argv)
 {
-        int a;
-        wait(&amp;a);
-        while(1)
-        {
-                printf("OOK\n");
-        }
+    int i = 0;
+    int sum = 0;
+    for (i; i &lt; 10; i++) {      
+        sum += i;
+    }
 
-        return 0;
+    int stat;
+    //int pid = waitpid(-1, &amp;stat, 0);
+    int pid = wait(&amp;stat);
+    if (pid == -1) {
+        perror("error");        
+        exit(-1);
+    }
+
+    return 0;
 }
 </code></pre>
 
-<p>好像第三条行不通的啊！</p>
+<h5>第三条要根据返回值来判断时候出错！</h5>
 
 <hr />
 
-<p>wait与waitpid的区别：
-在一个子进程种植前，wait使其调用者阻塞，waitpid中有一个选项，可以是调用者不阻塞，程序中有多个子进程时，任意一个子进程结束则wait就立刻返回状态，waitpid并不等待在其调用之后的第一个终止子进程，而是等待指定的进程</p>
+<p>wait与waitpid的区别：</p>
+
+<p>在一个子进程种植前，wait使其调用者阻塞，waitpid中有一个选项，可以是调用者不阻塞，程序中有多个子进程时，任意一个子进程结束则wait就立刻返回状态，waitpid并不等待在其调用之后的第一个终止子进程，而是等待指定的进程</p>
 
 <ul>
-<li>pid > 0 等待进程ID与pid相当的子进程</li>
-<li>pid == 0 等待其组ID等于调用进程组ID的任意子进程</li>
-<li>pid &lt; -1 等待其组ID等于pid绝对值的任意子进程</li>
+<li><p>pid > 0 等待进程ID与pid相当的子进程</p></li>
+<li><p>pid == 0 等待其组ID等于调用进程组ID的任意子进程</p></li>
+<li><p>pid &lt; -1 等待其组ID等于pid绝对值的任意子进程</p></li>
 </ul>
 
 
@@ -201,11 +209,11 @@ pid_t waitpid(pid_t pid, int *status, int options);
   <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
     
     </ul>
     <hr />

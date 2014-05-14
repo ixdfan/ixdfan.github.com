@@ -1,0 +1,671 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>awk &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="awk">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/05/03/shell-awk/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/05/03/shell-awk/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>awk</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>awk的格式</p>
+
+<pre><code>    pattern {action}
+</code></pre>
+
+<p>awk将来自文件的第一行与每个模式相比较，如果匹配莫个模式的话，awk就会执行相关{atcion}操作，如果没有匹配的行，awk不进行操作。
+当awk完成了对输入中第一行文本比较之后，将对输入中的下一行重复上面的过程，直到读完所有的输入。</p>
+
+<p>如果多个模型匹配了同一行，awk将按照模式出现的顺序分贝执行每个模式想对应的动作。</p>
+
+<p>如果编写的awk程序比较长，可以将程序放在一个文件中，然后在命令行上引用该文。或者在程序头加入#!/bin/awk -f，同时为文件执行执行权限。</p>
+
+<pre><code>#filename:head_student
+BEGIN { 
+    print "         学生基本信息统计    "
+    print "-----------------------------------------------------"
+}
+{print}
+</code></pre>
+
+<p>执行</p>
+
+<pre><code>    awk -f head_student example 
+
+#!/bin/awk -f
+BEGIN {
+    print "         学生基本信息统计    "
+    print "-----------------------------------------------------"
+}
+{print}
+</code></pre>
+
+<p>执行</p>
+
+<pre><code>    chmod +x head_student
+    ./head_student example
+</code></pre>
+
+<p>awk中使用//用正则表达式来做模式
+awk中使用~来测试某个字段或变量是否匹配正则表达式
+运算符用于测试不匹配</p>
+
+<pre><code>[root@ awk]# cat example
+Lichang                 1989    male    math 99
+Wanglijiang             1987    female  chinses               78
+Zhangsansan             1977    male    computer      88
+Langxuebing             1978    male    math 86
+Lisikai                 1989    male    math 99
+Xiaohai                 1990    female  chinese               78
+Zhangsan                1977    male    computer      85
+Lsi                     1988    male    math 99
+Wanglijiang             1989    female  chinese               78
+Xuxing                  1979    male    economic      81
+Xuxin                   1985    female  english               90
+Wangxuebing             1970    male    math 94
+
+#匹配含有math关键字的行
+[root@ awk]# awk '/math/' example
+Lichang                 1989    male    math            99
+Langxuebing             1978    male    math            86
+Lisikai                 1989    male    math            99
+Lsi                     1988    male    math            99
+Wangxuebing             1970    male    math            94
+</code></pre>
+
+<p>逗号，是范围运算符，如果在awk程序上使用逗号将两个模式分开，则awk选取的第一行是匹配第一个模式的文本行，选取的最后一行是匹配第二个模式的文本行，如果没有匹配第二个模式的文本行，awk将选取直到输入数据末尾的所有文本行。</p>
+
+<p>当awk找到第二个模式之后，将再次查找第一个模式以再次开始这个过程</p>
+
+<pre><code>[root@ awk]# awk -F : '/1978/,/1988/' example
+Langxuebing             1978    male    math            86
+Lisikai                 1989    male    math            99
+Xiaohai                 1990    female  chinese         78
+Zhangsan                1977    male    computer        85
+Lsi                     1988    male    math            99
+显示以1978开始，到1988结束的范围内的数据
+
+
+
+[root@ awk]# awk -F : '/Zhangsan/,/Zhangsansan/' example
+Zhangsansan             1977    male    computer        88
+Zhangsan                1977    male    computer        85
+Lsi                     1988    male    math            99
+Wanglijiang             1989    female  chinese         78
+Xuxing                  1979    male    economic        81
+Xuxin                   1985    female  english         90
+Wangxuebing             1970    male    math            94
+
+Zhangsan匹配了Zhangsansan，第二个没有匹配，所以就全部打印
+</code></pre>
+
+<p>awk中的BEGIN和END分贝是在awk开始处理之前和处理之后要执行的命令。
+在处理所有输入之前awk执行BEGIN模式相关的操作，处理完所有输入之后awk执行END模式相关的操作。</p>
+
+<p>awk的重定向</p>
+
+<p>将print命令的输出</p>
+
+<blockquote><p>发送到文件</p>
+
+<blockquote><p>追加到文件</p></blockquote></blockquote>
+
+<p>| 利用管道发送给另一个程序的输入</p>
+
+<p>将1988年的输入到文件year1988中去</p>
+
+<pre><code>#filename:redirectout
+/1988/ {print &gt; "year1988"}
+/1978/ {print &gt; "year1978"}
+END {
+    print "输出完毕"
+}
+
+执行
+awk -f redirectout example
+</code></pre>
+
+<h4>字段分隔符</h4>
+
+<p>默认输出字段分隔符为空格，保存在变量OFS中，用print语句打印时，指定的多个字段之间用逗号分隔，而逗号表示的就是OFS的值</p>
+
+<pre><code># $2与$3之间有逗号，所以输出的第二个第三个字段之间有空格
+#-F[:]指定字段的分界为:
+awk -F[:] '/Tom/{print $2,$3}' student 
+10501163 93-09-11
+10501166 88-01-11 
+
+#由于没有使用逗号分隔，所有字符都挤在一起了
+awk -F[:] '/Tom/{print $2,$3}' student
+1050116393-09-11
+1050116688-01-11
+
+
+#FS设置字段使用的分隔符，默认为空格或Tab，可以使用-F[]命令修改
+[rot@ awk]# awk 'BEGIN{FS=":";OFS="\t"} {print $1,$2,$3}'  student
+ Tom Helleen     10501163        93-09-11
+ Tom Changle     10501166        88-01-11
+ Billy Black     10501165        93-02-11
+ Jojn Hellen     10501162        93-04-13
+ Sam Possion     10501171        98-11-19
+ Mary Degens     10501169        95-05-22
+ Suli Vanlen     10501170        90-09-17
+
+
+
+
+
+[root@ awk]# cat student  
+Tom Helleen:10501163:93-09-11:Harbin
+Tom Changle:10501166:88-01-11:Harbin
+Billy Black:10501165:93-02-11:Harbin
+Jojn Hellen:10501162:93-04-13:Harbin
+Sam Possion:10501171:98-11-19:Harbin
+Mary Degens:10501169:95-05-22:Harbin
+Suli Vanlen:10501170:90-09-17:Harbin
+</code></pre>
+
+<p>如果分隔符由多个字段组成，可以将其放在方括号内指定，力图下例中的将:和-均视为字段分隔符，用于提取所有学生的出生年月(也就是以:或是-为分隔符的第三个字段)</p>
+
+<pre><code>[root@ awk]# awk -F[:] '{print $3}' student
+93-09-11
+88-01-11
+93-02-11
+93-04-13
+98-11-19
+95-05-22
+90-09-17
+
+
+[root@ awk]# awk -F[:-] '{print $3}' student
+93
+88
+93
+93
+98
+95
+90
+
+# $0表示当前文本行
+#length函数返回当前文本行中的字符个数，包括字符分隔符
+#下面将当前文本行中字符个数打印到最前面，后面跟文本行
+
+[root@ awk]# awk '{print length, $0}' example
+28 Lichang                      1989    male    math            99
+36 Wanglijiang          1987    female  chinses         78
+35 Zhangsansan          1977    male    computer        88
+31 Langxuebing          1978    male    math            86
+28 Lisikai                      1989    male    math            99
+33 Xiaohai                      1990    female  chinese         78
+32 Zhangsan             1977    male    computer        85
+24 Lsi                  1988    male    math            99
+36 Wanglijiang          1989    female  chinese         78
+31 Xuxing                       1979    male    economic        81
+31 Xuxin                        1985    female  english         90
+31 Wangxuebing          1970    male    math            94
+
+
+
+[root@ awk]# awk '{print length}' example
+28
+36
+35
+31
+28
+33
+32
+24
+36
+31
+31
+31
+</code></pre>
+
+<p>用于关联数组的for</p>
+
+<pre><code>awk '{name[$1]=$5}
+END {
+    for (elem in name) {
+        print elem "的成绩为:" name[elem]   
+    }
+}' example
+</code></pre>
+
+<p>for (elem in name)可以循环从name中取得每个元素的索引(下标)付给elem</p>
+
+<pre><code>#!/bin/bash
+
+if [ $# != 2 ] ; then
+    echo "Usage: ./array number file"
+    exit 1
+fi
+
+#$1表示的是字段1的内容，也就是名字那个字段
+#$'$1'表示用位置参数1的值来指定索引字段,就是我们在命令行输入的第一个参数的值所代表的字段
+awk -F[:]&lt;$2 '{arr[$'$1']=$1}
+END {
+    for (elem in arr) {
+        print elem "&lt;-------&gt;" arr[elem]
+    }
+}
+'
+
+
+
+$1就是2 , $'$1'就是以第二个字段的值作为索引
+[root@ awk]# ./array.sh 2 student                        10501162&lt;-------&gt;Jojn Hellen
+10501163&lt;-------&gt;Tom Helleen
+10501165&lt;-------&gt;Billy Black
+10501166&lt;-------&gt;Tom Changle
+10501169&lt;-------&gt;Mary Degens
+10501170&lt;-------&gt;Suli Vanlen
+10501171&lt;-------&gt;Sam Possion
+</code></pre>
+
+<p>统计每个城市出现的次数</p>
+
+<pre><code>{
+FS=":"
+count[$4]++
+
+}
+
+END {
+    for (item in count) {
+        if (count[item] &gt;= 0) {
+            printf "城市%-20s出现了%3s次\n", item, count[item]
+        }
+    }
+}
+
+[root@ awk]# awk -f printf.awk student 
+城市                    出现了  1次
+城市Harbin              出现了  3次
+城市Tianjin             出现了  1次
+城市Peking              出现了  2次
+
+第一行是空，并且Harbin出现了4次才对，错误原因还不清楚
+
+
+#改成这样的即可正确输出
+BEGIN {
+    FS=":"
+}
+
+{
+    count[$4]++
+
+}
+
+END {
+    for (item in count) {
+        if (count[item] &gt; 0) {
+            printf "城市%-20s出现了%3s次\n", item, count[item]
+        }
+    }
+}
+</code></pre>
+
+<h4>关系运算符</h4>
+
+<p>&lt;   小于</p>
+
+<p>&lt;=  小于等于</p>
+
+<p>==  等于</p>
+
+<p>!=  不等</p>
+
+<pre><code>#查找student中所有城市为Harbin的记录
+#由于是字符串间比较，所以Harbin加了双引号
+#如果是数字就不用加
+#感觉和awk -F[:] /Harbin/ student相同
+[root@ awk]# awk -F[:] '$4=="Harbin"' student 
+Tom Helleen:10501163:93-09-11:Harbin
+Billy Black:10501165:93-02-11:Harbin
+Jojn Hellen:10501162:93-04-13:Harbin
+Sam Possion:10501171:98-11-19:Harbin
+
+
+#找出编号大于10501165的记录
+[root@ awk]# awk -F[:] '$2 &gt; 10501165' student 
+Tom Changle:10501166:88-01-11:Peking
+Sam Possion:10501171:98-11-19:Harbin
+Mary Degens:10501169:95-05-22:Peking
+Suli Vanlen:10501170:90-09-17:Tianjin
+</code></pre>
+
+<h4>算术运算符</h4>
+
+<ul>
+<li><ul>
+<li><ul>
+<li>/ % ++(前自增) --(前自减) += -= ×= /= %=</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h4>流程控制语句</h4>
+
+<p>if...else</p>
+
+<pre><code>if ( condtion ) {
+    commands
+
+
+} else {
+    commands    
+}
+</code></pre>
+
+<h1>while循环结构</h1>
+
+<pre><code>while ( condtion ) {
+    commands
+}
+
+# while.awk
+#求2-9的平方
+BEGIN {
+    n=2
+    while (n &lt;= 9) {
+        print "2^" n "=",2**n
+        n++
+    }
+}
+
+awk -f while.awk
+</code></pre>
+
+<h4>for循环结构</h4>
+
+<pre><code>for ( init; condtion; increment ) {
+    commands
+}
+
+#关联数组的for循环
+for ( elem in array ) {
+    commands
+}
+
+#for.awk
+BEGIN {
+    for (n=2; n&lt;9; n++) {
+        print "2^"n"="2**n
+    }
+}
+</code></pre>
+
+<h4>getline</h4>
+
+<p>getline用于读取一行</p>
+
+<pre><code>#getline.awk
+BEGIN {
+    getline kk
+    print kk
+}
+</code></pre>
+
+<h5>注意:getline只能读取一行，如果文件中多余一行，也仅仅处理第一行数据。</h5>
+
+<pre><code>[root@ awk]# cat testdata
+1111111111111
+2222222222222
+3333333333333
+4444444444444
+5555555555555
+[root@ awk]# awk -f getline.awk &lt; testdata
+1111111111111
+
+
+#使用while循环读取到LINE中
+BEGIN {
+    i=1
+    while ( getline  LINE ) {
+        print i":"LINE  
+        i++
+    }
+}
+
+
+[root@ awk]# awk -f getline.awk &lt; testdata
+2:1111111111111
+3:2222222222222
+4:3333333333333
+5:4444444444444
+6:5555555555555
+
+
+#使用NR来替代i表示行号，更简洁
+BEGIN {
+    while ( getline  LINE ) {
+        print NR":"LINE 
+    }
+}
+</code></pre>
+
+<h4>协进程</h4>
+
+<pre><code>协进程是指与另一个进程并行运行的进程，协进程方式直接与某个后台进程进行信息交换。
+
+awk通过在程序名称前面添加双向管道运算符|&amp;来标识在后台运行的协进程，协进程在每完成一行的数据处理之后会清空输出，而不是缓存了多行数据后在统一输出。
+
+awk中使用双向管道建立协进程的链接，可以从协进程中读取或写入数据。
+#getline.awk    
+{
+print $0 |&amp; "./toupper.sh"  
+#将当前行通过双向管道|&amp;输出到当前目录下的程序toupper.sh中进行处理，其中$0表示当前记录行，程序名两边必须带双引号
+"./toupper.sh" |&amp; getline LINE
+#将来自./toupper.sh的标准输出通过双向管道|&amp;传递给getline命令，getline将获得的数据保存到变量LINE中
+print LINE
+}
+
+[root@ awk]# awk -f getline.awk &lt;example
+LICHANG 1989 MALE MATH 99
+WANGLIJIANG 1987 FEMALE CHINSES 78
+ZHANGSANSAN 1977 MALE COMPUTER 88
+LANGXUEBING 1978 MALE MATH 86
+LISIKAI 1989 MALE MATH 99
+XIAOHAI 1990 FEMALE CHINESE 78
+ZHANGSAN 1977 MALE COMPUTER 85
+LSI 1988 MALE MATH 99
+WANGLIJIANG 1989 FEMALE CHINESE 78
+XUXING 1979 MALE ECONOMIC 81
+XUXIN 1985 FEMALE ENGLISH 90
+WANGXUEBING 1970 MALE MATH 94
+[root@ awk]# vim getline.awk
+[root@ awk]# awk -f getline.awk &lt;example
+LICHANG 1989 MALE MATH 99
+WANGLIJIANG 1987 FEMALE CHINSES 78
+ZHANGSANSAN 1977 MALE COMPUTER 88
+LANGXUEBING 1978 MALE MATH 86
+LISIKAI 1989 MALE MATH 99
+XIAOHAI 1990 FEMALE CHINESE 78
+ZHANGSAN 1977 MALE COMPUTER 85
+LSI 1988 MALE MATH 99
+WANGLIJIANG 1989 FEMALE CHINESE 78
+XUXING 1979 MALE ECONOMIC 81
+XUXIN 1985 FEMALE ENGLISH 90
+WANGXUEBING 1970 MALE MATH 94
+</code></pre>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>awk</strong> was published on <time datetime="2014-05-03T00:00:00+00:00">May 03, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>死锁 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="死锁">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="死锁">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/20/%E6%AD%BB%E9%94%81/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/20/%E6%AD%BB%E9%94%81/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+<link rel="author" href="https://plus.google.com/ucshell.neo@gmail.com?rel=author">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>死锁</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>死锁产生的原因:</p>
+
+<ul>
+<li><p>系统资源的竞争</p></li>
+<li><p>进程推进顺序非法</p></li>
+</ul>
+
+
+<h4>系统资源的竞争</h4>
+
+<p>通常系统中拥有不可剥夺的资源，其数量不足以满足多个进程运行的需要，是的进程在运行过程中，会因为资源争夺而陷入僵局，例如打印机。
+只有对不可剥夺资源的竞争才会产生死锁，对可剥夺资源的竞争是不会产生死锁的。</p>
+
+<h4>进程推进顺序非法</h4>
+
+<p>进程在运行过程中，请求和资源释放顺序不当。例如:并发进程中P1、P2分别保持了资源R1、R2，而进程P1申请资源R2，进程P2申请资源R1，两者都会因为所需要的资源被占用而造成阻塞；</p>
+
+<p>信号量使用不当也会造成死锁，进程间彼此相互等待对方发来的消息，结果也会使得进程间无法继续向前推进。例如:进程A等待进程B发的消息，进程B又在等待进程A发的消息，可以看出进程A和进程B不是为竞争同一资源，而是在等待对方的资源导致死锁。</p>
+
+<h3>死锁产生的必要条件</h3>
+
+<p>死锁的产生必须同时满足一下四个条件，其中任意一个条件不成立，死锁就不会发生:</p>
+
+<h4>1.互斥条件:</h4>
+
+<p>进程要求对所分配的资源进行排他性控制，即在某一时间段内某个资源仅为一个进程占用，如果此时其他进程请求该资源，则请求进程只能等待。</p>
+
+<h4>2.不可剥夺条件(不可抢占)</h4>
+
+<p>进程所获得的资源在未使用完毕之前不能被其他进程强行夺走，即只能由获得该资源的进程自己来释放(只能主动释放)</p>
+
+<h4>3.请求和保持条件(占有和等待)</h4>
+
+<p>进程已经保持了至少一个资源，但又提出了新的资源请求，而该资源已经被其他进程占用，此时请求进程被阻塞，但对自己已经获得的资源保持不放</p>
+
+<h4>4.循环等待条件(环路等待)</h4>
+
+<p>存在一种进程资源的循环等待链，链中每个进程已经获得的资源同时被链中下一个进程所等待;</p>
+
+<h3>死锁的处理</h3>
+
+<p>为使系统不发生死锁，必须设法破坏产生死锁的四个必要条件之一，或者允许死锁产生，但是当死锁发生时候能够检测出死锁，并有能力实现恢复</p>
+
+<ul>
+<li>鸵鸟算法</li>
+<li>预防死锁</li>
+<li>死锁避免</li>
+<li>死锁检测与解除</li>
+</ul>
+
+
+<hr />
+
+<h4>鸵鸟算法:</h4>
+
+<p>最简单的解决方法:将头埋进社会自里，假装没有问题发生，意思就是忽略该问题；</p>
+
+<hr />
+
+<h4>1.预防死锁</h4>
+
+<p>设置某些限制条件，破坏产生死锁的四个必要条件中的一个或几个，以防止发生死锁</p>
+
+<h5>1.破坏互斥条件:</h5>
+
+<p>如果资源不被一个进程所独占，那么死锁一定不会产生，当然，如果允许连个进程同时使用打印机会造成混乱，采用脱假打印技术可以允许若干个进程同时产生输出，该模型中唯一真正请求使用物理打印机的进程是打印机守护进程，由于守护进程据对不会请求别的资源，所以不会因为打印机产生死锁:</p>
+
+<p>假设守护进程被设计成在所有输出进入脱假机之前就开始打印，如果一个输出进程在头一轮打印之后决定等待几个小时，打印机就会被空置。为了避免这种现象，一般讲守护进程设计成只有完整的输出文件就绪后才开始打印。
+例如，如果两个进程分别占用了可用的脱假机磁盘空间的一般用于输出，而任何一个也没有能够完成输出全部文件，这种情况下，每一个进程都完成了部分输出，但不是他们的全部输出，于是无法继续进行下去，没有一个进程能够完成，结果在磁盘上就出现了死锁。</p>
+
+<p>但有些资源根本不可能同时访问，比如打印机等临界资源根本不能互斥的使用，所以，破坏互斥条件的预算死锁的方法不太可行，而且在有的场合应该保护这种互斥性；</p>
+
+<h5>2.破坏不可剥夺条件(不可抢占):</h5>
+
+<p>当一个已保持了某些不可剥夺资源的进程请求信的资源而得不到满足的时候，他必须释放已经保持的所有资源，待以后需要时在重新申请。这意味着，一个进程已占有的资源会被暂时释放，或者说是被剥夺了，从而破坏了不可剥夺条件</p>
+
+<h5>3.破坏请求和保持条件:(占有和等待)</h5>
+
+<p>采用预先静态分配方法，即进程在运行前一次申请完它所需要的所有资源，在他的资源未满足前不能将它投入运行，一旦投入运行后，这些资源就一直归它所有，也不再提出其他的资源申请，这样就可以保证系统不会发生死锁。</p>
+
+<p>这种运行方式实现简单，但是缺点是<strong>系统资源浪费严重</strong>，其中有些资源可能仅在运行初期或是运行快结束时候才被使用，甚至根本用不到。而且还会导致饥饿现象，当由于个别资源被其他进程占用时候，将导致等待该资源的进程迟迟不能开始运行。</p>
+
+<p>另一种方案是当一个进程请求资源时候，先暂时释放其当前占用的所有资源，然后尝试一次获得所需的全部资源；</p>
+
+<h5>4.破坏循环等待条件(环路等待)</h5>
+
+<p>为了破坏循环等待条件，可是使用顺序资源分配法。首先给系统中的资源编号，规定每个进程必须按照编号递增顺序请求资源，同类资源一次申请完，也就是说只要进程提出申请分配资源Ri，则该进程在以后的资源申请中，只能申请编号大于Ri资源；这样就一定不会出现环。
+假设A编号已经获得了资源i，B编号已经获得了资源j，此时只有A申请资源j，B申请资源i的时才会出现死锁，如果i>j，那么A就不允许请求j，如果i&lt;j则B不允许请求i，因为这个编号小于B已有的资源编号。所以无论哪种情况都不会产生死锁。</p>
+
+<p>这种方法的问题是，编号必须相对稳定，这就限制了新类型设备的增加;尽管在为资源编号时已考虑到了大多数作业实际使用这些资源的顺序，但是也经常发生作业使用资源的顺序与系统规定的顺序不同的情况，造成资源的浪费；</p>
+
+<h4>死锁的预防方法总结:</h4>
+
+<pre><code>```
+-----------------------------------------
+条件      |   处理方式        |
+-----------------------------------------
+互斥:     |一切都使用脱假机技术 |
+-----------------------------------------
+占有和等待:    |在开始就请求全部资源 |
+-----------------------------------------
+不可抢占:   |抢占资源       |
+-----------------------------------------
+环路等待:   |对资源按序编号      |
+-----------------------------------------
+```
+</code></pre>
+
+<hr />
+
+<h4>2.避免死锁</h4>
+
+<p>在资源的动态分配过程中，用某种方法防止系统进入不安全的状态，从而避免死锁；</p>
+
+<h5>1.安全状态:</h5>
+
+<p>比如系统现在一共有10个资源，A有3个资源师空闲的，但最终需要9个资源实例，B拥有2个资源实例，但是最终需要4个资源实例，C拥有2个资源实例，还需要5个资源实例，系统共有10个资源实例，7个已经分配，还有3个资源是空闲的</p>
+
+<p><img src="\uploads\2014\03\013.jpg" alt="013" /></p>
+
+<p>a状态时安全的，因为存在一个分配序列是的所有进程都能够完成，也就是说这个状态可以单独的运行B进程，直到他请求并获得另外两个资源实例，从而达到b状态.当B完成后，就到了C状态，然后调度程序可以运行C，到达d状态，到C完成后，达到e状态，现在A可以获得它需要的6个资源实例，并且完成，这样系统通过仔细调度，就能够避免死锁所以a状态时安全的</p>
+
+<p><img src="\uploads\2014\03\014.jpg" alt="014" /></p>
+
+<p>现在假设出事状态如图所示这次A请求并获得了一个资源，达到b状态，此时调度程序可以运行B，直到B获取资源，进程B完成后进入d状态，此时进入困境了，只有4个资源实例，并且所有的进程都需要5个资源实例，任何分配资源实例的序列都无法保证工作的完成，所以从a到d状态的分配方案，从安全状态进入了不安全状态。从c状态出发运行进程A或C也不行，然后回过头来看，A的请求不应该通过；</p>
+
+<h5>注意：</h5>
+
+<p>不安全状态并不是死锁，从b出发系统可以运行一段时间，甚至B进程可以执行完毕。而且在A请求其他资源实例前，A可能先释放一个资源实例，这样就可以然C完成从而避免死锁。</p>
+
+<p>安全状态与不安全状态的区别是:从安全状态出发，系统能保证所有进程都能完成，而从不安全状态出发，就没有这样的保证。</p>
+
+<h4>银行家算法:</h4>
+
+<h5>单个资源的银行家算法:</h5>
+
+<p>该模型基于一个小城镇的银行家，他向客户分别承诺了一定的贷款额度，算法要做的是判断对请求的满足是否会进入不安全状态，如果是，就拒绝请求，如果满足请求后系统仍然是安全的，就予以分配。</p>
+
+<p><img src="\uploads\2014\03\015.jpg" alt="015" />
+客户们自己做自己的生意，但某些时刻需要贷款(请求资源)。在某一时刻，如图中b状态，此时这个状态时安全的，由于保留了两个单位，银行家能够拖延除C意外的其他请求，因为可以让C先来完成，然后释放C所占的4个资源单位，有了这四个单位的资源，银行家就可以给D或B分配所需要的贷款单位。</p>
+
+<p>假如向B提供了一个他所请求的贷款单位，如图状态B那么我们就有了c状态，但是这个状态时不安全的，如果忽然所有客户都请求最大的限额，而银行家无法满足其中任何一个的要求，那么就会产生死锁，不安全状态不一定会引起死锁，由于客户不一定需要其最大贷款额度，但是银行家不敢抱有这种侥幸心理。</p>
+
+<p>银行家算法对每一个请求进行检查，检查如果满足了这个请求是否会达到安全状态，如果是，那么久满足该请求；如果不是，就推迟对这一请求的满足，为了查看状态是否安全，银行家看他是否有足够的资源满足某一个客户，如果可以，那么这笔投资认为是能够收回的，并且接着检查最接近最大限额的一个客户，一次类推，如果所有的投资最终都被收回，那么该状态时安全的，最初的请求可以批准。</p>
+
+<h5>多个资源的银行家算法:</h5>
+
+<p><img src="\uploads\2014\03\016.jpg" alt="016" />
+图中的两个矩阵，左边的显示了5个进程分别已经分配了的资源，右边的矩阵显示了使各进程完成运行所需的各种资源数。
+和一个资源的情况一样，所以任意系统中每一步都可以计算出右边的矩阵。</p>
+
+<p>图中最右边的三个向量分别表示现有资源E、已分配资源P和可用资源A；</p>
+
+<p>由E可知系统中共有6台磁带机，3台绘图仪，4台打印机和两台CD-ROM驱动器；</p>
+
+<p>由P可知当前已分配5台磁带机，3台绘图仪，2台打印机和2台CD-ROM；</p>
+
+<p>可用资源为E-P；</p>
+
+<p>检查一个算法是否安全算法如下:</p>
+
+<h5>1.找出右边矩阵中是否有一行，其没有被满足的资源数<strong>均</strong>小于等于A，如果不存在这样的行，那么系统将会死锁，因为任何进程都无法运行结束(假定进程会一直占用资源直到他们结束为止)</h5>
+
+<h5>2.假如找到这一行，那么可以假设他获得所需要的剩余资源并运行结束，将该进程标记为终止，并将其资源加到向量A上。</h5>
+
+<h5>3.重复以上两步，或者直到所有的进程都标记为终止，则其初始状态时安全的；或者所有进程的资源需求都得不到满足，此时就是发生了死锁。</h5>
+
+<p>如果在第一步中同时有若干进程均符合条件，那么不管挑选哪一个运行都没有关系，因为可用资源或者会增多(进程结束会释放资源)，或者保持不变</p>
+
+<p>图中所示的状态时安全的，如果进程B现在再请求一台打印机，可以满足他的请求，因为所得的系统状态仍然是安全的(进程D可以结束，然后是A或E结束，剩下的进程相继结束)</p>
+
+<p>假设进程B获得两台可用打印机中的一台之后，E师徒获得最后一台打印机，如果分配给E，可用资源向量A会减少到(1 0 0 0),这是会引起死锁，显然E的请求不能满足，必须延迟一段时间；</p>
+
+<p>银行家算法虽然很有意义，但是缺乏实用价值，因为看很少有进程能够在运行前就知道其所需资源的最大值，而且进程数也不固定，往往在不断的变化，并且本来可用的资源有可能突然间变得不可用，实际中很少有系统使用银行家算法；</p>
+
+<p>以上死锁预防和避免算法都是在进程分配资源时，施加限制条件或进行检测，若系统为进程分配资源时不采取任何措施，则应该提供死锁检测盒解除的手段</p>
+
+<hr />
+
+<h3>3.死锁的检测以及解除</h3>
+
+<p>无需任何限制措施，允许进程在运行中发生死锁，通过系统检测机制检测出死锁的发生，然后采取某种措施解除死锁。</p>
+
+<h4>1.资源分配图:</h4>
+
+<p>系统死锁，可利用资源分配图来描述，使用圆圈代表一个进程，用框代表一类资源，由于一种资源可能有几个，用框中的一个点代表一类资源中的一个资源，从进程到资源的有向边叫请求边，表示该进程申请一个单位的该类资源；从资源到进程的边叫分配边，表示该类资源已经有一个资源被分配给了该进程；</p>
+
+<p><img src="\uploads\2014\03\017.jpg" alt="017" /></p>
+
+<p>进程P1已经分配两个R1资源，又请求一个R2资源；
+进程P2已经分得一个R1和R2资源，并又请求一个R1资源；</p>
+
+<h4>2.死锁定理</h4>
+
+<p>S为死锁的条件是当且仅当S状态的资源分配图是不可完全简化的，该条件为死锁定理;</p>
+
+<p>可以使将资源分配图讲话的方法来检测系统状态S是否为死锁状态:</p>
+
+<h6>1.在资源分配图中，找出既不阻塞又不是孤点的进程Pi(就是找出一条有向边与他相连，而且该有向边对应资源的申请数量小于等于系统现有空闲资源数量，若所有的连接该进程的边均满足以上条件，则这个进程能继续运行直到完成，然后释放他所占有的所有资源)。消去它所有请求边和分配边，使之成为孤立的点，例如下图a中，P1是满足这个条件的进程节点，将P1的所有边消去，得到b的情况</h6>
+
+<h5>2.进程Pi所释放的资源，可以唤醒某些因等待这些资源而阻塞的进程，原来的阻塞进程可能变为非阻塞进程。</h5>
+
+<p>根据1中的方法进行一系列简化后，若能消去图中所有的边，则称该图是可以完全简化的。</p>
+
+<p>如图:
+a中P1是满足1条件的进程，它申请资源数为1，等于系统中空闲资源数1，所以讲P1的边消去，然后P2解除阻塞，此时P2申请的资源为1，小于空闲资源2，所以将P2的边也消去，消去了所有的边就说明该图是可以简化的！</p>
+
+<p><img src="\uploads\2014\03\018.jpg" alt="018" /></p>
+
+<h4>3.死锁的解除:</h4>
+
+<p>一旦检测到了死锁，就赢采取某些相应的措施，以解除死锁，解除死锁的方法有:</p>
+
+<h5>1.资源剥夺法:</h5>
+
+<p>挂起某些死锁进程，并抢占他的资源，将这些资源分配给其他死锁进程，但应防止被挂起的进程长时间得不到资源，而处于资源匮乏状态;</p>
+
+<h5>2.撤销进程法:</h5>
+
+<p>强制撤销部分、甚至全部死锁进程并剥夺这些进程的资源。撤销的原则可以按进程的优先级和撤销进程代价的高低进行</p>
+
+<h5>3.进程回退法:</h5>
+
+<p>让一(多)个进程会退到足以回避死锁的地步，进程回退时自愿释放资源而不是被剥夺，要求系统保持进程的历史信息，设置还原点；</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+<a href="https://plus.google.com/ucshell.neo@gmail.com" class="author-social" target="_blank"><i class="icon-google-plus"></i> Google+</a>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>死锁</strong> was published on <time datetime="2014-03-20T00:00:00+00:00">March 20, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

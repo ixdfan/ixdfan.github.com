@@ -116,6 +116,336 @@
     <h3>2014</h3>
     
     <article>
+      <h2><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></h2>
+      <p>多核绑定对于多核平台的优化，最核心的思路就是per-cpu处理，这样才能做到性能按cpu线性扩展。nginx在多核平台上针对负载均衡和优化所做的工作，就是提供了worker_cpu_affinity配置指令，该指令可以将工作进程固定在...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></h2>
+      <p>nginx根据每个工作进程的当前压力调整他们获取监听套接口的机率，那些当前比较空闲的工作进程有更多机会获取到监听套接口，从而当客户端的请求到达后也就相应的被他捕获并处理。这是客户端请求在多个Nginx进程之间的均衡。如果Nginx是以...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></h2>
+      <p>一般情况下，配置Nginx执行时候，工作进程会有多个，由于各个工作进程相互独立的接收客户端请求、处理、响应，所以就出现了负载不均衡的情况，比如极端的情况会是1个工作进程当前有3000个请求等待处理;而另一个进程当前也之后300个请求等...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash/" title="nginx负载均衡--ip_hash的实现">nginx负载均衡--ip_hash的实现</a></h2>
+      <p>根据IP的哈希值来获取对应的后端服务器，Nginx1.2.0仅支持IPv4加权轮询是Nginx负载均衡的基础策略，所以一些初始化工作，比如配置值转储(配置文件中相关值存储到变量中),所以其他策略可以直接复用加权轮询的初始化工作。pat...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-compare/" title="nginx负载均衡两种策略的比较">nginx负载均衡两种策略的比较</a></h2>
+      <p>加权轮询优势:加权轮询的适用性更强，它不依赖于客户端的任何信息，而完全依靠后端服务器的情况进行选择;能把客户端的请求更合理更均匀的分配到各个后端服务器处理;劣势:同一个客户端的多次请求可能会被分配到不同的后端服务器进行处理，所以无法满...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/04/soft-vsftpd/" title="解决vsftpd无法上传文件的问题">解决vsftpd无法上传文件的问题</a></h2>
+      <p>将vsftp的配置文件/etc/vsftpd/vsftpd.conf中该设置的都设置了，但是上传文件时候就是不成功,如下:ftp&gt; mput rc.tar.gz mput rc.tar.gz? y227 Entering Pas...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/04/shell-var/" title="shell中的一些变量">shell中的一些变量</a></h2>
+      <p>1获取字符串的长度var=1234567890echo ${#var}2识别当前shell版本echo $SHELLecho $03检测当前用户是否为超级用户UID是一个重要的环境变量用于检测当前脚本是以超级用户还是普通用户运行的if...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/04/shell-crontab/" title="自动作业处理">自动作业处理</a></h2>
+      <p>crontab启动crontab进程service crontab start停止crontab进程service crontab stop重新启动crontab进程service crontab restartcrontab的选项c...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/04/mysql-use/" title="mysql常用语句">mysql常用语句</a></h2>
+      <p>字符串数据类型一般用来存放较短的字符串需要存储大串字符时，应该使用文本型数据，文本型数据，可以存放超过过二十亿个字符的字符串注意:文本型字段既大又慢，所以不能随意使用数值类型可以存储整数、实数、浮点数逻辑型也称为布尔型，只能取两个值0...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/04/mysql-config/" title="mysql的基本配置">mysql的基本配置</a></h2>
+      <p>Mysql的密码修改:#mysqladmin -u root password 123456连接Mysql数据库#mysql -u root -p 然后输入密码显示数据库列表:&gt;show databases;#默认自带两个数据库...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/03/shell-until/" title="until语法">until语法</a></h2>
+      <p>until    命令表1test 表达式 do    命令表2done命令表1在循环开始前执行，且每一次循环结束后再次执行表达式作为循环控制条件.do..done之间为until循环的循环体，每次循环时执行其中的命令表2until循...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/03/shell-sed/" title="sed总结">sed总结</a></h2>
+      <p>sed [-n] program [file-list]sed [-n] [-f] program-file file-list-n 表示除非sed使用了p指令或者是标识，否则不会将文本复制到标准输出。[root@ sed]# cat...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/03/shell-length-var/" title="shell中获取变量的长度">shell中获取变量的长度</a></h2>
+      <p>var="1234567890"length=${#var}echo length打印数组长度echo ${#array[*]}打印数组中所有的值echo ${array[*]}或是echo ${array[@]}列出数组索引echo...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/03/shell-function/" title="function">function</a></h2>
+      <p>函数定义的格式[function] 函数名{    命令表    [return]}[root@ 06]# function showuser()&gt; {&gt; date&gt; echo -n "当前登录用户名: "&gt; ...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/03/shell-break/" title="break与continue">break与continue</a></h2>
+      <p>break可以结束while、for、until、select等结构的执行，就是从结构中跳出。退出循环后将转到done语句后继续执行。对于多层嵌套，还可以在break关键字后面加上数字，指明要跳出结构的层数，单独使用break的话就是...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/05/03/shell-awk/" title="awk">awk</a></h2>
+      <p>awk的格式    pattern {action}awk将来自文件的第一行与每个模式相比较，如果匹配莫个模式的话，awk就会执行相关{atcion}操作，如果没有匹配的行，awk不进行操作。当awk完成了对输入中第一行文本比较之后，...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/04/29/mysql-install/" title="Fedora20安装mysql">Fedora20安装mysql</a></h2>
+      <p>yum install mysql mysql-server mysql-devel</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/04/20/tcp-%E9%95%BF%E8%BF%9E%E6%8E%A5/" title="tcp长连接">tcp长连接</a></h2>
+      <p>TCP的短连接:当client向server发起链接请求的时候，server收到请求，然后双方建立链接，client想server发送消息，server回应client，然后一次读写就完成了，这时候双方任何一个都可以发起close操作...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/04/03/error-cpp/" title="expected unqualified-id before ‘delete’">expected unqualified-id before ‘delete’</a></h2>
+      <p>今天写C++程序，编译的时候发现了一个以前从来没有见到过的错误expected unqualified-id before ‘delete’搞了半天才搞明白了，原来函数的括号写错了，将delete写到了函数的外面Your delete...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/%E6%AD%BB%E9%94%81/" title="死锁">死锁</a></h2>
+      <p>死锁产生的原因:系统资源的竞争进程推进顺序非法系统资源的竞争通常系统中拥有不可剥夺的资源，其数量不足以满足多个进程运行的需要，是的进程在运行过程中，会因为资源争夺而陷入僵局，例如打印机。只有对不可剥夺资源的竞争才会产生死锁，对可剥夺资...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="操作系统的内存管理">操作系统的内存管理</a></h2>
+      <p>内存管理1.存储管理的功能:内存空间的分配与回收，包括分配与共享地址转换:内存管理配合硬件进行地址转换，将逻辑地址转化为物理地址内存空间的扩充:借助于虚拟存储器或交换覆盖技术来达到扩充内存容量的目的存储保护:为避免相互干扰和破坏，必须...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/process/" title="操作系统的进程">操作系统的进程</a></h2>
+      <p>进程是系统资源分配的最小单位一个进程就是一个执行程序的实例，包括程序计数器、寄存器和变量的当前值；为了使参与并发执行的程序(含数据)能够独立的运行，必须为之配置一个专门的数据结构，称为进程控制块(PCB)，系统利用PCB来描述进程的基...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/elf/" title="elf文件格式">elf文件格式</a></h2>
+      <p>`ELF解析:在linux下无论是可重定的目标文件还是可执行的目标文件均采用这种格式。ELF格式的目标文件中不仅包含二进制的代码和数据，还包括很多帮助连接器解析符号和解释目标文件的信息.ELF由两部分构成:ELF文件头和目标文件的段E...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/IPC-share-memory/" title="IPC之共享内存">IPC之共享内存</a></h2>
+      <p>共享内存是最高效的IPC机制，因为它不涉及进程之间的任何数据传输，但是这种高效带来的问题是，我们必须使用其他辅助手段来同步进程对共享内存的访问，否则会产生竞态条件，因此共享内存一般和其他进程间通信方式一起使用。共享内存编程模型:创建共...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/IO-pipd/" title="pipe与socketpair函数">pipe与socketpair函数</a></h2>
+      <p>pipe函数用于创建一个管道，以实现进程间通信int pipe(int pipefd[2]);pipe的参数为包含两个整数的数组指针;通过pipe函数创建的两个文件描述符pipefd[0]、pipefd[1]分别构成管道的两端;从fd...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/IO-dup/" title="dup与dup2函数">dup与dup2函数</a></h2>
+      <p>有时候我们希望将标准输入重定向到一个文件中去，或者将标准输出重定向到一个网络链接(例如CGI编程)，可以使用dup与dup2函数实现;   int dup(int oldfd);   int dup2(int oldfd, int n...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/20/B%E6%A0%91%E6%80%BB%E7%BB%93/" title="B树总结">B树总结</a></h2>
+      <p>B树的特性:一颗m阶B树:* 树中每个节点至多含有m颗子树(也就是m个子节点)也就是每个节点最多有m-1个关键字* 若根节点不是终端节点，则至少有两颗子树，至多m* 除根节点外的所有非叶子节点至少有m/2(取上)颗子树(也就是至少包含...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/15/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" title="有限状态机">有限状态机</a></h2>
+      <p>有限状态机是逻辑单元内部当一种高效编程方式;有的应用层协议头部包含数据包类型字段，每种类型可以映射为逻辑单元当一种执行状态，服务器可以根据他来编写相应当处理逻辑，代码如下:STATE_MACHINE(Package _pack){  ...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/15/socket-can-read/" title="socket在什么情况下可读">socket在什么情况下可读</a></h2>
+      <p>socket在什么情况下可读?1. 接收缓冲区有数据，一定可读2. 对方正常关闭socket，也是可读3. 对于侦听socket，有新连接到达也可读4. socket有错误发生，且pending～～～引用unp的一段话 第六章 6.3...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/15/signal/" title="linux中的信号">linux中的信号</a></h2>
+      <p>Linux的信号可以由一下条件产生:* 对于前台进程，用户可以通过输入特殊字符来给它发送信号，例如Ctrl+C通常会给进程发送一个中断信号;系统异常，例如浮点异常和非法内存段访问;系统状态变化，比如alarm定时器到期将引起SIGAL...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/15/epoll-stress-test/" title="利用epoll进行压力测试">利用epoll进行压力测试</a></h2>
+      <p>压力测试程序有很多中实现方式，比如I/O复用的方式，多线程、多进程并发编程方式，以及结合这些使用，不过单纯的I/O复用方式的施压程度是最高的，因为线程和进程的调度本身也要占用一定的CPU时间;以前的程序都是在服务器端利用epoll进行...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/15/epoll-select-poll/" title="epoll与select和poll当区别">epoll与select和poll当区别</a></h2>
+      <p>select、poll、epoll三组I/O复用函数都是通过某种结构体变量来告诉内核监听那些文件描述符上的哪些事件，并使用该结构体类型的参数来获取内核处理的结果。select的参数类型fd_set没有将文件描述符和事件绑定，他仅仅是一...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/15/epoll-one-shot/" title="EPOLLONESHOT事件">EPOLLONESHOT事件</a></h2>
+      <p>在使用ET模式，一个socket上的某个事件可能被触发多次，在并发程序中就会引起一个问题;比如一个线程在读取完某个socket上的数据后开始处理这些数据，而在数据的处理过程中该socket上又有新数据可读(EPOLLIN再次被触发)，...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
       <h2><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></h2>
       <p>静态连接于动态连接的区别静态连接:静态连接是指把要调用的函数或者过程直接连接到可执行文件中，成为可执行文件的一部分；也就是说动态库函数的代码就在程序exe文件中，该文件包含了运行时所需要的全部代码。静态连接的缺点:当多个程序都调用相同...</p>
     </article>
@@ -128,6 +458,16 @@
     <article>
       <h2><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></h2>
       <p>从图中可以看到:1.预编译将.c文件转化成.i文件，使用命令是:gcc -E,对应预处理命令是cpp；2.编译将.i文件转换成了.s文件，使用gcc命令是: gcc -S,对应编译命令是cc -S3.汇编将.s文件转化成了.o文件，使...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/03/15/TCP-UDP-server/" title="同时处理TCP和UDP">同时处理TCP和UDP</a></h2>
+      <p>以前所接触到当服务器程序都只监听一个端口，在实际应用中，有不少服务器程序能够同时监听多个端口;从bind系统调用当参数来看，一个socket只能与一个socket地址(ip + 端口)绑定，也就是说一个socket只能监听一个端口;所...</p>
     </article>
     
   
@@ -276,6 +616,16 @@
       
     
     <article>
+      <h2><a href="http://localhost:4000/2014/02/27/errno-EINTR/" title="errno中的EINTR">errno中的EINTR</a></h2>
+      <p>如果程序在执行处于阻塞状态当系统调用的时候接收到信号，并且我们为信号设置来信号处理函数，则默认情况下系统调用将被中断，并且errno被设置为EINTR，这种情况下直接忽略该信号即可！我们可以使用sigaction函数为信号设置SA_R...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
       <h2><a href="http://localhost:4000/2014/02/26/fedora19-install-monaco/" title="Fedora19安装Monaco字体">Fedora19安装Monaco字体</a></h2>
       <p>最近使用终端发现字体有一种说不出来的别扭，以前看到过一篇文章是推荐编程字体的！找了一下，就是Monaco字体，原来是苹果系统专用的！字体下载:http://www.gringod.com/wp-upload/MONACO.TTF安装c...</p>
     </article>
@@ -306,7 +656,7 @@
       
     
     <article>
-      <h2><a href="http://localhost:4000/2014/02/25/Nginx-http-header/" title="[Nginx学习]HTTP头的分析">[Nginx学习]HTTP头的分析</a></h2>
+      <h2><a href="http://localhost:4000/2014/02/25/nginx-http-header/" title="[Nginx学习]HTTP头的分析">[Nginx学习]HTTP头的分析</a></h2>
       <p>struct ngx_http_request_s {    ……    ngx_uint_t                        method;       ngx_uint_t                      ...</p>
     </article>
     
@@ -316,7 +666,7 @@
       
     
     <article>
-      <h2><a href="http://localhost:4000/2014/02/25/Nginx-http-header-analyse/" title="[Nginx学习]获取HTTP头部信息">[Nginx学习]获取HTTP头部信息</a></h2>
+      <h2><a href="http://localhost:4000/2014/02/25/nginx-http-header-analyse/" title="[Nginx学习]获取HTTP头部信息">[Nginx学习]获取HTTP头部信息</a></h2>
       <p>获取HTTP头部struct ngx_http_request_s {    ……    ngx_buf_t                        *header_in;    ngx_http_headers_in_t   ...</p>
     </article>
     
@@ -326,7 +676,7 @@
       
     
     <article>
-      <h2><a href="http://localhost:4000/2014/02/25/Nginx-ngx_list_t/" title="[Nginx学习]ngx_list_t结构">[Nginx学习]ngx_list_t结构</a></h2>
+      <h2><a href="http://localhost:4000/2014/02/25/nginx-ngx_list_t/" title="[Nginx学习]ngx_list_t结构">[Nginx学习]ngx_list_t结构</a></h2>
       <p>ngx_list_t是nginx封装的链表容器typedef struct ngx_list_part_s  ngx_list_part_t;struct ngx_list_part_s {    void             *...</p>
     </article>
     
@@ -368,6 +718,16 @@
     <article>
       <h2><a href="http://localhost:4000/2014/02/23/insert-sort/" title="插入排序">插入排序</a></h2>
       <p>插入排序的时间复杂度为O(n2),插入排序是稳定排序一般来说，插入排序都采用in-place在数组上实现。具体算法描述如下：1. 从第一个元素开始，该元素可以认为已经被排序2. 取出下一个元素，在已经排序的元素序列中从后向前扫描3. ...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2014/01/22/signal-%E7%BB%9F%E4%B8%80%E4%BA%8B%E4%BB%B6%E6%BA%90/" title="统一事件源">统一事件源</a></h2>
+      <p>信号是一种异步事件:信号处理函数和程序主循环是两条不同的执行线路，信号处理函数需要尽可能快的执行完毕，以确保该信号不会被屏蔽太久;一种典型的解决方法:把信号的主要处理逻辑放到程序主循环中，当信号处理函数被触发时，它只是简单的通知主循环...</p>
     </article>
     
   
@@ -450,6 +810,16 @@
     <article>
       <h2><a href="http://localhost:4000/2013/12/17/stl-map/" title="STL::map">STL::map</a></h2>
       <p>map是一种包含已排序对象的关联容器。map的特点：所有元素都会根据键值自动被排序，关联容器是有键和值的，与set不同，map的键是键，值是值。注意：关联容器的键是不允许被改变的，所以map的键是不能被修改的，但是他的值时可以修改的。...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/12/17/demon/" title="守护进程的实现(未完)">守护进程的实现(未完)</a></h2>
+      <p>守护进程守护进程又称为精灵进程(daemon)，是生存较长的一种进程，他们常常在系统自举时候启动，仅在系统关闭时才会终止，因为他们没有控制终端，所以他们是在后台运行的。ps -axj-a显示由其他用户所拥有的进程的状态，-x显示没有控...</p>
     </article>
     
   
@@ -659,7 +1029,7 @@
     
     <article>
       <h2><a href="http://localhost:4000/2013/12/12/%E6%88%91%E7%9A%84.tmux.conf%E6%96%87%E4%BB%B6/" title="我的.tmux.conf文件">我的.tmux.conf文件</a></h2>
-      <p>使用vi的模式进行复制set-window-option -g mode-keys vi#使用Ctrl+a替换Ctrl+bset -g prefix ^aunbind ^bunbind '"'unbind %unbind s#使用s和...</p>
+      <p>#使用vi的模式进行复制set-window-option -g mode-keys vi#使用Ctrl+a替换Ctrl+bset -g prefix ^aunbind ^bunbind '"'unbind %unbind s#使用s...</p>
     </article>
     
   
@@ -1019,7 +1389,17 @@
     
     <article>
       <h2><a href="http://localhost:4000/2013/11/11/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E4%B9%8B%E4%BA%92%E6%96%A5%E5%8F%98%E9%87%8F/" title="线程同步之互斥变量">线程同步之互斥变量</a></h2>
-      <p>线程同步：互斥变量互斥量是一种锁，在访问共享资源时对其加锁，在结束访问时释放锁，这样可以保证在任意时间内，只有一个线程处于临界区内。互斥锁的特点：(1).原子性：把互斥锁定义为一个原子操作，这意味着操作系统保证了如果一个线程锁定了一个...</p>
+      <p>线程同步：互斥变量互斥量是一种锁，在访问共享资源时对其加锁，在结束访问时释放锁，这样可以保证在任意时间内，只有一个线程处于临界区内。注意:互斥锁仅仅保证任意时刻内只有一个线程处于临界区，但是并不会保证线程会一次性执行完临界区中代码互斥...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/11/11/%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6/" title="进程的调度">进程的调度</a></h2>
+      <p>处理机调度是多道程序操作系统调度的基础，是操作系统的核心问题。1.引起进程调度的事件:正在运行的进程运行完毕或发生某事情不能在继续运行运行中的进程因提出输入/输出请求二暂停运行在进程通信或同步过程中运行了某种原语操作，如P操作在可抢先...</p>
     </article>
     
   
@@ -1198,7 +1578,7 @@
       
     
     <article>
-      <h2><a href="http://localhost:4000/2013/10/13/Nginx-install-problem/" title="Nginx安装过程中的几个问题">Nginx安装过程中的几个问题</a></h2>
+      <h2><a href="http://localhost:4000/2013/10/13/nginx-install-problem/" title="Nginx安装过程中的几个问题">Nginx安装过程中的几个问题</a></h2>
       <p>Nginx的安装问题首先下载Nginx，为了学习我下载的是1.20版本的！下载完成后解压编译tar zxvf nginx-1.20.tar.gzcd nginx-1.20./configuremakemake install但是编译出...</p>
     </article>
     
@@ -1229,7 +1609,7 @@
     
     <article>
       <h2><a href="http://localhost:4000/2013/10/11/wait-waitpid/" title="wait与waitpid函数">wait与waitpid函数</a></h2>
-      <p>wait与waitpid函数pid_t wait(int *status);pid_t waitpid(pid_t pid, int *status, int options);返回的都是结束的子进程的ID当一个进程正常或异常终止时，...</p>
+      <p>wait与waitpid函数pid_t wait(int *status);pid_t waitpid(pid_t pid, int *status, int options);返回的都是结束的子进程的ID,如果错误,返回-1当一个进...</p>
     </article>
     
   
@@ -1430,6 +1810,16 @@
     <article>
       <h2><a href="http://localhost:4000/2013/09/27/fcntl-nonblock-sockfd/" title="fcntl设置非阻塞文件描述符">fcntl设置非阻塞文件描述符</a></h2>
       <p>int fd = socket(AF_INET, SOCK_STREAM, 0);int old_option = fcntl(fd, F_GETFL);int new_option = old_option | O_NONBLOCK...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/09/27/%E6%AD%BB%E9%94%81%E7%9A%84%E4%BE%8B%E5%AD%90/" title="死锁举例">死锁举例</a></h2>
+      <p>使用互斥锁的一个噩耗就是死锁，死锁使得一个或多个exarch被挂起而无法继续执行，而且这种情况还不容易被发现。一个线程中对一个已经加锁的陪同锁再次加索，将会导致死锁。如果两个线程按照不同的顺序来申请两个互斥锁，也容易产生死锁#incl...</p>
     </article>
     
   
@@ -1710,6 +2100,26 @@
     <article>
       <h2><a href="http://localhost:4000/2013/09/11/fcntl/" title="fcntl函数使用">fcntl函数使用</a></h2>
       <p>fcntl函数函数原型如下int fcntl(int fd, int cmd, ... /* arg */ );fcntl函数的选项                 类似于ioctl中的功能F_DUPFD               ...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/09/11/offer-%E6%9B%BF%E6%8D%A2%E7%A9%BA%E6%A0%BC/" title="替换空格">替换空格</a></h2>
+      <p>题目:实现一个函数，把字符串中每个空格替换成"%20",例如"We are Happy",输出"We%20are%20Happy"看到这个问题，首先应该想到原来只有一个字符-空格，替换之后却有了三个字符'%','2','0',字符串会...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/09/11/offer-%E4%BA%8C%E5%88%86%E6%B3%95/" title="二分法总结">二分法总结</a></h2>
+      <p>查找:顺序查找二分查找哈希表查找二叉排序树查找哈希表的优点:我们我们利用它能够在O(1)时间查找某一个元素，是效率最高的查找方式;缺点:需要额外的空间来实现哈希表注意:如果要求在排序的数组(或者部分排序的数组)中查找一个数字或是统计某...</p>
     </article>
     
   
@@ -2070,6 +2480,46 @@
     <article>
       <h2><a href="http://localhost:4000/2013/05/22/sample-post-images/" title="A Post with Images">A Post with Images</a></h2>
       <p>Examples and code for displaying images in posts.</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/04/11/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB/" title="进程与线程的区别">进程与线程的区别</a></h2>
+      <p>进程是系统资源分配的最小单位，线程是CPU调度的最小单位(并发执行的单元);没有实现线程的操作系统中，进程即使资源分配的基本单位，又是调度的基本单位;进程有进程控制块PCB,线程有线程控制快TCB;线程自己基本上没有系统资源，只拥有一...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/03/22/signal-sigaction/" title="sigaction的使用">sigaction的使用</a></h2>
+      <p>使用sigaction的理由:稳定性增强功能  int sigaction(int signum, const struct sigaction act, struct sigaction oldact);  signum:要处理的信...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/03/22/gdb-signal/" title="在gdb中发送信号">在gdb中发送信号</a></h2>
+      <p>在gdb中如果直接使用Ctrl+c则会将信号直接传递给gdb，有时候我们希望将信号传递给调试中的程序;我们可以直接使用gdb中自带的signal命令来向程序发送某个信号void handle(int s){    printf("信号...</p>
+    </article>
+    
+  
+      
+      
+      
+    
+    <article>
+      <h2><a href="http://localhost:4000/2013/03/20/IO-mmap/" title="mmap与munmap">mmap与munmap</a></h2>
+      <p>mmap用于申请一段内存空间，我们可以将这段内存空间作为进程间通信的共享内存，也可以将文件直接映射到其中，munmap则释放由mmap创建的这段内存空间。   void *mmap(void *addr, size_t length,...</p>
     </article>
     
   

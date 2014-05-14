@@ -1,0 +1,490 @@
+---
+layout: post
+title: awk
+description: 
+modified: 
+categories: 
+- shell 
+tags:
+- 
+---
+awk的格式
+	
+		pattern {action}
+awk将来自文件的第一行与每个模式相比较，如果匹配莫个模式的话，awk就会执行相关{atcion}操作，如果没有匹配的行，awk不进行操作。
+当awk完成了对输入中第一行文本比较之后，将对输入中的下一行重复上面的过程，直到读完所有的输入。
+
+如果多个模型匹配了同一行，awk将按照模式出现的顺序分贝执行每个模式想对应的动作。
+
+如果编写的awk程序比较长，可以将程序放在一个文件中，然后在命令行上引用该文。或者在程序头加入#!/bin/awk -f，同时为文件执行执行权限。
+
+	#filename:head_student
+	BEGIN {	
+		print "			学生基本信息统计	"
+		print "-----------------------------------------------------"
+	}
+	{print}
+
+执行
+
+		awk -f head_student example 
+
+	#!/bin/awk -f
+	BEGIN {
+		print "			学生基本信息统计	"
+		print "-----------------------------------------------------"
+	}
+	{print}
+
+执行
+
+		chmod +x head_student
+		./head_student example
+
+
+
+awk中使用//用正则表达式来做模式
+awk中使用~来测试某个字段或变量是否匹配正则表达式
+运算符用于测试不匹配
+
+
+	[root@ awk]# cat example
+	Lichang                 1989    male    math 99
+	Wanglijiang             1987    female  chinses               78
+	Zhangsansan             1977    male    computer      88
+	Langxuebing             1978    male    math 86
+	Lisikai                 1989    male    math 99
+	Xiaohai                 1990    female  chinese               78
+	Zhangsan                1977    male    computer      85
+	Lsi                     1988    male    math 99
+	Wanglijiang             1989    female  chinese               78
+	Xuxing                  1979    male    economic      81
+	Xuxin                   1985    female  english               90
+	Wangxuebing             1970    male    math 94
+
+	#匹配含有math关键字的行
+	[root@ awk]# awk '/math/' example
+	Lichang                 1989    male    math            99
+	Langxuebing             1978    male    math            86
+	Lisikai                 1989    male    math            99
+	Lsi                     1988    male    math            99
+	Wangxuebing             1970    male    math            94
+
+
+逗号，是范围运算符，如果在awk程序上使用逗号将两个模式分开，则awk选取的第一行是匹配第一个模式的文本行，选取的最后一行是匹配第二个模式的文本行，如果没有匹配第二个模式的文本行，awk将选取直到输入数据末尾的所有文本行。
+
+当awk找到第二个模式之后，将再次查找第一个模式以再次开始这个过程
+
+	[root@ awk]# awk -F : '/1978/,/1988/' example
+	Langxuebing             1978    male    math            86
+	Lisikai                 1989    male    math            99
+	Xiaohai                 1990    female  chinese         78
+	Zhangsan                1977    male    computer        85
+	Lsi                     1988    male    math            99
+	显示以1978开始，到1988结束的范围内的数据
+
+
+
+	[root@ awk]# awk -F : '/Zhangsan/,/Zhangsansan/' example
+	Zhangsansan             1977    male    computer        88
+	Zhangsan                1977    male    computer        85
+	Lsi                     1988    male    math            99
+	Wanglijiang             1989    female  chinese         78
+	Xuxing                  1979    male    economic        81
+	Xuxin                   1985    female  english         90
+	Wangxuebing             1970    male    math            94
+
+	Zhangsan匹配了Zhangsansan，第二个没有匹配，所以就全部打印
+
+
+awk中的BEGIN和END分贝是在awk开始处理之前和处理之后要执行的命令。
+在处理所有输入之前awk执行BEGIN模式相关的操作，处理完所有输入之后awk执行END模式相关的操作。
+
+
+awk的重定向
+
+将print命令的输出
+
+>发送到文件
+
+>>追加到文件
+
+| 利用管道发送给另一个程序的输入
+
+
+
+将1988年的输入到文件year1988中去
+
+	
+	#filename:redirectout
+	/1988/ {print > "year1988"}
+	/1978/ {print > "year1978"}
+	END	{
+		print "输出完毕"
+	}
+	
+	执行
+	awk -f redirectout example
+
+#### 字段分隔符
+
+默认输出字段分隔符为空格，保存在变量OFS中，用print语句打印时，指定的多个字段之间用逗号分隔，而逗号表示的就是OFS的值
+	
+	# $2与$3之间有逗号，所以输出的第二个第三个字段之间有空格
+	#-F[:]指定字段的分界为:
+	awk -F[:] '/Tom/{print $2,$3}' student 
+	10501163 93-09-11
+	10501166 88-01-11 
+
+	#由于没有使用逗号分隔，所有字符都挤在一起了
+	awk -F[:] '/Tom/{print $2,$3}' student
+	1050116393-09-11
+	1050116688-01-11
+
+
+	#FS设置字段使用的分隔符，默认为空格或Tab，可以使用-F[]命令修改
+	[rot@ awk]# awk 'BEGIN{FS=":";OFS="\t"} {print $1,$2,$3}'  student
+	 Tom Helleen     10501163        93-09-11
+	 Tom Changle     10501166        88-01-11
+	 Billy Black     10501165        93-02-11
+	 Jojn Hellen     10501162        93-04-13
+	 Sam Possion     10501171        98-11-19
+	 Mary Degens     10501169        95-05-22
+	 Suli Vanlen     10501170        90-09-17
+
+
+
+
+
+	[root@ awk]# cat student  
+	Tom Helleen:10501163:93-09-11:Harbin
+	Tom Changle:10501166:88-01-11:Harbin
+	Billy Black:10501165:93-02-11:Harbin
+	Jojn Hellen:10501162:93-04-13:Harbin
+	Sam Possion:10501171:98-11-19:Harbin
+	Mary Degens:10501169:95-05-22:Harbin
+	Suli Vanlen:10501170:90-09-17:Harbin
+
+
+如果分隔符由多个字段组成，可以将其放在方括号内指定，力图下例中的将:和-均视为字段分隔符，用于提取所有学生的出生年月(也就是以:或是-为分隔符的第三个字段)
+
+	[root@ awk]# awk -F[:] '{print $3}' student
+	93-09-11
+	88-01-11
+	93-02-11
+	93-04-13
+	98-11-19
+	95-05-22
+	90-09-17
+
+
+	[root@ awk]# awk -F[:-] '{print $3}' student
+	93
+	88
+	93
+	93
+	98
+	95
+	90
+
+	# $0表示当前文本行
+	#length函数返回当前文本行中的字符个数，包括字符分隔符
+	#下面将当前文本行中字符个数打印到最前面，后面跟文本行
+	
+	[root@ awk]# awk '{print length, $0}' example
+	28 Lichang                      1989    male    math            99
+	36 Wanglijiang          1987    female  chinses         78
+	35 Zhangsansan          1977    male    computer        88
+	31 Langxuebing          1978    male    math            86
+	28 Lisikai                      1989    male    math            99
+	33 Xiaohai                      1990    female  chinese         78
+	32 Zhangsan             1977    male    computer        85
+	24 Lsi                  1988    male    math            99
+	36 Wanglijiang          1989    female  chinese         78
+	31 Xuxing                       1979    male    economic        81
+	31 Xuxin                        1985    female  english         90
+	31 Wangxuebing          1970    male    math            94
+
+
+
+	[root@ awk]# awk '{print length}' example
+	28
+	36
+	35
+	31
+	28
+	33
+	32
+	24
+	36
+	31
+	31
+	31
+
+
+
+
+
+用于关联数组的for
+
+	awk '{name[$1]=$5}
+	END {
+		for (elem in name) {
+			print elem "的成绩为:" name[elem]	
+		}
+	}' example
+
+for (elem in name)可以循环从name中取得每个元素的索引(下标)付给elem
+
+
+	#!/bin/bash
+	
+	if [ $# != 2 ] ; then
+		echo "Usage: ./array number file"
+		exit 1
+	fi
+	
+	#$1表示的是字段1的内容，也就是名字那个字段
+	#$'$1'表示用位置参数1的值来指定索引字段,就是我们在命令行输入的第一个参数的值所代表的字段
+	awk -F[:]<$2 '{arr[$'$1']=$1}
+	END {
+		for (elem in arr) {
+			print elem "<------->" arr[elem]
+		}
+	}
+	'
+
+
+	
+	$1就是2 , $'$1'就是以第二个字段的值作为索引
+	[root@ awk]# ./array.sh 2 student                        10501162<------->Jojn Hellen
+	10501163<------->Tom Helleen
+	10501165<------->Billy Black
+	10501166<------->Tom Changle
+	10501169<------->Mary Degens
+	10501170<------->Suli Vanlen
+	10501171<------->Sam Possion
+	
+
+
+
+统计每个城市出现的次数
+
+	{
+	FS=":"
+	count[$4]++
+	
+	}
+	
+	END {
+		for (item in count) {
+			if (count[item] >= 0) {
+				printf "城市%-20s出现了%3s次\n", item, count[item]
+			}
+		}
+	}
+
+	[root@ awk]# awk -f printf.awk student 
+	城市                    出现了  1次
+	城市Harbin              出现了  3次
+	城市Tianjin             出现了  1次
+	城市Peking              出现了  2次
+	
+	第一行是空，并且Harbin出现了4次才对，错误原因还不清楚
+
+	
+	#改成这样的即可正确输出
+	BEGIN {
+		FS=":"
+	}
+	
+	{
+		count[$4]++
+	
+	}
+	
+	END {
+		for (item in count) {
+			if (count[item] > 0) {
+				printf "城市%-20s出现了%3s次\n", item, count[item]
+			}
+		}
+	}
+	
+
+#### 关系运算符
+
+<	小于
+
+<=	小于等于
+
+==	等于
+
+!=	不等
+
+
+	#查找student中所有城市为Harbin的记录
+	#由于是字符串间比较，所以Harbin加了双引号
+	#如果是数字就不用加
+	#感觉和awk -F[:] /Harbin/ student相同
+	[root@ awk]# awk -F[:] '$4=="Harbin"' student 
+	Tom Helleen:10501163:93-09-11:Harbin
+	Billy Black:10501165:93-02-11:Harbin
+	Jojn Hellen:10501162:93-04-13:Harbin
+	Sam Possion:10501171:98-11-19:Harbin
+
+
+	#找出编号大于10501165的记录
+	[root@ awk]# awk -F[:] '$2 > 10501165' student 
+	Tom Changle:10501166:88-01-11:Peking
+	Sam Possion:10501171:98-11-19:Harbin
+	Mary Degens:10501169:95-05-22:Peking
+	Suli Vanlen:10501170:90-09-17:Tianjin
+
+
+#### 算术运算符
+
++ - * / % ++(前自增) --(前自减) += -= ×= /= %=
+
+
+#### 流程控制语句
+
+if...else
+
+	if ( condtion ) {
+		commands
+		
+
+	} else {
+		commands	
+	}
+
+
+# while循环结构
+
+	while ( condtion ) {
+		commands
+	}
+
+	# while.awk
+	#求2-9的平方
+	BEGIN {
+		n=2
+		while (n <= 9) {
+			print "2^" n "=",2**n
+			n++
+		}
+	}
+
+	awk -f while.awk
+
+#### for循环结构
+
+	for ( init; condtion; increment ) {
+		commands
+	}
+
+	#关联数组的for循环
+	for ( elem in array ) {
+		commands
+	}
+
+	#for.awk
+	BEGIN {
+		for (n=2; n<9; n++) {
+			print "2^"n"="2**n
+		}
+	}
+
+
+#### getline
+getline用于读取一行
+	
+	#getline.awk
+	BEGIN {
+		getline kk
+		print kk
+	}
+
+
+##### 注意:getline只能读取一行，如果文件中多余一行，也仅仅处理第一行数据。
+
+
+	[root@ awk]# cat testdata
+	1111111111111
+	2222222222222
+	3333333333333
+	4444444444444
+	5555555555555
+	[root@ awk]# awk -f getline.awk < testdata
+	1111111111111
+
+
+	#使用while循环读取到LINE中
+	BEGIN {
+		i=1
+		while ( getline  LINE ) {
+			print i":"LINE	
+			i++
+		}
+	}
+
+
+	[root@ awk]# awk -f getline.awk < testdata
+	2:1111111111111
+	3:2222222222222
+	4:3333333333333
+	5:4444444444444
+	6:5555555555555
+
+
+	#使用NR来替代i表示行号，更简洁
+	BEGIN {
+		while ( getline  LINE ) {
+			print NR":"LINE	
+		}
+	}
+
+#### 协进程
+
+	协进程是指与另一个进程并行运行的进程，协进程方式直接与某个后台进程进行信息交换。
+
+	awk通过在程序名称前面添加双向管道运算符|&来标识在后台运行的协进程，协进程在每完成一行的数据处理之后会清空输出，而不是缓存了多行数据后在统一输出。
+
+	awk中使用双向管道建立协进程的链接，可以从协进程中读取或写入数据。
+	#getline.awk	
+	{
+	print $0 |& "./toupper.sh"	
+	#将当前行通过双向管道|&输出到当前目录下的程序toupper.sh中进行处理，其中$0表示当前记录行，程序名两边必须带双引号
+	"./toupper.sh" |& getline LINE
+	#将来自./toupper.sh的标准输出通过双向管道|&传递给getline命令，getline将获得的数据保存到变量LINE中
+	print LINE
+	}
+
+	[root@ awk]# awk -f getline.awk <example
+	LICHANG 1989 MALE MATH 99
+	WANGLIJIANG 1987 FEMALE CHINSES 78
+	ZHANGSANSAN 1977 MALE COMPUTER 88
+	LANGXUEBING 1978 MALE MATH 86
+	LISIKAI 1989 MALE MATH 99
+	XIAOHAI 1990 FEMALE CHINESE 78
+	ZHANGSAN 1977 MALE COMPUTER 85
+	LSI 1988 MALE MATH 99
+	WANGLIJIANG 1989 FEMALE CHINESE 78
+	XUXING 1979 MALE ECONOMIC 81
+	XUXIN 1985 FEMALE ENGLISH 90
+	WANGXUEBING 1970 MALE MATH 94
+	[root@ awk]# vim getline.awk
+	[root@ awk]# awk -f getline.awk <example
+	LICHANG 1989 MALE MATH 99
+	WANGLIJIANG 1987 FEMALE CHINSES 78
+	ZHANGSANSAN 1977 MALE COMPUTER 88
+	LANGXUEBING 1978 MALE MATH 86
+	LISIKAI 1989 MALE MATH 99
+	XIAOHAI 1990 FEMALE CHINESE 78
+	ZHANGSAN 1977 MALE COMPUTER 85
+	LSI 1988 MALE MATH 99
+	WANGLIJIANG 1989 FEMALE CHINESE 78
+	XUXING 1979 MALE ECONOMIC 81
+	XUXIN 1985 FEMALE ENGLISH 90
+	WANGXUEBING 1970 MALE MATH 94

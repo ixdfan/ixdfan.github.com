@@ -116,19 +116,23 @@
     <div class="article-wrap">
       <p>线程同步：互斥变量</p>
 
-<h1>互斥量是一种锁，在访问共享资源时对其加锁，在结束访问时释放锁，这样可以保证在任意时间内，只有一个线程处于临界区内。</h1>
+<p>互斥量是一种锁，在访问共享资源时对其加锁，在结束访问时释放锁，这样可以保证在任意时间内，只有一个线程处于临界区内。</p>
 
-<h5>互斥锁的特点：</h5>
+<h5>注意:互斥锁仅仅保证任意时刻内只有一个线程处于临界区，但是并不会保证线程会一次性执行完临界区中代码</h5>
 
-<p>(1).<strong>原子性</strong>：</p>
+<hr />
+
+<h3>互斥锁的特点：</h3>
+
+<h4>1.原子性：</h4>
 
 <p>把互斥锁定义为一个原子操作，这意味着操作系统保证了如果一个线程锁定了一个互斥锁，没有其他线程在同一时间可以成功锁定这个互斥锁。</p>
 
-<p>(2).<strong>唯一性</strong>：</p>
+<h4>2.唯一性：</h4>
 
 <p>如果一个线程锁定了一个互斥锁，在她解除锁定之前，没有其他线程可以锁定这个互斥量</p>
 
-<p>(3).<strong>非繁忙等待</strong>：</p>
+<h4>3.非繁忙等待：</h4>
 
 <p>如果一个线程已经锁定了一个互斥锁，第二个线程又试图去锁定这个互斥锁，则第二个线程将被挂起(不占用CPU资源)，直到第一个线程解除对这个互斥锁的锁定为止，第二个线则被唤醒并继续执行，同时锁定这个互斥锁</p>
 
@@ -136,11 +140,11 @@
 
 <h5>注意：</h5>
 
-<p><strong>任何想要进入临界区的线程都要对锁进行测试，如果该锁已经被某一个线程所持有，则测试线程会被阻塞，线程会重复上述过程，直到该锁被释放。</strong></p>
+<p>任何想要进入临界区的线程都要对锁进行测试，如果该锁已经被某一个线程所持有，则测试线程会被阻塞，线程会重复上述过程，直到该锁被释放。</p>
 
 <hr />
 
-<p><strong>线程没有释放锁之前所有试图进入临界区的线程都将被阻塞，形成一个阻塞线程队列：</strong></p>
+<p>线程没有释放锁之前所有试图进入临界区的线程都将被阻塞，形成一个阻塞线程队列：</p>
 
 <p>如图所示：<img src="/uploads/2013/11/%E4%BA%92%E6%96%A5%E9%94%81-300x107.jpg" alt="互斥锁" /></p>
 
@@ -156,7 +160,7 @@
 
 <h5>注意：</h5>
 
-<p><strong>静态初始化有个局限性，如果互斥量使用动态分配内存的方法得到，那么下面的方法是错误的</strong></p>
+<p>静态初始化有个局限性，如果互斥量使用动态分配内存的方法得到，那么下面的方法是错误的</p>
 
 <pre><code>pthread_mutex_t* mutex = malloc(sizeof(pthread_mutex_t));
 mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -182,9 +186,19 @@ int pthread_mutex_unlock(pthread_mutex_t *mutex);
 
 <p>其中pthread_mutex_lock的参数表示互斥锁，调用线程希望得到互斥锁。如果互斥锁已经被别的线程得到，那么该函数会导致线程阻塞，直到互斥量的锁释放。如果成功得到锁则返回0，失败返回错误号。</p>
 
-<p><strong>pthread_mutex_trylock的参数与返回值的意义同pthread_mutex_lock一样，但是不同在于pthread_mutex_trylock函数在得不到指定互斥锁的时候并不会导致调用线程阻塞，而是立即返回一个错误编号EBUSY，表示锁申请的锁处于繁忙状态。</strong></p>
+<p>pthread_mutex_trylock的参数与返回值的意义同pthread_mutex_lock一样，但是不同在于pthread_mutex_trylock函数在得不到指定互斥锁的时候并不会导致调用线程阻塞，而是立即返回一个错误编号EBUSY，表示锁申请的锁处于繁忙状态。</p>
 
 <hr />
+
+<p>编程模型:</p>
+
+<h5>1.定义互斥量 pthread_mutex_t</h5>
+
+<h5>2.初始化互斥量为默认值 pthread_mutex_init</h5>
+
+<h5>3.互斥量操作</h5>
+
+<h5>4.销毁互斥量 pthread_mutex_destroy</h5>
 
 <p>实例：</p>
 
@@ -203,7 +217,7 @@ int main()
 {
 
         pthread_t reader,
-                writer;
+                  writer;
         memset(buffer, 0, sizeof(buffer));
         pthread_mutex_init(&amp;mutex, NULL);
         pthread_create(&amp;reader, NULL, readfun, NULL);
@@ -212,7 +226,7 @@ int main()
         pthread_join(reader, NULL);
         pthread_join(writer, NULL);
 
-        pthread_mutex_destroy(&amp;mutex);
+        pthread_mutex_destroy(&amp;mutex);  /* 一定要销毁 */
         return 0;
 }
 
@@ -262,7 +276,23 @@ This is 6
 This is 7
 This is 8
 This is 9
+
+
+
+pthread_mutex_lock      置0
+pthread_mutex_unlock    置1
 </code></pre>
+
+<h5>强烈建议成对使用</h5>
+
+<p>互斥量的值只会在0、1两种状态之间改变;
+<code>pthread_mutex_lock</code> 判定互斥量若为0则阻塞，为1则置0返回
+<code>pthread_mutex_unlock</code> 无论是0还是1,都直接置1返回
+最后一定要置1,否则会一直循环，变成死锁，置1就是为了让其他进程可以执行，不成对使用容易造成死锁;</p>
+
+<h5>注意:</h5>
+
+<p>在pthread_lock与pthread_unlock之间调用pthread_exit或是外部使用pthread_cancle则线程会编程永久性死锁</p>
 
       <hr />
       <footer role="contentinfo">
@@ -295,11 +325,11 @@ This is 9
   <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="http://localhost:4000/2014/03/15/dynamic-link-libary/" title="静态连接与动态连接的区别">静态连接与动态连接的区别</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/15/compile-link/" title="程序编译的过程">程序编译的过程</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" title="nginx的负载均衡--加权轮询的实现">nginx的负载均衡--加权轮询的实现</a></li>
     
-      <li><a href="http://localhost:4000/2014/03/14/memory-variable/" title="各种变量在程序内存中的分布">各种变量在程序内存中的分布</a></li>
+      <li><a href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" title="Nginx负载均衡--客户端请求的均衡与惊群问题">Nginx负载均衡--客户端请求的均衡与惊群问题</a></li>
     
     </ul>
     <hr />
