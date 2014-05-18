@@ -1,0 +1,234 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-12 02:44:50+00:00
+layout: post
+slug: '%e7%ba%bf%e7%a8%8b%e5%90%8c%e6%ad%a5%e4%b9%8b%e6%9d%a1%e4%bb%b6%e9%87%8f'
+title: 线程同步之条件量
+wordpress_id: 958
+categories:
+- 线程
+---
+
+多线程的同步：**信号、条件量、信号量、读写锁、互斥量**
+
+线程同步：条件量
+
+POSIX中提供了两种同步机制:互斥锁和条件量
+
+条件量是对互斥锁的补充，他允许线程阻塞并等待另一个线程发送的信号。当收到信号时，阻塞的线程就被唤醒并试图锁定与之相关的互斥锁。
+
+如果说互斥锁是用于同步线程对共享数据的访问的话，那么条件变量则是用于在线程之间同步共享数据的值;
+条件变量提供了一种线程间的通知机制，当某个共享数据达到某个值的时候，唤醒等待这个共享数据的线程;
+
+=============================================================================
+
+条件量模型：
+* 1.定义条件量
+* 2.初始化条件量 pthread_cond_init
+* 3.等待条件量 pthread_cond_wait
+* 4.其他线程修改条件量
+* 5.释放条件量 pthread_cond_destroy
+
+=============================================================================
+
+1.条件量的初始化
+    
+    int pthread_cond_init(pthread_cond_t *restrict cond,const pthread_condattr_t *restrict attr);
+    pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+
+###### 注意：
+对于静态初始化的方式可以不用destroy函数。
+
+多线程不能同时初始化同一个条件变量，如果一个条件变量正在使用他不能被重新初始化。
+
+2.条件量的销毁
+  
+    int pthread_cond_destroy(pthread_cond_t *cond);
+
+3. 条件量的等待
+
+    int pthread_cond_wait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex);
+
+
+使用**pthread_cond_wait释放由参数mutex指向的互斥锁**，并且使调用线程关于参数cond指向的条件变量阻塞。被阻塞的线程可以被pthread_cond_siganl、pthread_cond_broadcast或fork或传递信号引起的中断唤醒。
+
+pthread_cond_wait通常在互斥锁被调用线程加锁后才返回。
+
+**线程将阻塞直到条件量被信号唤醒，它在阻塞前自动释放互斥锁，在返回前在自动获得它。**
+
+如果有多个线程关于条件量阻塞，其退出阻塞状态的顺序将不确定。
+
+4.   
+
+	int pthread_cond_timedwait(pthread_cond_t  *restrict cond,
+    	pthread_mutex_t *restrict mutex,
+    	const struct timespec *restrict abstime);
+
+##### 注意：
+
+pthread_cond_timedwait和pthread_cond_wait含义相同，区别在于pthread_cond_timedwait在经过参数abstime指定的时间时不会阻塞。
+
+即使返回错误，pthread_cond_timedwait也是在给互斥锁加锁后返回。
+
+pthread_cond_timedwait将会阻塞，知道条件量获得信号或者经过由abstime指定的时间
+
+如果阻塞时间超过了abstime所指定的时间，那么就返回ETIMEOUT
+
+=============================================================================
+
+5.
+
+    
+    int pthread_cond_broadcast(pthread_cond_t *cond);
+    int pthread_cond_signal(pthread_cond_t *cond);
+
+pthread_cond_signal使得关于由参数cond指向的条件变量阻塞的线程退出阻塞状态。在同一个互斥锁的保护下使用pthread_cond_signal，否则，条件量可以在对关联条件变量的测试和pthread_cond_wait带来的阻塞之间获得信号，这将导致无限等待。
+
+如果没有一个线程关于条件变量阻塞，那么美pthread_cond_signal无效。
+
+pthread_cond_broadcast使得多有关于参数cond指向的条件变量阻塞的线程退出阻塞状态。如果没有阻塞线程则pthread_cond_broadcast无效。
+
+pthread_cond_broadcast会唤醒所有由pthread_cond_wait阻塞的线程。
+
+因为所有关于条件量阻塞的线程都同时参与竞争.
+
+=============================================================================
+
+实例：
+
+    
+    #define BUFFER_SIZE 4
+    #define OVER (-1)
+    
+    struct producers
+    {
+            int buffer[BUFFER_SIZE];
+            pthread_mutex_t lock;
+            int readpos;	//读位置
+            int writepos;	//写位置
+    
+            pthread_cond_t notempty;	//非空条件量
+            pthread_cond_t notfull;		//非满条件量
+    };
+    
+    //初始化缓冲区
+    void init(struct producers* b)
+    {
+            pthread_mutex_init(&(b->lock), NULL);
+            pthread_cond_init(&b->notempty, NULL);
+            pthread_cond_init(&b->notfull, NULL);
+            b->readpos = 0;
+            b->writepos = 0;
+    }
+    //在缓冲区内存放一个整数
+    void put(struct producers* b, int data)
+    {
+            pthread_mutex_lock(&b->lock);
+    	//当缓冲区满时等待条件notfull
+            while((b->writepos+1) % BUFFER_SIZE == b->readpos){
+                    pthread_cond_wait(&b->notfull, &b->lock);
+    		//pthread_cond_wait返回之前需要参数b->lock
+            }
+    	向缓冲区写数据，并向前移动指针
+            b->buffer[b->writepos] = data;
+            b->writepos++;
+            if(b->writepos >= BUFFER_SIZE)  b->writepos = 0;
+    	//发送当前缓冲区中有数据的信号
+            pthread_cond_signal(&b->notempty);
+            pthread_mutex_unlock(&b->lock);
+    }
+    //从缓冲区中读数据并将数据从缓冲区中取走
+    int get(struct producers* b)
+    {
+            int data;
+            pthread_mutex_lock(&b->lock);
+    	//当缓冲区中有数据时等待
+            while(b->writepos == b->readpos){
+                    pthread_cond_wait(&b->notempty, &b->lock);
+    		//等待信号notempty
+            }
+    
+    	//从缓冲区中读数据并将指针向前移动
+            data = b->buffer[b->readpos];
+            b->readpos++;
+            if(b->readpos >= BUFFER_SIZE)   b->readpos = 0;
+    	//发送缓冲区未满的信号
+            pthread_cond_signal(&b->notfull);
+            pthread_mutex_unlock(&b->lock);
+            return data;
+    }
+    
+    struct producers buffer;
+    
+    void* producter(void* data)
+    {
+            int n;
+            for(n = 0; n < 10; n++){                 
+	            printf("Producer: %d-->\n", n);
+                    put(&buffer, n);
+            }
+            put(&buffer, OVER);
+            return NULL;
+    }
+    
+    void* consumer(void* data)
+    {
+            int d;
+            while(1){
+                    d = get(&buffer);
+                    if(OVER == d)   break;
+                    printf("Consumer:-->%d\n", d);
+            }
+            return NULL;
+    }
+    
+    int main()
+    {
+            pthread_t tha, thb;
+            void* retval;
+            init(&buffer);
+            pthread_create(&tha, NULL, producter, NULL);
+            pthread_create(&thb, NULL, consumer, NULL);
+            pthread_join(tha, NULL);
+            pthread_join(thb, NULL);
+            return 0;
+    }
+
+
+主进程建立两个线程，一个叫producer，一个叫consumer。
+
+producer向缓冲区中写入整数1-10，当缓冲区中写入数据后，就发送缓冲区有数据的信号。
+
+consumer从缓冲区中读数据当consumer从缓冲区读出数据后，就发送当前缓冲区未满的信号.
+
+(b->writepos == b->readpos)含义：当读位置与写位置相同时，表示的也就是现在为空
+
+(b->writepos+1) % BUFFER_SIZE == b->readpos)含义：当写位置处于读位置的后面一个位置时，表明此时已经写满了，需要被读取
+
+
+输出如下：
+    
+    [root@localhost 05]# ./main                      
+    Producer: 0-->                                   
+    Producer: 1-->                                   
+    Producer: 2-->                                   
+    Producer: 3-->                                   
+    Consumer:-->0                                    
+    Consumer:-->1                                    
+    Consumer:-->2                                    
+    Producer: 4-->                                   
+    Producer: 5-->                                   
+    Producer: 6-->                                   
+    Consumer:-->3
+    Consumer:-->4
+    Consumer:-->5
+    Producer: 7-->
+    Producer: 8-->
+    Producer: 9-->
+    Consumer:-->6
+    Consumer:-->7
+    Consumer:-->8
+    Consumer:-->9
+
+=============================================================================

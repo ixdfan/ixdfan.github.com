@@ -1,0 +1,132 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-09 04:12:11+00:00
+layout: post
+slug: gdb%e8%b0%83%e8%af%95%e5%85%ad%e7%ba%bf%e7%a8%8bcpu%e5%8d%a0%e7%94%a8%e9%ab%98
+title: GDB调试(六):线程CPU占用高
+wordpress_id: 928
+categories:
+- GDB
+tags:
+- GDB
+---
+
+如何定位线程占用CPU100%的问题,这个问题曾经在面试时候被问道过
+
+======================================================================================
+
+测试程序
+
+    
+    void* tfn1(void* arg)
+    {
+            while(1);
+    }
+    void* tfn2(void* arg)
+    {
+            printf("the second thread\n");
+            while(1);
+            printf("the second thread over\n");
+    }
+    int main()
+    {
+            pthread_t t1, t2;
+            pthread_create(&t1, NULL, tfn1, NULL);
+            pthread_create(&t2, NULL, tfn2, NULL);
+    
+            pthread_join(t1, NULL);
+            pthread_join(t2, NULL);
+            return 0;
+    }
+
+
+======================================================================================
+
+编译并运行程序
+
+    
+    [root@localhost 05]#cc while.c -omain -g -lpthread
+    [root@localhost 05]# ./main
+
+
+======================================================================================
+
+我们使用top命令我们可以看到main程序的CPU占用达到了95.6%
+
+    
+    PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+    15486 root      20   0 22596  472  388 S 95.6  0.0   0:44.86 main
+
+
+使用top的H选项查看哪线程占用CPU最高，此时的PID就是线程的进程ID
+
+    
+      PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+    15488 root      20   0 22596  472  388 R 48.5  0.0   2:18.08 main
+    15487 root      20   0 22596  472  388 R 48.0  0.0   2:18.08 main
+
+
+======================================================================================
+
+##### 使用GDB调试
+
+可以看到我们的两个线程分别占用CPU为48.5%，48%,现在我们可以使用GDB来定位了
+
+    
+    [root@localhost 05]# gdb 
+    (gdb) attach 15487
+    Attaching to process 15487
+    ……	#省略一些内容
+    tfn1 (arg=0x0) at while.c:9
+    9               while(1);
+    (gdb) bt
+    #0  tfn1 (arg=0x0) at while.c:9
+    #1  0x00d91a49 in start_thread (arg=0xb7739b70)
+        at pthread_create.c:301
+    #2  0x00ca1aae in clone ()
+        at ../sysdeps/unix/sysv/linux/i386/clone.S:133
+
+
+可以看到原来是我们的tfn1线程占用了CPU，问题就在与while(1)
+
+当然采用同样的方法我们可以看到tfn2。
+
+======================================================================================
+
+##### 使用pstack定位
+
+还有我们可以采用pstack查看线程的调用栈
+
+    
+    [root@localhost ~]# pstack 15487
+    Thread 1 (process 15487):
+    #0  0x080484a1 in tfn1 ()
+    #1  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+    #2  0x00ca1aae in clone () from /lib/libc.so.6
+    
+    [root@localhost ~]# pstack 15488
+    Thread 1 (process 15488):
+    #0  0x080484b5 in tfn2 ()
+    #1  0x00d91a49 in start_thread () from /lib/libpthread.so.0
+    #2  0x00ca1aae in clone () from /lib/libc.so.6
+
+
+可以看到我们的线程15487与15488分别是tfn1与tfn2，这样也可以快速定位到问题线程
+
+
+======================================================================================
+##### 查看CPU使用时间
+
+通过查看每个线程所占用的CPU时间缩小到具体线程
+
+在proc/pid/task下包含了该进程所有的线程，例如线程号15487,那么在proc/pid/task/15487/stat文件可以获取到此线程的信息，其中第14个域和15个于就是用户态时间和内核态时间，依据这2个时间就能知道CPU到底花在哪个线程中了。
+
+    
+    [root@localhost ~]# vim /proc/15486/task/15487/stat
+    15487 (main) T 14792 15486 14792 34821 15486 4202560 0 0 0 0 29602 20 0 0 20 0 3 0 3159492 23138304 118 4294967295 134512640 134514360 3220545728 3077804920 134513825 0 0 0 0 0 0 0 -1 0 0 0 0 0 0
+
+
+第14为用户态时间29602
+
+第15为内核态时间20

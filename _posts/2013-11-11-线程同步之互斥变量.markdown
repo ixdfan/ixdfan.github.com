@@ -1,0 +1,190 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-11 02:18:25+00:00
+layout: post
+title: 线程同步之互斥变量
+wordpress_id: 941
+categories:
+- 线程
+tags:
+- 线程
+---
+
+线程同步：互斥变量
+
+互斥量是一种锁，在访问共享资源时对其加锁，在结束访问时释放锁，这样可以保证在任意时间内，只有一个线程处于临界区内。
+
+##### 注意:互斥锁仅仅保证任意时刻内只有一个线程处于临界区，但是并不会保证线程会一次性执行完临界区中代码
+
+===================================================================================
+
+### 互斥锁的特点：
+
+#### 1.原子性：
+
+把互斥锁定义为一个原子操作，这意味着操作系统保证了如果一个线程锁定了一个互斥锁，没有其他线程在同一时间可以成功锁定这个互斥锁。
+
+#### 2.唯一性：
+
+如果一个线程锁定了一个互斥锁，在她解除锁定之前，没有其他线程可以锁定这个互斥量
+
+#### 3.非繁忙等待：
+
+如果一个线程已经锁定了一个互斥锁，第二个线程又试图去锁定这个互斥锁，则第二个线程将被挂起(不占用CPU资源)，直到第一个线程解除对这个互斥锁的锁定为止，第二个线则被唤醒并继续执行，同时锁定这个互斥锁
+
+===================================================================================
+
+##### 注意：
+
+任何想要进入临界区的线程都要对锁进行测试，如果该锁已经被某一个线程所持有，则测试线程会被阻塞，线程会重复上述过程，直到该锁被释放。
+
+===================================================================================
+
+线程没有释放锁之前所有试图进入临界区的线程都将被阻塞，形成一个阻塞线程队列：
+
+如图所示：![互斥锁](/uploads/2013/11/互斥锁-300x107.jpg)
+
+===================================================================================
+
+1.锁的初始化：
+    
+    静态初始化：pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+    动态初始化：int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);
+
+其中pthread_mutex_init第二个参数为互斥量的属性，写为NULL，则表示以默认属性初始化。
+
+##### 注意：
+
+静态初始化有个局限性，如果互斥量使用动态分配内存的方法得到，那么下面的方法是错误的
+    
+    pthread_mutex_t* mutex = malloc(sizeof(pthread_mutex_t));
+    mutex = PTHREAD_MUTEX_INITIALIZER;
+
+原因在于linux中的pthread_mutex_t类型是一个结构体，而PTHREAD_MUTEX_INITIALIZER常量相当于已经设置好的结构体变量中的每个成员变量的值，显而易见，一个已经定义好的结构体对象可以使用这种方法，但是使用malloc分配的结构体对象则不能使用
+
+===================================================================================
+
+2.锁的销毁：
+    
+    int pthread_mutex_destroy(pthread_mutex_t *mutex);
+
+当不使用锁时，应将其销毁。
+
+3.得到与释放锁
+    
+    int pthread_mutex_lock(pthread_mutex_t *mutex);
+    int pthread_mutex_trylock(pthread_mutex_t *mutex);
+    int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+其中pthread_mutex_lock的参数表示互斥锁，调用线程希望得到互斥锁。如果互斥锁已经被别的线程得到，那么该函数会导致线程阻塞，直到互斥量的锁释放。如果成功得到锁则返回0，失败返回错误号。
+
+pthread_mutex_trylock的参数与返回值的意义同pthread_mutex_lock一样，但是不同在于pthread_mutex_trylock函数在得不到指定互斥锁的时候并不会导致调用线程阻塞，而是立即返回一个错误编号EBUSY，表示锁申请的锁处于繁忙状态。
+
+===================================================================================
+
+
+编程模型:
+
+##### 1.定义互斥量 pthread_mutex_t
+##### 2.初始化互斥量为默认值 pthread_mutex_init
+##### 3.互斥量操作
+##### 4.销毁互斥量 pthread_mutex_destroy
+
+
+实例：
+    
+	#define FALSE 0
+	#define TRUE 1
+	
+	void* readfun(void* arg);
+	void* writefun(void* arg);
+	
+	char buffer[256];
+	int buffer_has_item = 0;
+	int retflag = FALSE;
+	pthread_mutex_t mutex;
+	
+	int main()
+	{
+	
+	        pthread_t reader,
+	                  writer;
+	        memset(buffer, 0, sizeof(buffer));
+	        pthread_mutex_init(&mutex, NULL);
+	        pthread_create(&reader, NULL, readfun, NULL);
+	        pthread_create(&writer, NULL, writefun, NULL);
+	
+	        pthread_join(reader, NULL);
+	        pthread_join(writer, NULL);
+	
+	        pthread_mutex_destroy(&mutex);	/* 一定要销毁 */
+	        return 0;
+	}
+	
+	void* readfun(void* arg)
+	{
+	        while(1){
+	                if(retflag)
+	                        return NULL;
+	                pthread_mutex_lock(&mutex);
+	
+	                if(buffer_has_item == 1){
+	                        printf("%s", buffer);
+	                        buffer_has_item = 0;
+	                }
+	                pthread_mutex_unlock(&mutex);
+	        }
+	}
+	
+	void* writefun(void* arg)
+	{
+	        int i = 0;
+	        while(1){
+	                if(10 == i){
+				sleep(1);	//优先级的关系不确定，如果不加sleep可能不会输出This is 9,
+	                        retflag = TRUE;
+	                        return;
+	                }
+	
+	                pthread_mutex_lock(&mutex);
+	                if(buffer_has_item == 0){
+	                        sprintf(buffer, "This is %d\n", i++);
+	                        buffer_has_item = 1;
+	                }
+	                pthread_mutex_unlock(&mutex);
+	        }
+	}
+	
+	
+	[root@localhost 06]# ./main
+	This is 0
+	This is 1
+	This is 2
+	This is 3
+	This is 4
+	This is 5
+	This is 6
+	This is 7
+	This is 8
+	This is 9
+
+	
+
+	pthread_mutex_lock   	置0
+	pthread_mutex_unlock	置1
+##### 强烈建议成对使用
+
+互斥量的值只会在0、1两种状态之间改变;
+`pthread_mutex_lock` 判定互斥量若为0则阻塞，为1则置0返回
+`pthread_mutex_unlock` 无论是0还是1,都直接置1返回
+最后一定要置1,否则会一直循环，变成死锁，置1就是为了让其他进程可以执行，不成对使用容易造成死锁;
+
+
+##### 注意:
+在pthread_lock与pthread_unlock之间调用pthread_exit或是外部使用pthread_cancle则线程会编程永久性死锁
+
+
+
+
+

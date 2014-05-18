@@ -1,0 +1,48 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-12-17 04:34:59+00:00
+layout: post
+slug: head%e4%b8%8etail
+title: head与tail
+wordpress_id: 1282
+categories:
+- THE TOOL
+---
+
+=================================================================================================
+
+head:显示指定文件的头几行
+
+tail:显示指定文件的结尾后几行
+
+	-Count:显示指定文件的开头(结尾)指定的行数。
+	Count必须是一个正十进制数，等价于-n Number
+	-n Number:等价于-Count
+	-c End:指定要显示的字节数
+
+    
+    [root@localhost 02]# head  mail
+    From user@localhost.localdomain  Thu Jul 18 08:49:46 2013
+    Return-Path: <user@localhost.localdomain>
+    X-Original-To: root@localhost
+    Delivered-To: root@localhost.localdomain
+    Received: by localhost.localdomain (Postfix, from userid 0)
+            id 0649F84E76; Thu, 18 Jul 2013 08:49:45 +0800 (CST)
+    Date: Thu, 18 Jul 2013 08:49:45 +0800
+    From: user@localhost.localdomain
+    To: root@localhost.localdomain
+    Subject: [abrt] full crash report
+    
+    [root@localhost 02]# head -4 mail
+    From user@localhost.localdomain  Thu Jul 18 08:49:46 2013
+    Return-Path: <user@localhost.localdomain>
+    X-Original-To: root@localhost
+    Delivered-To: root@localhost.localdomain
+    
+    [root@localhost 02]# head -c 100 mail
+    From user@localhost.localdomain  Thu Jul 18 08:49:46 2013
+    Return-Path: <user@localhost.localdomain>
+
+
+=================================================================================================

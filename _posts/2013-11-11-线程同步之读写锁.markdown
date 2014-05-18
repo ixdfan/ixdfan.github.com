@@ -1,0 +1,65 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-11 03:06:13+00:00
+layout: post
+slug: '%e7%ba%bf%e7%a8%8b%e5%90%8c%e6%ad%a5%e4%b9%8b%e8%af%bb%e5%86%99%e9%94%81'
+title: 线程同步之读写锁
+wordpress_id: 951
+categories:
+- 线程
+---
+
+线程同步：读写锁
+
+读写锁与互斥锁类似，但是并行性更高，原因在于互斥锁每次只有一个线程可以得到锁进行操作，其余线程都得不到锁而处于阻塞状态。创建多线程操作的本意是为了并发执行任务，但是又有互斥锁的缘故导致线程的操作变成了串行的，所以出现的运行效率会大打折扣。
+
+##### 注意：
+使用读写锁的好处是将线程根据操作类型分为两类：读线程和写线程。
+* 读线程只对共享资源进行读操作，并不改变共享资源；
+* 写线程对共享资源进行些操作，会改变共享资源；
+
+对于多个**读线程来说可以共同占用一把读写锁**，但是对与**写线程来讲，任意时刻只能有一个线程占用读写锁。**
+如图所示:
+[![读写锁](http://ucshell.com/wp-content/uploads/2013/11/读写锁-300x238.jpg)](http://ucshell.com/wp-content/uploads/2013/11/读写锁.jpg)
+
+在程序执行时，如果对共享资源做读操作的线程数目远大于写线程的时候，使用读写锁可以大大提高线程的并发度，从而提高运行效率。
+
+1.读写锁的初始化：
+    
+    int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock,const pthread_rwlockattr_t *restrict attr);
+
+第一个参数为读写锁的指针，读写锁在该函数内被初始化；
+
+第二个参数为读写锁的属性，通常参数设置为NULL，会采用默认属性去初始化；
+
+成功返回0，失败返回错误号
+
+2.读写锁的销毁
+    
+    int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
+
+3.得到与释放读写锁
+    
+    读锁的获取
+    int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);
+    int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
+    
+    写锁的获取
+    int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
+    int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);
+
+pthread_rwlock_rdlock调用线程想在读模式下获取该读写锁，如果该读写锁已经被某一线程在读模式下获取了，则测试线程仍然可以得到该锁；
+
+**如果该读写锁已经被某一个线程在写模式下得到，或有一个线程在写模式下等待该锁，则pthread_rwlock_rdlock会导致线程阻塞，直到该读写锁被释放**
+
+pthread_rwlock_tryrdlock的意义与pthread_rwlock_rdlock相同，不过在得不到指定读写锁时，并不会导致线程阻塞，而是立即返回一个错误编号EBUSY，表示所申请的锁处于繁忙状态。
+
+pthread_rwlock_wrlock在测试读写锁的时候如果有任意一个线程占用该锁，pthread_rwlock_wrlock函数就会导致阻塞，并且会导致其后所有申请该读写锁的线程阻塞等待
+
+pthread_rwlock_trywrlock的作用类似pthread_rwlock_tryrdlock
+
+##### 锁的释放：
+    
+    int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
+

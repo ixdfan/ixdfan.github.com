@@ -1,0 +1,535 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-12-17 04:08:29+00:00
+layout: post
+slug: io%e6%93%8d%e4%bd%9c
+title: IO操作
+wordpress_id: 1262
+categories:
+- THE C&amp;C++
+---
+
+** **
+
+
+**继承的关系是'是'的关系，子类对象一定是父类对象**
+
+使用父类对象的地方一定可以是用子类对象来代替；
+
+例如适用istream的地方就一定可以使用ifstring！即用cin的地方一定可以使用呢ifstream或istringstream对象来代替；
+    
+    in.getline()	输入一行
+    in.ignore()	抛弃缓冲区中的内容
+    in.putback()	退回刚刚读取到的字符到缓冲区
+    in.peek()	预先探测下一个字符
+    in.get()	(1)无参，读取成功返回读取字符的ANSIIC码，失败返回EOF(就是-1);
+    		(2)参数为char类型引用；
+    
+    out.put()	输出整数对应的ANSIIC码字符
+
+
+================================================================================
+
+    int n = cin.get();/*返回字符的ANSIIC码，也就是int型的*/
+    char c, d;
+    cin.get(c).get(d);
+    
+    char buf[100];
+    cin.getline(buf, sizeof(buf));
+    string name;
+    std::getline(cin, name);
+
+
+如果输入的时候输入多了，那么程序只会读它所能读到的最大长度，但是**最后一个字符一定是'\0'**，剩余的留着下一个读取函数来读取；
+
+================================================================================
+
+    char ch;
+    cin >> ch;
+    cout << "ch = " << ch << endl;
+    
+    char c, d;
+    cin.get(c).get(d);
+    cout << "c = " << c << endl << "d = " << d << endl;
+
+
+如果这样的话如果在输入时候输入asdfgh,那么输出 ch = a c = s d = d;
+
+但是这不是我们想要的，我们仅仅想要为ch输入，如何清空缓冲区呢？
+
+使用cin.ignore();
+
+    cin.ignore(200, '\n');
+
+200的含义是最多清空200个字符；
+
+'\n'的含义是遇到'\n'后则停止清除，但是'\n'本身也会清除；
+
+这两个参数本身都有默认值，第一个参数默认值为1，第二个默认值为文件结束符EOF；
+
+================================================================================
+**cin.get(c)与cin >> c的区别**
+
+cin >> c会跳过所有空白字符，类似于scanf(" %c");%号前有空格
+
+cin.get(c)不会跳过空格，类似于c中的getchar()或fget();
+
+================================================================================
+
+int n = cin.get();对于这个get我们可以使用返回值EOF检测他是否出错；
+
+cin.get(c);
+
+我们如何检测？
+
+	cout << cin << endl;
+	cout << cout << endl;
+	cout << &cin << endl;
+	cout << &cout<< endl;
+
+输出
+    
+    [root@localhost IO]# ./main
+    0x804a1a8
+    0x804a244
+    0x804a1a0
+    0x804a240
+
+可以看到cin、cout输入的像是地址但又不是地址
+
+c++要求IO对象能够转换成bool类型，就可以表示真假了，转换的对象只要能表示真假就可以了，地址也是真假，所以转换成什么地址并没有规定。
+
+如果一切正常测为true，否则为false；
+    
+    int n;
+    cin >> n;
+    cout << cin << endl;
+    cout << cout << endl;
+
+如果输入123则cin输出正常；
+
+如果输入agc则cin输出为0；
+
+他应该读一个整数，但是abc并不是整数，cin就没有读取，所以出于错误状态
+
+若输入123.4没有问题，他会读取123，留下.4;
+
+但是若输入.4那么没有读取到整数，也会出错，输入0.4是正确的
+
+================================================================================
+ 
+	if(cin) 
+		cout << "平安无事" << endl;
+	else	
+		cout << "cin出错" << endl;
+
+一般使用这种方式来判断是否出错
+
+================================================================================
+
+	int n;
+	cin >> n;
+	string s;
+	cin >> s;
+	cout << "s = [" << s << "]" << endl;
+
+
+输入123.456发现s = [.456]，因为123被n读取了
+    
+    cin >> oct	//以八进制的方式输入
+    cin >> hex	//以十六进制的方式输入
+    cin >> dec	//以十进制的方式输入
+    cin >> ws	//跳过空白字符
+
+如果我们输入的是asdf，那么输出的n=0,s=[];
+
+**因为IO对象一旦处于错误状态，他就会拒绝读写(IO)**
+
+================================================================================
+
+	cin.clear():
+**清除cin的错误状态，注意不是清空缓冲区**,要想**清空缓冲区必须用cin.ignore();**
+
+================================================================================
+
+in.getline()的两种用法：
+  
+    in.getline(char* buf, int bufsize)	//成员函数
+
+如果**输入超过bufsize的大小，那么他会按最大数量读取，但是最后一个一定是'\0'**, 如果没有成功读取一行，则他会把IO设为错误状态，后面的也就没有办法读取了！因此数组要尽可能的大。
+    
+    getline( istream& is, string& s, char delimiter = '/n' )	//非成员函数
+
+这个getline是一个全局函数在string中声明；
+
+##### 注意:
+**第二个参数必须使用string类对象；**
+
+最后一个参数指定的是结束字符，也就是遇到这个字符就结束输入，默认为'/n'，也可以自己指定；
+
+这个用处很大，比如有的配置文件是xxxx=xxxx格式的，那么我们就可以使用getline指定读取到=结束，然后再读取到末尾
+##### 注意：
+**对于最后一个参数指定的读取到哪个字符结束，getline不会去读取结束的哪个字符，而是将他扔掉了**
+
+    
+    int main()
+    {
+            char buf[10];
+            if(!cin.getline(buf, sizeof(buf))){
+                    cout << "error" << endl;
+                    cin.clear();	// 去除错误状态
+                    cin.ignore(100, '\n');	//去除缓冲区中内容
+            }
+    
+            string value;
+    	string data;
+            getline(cin, value, '=');
+    	getline(cin, data);
+            cout << "buf = [" << buf << ']' << endl;
+            cout << "value = [" << s << ']' << endl;
+    	cout << "data  = [" << data << ']' << endl;
+            printf("%s\n", s.c_str());
+    
+            return 0;
+    }
+
+
+
+    
+    [root@localhost IO]# ./main
+    12
+    getline=1234
+    buf = [12]
+    s = [getline]
+    data = [1234]
+    getline
+
+
+================================================================================
+
+    
+	int main()
+	{
+		char buf[100];
+		//cin >> ws;
+		char c = cin.get();
+		if(isdigit(c)){
+			double d;
+			cin >> d;
+			cout << "d = " << d << endl;         
+		}else{                 
+			string s;                 
+			cin >> s;
+			cout << "s = " << s << endl;
+		}
+			return 0;
+	}
+
+
+如果输入的是空格12345,那么会输出s = 12345;
+
+如何**去掉空格？使用cin >> ws;**
+
+================================================================================
+  
+    cin.peek() 仅读不取
+    cin.get()  直接读取
+
+	int main()
+	{
+		char buf[100];
+		//cin >> ws;
+		char c = cin.get();
+		if(cin.peek() > '0' and cin.peek() < '9'){                
+			double d;                 
+			cin >> d;
+			cout << "d = " << d << endl;         
+		}else{      
+			string s;               
+			cin >> s;
+			cout << "s = " << s << endl;
+		}
+		return 0;
+	}
+
+
+cin.peek没有参数；
+
+**cin.peek查看缓冲区中的第一个字符，返回的是字符的ANSIIC码；**
+
+================================================================================
+
+    
+	/*需要sstream头文件*/
+	int main()
+	{
+		string s = "1234 6.78 x hello 234 100";
+		istringstream is(s);
+		ostringstream os;	//与cout一样，只不过不输出到屏幕上而已；
+
+		int a, b, c;
+		double d;
+		char e;
+		char buf[100];
+		is >> a >> d >> e >> buf >> oct >> b >> hex >> c;
+		/*将字符串中对应的内容输入到对应变量中*/
+		cout << "a = " << a << " b = " << b << " c = "
+			<< c << " d = " << d << " e = " << e
+			<< " buf = " << buf << endl;
+
+		/*合并到一个中*/
+		os << "a = " << a << " b = " << b << " c = "
+			<< c << " d = " << d << " e = " << e
+			<< " buf = " << buf << endl;
+
+		cout << "==============================" << endl;
+		cout << os.str() << endl;
+		cout << "==============================" << endl;
+		cout << os.str()[0] << endl;	//输出第1个字符像数组一样的使用；
+
+		return 0;
+	}
+
+
+    [root@localhost IO]# ./main
+    a = 1234 b = 156 c = 256 d = 6.78 e = x buf = hello
+    ==============================
+    a = 1234 b = 156 c = 256 d = 6.78 e = x buf = hello
+    
+    ==============================
+    a
+
+
+由于我们的os最后已经有了一个endl,而输出os.str()又加了一个endl所以输出了两个换行；
+
+**注意：
+
+****对于自定义类型的输出要重载运算符才可以；**
+
+** ostringstream::str()返回的是c++风格的字符串，也可以后面接.c_str()将他转换为c类型字符串,例如:os.str().c_str();**
+
+** ostringstream对象将数据保存到了c++风格的字符串中！**
+
+	/*需要sstream头文件*/
+	class Point
+	{
+		int x, y;
+		public:
+		Point(int x, int y):x(x), y(y){}
+
+		friend ostream& operator<< (ostream& out, const Point& P)
+		{
+		    return out << '(' << P.x << ',' << P.y << ')';	//不能忘记return         
+		} 
+	};
+	int main() {         
+		string s = "1234 6.78 x hello 234 100";         
+		istringstream is(s); 	
+		ostringstream os;	//与cout一样，只不过不输出到屏幕上而已；         
+		int a, b, c;         
+		double d;         
+		char e;         
+		char buf[100]; 	
+		Point P(3, 5);         
+		is >> a >> d >> e >> buf >> oct >> b >> hex >> c;
+
+		cout << "a = " << a << " b = " << b << " c = "
+		    << c << " d = " << d << " e = " << e
+		    << " buf = " << buf << endl;
+
+		os << "a = " << a << " b = " << b << " c = "
+		    << c << " d = " << d << " e = " << e
+		    << " buf = " << buf << " P = " << P << endl;//加入了P
+
+		cout << "==============================" << endl;
+		cout << os.str() << endl;
+		cout << "==============================" << endl;
+
+		return 0;
+	}
+
+
+注意：istringstream可以读读停停，比如将
+    
+    is >> a >> d >> e >> buf >> oct >> b >> hex >> c;
+
+改为
+    
+    is >> a >> d >> e >> buf; 
+    is >> oct >> b >> hex >> c;
+
+仍然正确的输入了，分开他并不会导致又从头开始读取，只要is对象还在，就可以一直的输入下去；
+
+================================================================================
+
+无论是读文件还是写文件都需要头文件fstream
+    
+	int main()
+	{
+		string path = "sstream.cpp";
+		ifstream fin(path.c_str());//比较搞笑的是明明是c++，但是参数却一定要用c风格字符串！
+		/*等价于以下两条语句
+		*ifstream fin;
+		*fin.open(path.c_str());
+		*/
+		if(!fin){
+		    cout << "open error" << endl;                 
+		    return -1;        
+		}         
+		 char ch; 
+		//while(fin >> ch){			//如果使用这个则fin会跳过空白字符导致输出的结果不便查看
+		//while(EOF != (ch = fin.get()))	//这样比较难写，打字太多
+		while(fin.get(ch)){			//一般使用这种方式
+		    cout << ch;
+		}
+		fin.close();//显性的关闭文件比较好
+
+		return 0;
+	}
+
+
+c语言中控制台当做文件stdout、stdin、stderr;
+
+c++中对应的是cout、cin、cerr
+
+由于ifstream是istream的子类，因此可以使用操作cin的方法操作fin,这就是继承；
+
+fin.peek()、fin.get()、fin.putback()等等都可以使用！
+
+================================================================================
+
+使用ofstream复制文件
+
+	int main()
+	{
+		string path = "sstream.cpp";
+		ifstream fin(path.c_str());
+		/*ifstream fin;
+		*fin.open(path.c_str());
+		*/
+		if(!fin){
+			cout << "fin open error" << endl;
+			return -1;
+		}
+		ofstream fout("copy.cpp");
+		/*等价
+		*ofstream fout;
+		*fout.open("copy.cpp");
+		*/
+		if(!fout){
+			cout << "fout open error" << endl;                 
+			return -1;         
+		}         
+		char ch;         
+		//while(fin >> ch){
+		while(fin.get(ch)){
+			cout << ch;	//输出到屏幕
+			fout << ch;	//输出到文件copy.cpp
+		}
+		fin.close();
+		fout.close();
+
+		return 0;
+	}
+
+
+可以使用wc来统计复制文件与源文件，两个文件完全相同
+    
+	while(fin.get(ch)){
+		cout << ch;	//输出到屏幕
+		fout << ch;	//输出到文件copy.cpp
+	}
+	改为
+	while(fin){
+		fin.get(ch)
+		cout << ch;	//输出到屏幕
+		fout << ch;	//输出到文件copy.cpp
+	}
+
+
+会发现拷贝的文件多出了一个字符，原因在于，当fin.get(ch)读取到最后一个的时候没有遇到EOF，所以while中的fin正确；
+
+当下次读取时没有读取到内容，所以出于错误状态，导致ch没有改变紧接着是fout << ch;所以讲最后的一个字符输入了两次；
+
+##### 注意：
+ifstream fin(path)
+
+他会自动打开path的文件**,path一定要是c风格的字符串，否则出错；**
+
+**文件打开一定要检查**，使用if(fin)，打开文件不去判断那么你会被直接淘汰的
+
+对于打开的文件记得显性的关闭，虽然析构函数也可以关闭，但是最好还是写上去！
+
+c语言中的fscanf()对应c++中的fin >>, fgetc()对应fin.getline()/getline();
+
+================================================================================
+
+	fin.read(char* buf, bufsize);
+
+从文件中读取了放入内存中；
+
+	fin.write(char* buf, bufsize);
+
+**注意:参数必须强制装换为char***
+
+	reinterpret_cast<char*>(& int_type_value);
+
+	(char*)&int_type_value;
+
+**fin.gcount();返回上一次fin.read中读取的字符个数**
+
+比如读取一个文件，每次读取100字符，最后一次读取一般不满100字符，我们便可以使用.gcount()来统计最后一次到底读取了多少个字符。
+
+================================================================================
+    
+    int main(int argc, char** argv)
+    {
+            if(3 != argc){
+                    cout << "argc : " << argc << endl;
+                    return -1;
+            }
+    
+            //fstream fin_out(argv[1], ios::binary | ios::in | ios::out);//又读又写
+            ifstream fin(argv[1], ios::binary | ios::in);	
+            ofstream fout(argv[2], ios::binary | ios::out);
+    
+            if(!fin){
+                    cout << "fin error" << endl;
+                    return -1;
+            }
+            if(!fout){
+                    cout << "fout error" << endl;
+                    return -1;
+            }
+            char buf[100];	//如果将buf改为int类型，那么在read、write中要加强制转换
+            while(fin){	//当fin处于错误状态的时候说明已经读取完毕了！
+                    fin.read(buf, sizeof(buf));
+                    fout.write(buf, fin.gcount());	//这里不能使用.gcount()，因为
+            }
+            fin.clear();	//清除fin的错误状态
+            fin.close();
+            fout.close();
+    
+            return 0;
+    }
+
+ios::binary|ios::in 以二进制的方式写
+ios::binary|ios::out 以二进制方式读
+ios::app 打开文件后不会覆盖文件，而是在末尾去追加
+如果想要又读又写，那么应该使用fstream类
+fstream::seekg(位置， ios::beg/ios::end/ios::cur);定位去读
+fstream::seekp(位置，ios::beg/ios::end/ios::cur);定位去写
+tellg();获取当前读位置，相对于文件头的位置
+tellp();获取当前写位置，相对于文件头的位置
+如果想要又读又写的话使用
+   
+    fstream f(path, ios::binary | ios::in | ios::out);
+
+================================================================================
+
+cout.width(10)；//输出格式控制，仅对后面的一次有效
+
+注意：**带参数的格式控制符都需要头文件iomanop**；
+
+setw(10); //输出格式控制，仅对后面的一次有效

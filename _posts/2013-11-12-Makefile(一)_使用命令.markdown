@@ -1,0 +1,88 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-12 15:15:26+00:00
+layout: post
+slug: '%e6%b5%8b%e8%af%95'
+title: Makefile(一):使用命令
+wordpress_id: 967
+categories:
+- Makefile
+tags:
+- Makefile
+---
+
+显示命令：
+make会将要执行的命令行在命令执行前输出到屏幕。当使用@字符在命令前，那么这个命令将不会被make显示出来，可以利用这个功能向屏幕输出一些信息
+
+Makefile:
+
+    
+    main:
+            echo compling......
+
+
+执行如下：
+
+    
+    [root@localhost 01]# make
+    echo compling......
+    compling......
+
+
+修改后如下：
+
+    
+    main:
+            @echo compling......
+
+
+执行如下：
+
+    
+    [root@localhost 01]# make
+    compling......
+
+
+此外使用make的-n或--just-print选项，则可以只显示命令，但不执行命令。
+
+-s或--slient则禁止所有命令的显示，无论是否有@
+
+    
+    [root@localhost 01]# make -n
+    echo compling......
+    [root@localhost 01]# make -s
+    compling......
+
+
+===================================================================================================
+
+Makefile命令出错：
+
+在有些时候命令出错并不表示就是错误，例如mkdir命令，使用该命令的目的就是一定要保证建立一个目录。
+
+如果目录不存在，那么mkdir就执行成功；如果目录存在那么命令就会出错；
+
+由此可见，即使命令出错也是在正常的范围内的，因此，我们不希望因为mkdir出错而终止整个规则的运行。
+
+在规则的命令行前加一个减号'-'(Tab之后)，表示忽略对gia命令执行结果的判断。
+
+    
+    #01目录已经存在
+    main:
+    	-mkdir ../01
+            clear
+
+
+如果一个规则是以.IGNORE声明作为目标的，那么这个规则中的所有命令将会忽略错误，如下
+
+    
+    #01目录已经存在
+    main:
+            mkdir ../01
+            clear
+    
+    .IGNORE:main
+
+
+make的-i与--ignore-errors可以是makefile文件中所有命令都忽略错误

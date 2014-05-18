@@ -1,0 +1,71 @@
+---
+layout: post
+title:  死锁举例
+description: 
+modified: 
+categories: 
+-  THE LINUX
+tags:
+- pthread
+
+---
+使用互斥锁的一个噩耗就是死锁，死锁使得一个或多个exarch被挂起而无法继续执行，而且这种情况还不容易被发现。
+
+一个线程中对一个已经加锁的陪同锁再次加索，将会导致死锁。
+
+如果两个线程按照不同的顺序来申请两个互斥锁，也容易产生死锁
+
+	#include <stdio.h>
+	#include <pthread.h>
+	#include <unistd.h>
+	int a = 0;
+	int b = 0;
+	pthread_mutex_t mutex_a;
+	pthread_mutex_t mutex_b;
+	
+	void* another(void* arg)
+	{
+		pthread_mutex_lock(&mutex_b);
+		printf("in child thread, got mutex b, waiting for mutex a\n");
+		sleep(5);
+		++b;
+		pthread_mutex_lock(&mutex_a);
+		b += a++;
+		pthread_mutex_unlock(&mutex_a);
+		pthread_mutex_unlock(&mutex_b);
+		pthread_exit(null);
+	}
+	
+	int main(int argc, char** argv)
+	{	
+		pthread_t id;
+		pthread_mutex_init(&mutex_a, null);	
+		pthread_mutex_init(&mutex_b, null);	
+		pthread_create(&id, null, another, null);
+			
+		pthread_mutex_lock(&mutex_a);
+		printf("in parent thread, got mutex a, waiting for mutex b\n");
+		sleep(5);
+		++a;
+	
+		pthread_mutex_lock(&mutex_b);
+		printf("parent lock mutex_b");
+		a += b++;
+		pthread_mutex_unlock(&mutex_b);
+		pthread_mutex_unlock(&mutex_a);
+		
+		pthread_join(id, null);
+		pthread_mutex_destroy(&mutex_a);
+		pthread_mutex_destroy(&mutex_b);
+		
+		
+	
+		return 0;
+	}
+	
+	
+主进程试图先占有互斥锁mutex_a,然后操作被该锁保护的变量a，但是操作执行后，主线程并没有立即释放互斥锁mute_a，而是又申请了互斥锁mutex_b，并在两个互斥锁的波啊户型，操作变量a和变量b，最后一起释放这两个锁
+
+子线程按照相反的顺序来申请互斥锁mutex_a和mutex_b，并在两个互斥锁的保护下操作变量a和变量b。
+
+使用sleep函数来模拟连续两次调用pthread_mutex_lock之后的时间差，以确保代码中两个进程将各自先占有一个互斥锁(主线程占有mutex_a，子线程占有mutex_b)，然后等待另一个互斥锁(主线程等待mutex_b,子线程等待mutex_a)，这样两个线程就僵持主了，谁也不拿继续往下执行，从而形成死锁，如果代码中不加入sleep函数，则这段代码或许会正确的执行，但是为程序留下一个潜在BUG	

@@ -1,0 +1,111 @@
+---
+layout: post
+title:  shell中的一些变量
+description: 
+modified: 
+categories: 
+- shell 
+tags:
+-
+---
+1获取字符串的长度
+
+	var=1234567890
+	echo ${#var}
+
+2识别当前shell版本
+
+	echo $SHELL
+	echo $0
+
+3检测当前用户是否为超级用户
+
+UID是一个重要的环境变量用于检测当前脚本是以超级用户还是普通用户运行的
+
+	if [ $UID -ne 0 ]; then
+	echo Non root user.Please run as root.
+	else
+	echo Root user
+	fi
+
+4修改bash的提示符
+
+运行bash时候会看到[root@localhost script]#这样的提示字符串，我们可以利用PS1环境变量来第年至提示文本，默认的shell提示文本是~/.bashrc中设置的(全局的在/etc/bashrc中)
+
+我们可以使用类似于\e[1;31的特定转义序列来设置彩色的提示字符串。
+
+还有一些特殊的字符可以扩展为系统参数
+
+	\u可以扩展为用户名；
+	\h可以扩展为主机名；
+	\w可以扩展为当前工作目录的完全路径
+	\W可以扩展为当前工作目录(没有路径)
+
+PS1="[\u@ \W]\\$ "
+
+后面的\\$的作用就是显示#或$的
+
+
+数组
+
+数组定义的方法有很多种类，可以在单行中使用一列值来定义一个数组
+
+	array_var=(1 2 3 4 5 6 7 8 9)
+
+还可以将数组定义为一组索引值
+
+	array_var[0]="test1"
+	array_var[1]="test2"
+	array_var[2]="test3"
+	array_var[3]="test4"
+	array_var[4]="test5"
+	array_var[5]="test6"
+	打印出数组中的值
+	
+	#echo ${array_var[1]}
+	test2
+	#index=5
+	#echo ${array_var[$index]}
+	test6
+	#echo ${array_var[*]}	#以清单的形式打印出数组中所有的值
+	test1 test2 test3 test4 test5 test6 
+	#echo ${#array_var[*]}	#打印数组的长度
+
+6关联数组
+
+在关联数组中我们可以使用任意的文本作为数组索引，而在普通数组中只能用整数作为数组索引
+首先需要一个单独的声明语句将一个变量名声明为关联数组
+
+	#declare -A ass_array
+
+声明之后可以使用两种方法将元素添加到关联数组中
+
+(1)内嵌索引-值列表法，提供一个索引-值列表
+
+	#ass_array=([index1]=val1 [index2]=val2)
+
+(2)独立的索引-值进行赋值
+
+	#ass_array[index1]=val1
+	#ass_array[index2]=val2
+
+##### 实例:
+用关联数组为水果定制价格
+
+	#declare -A friutes_value
+	#friutes_value=([apple]='100 dollars' [orange]='150 dollars')
+	#echo "Apple costs ${friutes_value[apple]}"
+	Apple costs 150 dollars
+
+
+列出数组索引
+
+
+	#echo ${!friutes_value[*]} 
+	orange apple
+	#echo ${!friutes_value[@]} 
+	orange apple
+
+
+
+

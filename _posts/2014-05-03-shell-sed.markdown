@@ -1,0 +1,357 @@
+---
+layout: post
+title:  sed总结
+description: 
+modified: 
+categories: 
+- shell 
+tags:
+- 
+---
+
+sed [-n] program [file-list]
+sed [-n] [-f] program-file file-list
+
+
+-n 表示除非sed使用了p指令或者是标识，否则不会将文本复制到标准输出。
+
+	[root@ sed]# cat example 
+	这是第一行
+	这是第二行
+	第三行
+	第四行,文件的中部
+	这是第五行
+	六行
+	第七行
+	这是第八行
+	
+	[root@ sed]# sed -n '2,8 p' example
+	这是第二行
+	第三行
+	第四行,文件的中部
+	这是第五行
+	六行
+	第七行
+	这是第八行
+
+
+
+
+
+
+#### 地址作用
+
+通过地址来确定需要处理的数据行，地址可以通过数字正则表达式或二者结合的方式。
+
+
+当地址由数字构成的时候，数字表示行号，二行号作为地址可以用来选择某一行，作为一个特列，符号$表示出入中的最后一行。
+
+用逗号分隔的两个行号表示以这两行为起止的行的范围(包括行数表示的那两行)。
+
+正则表达式作为地址可以用来选择那些包含与正则表达式相匹配的字符串的行。
+
+如果没有地址，sed将会选择所有的行
+
+
+#### 指令
+
+	d 	删除指令
+	
+	n	下一条指令
+	
+	a	追加指令
+	
+	i	插入指令
+	
+	c	修改指令
+	
+	s	替换指令
+	
+	p	打印指令
+	
+	w file	写指令
+	
+	r file	读取指令
+	
+	q	退出
+	
+	
+
+
+	[root@ sed]# sed '2,6 d' example
+	这是第一行
+	第七行
+	这是第八行
+
+##### 追加指令
+
+a指令会在当前选择的行之后插入一行或多行文本。如果a指令前有两个地址，则会在每个地址之后添加文本
+
+##### 注意:
+
+除最后一行外，所有添加的文本的每一行都必须以反斜杠结尾，反斜杠用于指袋行末的换行符。没有反斜杠结尾的行被是做要添加到文本的末尾
+
+	#filename:append
+	#分贝在第四行和最后一行添加分隔符
+
+	4 a\
+	----------------	#指令的最后一行，所以不用添加\
+	$ a\
+	----------------
+
+
+	[root@ sed]# sed -f append  example
+	这是第一行
+	这是第二行
+	第三行
+	第四行,文件的中部
+	----------------
+	这是第五行
+	六行
+	第七行
+	这是第八行
+	----------------
+
+
+
+
+##### 打印指令
+
+
+	[root@ sed]# sed '/六/p' example
+	这是第一行
+	这是第二行
+	第三行
+	第四行,文件的中部
+	这是第五行
+	六行
+	六行
+	第七行
+	这是第八行
+
+
+	由于没有使用-n选项，所有的行都被显示输出
+
+#####注意:
+
+除非制定了-n否则sed将会在标准输出上打印所有的行，无论是否满足条件。使用-n选项后，sed仅仅在标准输出上打印满足的行。例如被p指令选定的行。
+
+
+	
+	#!/bin/sed -f
+	#filename:change
+	#将第三行的内容修改为aaaaaaaaa
+	#将第四行的内容修改为bbbbbbbbb
+	#将第五行的内容修改为ccccccccc
+	#
+	3,5 c\
+	aaaaaaaa\
+	bbbbbbbb\
+	cccccccc 
+
+
+	[root@ sed]# ./change example
+	这是第一行
+	这是第二行
+	aaaaaaaa
+	bbbbbbbb
+	cccccccc
+	六行
+	第七行
+	这是第八行
+
+##### 替换指令
+
+替换指令与vim中的非常相似
+
+	[address [,address] ] s/pattern/replacement-string/[g][p][w file]
+
+g标识:sed的s指令对选定行的所有匹配字符串进行替换
+
+p标识:将所有应用了替换操作的行输出到标准输出
+
+w标识:他将输出送入file指定的文件中
+
+
+	[root@ sed]# sed -n 's/这是/This is/p' example
+	This is第一行
+	This is第二行
+	This is第五行
+	This is第八行
+	
+	
+	[root@ sed]# sed 's/这是/This is/w temp' example
+	This is第一行
+	This is第二行
+	第三行
+	第四行,文件的中部
+	This is第五行
+	六行
+	第七行
+	This is第八行
+
+	[root@ sed]# cat temp
+	This is第一行
+	This is第二行
+	This is第五行
+	This is第八行
+	[root@ sed]#
+
+	
+	
+	#!/bin/bash
+	#filename:
+	
+	for file	#默认以命令行参数作为in的对象
+	do
+		echo $file
+		cp $file ftemp
+		#将ftemp中所有的is替换为IS，
+		#MY替换为my，PAPER替换为paper
+		sed 's/is/IS/g
+			 s/MY/my/g
+			 s/PAPER/paper/g
+			'  ftemp > $file
+	done 
+	rm -rf ftemp
+
+
+##### 插入指令
+
+
+插入指令是将文本添加到选定行之前
+
+	/第/ i\
+	-----下一行有"第"字出现------
+
+
+
+##### 下一条指令
+
+n指令输出当前选择的行，然后从输入中读取下一行，并且从sed程序中的下一条指令开始对新读入的行进行处理
+
+	#使用n指令跳过文件中的第3行
+	#表示对如果是第三行则使用n指令，然后使用p指令，其他行直接使用p指令
+	[root@ sed]# cat next
+	3n
+	p
+	[root@ sed]# sed -n -f next example
+	这是第一行
+	这是第二行
+	第四行,文件的中部
+	这是第五行
+	六行
+	第七行
+	这是第八行
+
+##### 文件读入指令
+
+r指令读出指定文件的内容并添加到选定的行之后
+
+	#在文件example中出现'六'的行下方读入文件example
+	[root@ sed]# sed '/六/r next' example
+	这是第一行
+	这是第二行
+	第三行
+	第四行,文件的中部
+	这是第五行
+	六行
+	3 n
+	p
+	第七行
+	这是第八行
+	
+
+#####控制结构
+
+!取反操作:使得sed后面与其同一行的指令作用于没有被该指令选择的每一行地址上
+
+3!d:删除除了第三行以外的所有的行
+3,6 !w file :将除3-6行以外所有额行写入到file中
+
+##### Hold和Pattern
+
+sed有两个缓冲区，Pattern和Hold区，所有的命令都是工作在Pattern区。Pattern区保存着sed刚刚从输入中读取的行。
+
+Hold作为临时缓冲区，可以在操作Pattern时候用来暂存数据。将数据放入Hold区之前内容为空
+
+Pattern和Hold之间传送数据的指令:
+
+g	将Hold区中的内容复制到Pattern中，Pattern中原来的内容将会丢失
+
+G	将一个换行符和Hold区中的内容追加到Pattern区的内容之后
+
+h	将Pattern区的内容复制到Hold区，Hold中原来的数据会丢失
+	
+H	将一个换行符和Pattern区中的内容附加到Hold区中的内容之后
+
+x	交换Pattern和Hold缓冲区的内容
+
+
+	[root@ sed]# sed 'G' example
+	这是第一行
+	
+	这是第二行
+	
+	第三行
+	
+	第四行,文件的中部
+	
+	这是第五行
+	
+	六行
+	
+	第七行
+	
+	这是第八行
+	
+	[root@ sed]# 
+
+
+
+
+	[root@ sed]# cat pandh
+	2,$G
+	h
+	$!d
+	[root@ sed]# sed -f pandh example
+	这是第八行
+	第七行
+	六行
+	这是第五行
+	第四行,文件的中部
+	第三行
+	这是第二行
+	这是第一行
+	[root@ sed]#
+
+	
+将Pattern和Hold区域配合使用，反序输出文件example中的内容
+
+$表示最后一行
+
+2,$表示2到最后一行
+
+!表示取反
+
+$!表示除最后一行的其他行
+
+具体的步骤:
+
+1).sed将输入的第一行("这是第一行")内容读入到Pattern中
+	
+指令2,$G不会处理第一行，G只会处理2到最后一行
+
+h指令将第一行从Pattern复制到Hold
+
+$!d删除了Pattern中的内容，所以Pattern中没有任何内容，所以sed什么也不显示
+
+2).sed将输入中的第二行("这是第二行")读入到Pattern
+
+指令2,$G会将Hold中的内容("这是第一行"),添加到Pattern，此时Pattern中的内容是"这是第二行\n这是第一行"
+
+指令h将Pattern中的内容复制到Hold
+
+$!d删除了输入中的第二行内容，所以sed什么也不显示。
+
+

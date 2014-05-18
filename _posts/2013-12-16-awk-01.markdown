@@ -1,0 +1,251 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-12-16 16:21:29+00:00
+layout: post
+title: awk的变量
+categories:
+- awk
+---
+
+===============================================================
+
+变量与数组
+
+awk中有两种变量，用户自定义变量和内建变量
+
+指定FS(FS=":")此处FS就是内建变量
+
+
+**awk的变量使用无需先声明**；
+
+awk会在第一次时候该变量的时候自动建立变量
+
+awk的变量在建立时的初始值都是空字符串，但是当需要数值时他会被视为0；
+
+也就是awk自动将字符串转换位数值进行计算，与shell脚本是一致的；
+
+**awk的变量名必须以ASCII字母或下划线开始，然后使用字母、数字、下划线**、
+
+awk的变量名是大小写敏感的！建议局部变量小写，全局第一个变量大写
+
+awk中常用内建变量
+    
+    ==============================================================
+	$0			当前记录
+	
+	$1-$n		当前记录中嗯的字段
+
+    FILENAME	当前输入文件的名称
+    
+    FNR		当前输入文件的记录数目
+    
+    FS		字段分隔符(支持正则表达式)，默任为空格	
+    
+    NF		当前记录的字段数
+    
+    NR		在工作(job)中的记录数
+    
+    OFS		输出字段分隔符
+    
+    ORS		输出记录分隔字符(默认为‘\n’)
+    
+    RS		输入记录分隔字符
+
+    ==============================================================
+
+
+##### 数组:
+
+awk中数组包含来从零到多个数据项，通过紧邻着名称的数组索引选定
+
+awk运行以方括号内将任意数字或字符串表达式括起来作为索引
+
+    
+    site[goolge] = "http://google.com"
+    site[yaohoo] = "http://yahoo.com"
+    site[baidu] = "http://baidu.com"
+
+
+我们为数组site中的4个元素赋值，这四个元素可以通过site[name]来引用。
+
+我们可以使用任意值作为数组的索引，这种数组成为关联数组，因为他们的名称与值是相关联的。
+
+与awk中的变量类似，数组也是不用声明就可以使用的。数组的存储空间在引用新元素时会自动增长。
+
+数组的存储空间是稀疏的，我们可以在使用了x[1] = 12后直接使用x[1000]="xyz",而不需要去填满2到9999。
+
+##### 数组的删除
+
+delete array[list]会从数组中删除元素
+
+delete array会删除数组中所有的元素
+
+##### 注意:
+
+**变量名和数组名不能重名，当你使用delete删除数组元素的时候不会删除它的名称**
+
+例如:
+
+    
+    x[1] = 123
+    delete x
+    x = 789
+
+
+这样就是错误的，awk会警告无法位数组名赋值
+
+##### 环境变量
+
+awk支持直接对系统环境变量的访问，通过ENVIRON数组
+
+    [root@localhost awk]# awk 'BEGIN{print ENVIRON["HOME"]; print ENVIRON["PATH"]}'
+    /root
+    /opt/oracle/102/bin:/usr/local/tmux/bin:/usr/lib/qt4/bin:/opt/oracle/102/bin:/usr/local/tmux/bin:/usr/lib/qt4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin:/root/bin
+    [root@localhost awk]#
+
+当**awk启动时会从系统中读取环境变量初始化ENVIRON数组**，在awk中我们可以像普通数组一样对他加入删除以及修改
+
+##### awk中的数学运算
+    
+    awk ‘BEGIN{print "3+2=" 3+2}’
+    awk 'BEGIN{print "2^10=" 2^10}'
+    awk 'BEGIN{print “(3+2)*7=” (3+2)*7}'
+
+awk支持的运算符有+ - * / % ^
+
+awk支持的元算符
+
+    
+    ==============================================================================
+    =、+=、-=、*=、/=、%=、^=		赋值
+    
+    ?:					条件表达式	
+    
+    ||					逻辑或
+    
+    &&					逻辑与
+    
+    ~、~!				匹配正则表达式和不匹配正则表达式
+    
+    <、<=、>、>=、!=、==			关系运算符
+    
+    空格					链接				
+    
+    +、-					加、减
+    
+    *、/、%				乘、除、余
+    
+    +-!					一元加、减和逻辑非
+    
+    ^***				求幂
+    
+    ++ --				前或后子增自减
+    
+    $					字段引用
+    
+    in					数组成员
+    ==============================================================================
+
+
+##### awk中的多条记录
+
+awk中的记录就是行的概念，默认情况下一行对应一条记录
+
+我们有一份文本文件，记录了客户的地址等信息
+
+    
+    [root@localhost awk]# cat address.txt
+    Jimmy the Weasel
+    100 Pleasant Drive
+    San Franciso, CA 12345
+    
+    Big Tony
+    200 Incognito Ave.
+    Suburbia, Wa 67890
+    
+    Ollir
+    Nanjing University
+    Gulou, Nanjing, 210000
+    [root@localhost awk]#
+
+
+我们希望awk将每3行看作一个独立的记录，而不是3个独立的记录；
+
+如果awk将第一行看作是$1,第二行看作$2，第三行看作$3，那就是我们想要！
+
+    
+    BEGIN{
+    	FS='\n'
+    	RS=""
+    }
+
+
+FS设置为FS表示每个字段都占用一行
+
+RS设置为""表示每个记录都是由空白行分隔
+
+    
+    [root@localhost awk]# awk -f address.awk address.txt
+    Jimmy the Weasel,100 Pleasant Drive,San Franciso, CA 12345
+    Big Tony,200 Incognito Ave.,Suburbia, Wa 67890
+    Ollir,Nanjing University,Gulou, Nanjing, 210000
+
+
+##### OFS与ORS
+
+	print "Hello", "there", "Jim!"
+默认输出
+
+	Hello there Jim
+
+设置OFS变量可以在每个字符串之间打印OFS变量；
+
+默认情况下OFS被设置为" "，我们也可以改为","等自己需要的类型
+
+ORS是输出记录分隔符
+
+之前编写的脚本仅仅适用于地址为3行的，对于地址是四行的就无法使用了！
+
+    
+    Big Tony
+    200 Incognito Ave
+    300 City Alley
+    Suburbia, Wa 67890
+
+
+
+    BEGIN{
+            FS="\n"
+            RS=""
+            ORS=""
+    }
+    {
+            x = 1;
+            while(x < NF){
+                    print $x "\t"
+                    x++
+            }
+            print $NF  "\n"
+    }
+
+
+首先将字符分隔符FS设置成'\n'
+
+将记录分隔符RS设置为""
+
+将输出记录符ORS设置成位""
+
+它使用print语句在每个调用末尾部不输出新行。
+
+这就是如果希望任何文本从新的一行开始，那么需要明确写入print '\n'
+
+建立一个变量x来存储正在处理的当前字段的编号。
+
+开始它被设置成为1，我们使用while循环
+
+对于所有记录，(最后一个记录除外)重复打印记录和tab字符。
+
+最后打印最后一个记录和换行。
+
+此外由于将ORS设置成""，print将不输出换行

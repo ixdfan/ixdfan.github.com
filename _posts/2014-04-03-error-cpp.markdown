@@ -1,0 +1,22 @@
+---
+layout: post
+title:  expected unqualified-id before ‘delete’
+description: 
+modified: 
+categories: 
+- THE C/C++ 
+tags:
+- error
+
+---
+
+今天写C++程序，编译的时候发现了一个以前从来没有见到过的错误
+	
+	expected unqualified-id before ‘delete’
+
+搞了半天才搞明白了，原来函数的括号写错了，将delete写到了函数的外面
+
+	Your delete is outside a function body.
+
+
+

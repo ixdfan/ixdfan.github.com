@@ -1,0 +1,303 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-09-17 01:28:59+00:00
+layout: post
+slug: '%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%bc%96%e7%a8%8b%e6%a8%a1%e5%9e%8b%e4%b9%8b%e5%be%aa%e7%8e%af%e6%9c%8d%e5%8a%a1%e5%99%a8'
+title: 服务器编程模型之循环服务器
+wordpress_id: 609
+categories:
+- THE LINUX
+tags:
+- 服务器编程模型
+---
+
+循环服务器是指对于客户端的链接和请求，服务器在处理完毕一个之后再处理另一个，即进行串行处理客户端的请求。循环服务器又叫迭代服务器。
+循环服务器经常用于UDP服务程序，比如时间服务程序、DHCP服务器等。
+
+#### UDP循环服务器
+
+    
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <string.h>
+    #include <stdio.h>
+    #include <time.h>>
+    
+    #define BUFFLEN 1024
+    #define SERVER_PORT 8888
+    
+    int main()
+    {
+            int s;
+            struct sockaddr_in local, to;
+            time_t now;
+            char buf[BUFFLEN];
+            int n = 0;
+            int len = sizeof(to);
+    
+            s = socket(AF_INET, SOCK_DGRAM, 0);
+            if(-1 == s)
+            {
+                    perror("socket error");
+            }
+            memset(&local, 0, sizeof(local));
+            local.sin_family = AF_INET;
+            local.sin_port = htons(SERVER_PORT);
+            local.sin_addr.s_addr = htonl(INADDR_ANY);
+    
+            int err = bind(s, (struct sockaddr*)&local, sizeof(local));
+            if(-1 == err)
+            {
+                    perror("bind error");
+            }
+            printf("bind success\n");
+    
+    	/*	在此循环	*/
+            while(1)
+            {
+                    memset(buf, 0, BUFFLEN);
+                    n = recvfrom(s, buf, SERVER_PORT, 0, (struct sockaddr*)&to, &len);
+    
+                    if(n>0 && !strncmp(buf, "TIME", 4))
+                    {
+                            printf("find a client\n");
+                            memset(buf, 0, BUFFLEN);
+                            now = time(NULL);
+                            sprintf(buf, "%24s\n", ctime(&now));
+                            if(-1 != sendto(s, buf, strlen(buf), 0, (struct sockaddr*)&to, len))
+                                    printf("sendto OK\n");
+                    }
+            }
+    
+            close(s);
+            return 0;
+    }
+
+
+循环服务器的客户端
+
+    
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <string.h>
+    #include <stdio.h>
+    #include <time.h>
+    #define BUFFLEN 1024
+    #define SERVER_PORT 8888
+    
+    int main()
+    {
+            int s;
+            struct sockaddr_in server;
+            time_t now;
+            char buf[BUFFLEN];
+            int n = 0;
+            int len = 0;
+    
+            s = socket(AF_INET, SOCK_DGRAM, 0);
+            if(-1 == s)
+            {
+                    perror("socket error");
+            }
+            memset(&server, 0, sizeof(server));
+            server.sin_family = AF_INET;
+            server.sin_port = htons(SERVER_PORT);
+            server.sin_addr.s_addr = htonl(INADDR_ANY);
+    
+            memset(buf, 0, BUFFLEN);
+            strcpy(buf, "TIME");
+            len = sizeof(server);
+            int err = sendto(s, buf, strlen(buf), 0, (struct sockaddr*)&server, len);
+            if(-1 == err)
+            {
+                    perror("sendto error");
+            }
+    
+            printf("sendto ok\n");
+            memset(buf, 0, BUFFLEN);
+            len = sizeof(server);
+            n = recvfrom(s, buf, BUFFLEN, 0, (struct sockaddr*)&server, &len);
+            if(-1 == n)
+            {
+                    perror("recvform error");
+            }
+            if(n > 0)
+            {
+                    printf("TIME: %s", buf);
+            }
+            close(s);
+    
+            return 0;
+    }
+
+
+客户端发送请求，内容位字符串TIME，服务器判断客户端发送的字符串是否正确，服务器发送本地时间，以字符串形式反馈给客户端。
+
+服务器程序中使用while作为主要的数据处理部分，在这个部分服务器可以将各个客户端发送过来的数据进行循环处理。每次仅仅处理一个客户端的请求操作，在处理完一个客户端请求时，可以在处理接下来的另一个请求，通常这种操作是在一个循环程序中处理
+
+=================================================================
+
+#### TCP循环服务器
+
+相比较UDP协议的循环服务器，TCP协议循环服务器的主处理过程多了一个accept的过程，服务器在此等待客户端的链接，由于accept函数为阻塞函数。所以服务器会在此处等待，对于accept函数的不同处理是区别各种服务器类型的一个重要依据。
+
+=====================================
+
+##### 编程模型：
+1. 建立socket
+2. 绑定bind
+3. listen监听
+4. 循环accept
+5. recv接受信息
+6. send发送信息
+
+=====================================
+
+服务器端代码：
+
+    
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <string.h>
+    #include <stdio.h>
+    #include <time.h> 
+    #define BUFLEN 1024
+    #define SERVER_PORT 8888
+    #define BACKLOG 5
+    int main(int argc, char** argv)
+    {
+    	int s_s, s_c;
+    	struct sockaddr_in local, from;
+    	time_t now;
+    	int n = 0;
+    	char buf[BUFLEN];
+    	int len = sizeof(from);
+    
+    	s_s =socket(AF_INET, SOCK_STREAM, 0);
+    	if(-1 == s_s)
+    	{
+    		perror("socket error");
+    	}
+    
+    	memset(&local, 0, sizeof(local));
+    	local.sin_family = AF_INET;
+    	local.sin_port = htons(SERVER_PORT);
+    	local.sin_addr.s_addr = htonl(INADDR_ANY);
+    
+    	int err = bind(s_s, (struct sockaddr*)&local, sizeof(local));
+    	if(-1 == err)
+    	{
+    		perror("bind error");
+    	}
+    	printf("bind OK\n");	
+    
+    	err = listen(s_s, BACKLOG);
+    	if(-1 == err)
+    	{
+    		perror("listen error");
+    	}
+    	printf("listen OK\n");	
+    	while(1)
+    	{
+    		s_c = accept(s_s, (struct sockaddr*)&from, &len );
+    		if(-1 == s_c)
+    		{
+    			perror("accept error");
+    		}
+    
+    		memset(buf, 0, BUFLEN);
+    		n = recv(s_c, buf, BUFLEN, 0);
+    		if(-1 == n)
+    		{
+    			perror("recv error");
+    		}
+    
+    		if(n > 0 && !strncmp(buf, "TIME", 4))
+    		{
+    			memset(buf, 0, strlen(buf));
+    			now = time(NULL);
+    			sprintf(buf, "%24s", ctime(&now));
+    			err = send(s_c, buf, strlen(buf), 0);
+    			if(-1 == err)
+    			{
+    				perror("send error");
+    			}
+    			else
+    				printf("send OK\n");
+    
+    		}	
+    
+    	}
+    
+    	return 0;
+    }
+
+
+客户端
+
+    
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <string.h>
+    #include <stdio.h>
+    #include <time.h> 
+    #define BUFFLEN 1024
+    #define SERVER_PORT 8888
+    
+    int main()
+    {
+    	int s;
+    	struct sockaddr_in server;
+    	time_t now;
+    	char buf[BUFFLEN];
+    	int n = 0;
+    	int len = 0;
+    
+    	s = socket(AF_INET, SOCK_STREAM, 0);
+    	if(-1 == s)
+    	{
+    		perror("socket error");
+    	}
+    	memset(&server, 0, sizeof(server));
+           	server.sin_family = AF_INET;
+           	server.sin_port = htons(SERVER_PORT);
+           	server.sin_addr.s_addr = htonl(INADDR_ANY);
+    
+    	/*	使用conncet链接	*/
+    	int err = connect(s, (struct sockaddr*)&server, sizeof(server));
+    	if(-1 == err)
+    	{
+    		perror("connect error");
+    	}
+    	printf("connect ok\n");
+    
+    	memset(buf, 0, BUFFLEN);
+    	strcpy(buf, "TIME");
+    	len = strlen(buf);
+    
+    	err = send(s, buf, len, 0);
+    	if(-1 == err)
+    	{
+    		perror(" send error");
+    	}
+    
+    	memset(buf, 0, BUFFLEN);
+    
+    	n = recv(s, buf, BUFFLEN, 0); 
+    	if(-1 == n)
+    	{
+    		perror("recvform error");
+    	}
+    	if(n > 0)
+    	{
+    		printf("TIME: %s", buf);
+    	}
+    	close(s);	
+    
+    	return 0;
+    }

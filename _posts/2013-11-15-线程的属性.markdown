@@ -1,0 +1,275 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-15 02:42:05+00:00
+layout: post
+slug: '%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%b1%9e%e6%80%a7'
+title: 线程的属性
+wordpress_id: 1000
+categories:
+- 线程
+tags:
+- 线程
+---
+
+线程的属性：
+
+1.属性的初始化
+    
+    int pthread_attr_init(pthread_attr_t *attr);
+
+**该函数会为属性结构分配内存空间，并通过指针返回其地址**
+
+2.属性的销毁
+    
+    int pthread_attr_destroy(pthread_attr_t *attr);
+
+**该函数会将pthread_attr_init分配的内存空间释放**
+
+##### 注意：
+**pthread_attr_init与pthread_attr_destroy一定要配套出现，否则会造成内存泄露**
+
+线程属性结构包括线程的4个基本属性：
+	detachstate:线程以分离状态创建；
+	guardsize:线程栈末尾的警戒缓冲区大小；
+	stackaddr:线程栈的最低地址
+	stacksize:线程栈的大小
+以上的四个基本属性有系统提供函数进行设置，通过系统函数获得其值，不需要用户直接对属性结构赋值。
+第一个属性和线程的分离状态有关，其余三个都涉及到线程栈的问题
+
+线程栈的属性
+
+线程栈是线程的私有数据，这部分内容是不共享的，在一个进程内有多个线程，这些线程都拥有属于自己的栈，但是又都要挤在进程的虚拟地址空间内，线程之间的栈内存必须保证彼此不冲突，线程才能正确的运行。大部分情况下，系统为用户设置和分配线程的栈内存，但是有些时候还是需要用户亲自对线程栈进行设置。
+线程栈的基本属性分别为：线程栈的大小、线程栈的最低地址和线程栈末尾警戒区的大小。
+
+**系统默认为一个新建的线程提供PAGESIZE个字节的栈空间**，但是很多时候需要更改这个值。
+
+有时候线程栈可能不够用，例如：线程体函数是一个多层递归函数，该函数的特点就是要多层嵌套栈来保存执行结果，因此，该函数可能会造成现有栈尺寸缩小。另一种情况则刚好相反，用户进程空间的大小是固定的，如果进程内部的线程太多，那么就会造成进程的虚拟地址空间不够用，这时候减小每一个线程栈的大小是非常必须的。
+
+    int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize);
+    int pthread_attr_getstacksize(pthread_attr_t *attr, size_t *stacksize);
+
+pthread_attr_setstacksize和pthread_attr_getstacksize分别用于设置栈大小和获取栈大小
+
+pthread_attr_setstacksize的第一个参数是要设置的属性结构，stacksize 属性指定栈的大小。
+
+如果将 stackaddr 设置为非空值，而不是缺省的 NULL，则系统将在该地址初始化栈，假设大小为 stacksize。
+
+如果stackaddr为 NULL，则 pthread_create() 将为大小至少为其分配stacksize字节的新线程。
+
+pthread_attr_setstacksize的还有一个优点：虽然线程的栈大小被改变，但是增加的内存大小由系统进行分配，用户无需了解具体的内存分配信息。
+
+如果线程创建后发现线程的栈内存不够使用，可以使用malloc函数分配新的线程栈内存，这是不仅需要改变栈的内存大小，还要改变线程的栈的最低地址。
+    
+    int pthread_attr_setstack(pthread_attr_t *attr, void *stackaddr, size_t stacksize);
+    int pthread_attr_getstack(pthread_attr_t *attr, void **stackaddr, size_t *stacksize);
+
+使用pthread_attr_getstack来得到目前线程的最低地址，pthread_attr_setstack用来设置线程的最低地址,以及栈的大小
+pthread_attr_setstack和pthread_attr_getstacksize分别用于设置栈大小和获取栈大小
+
+stackaddr属性定义线程栈的基准（低位地址）。stacksize 属性指定栈的大小。
+
+如果将 stackaddr 设置为非空值，而不是缺省的 NULL，则系统将在该地址初始化栈，假设大小为 stacksize。
+
+如果stackaddr为 NULL，则 pthread_create() 将为大小至少为其分配stacksize字节的新线程。
+
+    
+    pthread_attr_t tattr;
+    void *base;
+    size_t size;
+    int ret;
+    
+    base = (void *) malloc(PTHREAD_STACK_MIN + 0x4000);
+    
+    /* setting a new address and size */
+    ret = pthread_attr_setstack(&tattr, base, PTHREAD_STACK_MIN + 0x4000);
+
+    
+    pthread_attr_t tattr;
+    pthread_t tid;
+    int ret;
+    void *stackbase;
+    size_t size;
+    
+    /* initialized with default attributes */
+    ret = pthread_attr_init(&tattr);
+    
+    /* setting the base address and size of the stack */
+    ret = pthread_attr_setstack(&tattr, stackbase, size);
+    
+    /* address and size specified */
+    ret = pthread_create(&tid, &tattr, func, arg);
+
+
+
+线程的分离状态函数
+
+    
+    int pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate);
+    int pthread_attr_getdetachstate(pthread_attr_t *attr, int *detachstate);
+
+
+detachstate表示分离状态，其值可能为PTHREAD_CREATE_JOINABLE或是PTHREAD_CREAT_DETACHED，默认是PTHREAD_CREATE_JOINABLE。
+
+在可联合的状态中，另一个线程可以通过pthread_join函数来同步线程的终止。而且可以回复线程的终止代码，但是有一些线程的资源在线程退出后不会释放，##### 注意其他线程在创建时可以重新利用这些资源。
+
+在分离状态下，线程的资源在线程结束后立即释放，而且不能使用pthread_join函数来同步线程的终止
+
+线程的作用域函数
+    
+    int pthread_attr_setscope(pthread_attr_t *attr, int scope);
+    int pthread_attr_getscope(pthread_attr_t *attr, int *scope);
+
+
+scope是作用域。
+
+作用域控制线程是否在进程内或在系统级上的竞争资源，可能的值是PTHREAD_SCOPE_PROCESS或PTHREAD_CSOPE_SYSTEM。
+默认值为PTHREAD_SCOPE_SYSTEM
+
+线程的继承调度函数：
+
+继承调度的含义就是当新创建一个线程时，线程的调度策略和调度参数是由schedpolicy和schedparam属性指定还是由创建他的父进程那里继承。
+
+    
+    int pthread_attr_setinheritsched(pthread_attr_t *attr, int inheritsched);
+    int pthread_attr_getinheritsched(pthread_attr_t *attr, int *inheritsched);
+
+
+pthread_attr_setinheritsched和pthread_attr_getinheritsched分别用来设置和得到线程的继承调度。
+
+第二个参数是进程调度或指向继承调度的指针，继承调度的值可能为PTHREAD_EXPLICIT_SCHED或是PTHREAD_INHERIT_SCHED，分别代表的是由schedpolicy和schedparam属性指定和由创建他的父进程那里继承。
+系统的默认值是PTHREAD_EXPLICIT_SCHED
+
+线程的调度策略函数
+
+    
+    int pthread_attr_setschedpolicy(pthread_attr_t *attr, int policy);
+    int pthread_attr_getschedpolicy(pthread_attr_t *attr, int *policy);
+
+
+policy代表调度策略，调度策略可能是先进先出(SCHED_FIFO)、轮转法(SCHED_RR)、其他未定义(SCHED_OTHRE);
+对于先进先出(SCHED_FIFO)、轮转法(SCHED_RR)仅仅对超级用户权限的进程才有效
+
+线程的调度参数函数
+
+    
+    int pthread_attr_setschedparam(pthread_attr_t *attr,
+                                          const struct sched_param *param);
+    int pthread_attr_getschedparam(pthread_attr_t *attr,
+                                          struct sched_param *param);
+
+sched_param的结构如下：
+    
+    /usr/include/bits/sched.h
+    struct sched_param
+    {
+        int __sched_priority;
+    };
+
+
+结构sched_param的成员__sched_priority控制一个优先权，大的值对应高的优先权，系统默认调度参数为优先级0
+线程的调度策略如果是SCHED_OTHER，那么这个参数就可以忽略，只有当线程的调度策略是SCHED_RR或SCHED_FIFO时，这个参数才有用
+
+
+实例：
+
+    
+    void* my_thread(void* arg)
+    {
+            int retval = 0;
+            pthread_attr_t attr;
+            struct sched_param param;
+            size_t stacksize;
+            int     detachstate;
+            int     scope;
+            int     inherir;
+            int     policy;
+            if(0 == pthread_attr_init(&attr)){
+    
+                    if(0 == pthread_attr_getstacksize(&attr, &stacksize)){
+                            printf("StackSize:%d\n", stacksize);
+                    }
+    
+                    if(0 == pthread_attr_getdetachstate(&attr, &detachstate)){
+    
+                            if(PTHREAD_CREATE_JOINABLE == detachstate){
+                                    printf("DetachState: PTHREAD_CREATE_JOINABLE\n");
+                            }
+    
+                            if(PTHREAD_CREATE_DETACHED == detachstate){
+                                    printf("DetachState: PTHREAD_CREATE_DETACHED\n");
+                            }
+                    }
+    
+                    if(0 == pthread_attr_getscope(&attr, &scope)){
+    
+                            if(PTHREAD_SCOPE_PROCESS == scope){
+                                    printf("Scope: PTHREAD_SCOPE_PROCESS\n");
+                            }
+    
+                            if(PTHREAD_SCOPE_SYSTEM == scope){
+                                    printf("Scope: PTHREAD_SCOPE_SYSTEM\n");
+                            }
+                    }
+    
+                    if(0 == pthread_attr_getinheritsched(&attr, &inherir)){
+    
+                            if(inherir == PTHREAD_INHERIT_SCHED){
+                                    printf("InheritSched: PTHREAD_INHERIT_SCHED\n");
+                            }
+    
+                            if(inherir == PTHREAD_EXPLICIT_SCHED){
+                                    printf("InheritSched: PTHREAD_INHERIT_SCHED\n");
+                            }
+                    }
+    
+                    if(0 == pthread_attr_getschedpolicy(&attr, &policy)){
+    
+                            if(SCHED_FIFO == policy){
+                                    printf("SchedPolicy: SCHED_FIFO\n");
+                            }
+    
+                            if(SCHED_RR== policy){
+                                    printf("SchedPolicy: SCHED_RR\n");
+                            }else{
+                                    printf("SchedPolicy: SCHED_OTHER\n");
+                            }
+    
+                    }
+    
+                    if(0 == pthread_attr_getschedparam(&attr, &param)){
+                            printf("SchedPriority: %d\n", param.sched_priority);
+                    }
+    
+                    pthread_attr_destroy(&attr);
+                    }
+            pthread_exit(&retval);
+    }
+    
+    int main()
+    {
+            int             count;
+            pthread_t       thread;
+            int*            retval;
+    
+            if(pthread_create(&thread, NULL, my_thread, NULL)){
+                    printf("can't create thread\n");
+                    exit(-1);
+            }
+            if(pthread_join(thread, NULL)){
+                    printf("No thread to join\n");
+                    exit(-1);
+            }
+            return 0;
+    }
+
+
+
+    
+    [root@localhost 07]# ./main
+    StackSize:10485760
+    DetachState: PTHREAD_CREATE_JOINABLE
+    Scope: PTHREAD_SCOPE_SYSTEM
+    InheritSched: PTHREAD_INHERIT_SCHED
+    SchedPolicy: SCHED_OTHER
+    SchedPriority: 0

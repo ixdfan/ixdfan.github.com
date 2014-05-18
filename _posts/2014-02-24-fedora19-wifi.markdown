@@ -1,0 +1,17 @@
+---
+author: UCSHELL
+comments: true
+date: 2014-02-24 13:29:54+00:00
+layout: post
+slug: '%e8%a7%a3%e5%86%b3fedora19%e4%b8%8b%e6%97%a0%e7%ba%bf%e4%bf%a1%e5%8f%b7%e5%b7%ae%e7%9a%84%e6%96%b9%e6%b3%95'
+title: 解决fedora19下无线信号差的方法
+wordpress_id: 1308
+categories:
+- THE LINUX
+---
+
+	/etc/modprobe.d/openfwwf.conf
+
+将nohwcrypt变量的值反转即可(原来的nohwcrypt=1)
+
+	options b43 nohwcrypt=0 qos=0

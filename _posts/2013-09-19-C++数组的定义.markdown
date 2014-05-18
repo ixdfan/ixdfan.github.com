@@ -1,0 +1,83 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-09-19 07:19:36+00:00
+layout: post
+slug: c%e6%95%b0%e7%bb%84%e7%9a%84%e5%ae%9a%e4%b9%89
+title: C++数组的定义
+wordpress_id: 685
+categories:
+- THE C&amp;C++
+---
+
+	const unsigned buf_size = 512, max_files = 20;
+    int staff_size = 27;            //nonconst
+    const unsigned sz = get_size(); //const value not known until run-time
+    char input_buffer[buf_size];    //OK
+    int file_table[max_files + 1];  //OK
+    double salaries[staff_size];    //error
+    int test_scores[get_size()];    //error
+    int vals[sz];//errno
+
+
+昨天我本想将这篇文章发上来，可是昨天没找到答案。
+
+但是当我将代码编译的时候惊奇的发现他竟然不有警告，没有错误。
+
+这是C++ Primer第四章中的内容，假如你将代码复制到cpp文件中，运行一下，你会发现竟然没有错误，是啊！
+
+怎么可能没有错误呢？？书上应该不会出错啊！毕竟是经典，又不是国内的XXX。
+
+至少使用staff_size的数组一定是不正确的啊！
+
+可是为什么不报错呢？？我将其改为C代码，照样没有错误！！！抓狂了！！！有时候我也觉得很奇怪，
+难道报错才能让心里舒服些？？
+
+
+就这样我怀着一颗好奇的心去百度提问，结果，算了，不说了……
+
+================================================================================
+还好我今天又看了一下这个问题，问题的关键就在于我们**仅仅是定义了数组，但是并没有使用数组**！所以编译器不会去检查数组。
+
+这就好像是我们写类中的成员函数时一样，只要没有用到这个类的成员函数，那么这个成员函数可以只声明，不定义。
+比如
+
+    
+    class Test
+    {
+    public:
+    	void fun1();
+    	void fun2();
+    };
+    void Test::fun1()
+    {
+    	cout << "fun1" << endl;
+    }
+    int main()
+    {
+    	Test test;
+    	test.fun1();
+    }
+
+
+这个程序没有报错，因为根本没有使用到fun2函数
+
+假如你调用了fun2()函数，那么就一定报错！
+
+================================================================================
+
+    
+            int num = 19;
+            char arr[num] = {0};
+            const unsigned buf_size = 512, max_files = 20;
+            int staff_size = 27;
+            double salaries[staff_size] = {0};
+            const unsigned sz = get_size();
+            char input_buffer[buf_size] = {0};
+            int file_table[max_files + 1] = {0};
+            int test_scores[get_size()] = {0};
+            int vals[sz] = {0};
+            return 0;
+
+
+100%报错，OK！

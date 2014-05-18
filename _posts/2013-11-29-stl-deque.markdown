@@ -1,0 +1,343 @@
+---
+author: UCSHELL
+comments: true
+date: 2013-11-29 02:25:49+00:00
+layout: post
+slug: stldeque
+title: STL::deque
+wordpress_id: 1127
+categories:
+- STL
+tags:
+- STL
+---
+
+deque提供了比vector更方便更强大的线性容器，但是它是以损失效率(性能)为代价的，相比vector，损失的不是一个数量级，而是几个数量级别。对性能要求高的一定要慎用。
+
+**vector被称为单向开口的连续线性存储空间，deque则是双向开口的连续线性存储空间**。
+
+单向开口的含义是指**只能从容器的某一段(vector是尾部)对容器进行元素的插入和删除等操作；**
+
+例如：
+
+vector只有push_back从尾部压入元素和pop_back从尾部删除元素。
+
+**双向开口的含义是从容器的两端都能进行元素的插入和删除操作。**
+
+deque虽说是连续线性存储的，但是这种连续性知识表面上的，或者说是一种假象，实际上他的**内存存储区是动态分配的，它在堆上分配了一块块的动态存储区，每一块动态存储区本身是连续的，deque自身的机制把这一块一块的存储区虚拟的连在一起**，给人一种假象，好像整个deque的存储是一个整的连续的空间。
+
+正是因为这样，所以deque没有vector那种容量的概念。**他首次插入一个元素，会默认动态分配512个字节空间，当这512个字节空间用完后他会在动态分配另外512个字节空间，然后把这两个动态空间虚拟的连在一起**，让使用者以为这是连续的1024个字节空间一样。
+
+deque的这种设计使得他具有比vector复杂的很多的架构，复杂的多的算法和迭代器设计，而这种复杂度和简单的vector不是一个数量级的，这就使得deque的效率比vector低的多！所以**如果不是逼不得已，尽量用vector和list，不要使用deque；**
+
+deque除了双向进出的灵活性之外，其实并没有多少好处，与效率相比的巨大损失相比，是得不偿失的。
+
+数组和vector的数据结构是连续线性空间，但是deque仅仅是逻辑上的连续空间，他将一块块独立的空间逻辑的连接在一起，仿佛整个deque空间是一块完整的连续性空间！
+
+deque的map机制：
+
+    
+        struct _Deque_iterator
+        {
+          typedef _Deque_iterator<_Tp, _Tp&, _Tp*>             iterator;
+          typedef _Deque_iterator<_Tp, const _Tp&, const _Tp*> const_iterator;
+    
+          static size_t _S_buffer_size()
+          { return __deque_buf_size(sizeof(_Tp)); }
+    
+          typedef std::random_access_iterator_tag iterator_category;
+          typedef _Tp                             value_type;
+          typedef _Ptr                            pointer;
+          typedef _Ref                            reference;
+          typedef size_t                          size_type;
+          typedef ptrdiff_t                       difference_type;
+          typedef _Tp**                           _Map_pointer;
+          typedef _Deque_iterator                 _Self;
+    
+          _Tp* _M_cur;
+          _Tp* _M_first;
+          _Tp* _M_last;
+          _Map_pointer _M_node;
+    
+    	……
+         }
+    template >
+    class deque : protected _Deque_base<_Tp, _Alloc>
+
+
+发现deque继承了有一个_Deque_base中的内容，所以deque的成员中有一个_M_node变量，其类型是_Map_pointer。
+
+deque就是利用这个map机制实现空间的连续性，这个map不是STL中的map，他只是利用了map的概念，即键和值成对使用，用键来找值。
+
+_M_node的类型是_Map_pointer，而_Map_pointer是_Tp**类型的，这说明_M_node是一个指针，指向另一个内存地址(也就是双指针)，
+
+**_M_node是一个指针，指向一个连续的空间，而空间中的元素又是指针，各自分别指向一块更大的连续的空间**。可以看出**deque先用一段小的连续的空间按顺序存放了一个又一个的指针，然后这些按顺序存放的指针再各自指向用来真正存放数据的更大的连续性的空间**(缓存区)
+
+。这样一来，deque就把各自独立的连续性的空间全部连接起来，并且是有序的连接了起来。当_M_node指向的一小块连续性的空间，**不够存放内存指针的时候，就会令揽一块更大的连续性空间，然后把指针一个一个的拷贝过去，并销毁旧的空间**，利用这样的数据结构，deque就能很方便的模拟出自身的存储区是连续空间的假象，这样一来deque是双向开口的连续性空间，也就没有vector的容量的概念了。
+
+[![Map机制](/uploads/2013/map.png)
+
+================================================================
+
+assgin
+
+    
+    void assgin(const_iterator frist, const_iterator last);
+    void assgin(size_type n, const T& x = T());
+
+
+作用:
+
+将区间[first, last)的元素赋值到当前deque容器中；
+
+赋n个值为x的元素到deque容器中，这个函数将会清除掉deque容器以前的内容
+
+================================================================
+
+at
+
+    reference at(size_type pos);
+    const_reference at(size_type pos) const;
+
+作用:
+
+返回deque容器中指定pos位置元素的引用。
+
+at()函数比[]运算符函数更安全，他不会访问到deque容器内越界的元素；
+
+================================================================
+
+back
+    
+    reference back();
+    const_reference back() const;
+
+作用:
+
+返回deque容器中的最末尾的元素的引用
+
+================================================================
+
+begin
+
+    iterator begin();
+    const_iterator begin() const;
+
+作用:
+
+返回一个指向deque容器中其实元素的迭代器
+
+================================================================
+
+clear
+
+    
+    void clear();
+
+作用:
+
+删除deque中所有元素
+
+================================================================
+
+empty
+    
+    bool empty() const;
+
+作用:
+
+如果当前deque中没有容纳任何元素，则empty返回true
+
+================================================================
+
+end
+
+    iterator end();
+    iterator end() const;
+
+作用:
+
+返回指向deque容器中最后一个元素的下一个元素，例如[a, b)中指向b
+
+================================================================
+
+erase
+
+    iterator erase(iterator it);
+    iterator erase(iterator first, iterator last);
+
+作用:
+
+删除deque容器中it位置的元素，或者删除在first与last之间的元素；
+
+函数返回的是指向deque容器中被删除的最后一个元素的下一个位置的迭代器
+
+================================================================
+
+front
+    
+    reference front();
+    const_reference front() const;
+
+
+作用:
+
+返回deque容器中起始元素的位置
+
+================================================================
+
+get_allocator
+
+    
+    allocator_type get_allocator() const;
+
+作用:
+
+返回deque容器的内存分配器
+
+================================================================
+
+insert
+    
+    iterator insert(iterator it, const T& x = T());
+    void insert(iterator it, size_type n, const T& x);
+    void insert(iterator it, const_iterator first, const_iterator last);
+
+作用:
+
+在容器迭代器it指向的位置前插入值为x的元素，返回指向这个元素的迭代器；
+
+在迭代器it指定的位置前插入n个值为x的元素；
+
+在迭代器it制定的位置前插入区间[first, last)中所有的元素；
+
+================================================================
+
+max_size
+
+    
+    size_type max_size() const;
+
+作用:
+
+返回deque容器所能容纳的元素数量的最大值
+
+================================================================
+
+pop_back
+
+    
+    void pop_back();
+
+
+作用:
+
+删除deque容器最末尾的元素
+
+================================================================
+
+pop_front
+
+    
+    void pop_front();
+
+
+作用:
+
+删除deque容器第一个的元素
+
+================================================================
+
+push_back
+
+    
+    void push_back(const T& x);
+
+
+作用:
+添加值为x的元素到deque的末尾
+
+================================================================
+
+push_front
+
+    
+    void push_front(const T& x);
+
+
+作用:
+
+添加值为x的元素到deque容器开头
+
+================================================================
+
+rbegin
+
+    
+    reverse_iterator rbegin();
+    const_reverse_iterator rbegin() cosnt;
+
+
+作用:
+
+返回指向deque末尾的反向迭代器
+
+================================================================
+rend
+
+    
+    reverse_iterator rend();
+    const_reverse_iterator rend() cosnt;
+
+
+作用:
+
+返回指向deque起始位置的反向迭代器
+================================================================
+
+reserve
+
+    
+    void reserve(size_type n);
+
+
+作用:
+
+为deque容器预留可以容纳n个元素的空间
+
+================================================================
+resize
+
+    
+    void resize(size_type n, T x = T())
+
+
+作用:
+
+改变deque容器的大小为n，且对新创建的元素赋值x
+
+================================================================
+
+size
+
+    
+    size_type size() const;
+
+
+作用:
+
+返回deque容器所容纳元素的数目
+
+================================================================
+
+swap
+
+    
+    void swap(deque& x);
+
+
+作用:
+
+交换当前deque容器与x容器中的元素，x是一个deque容器
+
+================================================================
