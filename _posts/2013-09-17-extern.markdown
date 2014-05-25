@@ -7,7 +7,7 @@ slug: extern%e4%b8%8d%e4%b8%ba%e4%ba%ba%e7%9f%a5%e7%9a%84%e5%b0%8f%e7%bb%86%e8%8
 title: extern不为人知的小细节
 wordpress_id: 627
 categories:
-- THE C&amp;C++
+- THE C/C++
 tags:
 - extern
 ---

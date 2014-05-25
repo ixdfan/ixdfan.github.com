@@ -7,7 +7,7 @@ slug: c%e8%b6%85%e5%87%ba%e8%8c%83%e5%9b%b4%e7%9a%84%e6%95%b0%e5%80%bc%e7%9a%84%
 title: C++超出变量范围的赋值
 wordpress_id: 623
 categories:
-- THE C&amp;C++
+- THE C/C++
 ---
 
 C++中数值的表示：

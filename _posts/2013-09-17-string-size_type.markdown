@@ -7,7 +7,7 @@ slug: stringsize_type%e7%b1%bb%e5%9e%8b
 title: string与string::size_type类型
 wordpress_id: 633
 categories:
-- THE C&amp;C++
+- THE C/C++
 ---
 
 前几天在百度上还有人提问关于size_type类型的，没怎么在意，以为就是一个返回类型的定义，今天无意间看到了官方的说法！

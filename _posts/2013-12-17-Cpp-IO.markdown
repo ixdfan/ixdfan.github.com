@@ -1,16 +1,10 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 04:08:29+00:00
 layout: post
-slug: io%e6%93%8d%e4%bd%9c
 title: IO操作
-wordpress_id: 1262
 categories:
-- THE C&amp;C++
+- THE C/C++
 ---
 
-** **
 
 
 **继承的关系是'是'的关系，子类对象一定是父类对象**

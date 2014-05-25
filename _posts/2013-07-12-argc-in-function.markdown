@@ -7,7 +7,7 @@ slug: test
 title: 函数参数的传递顺序
 wordpress_id: 207
 categories:
-- THE C&amp;C++
+- THE C/C++
 tags:
 - C
 ---
