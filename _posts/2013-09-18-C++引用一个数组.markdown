@@ -7,7 +7,7 @@ slug: c%e5%bc%95%e7%94%a8%e4%b8%80%e4%b8%aa%e6%95%b0%e7%bb%84
 title: C++引用一个数组
 wordpress_id: 667
 categories:
-- THE C/C++
+- THE C\C++
 tags:
 - 引用
 ---

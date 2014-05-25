@@ -7,7 +7,7 @@ slug: c%e5%8a%a8%e6%80%81%e5%88%86%e9%85%8d%e4%ba%8c%e7%bb%b4%e6%95%b0%e7%bb%84
 title: C++动态分配二维数组
 wordpress_id: 643
 categories:
-- THE C/C++
+- THE C\C++
 tags:
 - 二维数组
 ---

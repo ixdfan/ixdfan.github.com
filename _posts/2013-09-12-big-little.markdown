@@ -7,7 +7,7 @@ slug: '%e5%a4%a7%e5%b0%8f%e7%ab%af%e7%9a%84%e8%af%a6%e7%bb%86%e8%a7%a3%e9%87%8a'
 title: 大小端的详细解释
 wordpress_id: 574
 categories:
-- THE C/C++
+- THE C\C++
 ---
 
 小端字节序(Little Endian,LE)：表示在变量的内存地址的**起始地址存放在低字节**，按照高字节顺序存放

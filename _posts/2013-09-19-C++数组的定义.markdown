@@ -7,7 +7,7 @@ slug: c%e6%95%b0%e7%bb%84%e7%9a%84%e5%ae%9a%e4%b9%89
 title: C++数组的定义
 wordpress_id: 685
 categories:
-- THE C/C++
+- THE C\C++
 ---
 
 	const unsigned buf_size = 512, max_files = 20;

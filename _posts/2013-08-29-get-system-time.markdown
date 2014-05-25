@@ -7,7 +7,7 @@ slug: '517'
 title: 时间函数的使用
 wordpress_id: 517
 categories:
-- THE C/C++
+- THE C\C++
 tags:
 - 时间函数
 ---

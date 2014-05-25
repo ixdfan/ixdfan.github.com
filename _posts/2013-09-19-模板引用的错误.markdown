@@ -7,7 +7,7 @@ slug: '%e6%a8%a1%e6%9d%bf%e4%b8%ad%e4%bd%bf%e7%94%a8%e5%bc%95%e7%94%a8%e7%9a%84%
 title: 模板引用的错误
 wordpress_id: 691
 categories:
-- THE C/C++
+- THE C\C++
 tags:
 - 模板
 ---
