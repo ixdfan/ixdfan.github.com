@@ -14,8 +14,7 @@ tags:
 	78 struct ngx_command_s {
 	79     ngx_str_t             name;			/*	配置名	*/
 	80     ngx_uint_t            type;			/*	表示配置值的类型	*/
-
-			/*	对应配置指令的回调函数	*/
+												/*	对应配置指令的回调函数	*/
 	81     char               *(*set)(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 	82     ngx_uint_t            conf;
 	83     ngx_uint_t            offset;		/*	指向转换后控制值的存放位置	*/
@@ -43,116 +42,9 @@ tags:
 	47       offsetof(ngx_core_conf_t, master),
 	48       NULL },
 	49 
-	50     { ngx_string("timer_resolution"),
-	51       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	52       ngx_conf_set_msec_slot,
-	53       0,
-	54       offsetof(ngx_core_conf_t, timer_resolution),
-	55       NULL },
-	56 
-	57     { ngx_string("pid"),
-	58       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	59       ngx_conf_set_str_slot,
-	60       0,
-	61       offsetof(ngx_core_conf_t, pid),
-	62       NULL },
-	63 
-	64     { ngx_string("lock_file"),
-	65       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	66       ngx_conf_set_str_slot,
-	67       0,
-	68       offsetof(ngx_core_conf_t, lock_file),
-	69       NULL },
-	70 
-	71     { ngx_string("worker_processes"),
-	72       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	73       ngx_conf_set_num_slot,
-	74       0,
-	75       offsetof(ngx_core_conf_t, worker_processes),
-	76       NULL },
-	77 
-	78     { ngx_string("debug_points"),
-	79       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	80       ngx_conf_set_enum_slot,
-	81       0,
-	82       offsetof(ngx_core_conf_t, debug_points),
-	83       &ngx_debug_points },
-	84 
-	85     { ngx_string("user"),
-	86       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE12,
-	87       ngx_set_user,
-	88       0,
-	89       0,
-	90       NULL },
-	91 
-	92     { ngx_string("worker_priority"),
-	93       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	94       ngx_set_priority,
-	95       0,
-	96       0,
-	97       NULL },
-	98 
-	99     { ngx_string("worker_cpu_affinity"),
-	100       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_1MORE,
-	101       ngx_set_cpu_affinity,
-	102       0,
-	103       0,
-	104       NULL },
-	105 
-	106     { ngx_string("worker_rlimit_nofile"),
-	107       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	108       ngx_conf_set_num_slot,
-	109       0,
-	110       offsetof(ngx_core_conf_t, rlimit_nofile),
-	111       NULL },
-	112 
-	113     { ngx_string("worker_rlimit_core"),
-	114       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	115       ngx_conf_set_off_slot,
-	116       0,
-	117       offsetof(ngx_core_conf_t, rlimit_core),
-	118       NULL },
-	119 
-	120     { ngx_string("worker_rlimit_sigpending"),
-	121       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	122       ngx_conf_set_num_slot,
-	123       0,
-	124       offsetof(ngx_core_conf_t, rlimit_sigpending),
-	125       NULL },
-	126 
-	127     { ngx_string("working_directory"),
-	128       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	129       ngx_conf_set_str_slot,
-	130       0,
-	131       offsetof(ngx_core_conf_t, working_directory),
-	132       NULL },
-	133 
-	134     { ngx_string("env"),
-	135       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	136       ngx_set_env,
-	137       0,
-	138       0,
-	139       NULL },
-	140 
-	141 #if (NGX_THREADS)
-	142 
-	143     { ngx_string("worker_threads"),
-	144       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	145       ngx_conf_set_num_slot,
-	146       0,
-	147       offsetof(ngx_core_conf_t, worker_threads),
-	148       NULL },
-	149 
-	150     { ngx_string("thread_stack_size"),
-	151       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
-	152       ngx_conf_set_size_slot,
-	153       0,
-	154       offsetof(ngx_core_conf_t, thread_stack_size),
-	155       NULL },
-	156 
-	157 #endif
+				......
 	158 
-	159       ngx_null_command
+	159       ngx_null_command	/*	以它结尾	*/
 	160 };
 
 
@@ -193,7 +85,7 @@ NGX_HTTP_LOC_CONF:HTTP的location指令配置块
 
 post字段在大多数情况下都为NULL，但是在某些特殊配置项中也会指定其值，而且多为回调函数指针。
 
-每个模块都把自己锁需要的配置项目对应的ngx_command_s结构图变量组成一个数组，以ngx_xxx_xxx_commands的形式命名，该数组以元素ngx_null_command作为结束标识
+每个模块都把自己所需要的配置项目对应的ngx_command_s结构体变量组成一个数组，以ngx_xxx_xxx_commands的形式命名，该数组以元素ngx_null_command作为结束标识
 
 
 #### 配置文件解析流程
@@ -241,8 +133,6 @@ nginx.conf的内容如下:
 	在函数ngx_conf_parse处下断点，我们可以看到ngx_conf_parse有两个参数
 
 	Breakpoint 1, ngx_conf_parse (cf=cf@entry=0xbffff0c0, filename=filename@entry=0x80e3aa8) at src/core/ngx_conf_file.c:104
-	104	src/core/ngx_conf_file.c: No such file or directory.
-	Missing separate debuginfos, use: debuginfo-install glibc-2.18-11.fc20.i686 nss-softokn-freebl-3.15.2-2.fc20.i686 pcre-8.33-2.fc20.1.i686 zlib-1.2.8-3.fc20.i686
 	(gdb) p *filename
 	$2 = {len = 32, data = 0x80e3aff "/usr/local/nginx/conf/nginx.conf"}
 
@@ -347,7 +237,7 @@ ngx_conf_parse总体将配置内容的解析过程分为三部分
 				/*	循环从配置文件里读取token	*/
 	173         rc = ngx_conf_read_token(cf);
 	174 
-	175         /*
+	175         /*	
 	176          * ngx_conf_read_token() may return
 	177          *
 	178          *    NGX_ERROR             there is error
@@ -363,6 +253,7 @@ ngx_conf_parse总体将配置内容的解析过程分为三部分
 	188 
 	189         if (rc == NGX_CONF_BLOCK_DONE) {
 	190 
+					/*	type具体的含义见下文	*/
 	191             if (type != parse_block) {
 	192                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0, "unexpected \"}\"");
 	193                 goto failed;
@@ -394,6 +285,12 @@ ngx_conf_parse总体将配置内容的解析过程分为三部分
 	219 
 	220         /* rc == NGX_OK || rc == NGX_CONF_BLOCK_START */
 	221 
+				/*	
+				*	这个主要是针对类似 text/html html htm;之类不定配置项,这些配置项众多且变化不定,
+				*	但格式统一,一般是以key/values的形式存在的	
+				*	nginx只是将其拷贝到对应的变量内,所以此时一般提供一个统一的handler便是cf->handler
+				*	比如type指令的处理函数ngx_http_core_types就会将cf->handler赋值为ngx_http_core_types
+				*/
 	222         if (cf->handler) {
 	223 
 	224             /*
@@ -416,6 +313,12 @@ ngx_conf_parse总体将配置内容的解析过程分为三部分
 	241         }
 	242 
 	243 
+				/*	
+				*	配置转换的核心函数 
+				*	两个参数分别是cf和rc
+				*	cf中包含了很多参数,比如要转换的token就保存在cf->args中
+				*	rc记录的是最近一次ngx_conf_read_token函数返回值
+				*/
 	244         rc = ngx_conf_handler(cf, rc);
 	245 
 	246         if (rc == NGX_ERROR) {
@@ -804,12 +707,12 @@ ngx_conf_parse总体将配置内容的解析过程分为三部分
 	723                 *dst = '\0';
 	724                 word->len = len;
 	725 
-	726                 if (ch == ';') {
+	726                 if (ch == ';') {					/*	返回表示读取完一个简单配置项的标记	*/
 	727                     return NGX_OK;
 	728                 }
 	729 
 	730                 if (== '{') {
-	731                    return NGX_CONF_BLOCK_START;
+	731                    return NGX_CONF_BLOCK_START;		/*	返回开始读取负载配置项的标记	*/
 	732                 }
 	733
 	734						found = 0;
@@ -829,14 +732,302 @@ ngx_conf_read_token会对配置文件进行逐个字符扫描并解析出单个�
 
 #####2.处理过程的中间状态
 
-有一部分配置内容已经被解析为一个个token并保存起来，而有一部分内容主要被组合成token，还有一部分内容等待处理
+有一部分配置内容已经被解析为一个个token并保存起来，而有一部分内容主要被组合成token，还有一部分内容等待处理,已解析的字符和已扫描的字符都属于已处理的字符，但是已解析的字符已经被作为token额外保存起来，所以这些字符已经没有什么用处了，而已扫描的字符表示这些字符还没有组成一个完成的token，所以他们不能被丢弃。
 
 ![008]({{ site.img_url }}/2014/05/008.png)
 
+#####3.缓存区中字符都处理完状态
+
+缓存区中字符都处理完时，需要继续从打开的配置文件中读取新的内容到缓存中此时的临界状态如图:
+
 ![009]({{ site.img_url }}/2014/05/009.png)
+
+因为解析过的字符已经没有什么用了，所以我们将已经扫描但是还没有组成token的字符移动到缓存的前面，然后从配置文件读取内容填满缓存区剩下的空间。
 
 ![010]({{ site.img_url }}/2014/05/010.png)
 
+对于最后一次读取，无法填满缓冲区的情况如下
+
 ![011]({{ site.img_url }}/2014/05/011.png)
 
+ngx_conf_read_token在读取了合适数量的标记token之后就开始下一个步骤，对这些标记进行实际的处理，读到多少才算合适呢？
 
+对于简单配置项，读取其全部标记，也就是遇到配置项结束标记分号为止;此时一条简单配置项的所有标记都已经被读取并存放在cf->args数组内，因此可以开始下一步，即执行回调函数进行实际性的解析处理;
+
+对于负载配置项则是读取完其配置块内所有的标记，即遇到大括号{为止，此时负载配置项处理函数所需要的标记都已经读取到，而对于配置块{}内的标记将在接下来的函数ngx_conf_parse递归调用中继续处理，这是个反复的过程，当然如果配置文件出错就会直接返回了。
+
+
+ngx_conf_parse函数识别并将token缓存到cf->args数组中,首先对配置文件临时缓存区内容调整,接着通过缓冲区从前往后扫描整个配置文件的内容,对每一个字符与前面已经扫描字符的组合进行有效性检测并进行一些状态旗标设置,比如d_quoted旗标置1则表示当前处于双引号字符串后,last_space置1则表示当前一个字符为空白字符,这些旗标能够大大方便接下来的字符有效性组合检测.
+
+再接下来就是判断当前已经扫描字符是否能够组成一个token标记,两个双引号,两个单引号,两个空白字符之间的字符就能组成一个token标记,此时cf->args数组内申请对应的存储空间并机型token标记字符串拷贝,从而完成了一个token标记的解析与读取工作,此时根据情况要么继续进行下一个token标记的解析与读取,要么返回到ngx_conf_parse函数进行实际处理.
+
+
+
+	13 typedef struct ngx_conf_s        ngx_conf_t;
+
+	166 struct ngx_conf_s {
+	167     char                 *name;  		/*	没有使用	*/
+	168     ngx_array_t          *args;  		/*	指令的参数	*/
+	169 
+	170     ngx_cycle_t          *cycle; 		/*	指向系统参数，在系统整个运行过程中，	*/
+	171                                  		/*	需要使用的一些参数、资源需要统一的管理	*/
+	172     ngx_pool_t           *pool;  		/*	内存池	*/
+	173     ngx_pool_t           *temp_pool;	/*	分配临时数据空间的内存池	*/
+	174     ngx_conf_file_t      *conf_file;	/*	配置文件的信息	*/
+	175     ngx_log_t            *log; 			/*	日志		*/
+	176 
+	177     void                 *ctx;  		/*	模块的配置信息	*/
+	178     ngx_uint_t            module_type; 	/*	当前指令的类型	*/
+	179     ngx_uint_t            cmd_type; 	/*	命令的类型	*/
+	180 
+	181     ngx_conf_handler_pt   handler; 		/*	指令处理函数，有自己行为的在这里实现	*/
+	182     char                 *handler_conf; /*	指令处理函数的配置信息	*/
+	183};
+
+	16 // 动态数组
+	17 struct ngx_array_s {
+	18     						
+	19     void        *elts; 		/*	elts指向数组的首地址 */
+	20     
+	21     ngx_uint_t   nelts; 		/* nelts是数组中已经使用的元素个数	*/
+	22     
+	23     size_t       size; 		/* 每个数组元素占用的内存大小 */
+	24     
+	25     ngx_uint_t   nalloc;		/* 当前数组中能够容纳元素个数的总大小 */
+	26     
+	27     ngx_pool_t  *pool;		/* 内存池对象	*/
+	28 };
+	29 
+
+
+以下是在ngx_conf_parse函数中打印的一些内容
+
+	(gdb) p (*cf->args)->nelts
+	$6 = 2
+	(gdb) p *((ngx_str_t*)((*cf->args)->elts))
+	$7 = {len = 16, data = 0x80e33d8 "worker_processes"}
+	(gdb) p *((ngx_str_t*)((*cf->args)->elts+sizeof(ngx_str_t)))
+	$8 = {len = 1, data = 0x80e33ea "2"}
+	(gdb) p (*cf->args)->elts
+	$9 = (void *) 0x80e3388
+	(gdb) p (*cf->args)->nelts
+	$10 = 2
+	(gdb) p filename
+	$11 = (ngx_str_t *) 0x80e2ac8
+	(gdb) p *filename
+	$12 = {len = 32, data = 0x80e2b1f "/usr/local/nginx/conf/nginx.conf"}
+	(gdb) 
+
+
+
+此时解析转换所需要的token都已经被保存到cf->args中了,接下来要将这些token转换为nginx内控制变量的值,ngx_conf_handler函数的作用便是如此
+
+nginx的每一个配置指令都对应一个ngx_command_s数据类型变量,记录这该配置指令的回调函数,转换值的存储位置等,而每一个模块又都把自身锁相关的所有指令以数组的形式组织起来,所以ngx_conf_handler首先做的就是查找当前指令所对应的ngx_command_s变量,通过循环遍历各个模块的指令数组即可,nginx的所有模块也是用数组形式组织的,
+
+	281 static ngx_int_t
+	282 ngx_conf_handler(ngx_conf_t *cf, ngx_int_t last)
+	283 {
+	284     char           *rv;
+	285     void           *conf, **confp;
+	286     ngx_uint_t      i, multi;
+	287     ngx_str_t      *name;
+	288     ngx_command_t  *cmd;
+	289 
+			/*	以work_process为例,elts类型为ngx_str_t	*/
+	290     name = cf->args->elts;
+	291 
+	292     multi = 0;
+	293 
+			/*	遍历各个模块,数组中结尾的是空结构的哨兵	*/
+	294     for (i = 0; ngx_modules[i]; i++) {
+	295 
+	296         /* look up the directive in the appropriate modules */
+	297 
+				/*	
+				*	一定是在NGX_CONF_MODULE类型的模块中找
+				*	并且模块类型与cf->module_type的类型必须相同	
+				*/
+	298         if (ngx_modules[i]->type != NGX_CONF_MODULE
+	299             && ngx_modules[i]->type != cf->module_type)
+	300         {
+	301             continue;
+	302         }
+	303 
+	304         cmd = ngx_modules[i]->commands;
+	305         if (cmd == NULL) {
+	306             continue;
+	307         }
+	308 
+	309         for ( /* void */ ; cmd->name.len; cmd++) {
+	310				
+					/*	首先比较长度,长度不同没有必要再去比较了	*/
+	311             if (name->len != cmd->name.len) {
+	312                 continue;
+	313             }
+	314 
+					/*	长度相同在比较具体的字符是否相同	*/
+	315             if (ngx_strcmp(name->data, cmd->name.data) != 0) {
+	316                 continue;
+	317             }
+	318 
+	319 
+	320             /* is the directive's location right ? */
+	321 
+	322             if (!(cmd->type & cf->cmd_type)) {
+	323                 if (cmd->type & NGX_CONF_MULTI) {
+	324                     multi = 1;
+	325                     continue;
+	326                 }
+	327 
+	328                 goto not_allowed;
+	329             }
+	330 
+	331             if (!(cmd->type & NGX_CONF_BLOCK) && last != NGX_OK) {
+	332                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+	333                                   "directive \"%s\" is not terminated by \";\"",
+	334                                   name->data);
+	335                 return NGX_ERROR;
+	336             }
+	337 
+	338             if ((cmd->type & NGX_CONF_BLOCK) && last != NGX_CONF_BLOCK_START) {
+	339                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+	340                                    "directive \"%s\" has no opening \"{\"",
+	341                                    name->data);
+	342                 return NGX_ERROR;
+	343             }
+	344 
+	345             /* is the directive's argument count right ? */
+	346 
+	347             if (!(cmd->type & NGX_CONF_ANY)) {
+	348 
+	349                 if (cmd->type & NGX_CONF_FLAG) {
+	350 
+	351                     if (cf->args->nelts != 2) {
+	352                         goto invalid;
+	353                     }
+	354 
+	355                 } else if (cmd->type & NGX_CONF_1MORE) {
+	356 
+	357                     if (cf->args->nelts < 2) {
+	358                         goto invalid;
+	359                     }
+	360 
+	361                 } else if (cmd->type & NGX_CONF_2MORE) {
+	362 
+	363                     if (cf->args->nelts < 3) {
+	364                         goto invalid;
+	365                     }
+	366 
+	367                 } else if (cf->args->nelts > NGX_CONF_MAX_ARGS) {
+	368 
+	369                     goto invalid;
+	370 
+	371                 } else if (!(cmd->type & argument_number[cf->args->nelts - 1]))
+	372                 {
+	373                     goto invalid;
+	374                 }
+	375             }
+	376 
+	377             /* set up the directive's configuration context */
+	378 
+	379             conf = NULL;
+	380 
+	381             if (cmd->type & NGX_DIRECT_CONF) {
+	382                 conf = ((void **) cf->ctx)[ngx_modules[i]->index];
+	383 
+	384             } else if (cmd->type & NGX_MAIN_CONF) {
+	385                 conf = &(((void **) cf->ctx)[ngx_modules[i]->index]);
+	e if (cf->ctx) {
+	388                 confp = *(void **) ((char *) cf->ctx + cmd->conf);
+	389 
+	390                 if (confp) {
+	391                     conf = confp[ngx_modules[i]->ctx_index];
+	392                 }
+	393             }
+	394 
+	395             rv = cmd->set(cf, cmd, conf);
+	396 
+	397             if (rv == NGX_CONF_OK) {
+	398                 return NGX_OK;
+	399             }
+	400 
+	401             if (rv == NGX_CONF_ERROR) {
+	402                 return NGX_ERROR;
+	403             }
+	404 
+	405             ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+	406                                "\"%s\" directive %s", name->data, rv);
+	407 
+	408             return NGX_ERROR;
+	409         }
+	410     }
+	411 
+	412     if (multi == 0) {
+	413         ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+	414                            "unknown directive \"%s\"", name->data);
+	415 
+	416         return NGX_ERROR;
+	417     }
+	418 
+	419 not_allowed:
+	420 
+	421     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+	422                        "\"%s\" directive is not allowed here", name->data);
+	423     return NGX_ERROR;
+	424 
+	425 invalid:
+	426 
+	427     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+	428                        "invalid number of arguments in \"%s\" directive",
+	429                        name->data);
+	430 
+	431     return NGX_ERROR;
+	432 }
+
+以worker_processes为例,当查找到worker_processes配置指令对应的ngx_command_s变量时,就开始调用回调函数进行处理
+
+	 70     { ngx_string("worker_processes"),
+	 71       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
+	 72       ngx_conf_set_num_slot,	/*		worker_processes的回调函数set 	*/
+	 73       0,
+	 74       offsetof(ngx_core_conf_t, worker_processes),
+	 75       NULL },
+
+worker_processes的回调函数是ngx_conf_set_num_slot,它的主要作用是找到在将cf中值的存储的位置,然后利用ngx_atoi来将字符串转换为数字,存储到对应的位置
+
+	1203 char *
+	1204 ngx_conf_set_num_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+	1205 {
+	1206     char  *p = conf;
+	1207 
+	1208     ngx_int_t        *np;
+	1209     ngx_str_t        *value;
+	1210     ngx_conf_post_t  *post;
+	1211 
+	1212	/*	找到存储位置	*/ 
+	1213     np = (ngx_int_t *) (p + cmd->offset);
+	1214 
+	1215     if (*np != NGX_CONF_UNSET) {
+	1216         return "is duplicate";
+	1217     }
+	1218 
+	1219     value = cf->args->elts;
+			/*	value[0]存储的是worker_processes及其长度,value[1]中存储的就是worker_processes之后的配置参素	*/
+	1220     *np = ngx_atoi(value[1].data, value[1].len); //把value后面的buffer强制转为一个str
+	1221     if (*np == NGX_ERROR) {
+	1222         return "invalid number";
+	1223     }
+
+	1224	/*		post多数情况下都是NULL	*/ 
+	1225     if (cmd->post) {
+	1226         post = cmd->post;
+	1227         return post->post_handler(cf, post, np);
+	1228     }
+	1229 
+	1230     return NGX_CONF_OK;
+	1231 }
+
+
+nginx配置文件解析的流程图如下:
+
+![012]({{ site.img_url }}/2014/05/012.png)

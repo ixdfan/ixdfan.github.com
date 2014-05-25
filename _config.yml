@@ -1,7 +1,7 @@
 title:            高手之路
 description:      专注于linux下程序设计
 # Your site's domain goes here. Leave localhost server or blank when working locally.
-url:              http://ucshell.github.com
+url:              http://localhost:4000 #http://ucshell.github.com
 # Owner/author information
 owner:
   name:           Neo
@@ -57,7 +57,6 @@ markdown:    rdiscount
 permalink:   /:year/:month/:day/:title/
 
 img_url: /uploads
-base_url: http://localhost:4000
 
 kramdown:
   auto_ids: true

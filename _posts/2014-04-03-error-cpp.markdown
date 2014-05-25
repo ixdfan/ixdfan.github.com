@@ -4,7 +4,7 @@ title:  expected unqualified-id before ‘delete’
 description: 
 modified: 
 categories: 
-- THE C/C++ 
+- THE C&C++ 
 tags:
 - error
 
