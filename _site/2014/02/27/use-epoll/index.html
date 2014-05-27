@@ -1,0 +1,377 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>epoll编程实例 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="epoll">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="epoll编程实例">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/02/27/use-epoll/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/02/27/use-epoll/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>epoll编程实例</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <pre><code>#include "sys/types.h"
+#include "sys/socket.h"
+#include "netinet/in.h"
+#include "assert.h"
+#include "sys/epoll.h"
+#include "arpa/inet.h"
+#include "fcntl.h"
+#include "unistd.h"
+#include "stdio.h"
+#include "errno.h"
+#include "string.h"
+#include "stdlib.h"
+#include "pthread.h"
+
+#define MAX_EVENT_NUMBER    1024
+#define BUFFER_SIZE         10
+
+/*  设置套接字为非阻塞     */
+int setnonblocking( int fd )
+{
+    int old_option = fcntl(fd, F_GETFL);
+    int new_option = old_option | O_NONBLOCK;
+    fcntl(fd, F_SETFL, new_option);
+    return old_option;
+}
+
+/*将fd的EPOLLIN事件加入到epoll中，参数enable_et用来控制是否使用ET模式*/
+void addfd(int epollfd, int fd, bool enable_et)
+{
+    epoll_event event;
+    event.data.fd   = fd;
+    event.events    = EPOLLIN;
+    if(enable_et) {
+        event.events |= EPOLLET;
+    }
+
+    epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &amp;event);
+    setnonblocking(fd);
+}
+/*  LT模式的处理方式 */
+void lt(epoll_event* events, int number, int epollfd, int listenfd) 
+{
+    char buf[BUFFER_SIZE];
+    for (int i = 0; i &lt; number; i++) {
+        int     sockfd = events[i].data.fd;
+        if(sockfd == listenfd) {
+            struct sockaddr_in client_address;  
+            socklen_t client_addrlength = sizeof(client_address);
+            int connfd = accept(listenfd, (struct sockaddr*)&amp;client_address, &amp;client_addrlength);
+            addfd(epollfd, connfd, false);
+
+        } else if (events[i].events &amp; EPOLLIN) {
+            /*只要socket中还有数据没有读取这段代码就触发*/
+            printf("event trigger once\n");     
+            memset(buf, 0, BUFFER_SIZE);
+            int ret = recv(sockfd, buf, BUFFER_SIZE - 1 , 0);
+            if ( ret &lt;= 0) {
+                close(sockfd);
+                continue;
+            }
+            printf("get %d bytes of content: %s\n", ret, buf);
+
+        } else {
+            printf("something else happened\n");    
+
+        }
+    }
+}
+
+/*  ET模式的处理方式 */
+void et (struct epoll_event* events, int number, int epollfd, int listenfd)
+{
+
+        char buf[BUFFER_SIZE];
+        for (int i = 0; i &lt; number; i++) {
+                int     sockfd = events[i].data.fd;
+                if(sockfd == listenfd) {
+                        struct sockaddr_in client_address;    
+                        socklen_t client_addrlength = sizeof(client_address);
+                        int connfd = accept(listenfd, (struct sockaddr*)&amp;client_address, &amp;client_addrlength);
+                        addfd(epollfd, connfd, false);
+
+                } else if (events[i].events &amp; EPOLLIN) {
+            printf("event trigger once\n");
+
+            while (1) {
+            memset(buf, 0, BUFFER_SIZE);
+            int ret = recv(sockfd, buf, BUFFER_SIZE - 1 , 0);
+                        if ( ret &lt; 0) {
+                        /*errno为EAGAIN才表示读取完毕*/
+                if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
+                    printf("read later\n");
+                    break;
+                }
+                close(sockfd);
+                break;
+
+                        } else if (ret == 0) {
+                close(sockfd);
+
+            } else {
+                printf("get %d bytes of content: %s\n", ret, buf);  
+            }
+
+            }
+
+        } else {
+            printf("something else happened \n");       
+        }
+    }
+}
+
+int main(int argc, char** argv)
+{
+
+    if (argc &lt;= 2) {     
+        printf("usage: %s ip_address port_number\n", basename(argv[0]));    
+        return 1;     
+    }    
+    const char* ip = argv[1];     
+    int port = atoi(argv[2]);     
+    int ret = 0;    
+    struct sockaddr_in  address;    
+    bzero(&amp;address, sizeof(address));     
+    address.sin_family = AF_INET;     
+    address.sin_port = htons(port);     
+    inet_pton(AF_INET, ip, &amp;address.sin_addr);     
+    int listenfd = socket(AF_INET, SOCK_STREAM, 0);     
+    assert(listenfd &gt;= 0);
+    /*  地址重用    */
+    int on = 1;
+    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on)) == -1) {
+       perror("setsockopt error");
+    }
+
+    ret = bind(listenfd, (struct sockaddr*)&amp;address, sizeof(address));
+    assert(ret != -1);
+
+    ret = listen(listenfd, 5);
+    assert(ret != -1);
+
+    epoll_event events[MAX_EVENT_NUMBER];
+    int epollfd = epoll_create(5);
+    assert(-1 != epollfd);
+//  addfd(epollfd, listenfd, true);    /*   开启et模式  */
+    addfd(epollfd, listenfd, false);   /*   不开启et模式   */
+
+    while(1) {
+    int ret = epoll_wait(epollfd, events, MAX_EVENT_NUMBER, -1);
+    if (ret &lt; 0) {
+        printf("epoll failure");
+        break;
+    }
+//  et(events, ret, epollfd, listenfd);    /*et模式的处理方式*/
+    lt(events, ret, epollfd, listenfd);    /*lt模式的处理方式*/
+
+    }
+    close(listenfd);
+
+    return 0;
+}
+</code></pre>
+
+<p>总的来说不难，主要的工作流程同select类似:<br/>
+1. 建立socket<br/>
+2. bind绑定地址<br/>
+3. listen监听<br/>
+4. epoll_create建立epoll<br/>
+5. epoll_ctl将监听的sockfd加入epoll<br/>
+6. epoll_wait等待
+* 当发生事件的是sockfd时候，表示有连接上来了，将连接上的描述符加入epoll中<br/>
+* 如果发生事件的不是sockfd时候，表示是客户端发送了数据，读取数据即可</p>
+
+<h4>需要注意的是:</h4>
+
+<ul>
+<li>对于ET模式一定要一次性读完所有的数据，errno为EAGAIN才表示读取完毕</li>
+<li>对于LT模式只要正常读取即可，因为假如有数据没有读取完毕，那么epoll_wait会一直通知你让你去读</li>
+</ul>
+
+
+<p>errno参考文章<a href="http://ucshell.com/archives/1339">《errno中EAGAIN的含义》</a></p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>epoll编程实例</strong> was published on <time datetime="2014-02-27T14:41:16Z">February 27, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>sed组合命令 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="sed">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sed组合命令">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/12/13/sed-01/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/12/13/sed-01/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>sed组合命令</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>最简单的组合命令是使用分号分隔命令</p>
+
+<pre><code>[root@localhost sed]# sed -n -e '=;p' passwd.bak
+1
+root:x:0:0:root:/root:/bin/bash
+2
+bin:x:1:1:bin:/bin:/sbin/nologin
+3
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+4
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+5
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+6
+sync:x:5:0:sync:/sbin:/bin/sync
+7
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+8
+halt:x:7:0:halt:/sbin:/sbin/halt
+9
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+10
+uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin
+[root@localhost sed]#
+</code></pre>
+
+<p>这个命令分成两部分，一部分是等号(=)，一部分是p命令，这两部分使用分号(;)来隔开，<strong>=命令告诉sed要打印行号</strong>，<strong>p命令表示打印该行</strong>因为我们使用了-n命令</p>
+
+<p>当我们指定多条命令时候，sed会按照顺序将命令应用到文件的每一行，例如set先将=应用与第一行在执行p命令重复这个过程。</p>
+
+<p>另外还可是使用多个-e参数</p>
+
+<pre><code>[root@localhost sed]# sed -n -e '=' -e 'p' passwd.bak
+</code></pre>
+
+<p>使用文本文件执行sed命令</p>
+
+<pre><code>[root@localhost sed]# cat handle.sed
+1d
+s:sbin/nologin:bin/bash:g
+p
+
+[root@localhost sed]# sed -n -f handle.sed passwd.bak
+bin:x:1:1:bin:/bin:/bin/bash
+daemon:x:2:2:daemon:/sbin:/bin/bash
+adm:x:3:4:adm:/var/adm:/bin/bash
+lp:x:4:7:lp:/var/spool/lpd:/bin/bash
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/bin/bash
+uucp:x:10:14:uucp:/var/spool/uucp:/bin/bash
+[root@localhost sed]#
+</code></pre>
+
+<p>我们将要做的操作写入handle.sed文件中，然后使用-f加载这个文件</p>
+
+<pre><code>1d              表示删除第一行
+s:sbin/nologin:bin/bash:g   表示替换
+p               表示打印
+</code></pre>
+
+<p><strong>多条命令用于同一地址范围</strong></p>
+
+<pre><code>[root@localhost sed]# sed -n -e '1,5{s:sbin/nologin:bin/bash:g; s/:/-&gt;/g; p}' passwd.ba
+k
+root-&gt;x-&gt;0-&gt;0-&gt;root-&gt;/root-&gt;/bin/bash
+bin-&gt;x-&gt;1-&gt;1-&gt;bin-&gt;/bin-&gt;/bin/bash
+daemon-&gt;x-&gt;2-&gt;2-&gt;daemon-&gt;/sbin-&gt;/bin/bash
+adm-&gt;x-&gt;3-&gt;4-&gt;adm-&gt;/var/adm-&gt;/bin/bash
+lp-&gt;x-&gt;4-&gt;7-&gt;lp-&gt;/var/spool/lpd-&gt;/bin/bash
+[root@localhost sed]#
+</code></pre>
+
+<p>这个命令将{}之间的命令应用从第一行开始，到第五行结束的所有行，可以在{}之内输入任意多的命令，使用分号分隔</p>
+
+<hr />
+
+<p>实例:</p>
+
+<p>在Unix与Windows系统纯文本格式的换行方式是不同的，Windows的文本文件在每一行末尾有个CR(回车)+LF(换行)
+而Unix文本只有一个换行，因此必须进行格式转换</p>
+
+<pre><code>[root@localhost sed]# sed -e 's/$/\r/' unix_file.txt &gt; windows_file.txt
+#直接在末尾添加换行符号
+</code></pre>
+
+<p>将windos格式文本转换为UNIX格式</p>
+
+<pre><code>[root@localhost sed]# sed -e 's/.$//' windows_file.txt &gt; unix_file.txt
+#将末尾的那个字符消去
+</code></pre>
+
+<hr />
+
+<pre><code>ot@localhost sed]# cat datafile
+Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300
+Betty Boop:245-836-8357:636 Cutesy Lane, Hollywood, CA 91464:6/6/23/23:14500
+Igor Chensky:385-375-8395:3567
+Norma Corder:397-875-2735:74
+Jennifer Cowan:548-83402348:583
+Jon DeLoach:408-253-3122:123
+Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92087:7/25/53:85100
+Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/53:58200
+Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92087:11/3/53:58200
+
+Fred Fardbarkle: 674-843-1385:20 Parak Lane, Deluth, MN 23850:4/12/23:780900
+Fred Fardbarkle: 674-843-1385:20 Parak Lane, Deluth, MN 23850:4/12/23:780900
+Lori Gortz:327-832-5782:3465 Mirlo Street, Peabodym MA 34756:10/2/65:35200
+Paco Gutierrez:835-365-1284:454 Easy Street, Decatyrm IL 75732:2/28/53:35200
+Ephram Hardy:293-259-5395:235 CarltonLane, Jolier, IL 73858:8/12/20:56700
+James Ikeda:834-938-8376:832 Ponce Drive, Gary, IN 83756:12/1/46:268500
+Popeye Sailor:156-454-3322:945 Bluto Street, Anywhere, YSA 29358:3/19/35:22350
+Jose Santiago:385-898-8357:38 Fife Way, Abilene, TX 39673:1/5/58:95600
+
+[root@localhost sed]#
+</code></pre>
+
+<p>任务：
+    1删除前3行
+    2删除包含Lane的行
+    3显示所有生日在November-December之间的行
+    4将3个星号(***)添加到Fred开头
+    5用JOSE HAS RETIRED取代包含Jose的行
+    6将Popeye的生日改为11/14/46
+    7删除所有空白行</p>
+
+<pre><code>8写一个脚本实现：
+在第一行之前插入标题PERSONNEL FILE；
+删除以500结尾的工资
+显示文件内容，将姓和名颠倒
+在文件末尾添加THE END
+</code></pre>
+
+<hr />
+
+<p>1删除前3行</p>
+
+<p>sed -e '1,3d' datafile</p>
+
+<p>2删除包含Lane的行</p>
+
+<p>sed -e 'Lane/d' datafile</p>
+
+<p>3显示所有生日在November-December之间的行</p>
+
+<pre><code>sed -n -e '/[:::]1[12][:/:]/p' datafile
+
+sed -n -e '/\:1[12]\//p' datafile
+</code></pre>
+
+<p>11与12开头都有一个1，之后是1或2</p>
+
+<h5>注意：</h5>
+
+<p>sed中为了匹配特殊字符需要将它用[::]包围起来，所以为了匹配':'就必须用[:::],为了匹配’/‘就必须用[:/:],当然也可以使用转义字符'\'</p>
+
+<p>4将3个星号(***)添加到Fred开头</p>
+
+<pre><code>sed -e 's/^Fred/***Fred/g' datafile
+</code></pre>
+
+<p>5用JOSE HAS RETIRED取代包含Jose的行</p>
+
+<pre><code>sed -e 's/^Jose.*/JOSE HAS RETIRED/g' datafile
+</code></pre>
+
+<p>6将Popeye的生日改为11/14/46</p>
+
+<p>首先要找到Popeye的生日，也就是要找到Popeye所在的行
+然后在替换他的生日</p>
+
+<pre><code>#使用转义字符识别'/'
+[root@localhost sed]# sed -e '/Popeye/s/:[0-9]*\/.*\/.*:/:11\/14\/46:/g' datafile
+#使用[::]识别'/'
+[root@localhost sed]# sed -e '/Popeye/s/:[0-9]*[:/:].*[:/:].*:/:11\/14\/46:/g' datafile
+</code></pre>
+
+<p>7删除所有空白行</p>
+
+<pre><code>[root@localhost sed]# sed -e '/^$/d' datafile
+</code></pre>
+
+<p>8写一个脚本实现：
+在第一行之前插入标题PERSONNEL FILE；
+删除以500结尾的工资
+显示文件内容，将姓和名颠倒</p>
+
+<pre><code>[root@localhost sed]# cat do.sed
+/500$/d
+s/^\([a-zA-Z]\+\) \([a-zA-Z]\+\)\(.*\)/\2 \1\3/g
+1iPERSONNEL FILE #注释1
+
+$aTHE END #注释2
+[root@localhost sed]#
+</code></pre>
+
+<p>第二个其实转义字符占了大部分内容(\,+(,)都要转义)，真正的意义是</p>
+
+<pre><code>s/^([a-zA-Z]+) ([a-zA-Z]+)(.*/\2 \1\3\g
+</code></pre>
+
+<p>其中匹配的内容被分成了3部分
+    ([a-zA-Z]+) 表示匹配一串英文字母,也就是明
+    ([a-zA-Z]+) 表示匹配一串英文字母,也就是姓
+    (.*) 剩余的部分
+    +表示开启+的特殊含义而不是去匹配+
+    使用()之后可以使用/数字来引用</p>
+
+<p>注释1:插入命令是i,1i代表在第一行插入
+注释2:追加命名是a,$a代表是在末尾追加</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>sed组合命令</strong> was published on <time datetime="2013-12-13T09:14:57Z">December 13, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

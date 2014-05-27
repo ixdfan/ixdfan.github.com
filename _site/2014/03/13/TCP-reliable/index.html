@@ -1,0 +1,242 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>TCP如何保证可靠传输 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="TCP">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP如何保证可靠传输">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/13/TCP-reliable/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/13/TCP-reliable/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>TCP如何保证可靠传输</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>TCP的任务是在IP层的不可靠、尽力而为的基础上建立一种可靠数据传输服务。</p>
+
+<p>TCP提供的可靠数据传输服务就是要保证接收方进程从缓存区读取的字节流于发送方发出的字节流是完全一样的。</p>
+
+<p>TCP使用<strong>校验、序号、确认、重传机制</strong>来达到这个目的</p>
+
+<h3>1.序号</h3>
+
+<p>TCP首部的序号字段用来保证数据能够有序提交给应用层，TCP将数据看成一个无结构但是有序的字节流，而序号就建立在传送的字节流之上的，而不是建立在报文段之上！</p>
+
+<p>TCP连接中传送的数据流中的每一个字节都编上序号。序号字段的值则是指本报文段所发送的数据的第一个字节的序号。</p>
+
+<p><img src="\uploads\2014\03\003.jpg" alt="002" /></p>
+
+<p>假设A和B之间建立一条TCP连接，A的发送缓存区中共有10个字节，序号从0开始标号，第一个报文包含第0~2个字节，则该TCP报文段的序号是0；</p>
+
+<h3>2.确认</h3>
+
+<p>TCP首部的确认号是期望收到对方的下一个报文段的数据的第一个字节的序号</p>
+
+<p>TCP默认使用累计确认，也就是TCP只确认数据流中之第一个丢失字节为止的字节</p>
+
+<p>例如:</p>
+
+<p>接收方收到了A发送的包含字节0~2以及字节6~7的报文段，由于某种原因没有收到3~5的报文段，此时B仍在等待3(和后面其他的字节)，因此B到A的下一个报文段将确认字段ack设置为3。</p>
+
+<h3>3.重传</h3>
+
+<p>有两种事件会导致TCP对报文段进行重传:超时和冗余ACK
+1. 超时</p>
+
+<p>TCP 每发送一个报文段，就对这个报文段设置一次计时器。只要计时器设置的重传事件到期但还没有收到确认，就要重传这一报文段；</p>
+
+<p>由于TCP下层是一个互联网环境，IP数据报所选择的路由变化很大。因而传输层的往返时延的方差也很大。为了计算超时时计时器的重传事件，TCP采用一种自适应算法，它记录一个报文段发出的事件。以及受到相应确认的事件，这两个时间之差叫做报文段的往返事件(RTT),TCP保留了RTT的一个加权平均往返事件RTTs。</p>
+
+<p>2.冗余ACK(冗余确认)</p>
+
+<p>超时触发重传存在的一个问题就是超时周期往往太长，但是发送方可以在超时事件发生之前通过注意冗余ACK来较好的检测丢包情况。</p>
+
+<p>冗余ACK就是再次确认某个报文段的ACK，而发送方先前已经收到过该报文段的确认了！</p>
+
+<p>TCP规定每当比期望序号大的失序报文段到达时，发送一个冗余ACK，指明下一个期待字节的序号；</p>
+
+<p><strong>TCP规定当发送方收到对同一个报文段的3个冗余ACK时，就可以认为跟在这个被确认报文段之后的报文段已经丢失！</strong></p>
+
+<p>例如：发送发A发送了序号1、2、3、4、5的TCP报文段，其中2号报文段在链路中丢失，它将无法到达接收方B；因此3、4、5号报文段对于B来讲是成了失序报文段；3、4、5不是B所期望的下一个报文，于是B就发送3个对1号报文段的冗余ACK，表示自己期望接收2号报文段。
+当A收到对1号报文段的3个冗余ACK时，则它就可以认为2号报文段已经丢失，这时发送方A可以立即对2号报文段执行重传，这种技术成为快速重传</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>TCP如何保证可靠传输</strong> was published on <time datetime="2014-03-13T00:00:00+00:00">March 13, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

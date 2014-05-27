@@ -1,0 +1,408 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>STL::iterator &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="STL">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL::iterator">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/12/01/stl-iterator/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/12/01/stl-iterator/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>STL::iterator</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>迭代器
+STL的iterator是一种对象，其作用是用来遍历STL容器中的部分或全部元素，因此对于那些需要遍历的容器例如vector、list等，必须在容器的定义中内嵌自己的迭代器，该容器内嵌的迭代器提供一些基本操作符，例如*、++、==、!=、=一遍支持对STL容器的遍历等操作。</p>
+
+<hr />
+
+<p>迭代器的分类：</p>
+
+<p>STL中将迭代器分成5类：</p>
+
+<pre><code>输入迭代器(inPut iterator)
+输出迭代器(outPut iterator)
+前向迭代器(forward iterator)
+双向迭代器(birectional iterator)
+随机访问迭代器(random access iterator)
+</code></pre>
+
+<hr />
+
+<p>输入迭代器(inPut iterator)：可用于读取容器中的元素，但是不能保证能支持容器的写入操作。</p>
+
+<h5>必须满足:</h5>
+
+<pre><code>==、！=:具有相等和不相等操作符，用于比较两个迭代器。
+++:前置和后置的自增运算符
+*:读取元素的解引用操作符
+-&gt;:箭头操作符，可以对迭代器进行解引用
+</code></pre>
+
+<hr />
+
+<p>输出迭代器(outPut iterator)：可用于向容器中写入元素，但是不能保证能支持容器的读取操作。</p>
+
+<h5>必须满足:</h5>
+
+<pre><code>++:前置和后置的自增运算符
+*:读取元素的解引用操作符
+</code></pre>
+
+<hr />
+
+<p>前向迭代器(forward iterator):可用读取或写入指定的容器，这类迭代器只会以一个方向遍历容器。</p>
+
+<h5>必须满足:</h5>
+
+<pre><code>支持输入迭代器和输出迭代器的所有操作
+支持对同一个元素的多次读写
+可复制前向迭代器来记录序列中的一个位置，方便将来返回此位置
+</code></pre>
+
+<hr />
+
+<p>双向迭代器(birectional iterator):可用从两个方向读取和写入指定的容器。</p>
+
+<h5>注意：STL所有标准库提供的迭代器都至少达到双向迭代器的要求!</h5>
+
+<p>必须满足:</p>
+
+<pre><code>提供前向迭代器的全部操作
+--:双向迭代器还提供前置和后置的自减运算
+</code></pre>
+
+<hr />
+
+<p>随机访问迭代器(random access iterator):提供在常量时间内访问容器中任意位置的功能</p>
+
+<p>必须满足:</p>
+
+<pre><code>支持双向迭代器的全部功能
+&lt;、&lt;=、&gt;、&gt;=:支持这些关系操作符，用于比较两个迭代器的相对位置。
++、+=、-、-=:支持迭代器与整形数值n之间的加法和减法操作符，可以使迭代器向前或后移动n个元素。
+-:支持两个迭代器之间的减法操作，可以得到连个迭代器之间的距离。
+[]:支持下标操作符[]
+</code></pre>
+
+<hr />
+
+<h5>总结:</h5>
+
+<ul>
+<li><p>vector和deque提供的是随机访问迭代器，在定义算法时通常写作RandomAccessIterator；</p></li>
+<li><p>list提供的是双向迭代器，在定义算法时通常写作BidirectionaIterator；</p></li>
+<li><p>set/multiset、map/multimap提供的前向迭代器，在定义算法是写作ForwardIterator；</p></li>
+</ul>
+
+
+<hr />
+
+<pre><code>#include vector
+using namespace std;
+
+int main()
+{
+    int ia[6] = {5, 7, 3, 4, 6, 9};
+    vector iv(ia, ia+6);
+    vector::iterator iter;
+    ……
+    return 0;
+}
+</code></pre>
+
+<p>这段代码用'::'做前缀来声明迭代器iter，能声明一个对象，表明iterator是一个类，但是为什么要使用'::'呢？</p>
+
+<pre><code>class A
+{
+    public:
+    typedef int INT;
+    class B{};
+};
+int main()
+{
+    A::INT i;
+    A::B b;
+}
+</code></pre>
+
+<p>这段代码定义了一个class A，然后又在class A中定义了一个INT类型，还定义了一个嵌套类class B，这时候，如果要在程序中使用class A中的INT类型或B类型去声明一个变量，就要加上一个'::'符号，表明这是在class A中声明的类型。</p>
+
+<pre><code>class vector : protected _Vector_base&lt;_Tp, _Alloc&gt;
+    {
+      // Concept requirements.
+      typedef typename _Alloc::value_type                _Alloc_value_type;
+      __glibcxx_class_requires(_Tp, _SGIAssignableConcept)
+      __glibcxx_class_requires2(_Tp, _Alloc_value_type, _SameTypeConcept)
+
+      typedef _Vector_base&lt;_Tp, _Alloc&gt;                  _Base;
+      typedef typename _Base::_Tp_alloc_type             _Tp_alloc_type;
+
+    public:
+      typedef _Tp                                        value_type;
+      typedef typename _Tp_alloc_type::pointer           pointer;
+      typedef typename _Tp_alloc_type::const_pointer     const_pointer;
+      typedef typename _Tp_alloc_type::reference         reference;
+      typedef typename _Tp_alloc_type::const_reference   const_reference;
+      typedef __gnu_cxx::__normal_iterator&lt;pointer, vector&gt; iterator;   //迭代器
+</code></pre>
+
+<p>iterator是vector中定义的类型，事实上在STL的迭代器都是定义在某个容器类中的，他是专门为每一个容器类分别设计的。
+每种容器都有自己的迭代器。所以声明一个vector类型的迭代器，就要使用vector中定义的迭代器类型。</p>
+
+<pre><code>vector::iterator iter;
+</code></pre>
+
+<hr />
+
+<p>list迭代器</p>
+
+<pre><code>#include list
+using namespace std;
+
+int main()
+{
+    int ia[6] = {5, 7, 3, 4, 6, 9};
+    list iv(ia, ia+6);
+    list::iterator iter;
+    ……
+    return 0;
+}
+</code></pre>
+
+<hr />
+
+<p>其他容器的迭代器</p>
+
+<p>deque容器也拥有属于自己的迭代器，定义在deque类中。</p>
+
+<p>map/multimap和set/multiset是建立在红黑树基础上的。</p>
+
+<p>stack、queue、priority_queue不允许遍历容器，只允许在容器的一端或两端操作元素，所以他们没有迭代器</p>
+
+<hr />
+
+<p>以下是正确的：</p>
+
+<pre><code>vector::iterator iter;
+list::iterator iter;
+deque::iterator iter;
+set::iterator iter;
+multiset::iterator iter;
+map&lt;int, int&gt;::iterator iter;
+mulitmap&lt;int, int&gt;::iterator iter;
+</code></pre>
+
+<hr />
+
+<p>以下是错误的：</p>
+
+<pre><code>stack::iterator iter;
+queue::iterator iter;
+priority_queue::iterator iter;
+</code></pre>
+
+<hr />
+
+<p>容器的迭代器例子：</p>
+
+<pre><code>void input(const vector&amp; vec)
+{
+     vector::iterator iter = vec.begin();
+     ……
+}
+</code></pre>
+
+<p>这个函数的问题是vec是一个const引用，但是却试图在函数中用一个非const迭代器去绑定他。</p>
+
+<p>如果允许这样做，那么就可以非常轻易的使用这个iterator来修改vector引用了，因此在编译时函数就会报错。</p>
+
+<p>在vector、list、queue等源码中，每一个容器在定义一个iterator(用于修改数据)的同时，也会定义一个const iterator(用来保护数据)</p>
+
+<h5>注意:</h5>
+
+<p>const容器只能使用const iterator去绑定。</p>
+
+<hr />
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>STL::iterator</strong> was published on <time datetime="2013-12-01T05:51:59Z">December 01, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

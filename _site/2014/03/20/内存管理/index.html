@@ -1,0 +1,428 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>操作系统的内存管理 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统的内存管理">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/20/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/20/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>操作系统的内存管理</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <h4>内存管理</h4>
+
+<h5>1.存储管理的功能:</h5>
+
+<ul>
+<li>内存空间的分配与回收，包括分配与共享</li>
+<li>地址转换:内存管理配合硬件进行地址转换，将逻辑地址转化为物理地址</li>
+<li>内存空间的扩充:借助于虚拟存储器或交换覆盖技术来达到扩充内存容量的目的</li>
+<li>存储保护:为避免相互干扰和破坏，必须提供保护功能</li>
+</ul>
+
+
+<h5>地址重定位：</h5>
+
+<ul>
+<li>静态重定位:将作业装入过程中随即进行的地址变换方式</li>
+<li>动态重定位:在作业执行过程中，当访问内存单元时才进行地址变换的方式，动态重定位是程序执行过程中由硬件地址变换机构实现的</li>
+</ul>
+
+
+<h5>动态重定位的优点:</h5>
+
+<ul>
+<li>用户作业执行过程中，可以动态申请存储空间以及在内存中移动(例如整理磁盘碎片时候需要"紧凑")</li>
+<li>有利于程序段的共享</li>
+</ul>
+
+
+<h4>2.连接:</h4>
+
+<h5>静态连接:</h5>
+
+<p>程序运行前将各个目标模块以及他们所需要的库函数连接成一个可执行的程序，以后不再拆开</p>
+
+<h5>装入时动态连接:</h5>
+
+<p>将用户源程序编译后得到的一组目标模块，在装入内存时候用边装入边连接的方式</p>
+
+<h5>运行时动态连接:</h5>
+
+<p>对某些目标模块的连接，是在程序执行中需要该目标模块时，才对他进行连接；
+优点是便于更新和修改，便于实现对目标模块的共享；</p>
+
+<h4>3.定位</h4>
+
+<h5>绝对装入:</h5>
+
+<p>编译时如果知道程序将驻留在内存的某个位置，编译程序将产生绝对地址的目标代码。</p>
+
+<p>结对装入程序按照装入模块的地址，将程序装入内存，由于程序中的逻辑地址与实际内存地址完全相同，所以不需要对程序和数据的<em>地址</em>修改</p>
+
+<h5>可重定位装入:</h5>
+
+<p>多道程序环境中，多个目标模块的起始地址通常是从0开始的，程序中的其他地址都是相对于起始地址的，此时应采用可重定位装入方式，根据内存的当前情况，将模块装入内存的适当位置，装入时对目标程序中指令和数据地址的修改成为重定位；地址变换通常是在装入时一次完成的，所以又称为静态重定位。</p>
+
+<p><strong>静态重定位特点:</strong>
+一个作业装入内存的时候，必须分配其要求的全部内存空间，如果没有足够的内存，那么就不能装入该作业，作业一旦装入内存后，在整个运行期间不能再内存中移动，也不能再申请内存空间。</p>
+
+<h5>动态运行时装入(动态重定向):</h5>
+
+<p>程序在内存中如果发生移动，就要采用动态的装入方式，装入程序将装入模块装入内存后，并不立即把装入模块中的相对地址转换成绝对地址，而是将地址转换推迟到程序终止需要执行时才进行，因此装入内存后的所有地址均为相对地址，这种方式需要一个重定位寄存器的支持。</p>
+
+<p><strong>动态重定位特点:</strong>
+可以将程序分配到不连续的存储区中；
+在程序运行前可以只装入他的部分代码即可投入运行；
+在程序运行期间，根据需要动态申请分配内存;
+便于程序段的共享；</p>
+
+<h4>4.覆盖于交换</h4>
+
+<p>覆盖指的是一个作业的某个程序段或者几个作业的某些部分轮流使用某一段存储空间</p>
+
+<p>交换实质上使用外存做缓冲，让用户程序在叫嚣的存储空间中通过不断的换出换入从而可以运行较大的作业，交换可以使进程整体的交换也可以使页面交换或是分段交换，实际上就是指，你进来一个进程到内存中，我就出去一个进程到刚刚那个进程在外面的位置；这种交换方法是实现请求分页以及请求分段存储管理的基础，虚拟存储系统就是采用这部分交换而得以实现。</p>
+
+<hr />
+
+<h3>内存的管理方式</h3>
+
+<ul>
+<li>连续分配</li>
+<li>非连续分配</li>
+</ul>
+
+
+<h2>连续分配管理方式</h2>
+
+<ul>
+<li>单一连续分配</li>
+<li>固定分区分配</li>
+<li>动态分区分配</li>
+</ul>
+
+
+<h3>1.单一连续分配</h3>
+
+<p>内存在此方式下分为系统区和用户区，系统区仅提供给操作系统使用，通常在低地址部分;</p>
+
+<p>用户区是为用户提供的、除系统分区意外的内存空间，这种方式无需进行内存保护；</p>
+
+<h4>优点:</h4>
+
+<p>技术简单，无外部碎片，可以采用覆盖技术，不需要额外的技术支持，缺点是只能用于单用户单任务操作系统，但是有内部碎片，存储器的利用率低；</p>
+
+<h3>2.固定分区分配</h3>
+
+<p>将用户的内存空间划分为若干个固定大小的区域，每个区域只装入一道作业。有空闲时，边可以再从外存的后背队列中选择适当大小的作业装入分区；</p>
+
+<p>分区方法:
+* 分区大小相等:用于利用一台计算机区控制多个相同对象的场合，缺乏灵活性
+* 分区大小不等:划分为含有多个较小的分区、适量的中等分区以及少量的大分区</p>
+
+<p>为便于内存分配，通常将分区按大小排队，并为之建立一个分区说明表，其中包括每个分区的起始地址、大小、状态(是否分配);</p>
+
+<p>当有用户程序需要装入时，先检索该表，找到合适的分区则给予分配并将其状态设置为"已分配";未找到合适的则拒绝为该程序分配内存。</p>
+
+<h4>问题:</h4>
+
+<ul>
+<li>程序可能太大不放进任何一个分区内，这是用户不得不使用覆盖技术来使用内存空间
+*主表的利用率低，当程序小于固定分区大小时候，也占用一个完整的内存分区空间，这样分区内部有空间浪费，这种现象称为内部碎片；</li>
+</ul>
+
+
+<p>固定分区是多道程序设计最简单的存储分配，无外部碎片，但是不能实现多进程共享一个主存区，所以存储空间的利用率低</p>
+
+<h3>3.动态分区分配(可变分区分配)</h3>
+
+<p>是一种动态划分内存分区的方法，这种分区方法不预先将内存划分，而是在进程装入内存中时，根据进程的大小动态的建立分区，并使得分区的大小正好适合进程的需要。因此系统中分区的大小和数目是可变的。</p>
+
+<p>动态分区在开始分配时是很好的，但是之后会导致内存中出现许多小的内存块，随着时间的推移内存中会产生越来越多的碎片，内存的利用率随之下降，这些小的块称为外部碎片。指分区外的存储空间会变成越来越多的碎片，这与固定分区中的内部碎片正好相对。</p>
+
+<p>克服外部碎片可以通过"紧凑"技术来解决,就是操作系统不停地对进程进行移动和整理(此时动态重定位的优势便显现出来了!)</p>
+
+<h4>动态分配的几种方法:</h4>
+
+<p>在程序装入或换入主存时候，如果内存中有足够大的空闲块，操作系统必须确定分配哪个内存块给进程使用:</p>
+
+<h4>1.首次适应算法(First Fit):</h4>
+
+<p>空闲分区以地址递增的次序连接，分配内存时顺序查找，找到大小能满足要求的第一个空闲分区；</p>
+
+<h4>2.最佳适应算法(Best Fit):</h4>
+
+<p>空闲分区按容量递增的次序连接，找到第一个能满足要求的空闲分区</p>
+
+<h4>3.最坏适应算法(Worst Fit):</h4>
+
+<p>又称最大适应算法(Largest Fit)，空闲分区以容量递减的次序连接，找到第一个能满足要求的空闲分区，也就是挑选出最大的分区</p>
+
+<h4>4.邻近适应算法(Next Fit):</h4>
+
+<p>又称循环首次适应算法，由首次适应算法演变而来，不同的是分配内存时从上次查找结束的位置开始继续查找。</p>
+
+<h5>注意:</h5>
+
+<ul>
+<li>首次适应算法不仅最简单，而且也通常是最好和最快的。不过首次适应算法是的内存的低地址部分出现很多小的空闲分区，而每次分配查找时候，都要经过这些分区，因此也增加的查找的开销。</li>
+<li>邻近适应算法试图解决这个问题，但是实际上他常常会导致内存的末尾分配空间(因为在一一遍扫描中，内存前面部分使用后在释放时，不参与分配)，分裂成小碎片。他通常比首次适应算法的效果差</li>
+<li>最佳适应算法虽然称为"最佳"，但是通常性能比较差，因为每次最佳的分配会留下很小的难以利用的内存块，他会产生很多外部碎片。</li>
+<li>最坏适应算法于最佳适应算法相反，选择最大的可用块，这看起来最不容易产生碎片，但是却把最大的连续内存划分开，会很快导致没有可用的大的内存块，因此性能也比较差。</li>
+</ul>
+
+
+<p>以上的三种分配方式(单一连续分配、固定分区分配、动态分区分配)都有一个共同的特点:
+<strong>用户进程(或作业)都是连续存放的！</strong></p>
+
+<h3>非连续分配</h3>
+
+<ul>
+<li>分页存储管理方式</li>
+<li>分段存储管理方式</li>
+<li>段页式管理方式</li>
+</ul>
+
+
+<p>分连续分配允许一个程序分散的装入到不相邻的内存分区中；</p>
+
+<p>根据分区大小是够固定分为<em>分页存储管理方式</em>和<em>分段存储管理方式</em></p>
+
+<p>分页管理方式中，根据作业运行时是否要把作业的所有页面都装入内存才能运行分为基本分页存储管理方式和请求分页存储管理方式</p>
+
+<h4>基本分页存储管理方式:</h4>
+
+<p>固定分区会产生内部碎片，动态分区会产生外部碎片，这两种技术对内存的利用率都比较低，我们希望内存的使用能尽量避免碎片的产生，就引入了分页思想;</p>
+
+<h5>分页思想:</h5>
+
+<p>把主存空间划分为大小相等且固定的块，块相对叫嚣，作为主存的基本单位，每个进程也以块为基本单位进行划分，进程在执行时，以块为单位逐个申请主存中的块空间；</p>
+
+<p>分页的方法从形式上来看像分区相等的固定分区技术，分页管理不会产生外部碎片；</p>
+
+<p>但是他们又有本质的不同:块大小相对分区要小很多，而且进程也按照块进行划分，进程运行时按块申请主存可用的空间并执行，这样进程只会在最后一个不完整的块申请一个主存块空间时，才会产生主存碎片，所以尽管会产生内部碎片，但是这种碎片相对于进程连说也是非常重要的。<strong>每个进程平均只产生半个块大小的内部碎片(也成为页内碎片)</strong></p>
+
+<h4>分页存储的基本概念:</h4>
+
+<ul>
+<li>页面和页面大小:
+进程中的块成为页，内存中的块称为页框或页贞，外存中也以同样的单位进行划分，直接称为块，进程在执行时候需要申请主存空间，就是要为每个页面分配主存中的可用叶框，这就产生了页和叶框一一对应；</li>
+</ul>
+
+
+<p>为了方便的转换，页面大小应该是2的整数幂，同时页面的大小应该适中，如果页面太小，会使进程的页面数过多，这样页表就过长，占用大量内存，而且也会增加硬件地址转换的开销没降低页面换入换出的效率；
+页面过大又会导致页内存碎片增加大，降低内存的利用率，所以页面的大小应该适中；</p>
+
+<ul>
+<li><p>地址结构:
+分页存储管理的逻辑地址结构:</p>
+
+<pre><code class="``">  ---------------------------------
+  |31           12|11        0|
+  ---------------------------------
+  |  页号P      | 页内偏移量   |
+  ---------------------------------
+</code></pre>
+
+<p>地址结构包含两部分:前一部分为页号P，后一部分为页内偏移量w，地址长度为32，其中0~11位是页内地址，即每页大小为4KB,12~31位为页号，地址空间最多允许有2<sup>20</sup>页</p></li>
+<li><p>页表:
+为了便于在内存中找到进程的每个页面所对应的物理块，系统为每个进程建立一张页表，记录页面在内存中对应的物理块号，页表一般放在内存中；</p></li>
+</ul>
+
+
+<p>配置了页表，程序在执行时，通过查找该表，即可找到每页在内存中的物理块，可见，页表的作用的实现从页号到物理块号的地址映射</p>
+
+<p><img src="\uploads\2014\03\012.jpg" alt="012" /></p>
+
+<h4>基本地址变化机构:</h4>
+
+<p>地址变换机构的任务是将逻辑地址转化为物理地址，地址转换时借助于页表实现的。
+在系统中通常社会自一个页表寄存器，存放页表在内存的起始地址F和页表长度M，程序未执行时候，页表的起始地址和长度存放在进程进程控制块中，当进程执行时，才将页表起始地址和长度放入页表寄存器，该页面大小为L，逻辑地址A到物理地址L的变换过程如下:
+1. 计算页号P(p=A/L)和页内偏移量W(W=A%L)
+2. 比较页号和页表长度M，如果P>=M则产生中断越界，否则继续执行；
+3. 页表中页号P对应的页表项地址=页表起始地址F+页号P<em>页表项长度，取出该页表项的内容b，即为物理块号；
+4. 计算E=b</em>L+W即为物理地址E</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>操作系统的内存管理</strong> was published on <time datetime="2014-03-20T00:00:00+00:00">March 20, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

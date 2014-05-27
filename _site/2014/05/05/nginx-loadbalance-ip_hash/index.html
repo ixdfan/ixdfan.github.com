@@ -1,0 +1,379 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>nginx负载均衡--ip_hash的实现 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="负载均衡">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx负载均衡--ip_hash的实现">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>nginx负载均衡--ip_hash的实现</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>根据IP的哈希值来获取对应的后端服务器，Nginx1.2.0仅支持IPv4</p>
+
+<p>加权轮询是Nginx负载均衡的基础策略，所以一些初始化工作，比如配置值转储(配置文件中相关值存储到变量中),所以其他策略可以直接复用加权轮询的初始化工作。</p>
+
+<p>path:src/http/modules/ngx_http_upstream_ip_hash_module.c</p>
+
+<h4>初始化工作</h4>
+
+<pre><code>79 ngx_int_t
+80 ngx_http_upstream_init_ip_hash(ngx_conf_t *cf, ngx_http_upstream_srv_conf_t *us)
+81 {
+        /*  直接使用round_robin的全局初始化   */
+82     if (ngx_http_upstream_init_round_robin(cf, us) != NGX_OK) {
+83         return NGX_ERROR;
+84     }
+85  
+        /*  设定客户端请求到来时候的初始化函数 */
+86     us-&gt;peer.init = ngx_http_upstream_init_ip_hash_peer;
+87 
+88     return NGX_OK;
+89 }
+</code></pre>
+
+<p>第86行是针对单个请求进行初始化的回调函数指针，当一个客户请求过来时，就调用ngx_http_upstream_init_ip_hash_peer做初始化。</p>
+
+<h4>选择后端服务器</h4>
+
+<p>客户端请求到来后，函数ngx_http_upstream_ip_hash_module进行初始化，它调用了加权轮询策略的初始函数ngx_http_upstream_init_round_robin_peer，之所以这样是因为在多次哈希选择失败之后，<em>Nginx将会选择策略退化为加权轮询</em>,针对IP哈希锁做的初始化工作主要是将对应的客户端IP转存出来。</p>
+
+<pre><code>92 static ngx_int_t
+93 ngx_http_upstream_init_ip_hash_peer(ngx_http_request_t *r,
+94     ngx_http_upstream_srv_conf_t *us)
+95 {
+96     u_char                                 *p;
+97     struct sockaddr_in                     *sin;
+98     ngx_http_upstream_ip_hash_peer_data_t  *iphp;
+99 
+100     iphp = ngx_palloc(r-&gt;pool, sizeof(ngx_http_upstream_ip_hash_peer_data_t));
+101     if (iphp == NULL) {
+102         return NGX_ERROR;
+103     }
+104 
+105     r-&gt;upstream-&gt;peer.data = &amp;iphp-&gt;rrp;
+106 
+107     if (ngx_http_upstream_init_round_robin_peer(r, us) != NGX_OK) {
+108         return NGX_ERROR;
+109     }
+110     
+        /*  设置回调函数  */          /*  获取使用ip_hash策略   */
+        /*  修改了原本在ngx_http_upstream_init_round_robin_peer函数中的值    */
+111     r-&gt;upstream-&gt;peer.get = ngx_http_upstream_get_ip_hash_peer;
+112 
+113     /* AF_INET only */  /*  仅仅支持IPV4    */
+114 
+115     if (r-&gt;connection-&gt;sockaddr-&gt;sa_family == AF_INET) {
+116 
+117         sin = (struct sockaddr_in *) r-&gt;connection-&gt;sockaddr;
+118         p = (u_char *) &amp;sin-&gt;sin_addr.s_addr;
+
+            /*  哈希方法仅仅需要ip地址的前三个字节即可    */
+119         iphp-&gt;addr[0] = p[0];
+120         iphp-&gt;addr[1] = p[1];
+121         iphp-&gt;addr[2] = p[2];
+122 
+123     } else {
+            /*  IPV6的全部置为0,都分配到同一台机器了 */
+124         iphp-&gt;addr[0] = 0;
+125         iphp-&gt;addr[1] = 0;
+126         iphp-&gt;addr[2] = 0;
+127     }
+128 
+        /*  哈希初始值 */
+129     iphp-&gt;hash = 89;
+130     iphp-&gt;tries = 0;
+        /*  哈希失败20次以上就会退化成加权轮询模式，调用iphp-&gt;get_rr_peer  */
+131     iphp-&gt;get_rr_peer = ngx_http_upstream_get_round_robin_peer;
+132 
+133     return NGX_OK;
+134 }
+</code></pre>
+
+<p>函数ngx_http_upstream_get_ip_hash_peer的实现</p>
+
+<pre><code>/*  选择后端服务器   */
+137 static ngx_int_t
+138 ngx_http_upstream_get_ip_hash_peer(ngx_peer_connection_t *pc, void *data)
+139 {
+140     ngx_http_upstream_ip_hash_peer_data_t  *iphp = data;
+141 
+142     time_t                        now;
+143     uintptr_t                     m; 
+144     ngx_uint_t                    i, n, p, hash;
+145     ngx_http_upstream_rr_peer_t  *peer;
+146 
+147     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, pc-&gt;log, 0,
+148                    "get ip hash peer, try: %ui", pc-&gt;tries);
+149 
+150     /* TODO: cached */
+151     
+        /*  哈希失败20次以上，或是单机模式    */
+152     if (iphp-&gt;tries &gt; 20 || iphp-&gt;rrp.peers-&gt;single) {
+            /*  退化为加权轮询   */
+153         return iphp-&gt;get_rr_peer(pc, &amp;iphp-&gt;rrp);
+154     }
+155 
+156     now = ngx_time();
+157 
+158     pc-&gt;cached = 0;
+159     pc-&gt;connection = NULL;
+160 
+        /*      iphp-&gt;hash初始值为89，质数       */
+161     hash = iphp-&gt;hash;
+162 
+163     for ( ;; ) {
+164 
+            /*  一下是哈希的计算方法  */
+            /*  只需要ip的前三个字节所以i &lt; 3    */
+165         for (i = 0; i &lt; 3; i++) {
+166             hash = (hash * 113 + iphp-&gt;addr[i]) % 6271;
+167         }
+168 
+            /*  p就是最后的哈希值，得到的p一定小于机器数量  */
+169         p = hash % iphp-&gt;rrp.peers-&gt;number;
+170             
+            /*  检测p机器在位图中是否被使用过了  */
+171         n = p / (8 * sizeof(uintptr_t));
+172         m = (uintptr_t) 1 &lt;&lt; p % (8 * sizeof(uintptr_t));
+173 
+            /*  对应的位为0表示没有使用过   */
+174         if (!(iphp-&gt;rrp.tried[n] &amp; m)) {
+175 
+176             ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&gt;log, 0,
+177                            "get ip hash peer, hash: %ui %04XA", p, m);
+178 
+179             peer = &amp;iphp-&gt;rrp.peers-&gt;peer[p];
+180 
+181             /* ngx_lock_mutex(iphp-&gt;rrp.peers-&gt;mutex); */
+182             
+                /*  如果机器可用，break便会跳出执行代码207行代码  */
+183             if (!peer-&gt;down) {
+184 
+185                 if (peer-&gt;max_fails == 0 || peer-&gt;fails &lt; peer-&gt;max_fails) {
+186                     break;
+187                 }
+188 
+189                 if (now - peer-&gt;checked &gt; peer-&gt;fail_timeout) {
+190                     peer-&gt;checked = now;
+191                     break;
+192                 }
+193             }
+194 
+195             iphp-&gt;rrp.tried[n] |= m;
+196 
+197             /* ngx_unlock_mutex(iphp-&gt;rrp.peers-&gt;mutex); */
+198 
+199             pc-&gt;tries--;
+200         }
+201         
+            /*  失败了20次机上就退化   */
+202         if (++iphp-&gt;tries &gt;= 20) {
+203             return iphp-&gt;get_rr_peer(pc, &amp;iphp-&gt;rrp);
+204         }
+205     }
+206 
+207     iphp-&gt;rrp.current = p;
+208 
+209     pc-&gt;sockaddr = peer-&gt;sockaddr;
+210     pc-&gt;socklen = peer-&gt;socklen;
+211     pc-&gt;name = &amp;peer-&gt;name;
+212 
+213     /* ngx_unlock_mutex(iphp-&gt;rrp.peers-&gt;mutex); */
+214 
+215     iphp-&gt;rrp.tried[n] |= m;
+216     iphp-&gt;hash = hash;
+217 
+218     return NGX_OK;
+219 }
+</code></pre>
+
+<p>哈希的计算很简单，就是通常的哈希规则，也就是相关数值，比如3、89、113、6271都是质数，这样使得哈希结果更加散列;</p>
+
+<p>根据哈希值得到被选中的后端服务器，判断其是否可用，如果可用则break跳出，执行207行代码，否则将可重试次数减少1,再在上次哈希结果hash的基础上再进行哈希(就是那个for死循环的作用)！</p>
+
+<p><img src="/uploads/2014/05/005.png" alt="005" /></p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>nginx负载均衡--ip_hash的实现</strong> was published on <time datetime="2014-05-05T00:00:00+00:00">May 05, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

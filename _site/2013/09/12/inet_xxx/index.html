@@ -1,0 +1,348 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>inet_xxx函数总结 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="inet_xxx函数总结">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/09/12/inet_xxx/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/09/12/inet_xxx/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>inet_xxx函数总结</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>inet_xxxx函数</p>
+
+<hr />
+
+<p>将点分式IP转换为地址结构in_addr</p>
+
+<pre><code>int inet_aton(const char *cp, struct in_addr *inp);
+in_addr_t inet_addr(const char *cp);
+int inet_pton(int af, const char *src, void *dst);
+</code></pre>
+
+<p><strong>注意：inet_pton中的最后的参数应该是struct in_addr类型的地址，一般使用时为addr.sin_addr,addr是struct sockaddr_in类型</strong></p>
+
+<hr />
+
+<p>将地址结构in_addr转换为点分式IP</p>
+
+<pre><code>char *inet_ntoa(struct in_addr in);
+const char *inet_ntop(int af, const void *src,
+char *dst, socklen_t size);
+</code></pre>
+
+<hr />
+
+<p>将字符串地址的网络部分转换为in_addr</p>
+
+<pre><code>in_addr_t inet_network(const char *cp);
+</code></pre>
+
+<hr />
+
+<p>将网络地址和主机地址合成IP地址</p>
+
+<pre><code>struct in_addr inet_makeaddr(int net, int host);
+</code></pre>
+
+<hr />
+
+<p>获取地址中的主机部分</p>
+
+<pre><code>in_addr_t inet_lnaof(struct in_addr in);
+</code></pre>
+
+<p>获取地址中的网络部分</p>
+
+<pre><code>in_addr_t inet_netof(struct in_addr in);
+</code></pre>
+
+<hr />
+
+<p>inet_aton函数
+注意：</p>
+
+<p><strong>当成功转换后返回值非0</strong></p>
+
+<p><strong>当传入的地址非法时返回0！！</strong></p>
+
+<hr />
+
+<p>inet_addr函数：</p>
+
+<p>注意：如果输入的<strong>参数非法返回值为INADDR_NONE</strong>(通常为-1)</p>
+
+<p>否则返回转换后的IP，但是由于值-1同时可以理解位合法的IP地址255.255.255.255</p>
+
+<p>所以<strong>不能使用这个函数来转换IP地址255.255.255.255</strong></p>
+
+<hr />
+
+<p>inet_pton与inet_ntop函数是一套安全的协议无关的地址转换函数</p>
+
+<p>安全是相对与inet_aton的不可重入性来讲，这两个函数都可以重入，并且支持
+IPV4与IPV6</p>
+
+<p>inet_pton与inet_ntop的第一个参数af表示网络类型的协议族，IPV4下的值位AF_INET</p>
+
+<p>inet_pton第二个参数src表示需要转换的字符串，第三个参数为转换后的结果</p>
+
+<p>inet_ntop的第二个参数scr指向一个struct in_addr结构类型的指针，</p>
+
+<p>第三个参数dst指向保存结果缓冲区的指针，第四个参数cnt是dst缓冲区的大小</p>
+
+<p><strong>inet_pton返回值为-1时,通常是af所指定的协议族不支持所造成的</strong>
+此时errno返回值为EAFNOSUPPORT</p>
+
+<p><strong> 当函数返回0时，表示src所指向的值是不合法的IP地址</strong>
+函数返回正值时，表示转换成功</p>
+
+<p>inet_ntop函数返回一个指向dst的指针，当<strong>发生错误的时候返回NULL</strong></p>
+
+<p>当af设定的协议族不支持的时候，errno设置位EAFNOSUPPORT</p>
+
+<p>当dst缓冲区大小过小的时候，errno的值位ENOSPC</p>
+
+<p>inet_ntop与inet_pton的使用</p>
+
+<pre><code>#include &lt;netinet/in.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;arpa/inet.h&gt;
+#define ADDRLEN 16
+int main()
+{
+  struct in_addr ip;
+  char IPSTR[] = "192.168.128.129";
+  char addr[ADDRLEN];
+
+  const char* str = NULL;
+  inet_pton(AF_INET, IPSTR, &amp;ip);
+  ip.s_addr = htonl(192 &lt;&lt; 24 | 168 &lt;&lt;  16 | 128 &lt;&lt; 8 | 129);
+
+  str = inet_ntop(AF_INET, &amp;ip, &amp;addr, ADDRLEN);
+
+  printf("inet_ntop: ip, ox%x is %s\n", ip.s_addr, str);
+</code></pre>
+
+<hr />
+
+<p>inet_aton返回值为转换后的字串指针，此内存区域为静态的，有可能会被覆盖，因此这个函数不是线程安全的
+例如：</p>
+
+<pre><code>#include
+#include &lt;netinet/in.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;arpa/inet.h&gt;
+int main()
+{
+  struct in_addr ip;
+  char* str1 = NULL;
+  char* str2 = NULL;
+  ip.s_addr = 192 &lt;&lt; 24 | 168 &lt;&lt; 16 | 128 &lt;&lt; 8 | 129;
+  str1 = inet_ntoa(ip);
+
+  ip.s_addr = 255 &lt;&lt; 24 | 255 &lt;&lt; 16 | 255 &lt;&lt; 8 | 255;
+  str2 = inet_ntoa(ip);
+
+  printf("inet_ntoa: IP:0x%x string1: %s, string2: %s", ip.s_addr, str1, str2);
+</code></pre>
+
+<p>会发现str1与str2打印出的内容是一样的</p>
+
+<hr />
+
+<p>注意：</p>
+
+<pre><code>struct in_addr
+{
+    in_addr_t s_addr;
+};
+</code></pre>
+
+<p>结构体in_addr中只有一个成员s_addr,成员的类型是in_addr_t，其实<strong>struct in_addr与in_addr_t两种的类型是可以相互转换的！</strong></p>
+
+<p>比如我们定义in_addr_t addr;但是某些函数的参数需要struct in_addr类型的，此时我们可以使用强制转换，<em>(struct in_addr</em>)&amp;addr</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>inet_xxx函数总结</strong> was published on <time datetime="2013-09-12T03:11:46Z">September 12, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

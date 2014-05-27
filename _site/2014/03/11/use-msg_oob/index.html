@@ -1,0 +1,497 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>MSG_OOB的使用 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="MSG_OOB">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MSG_OOB的使用">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/11/use-msg_oob/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/11/use-msg_oob/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>MSG_OOB的使用</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>UDP没有实现带外数据，TCP也没有真正实现带外数据，不过TCP利用头部的紧急指针标志和紧急指针两个字段，给应用程序提供了一种紧急方式；</p>
+
+<p>TCP的紧急方式利用传输普通数据的连接来传输紧急数据，这种紧急数据的含义和带外数据类似，因此，将TCP紧急数据成为带外数据。</p>
+
+<h5>TCP发送带外数据的过程:</h5>
+
+<p>假设一个进程已经往某个TCP连接的发送缓冲中写入了N字节的普通数据，并等待其发送。在数据发送前，该进程又向这个连接写入3字节的带外数据"abc".此时，待发送的TCP报文段的头部将被设置URG标记，并且紧急指针被设置为指向最后一个带外数据的下一个字节(减去当前TCP报文段的序号值得到其头部中的紧急偏移值)</p>
+
+<pre><code>                        TCP发送缓冲区
+---------------------------------------------------------------------
+|第一字节|              |第N字节     | a | b | c(OOB) | 紧急指针|
+---------------------------------------------------------------------
+</code></pre>
+
+<p>从图中可以看到，发送端一次发送的多字节的带外数据中只有最后一个字节被当做带外数据(字母c)，而其他数据(a和b)本当成普通数据。</p>
+
+<p>如果TCP模块以多个TCP报文段来发送图中的TCP发送缓冲区中的内容，则每个TCP报文段豆浆被设置URG标志，并且他们的紧急指针指向同一个位置(数据流中带外数据的下一个位置)，但是只有一个TCP报文段真正携带带外数据。</p>
+
+<h5>TCP接收带外数据的过程:</h5>
+
+<p>TCP接收端只有在接收到紧急指针标志时才检查紧急指针，然后根据紧急指针所指的位置确定带外数据的位置，并将它读入一个特殊的缓冲区，<strong>这个缓冲区只有一个字节，称带外缓存</strong>，如果上层应用程序设置没有及时将带外数据从带外缓冲中读出，则后续的带外数据(如果有的话)将覆盖它。</p>
+
+<h5>SO_OOBINLINE选项:</h5>
+
+<p>前面讨论的带外数据的接收过程是TCP模块接收带外数据的默认方式，如果我们给TCP连接设置了SO_OOBINLINEE选项，则带外数据将和普通数据一样被TCP模块存放在TCP接收缓冲区中，此时应用程序要像读取普通数据一样来读取带外数据，这种情况下如何区分带外数据和普通数据?可以使用紧急指针来指出带外数据的位置。</p>
+
+<pre><code>/* 发送带外数据 */
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;sys/epoll.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;pthread.h&gt;
+
+int main(int argc, char** argv)
+{
+    const char* ip = "127.0.0.1";
+    int port = 9999;
+
+    struct sockaddr_in server_address;
+    memset(&amp;server_address, 0, sizeof(server_address));
+
+    server_address.sin_family = AF_INET;
+    server_address.sin_port = htons(port);
+    inet_pton(AF_INET, ip, &amp;server_address.sin_addr);
+
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    assert(sockfd != -1);
+
+    if (connect(sockfd, (struct sockaddr*)&amp;server_address, sizeof(server_address)) &lt; 0) {
+        perror("connect failed\n");
+
+    } else {
+        const char* oob_data = "abc";
+        const char* normal_data = "123";
+        send(sockfd, normal_data, strlen(normal_data), 0);
+        send(sockfd, oob_data, strlen(oob_data), MSG_OOB);
+        send(sockfd, normal_data, strlen(normal_data), 0);
+    }
+
+    close(sockfd);
+
+    return 0;
+}
+
+
+
+/* 接受带外数据 */
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;sys/epoll.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;pthread.h&gt;
+
+#define BUF_SIZE 1024
+int main(int argc, char** argv)
+{
+    const char* ip = "127.0.0.1";
+    int port = 9999;
+
+    struct sockaddr_in address;
+    memset(&amp;address, 0, sizeof(address));
+
+    address.sin_family = AF_INET;
+    address.sin_port = htons(port);
+    inet_pton(AF_INET, ip, &amp;address.sin_addr);
+
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    assert(sockfd != -1);
+
+    int ret = bind(sockfd, (struct sockaddr*)&amp;address, sizeof(address));
+    assert(ret != -1);
+
+    ret = listen(sockfd, 5);
+    assert(ret != -1);
+
+    struct  sockaddr_in client;
+    socklen_t client_length = sizeof(client);
+
+    int connfd = accept(sockfd, (struct sockaddr*)&amp;client, &amp;client_length);
+    if (connfd &lt; 0) {
+        printf("accept error\n");
+
+    } else {
+        char buf[BUF_SIZE];
+
+        memset(buf, 0, BUF_SIZE);
+        ret = recv(connfd, buf, BUF_SIZE-1, 0);
+        assert(ret &gt; 0);
+        printf("get %d bytes of normal data:\n%s\n", ret, buf);
+
+
+        memset(buf, 0, BUF_SIZE);
+        ret = recv(connfd, buf, BUF_SIZE-1, MSG_OOB);
+        assert(ret &gt; 0);
+        printf("get %d bytes of oob data:\n%s\n", ret, buf);
+
+
+        memset(buf, 0, BUF_SIZE);
+        ret = recv(connfd, buf, BUF_SIZE-1, 0);
+        assert(ret &gt; 0);
+        printf("get %d bytes of normal data:\n%s\n", ret, buf);
+
+        close(connfd);
+    }
+    close(sockfd);
+
+
+    return 0;
+}
+</code></pre>
+
+<h5>程序执行结果:</h5>
+
+<pre><code>get 3 bytes of normal data:
+123
+get 1 bytes of oob data:
+c
+get 2 bytes of normal data:
+ab
+</code></pre>
+
+<p>由此可见，客户端发送给服务器的3字节带外数据"abc"中，仅有最后一个字符'c'被服务器真正当成了带外数据接收;</p>
+
+<p>并且服务器对正常数据的接收被带外数据截断，也就是说前一部分正常数据"123ab"和后续正常数据"123"是不能被一个recv调用全部读出的。</p>
+
+<h5>tcpdump抓包结果:</h5>
+
+<pre><code>15:49:07.237438 IP 127.0.0.1.54354 &gt; 127.0.0.1.distinct: Flags [S], seq 3396511771, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 0,nop,wscale 7], length 0
+    0x0000:  4500 003c 1d6a 4000 4006 1f50 7f00 0001
+    0x0010:  7f00 0001 d452 270f ca72 a81b 0000 0000
+    0x0020:  a002 aaaa fe30 0000 0204 ffd7 0402 080a
+    0x0030:  0065 b571 0000 0000 0103 0307
+15:49:07.237459 IP 127.0.0.1.distinct &gt; 127.0.0.1.54354: Flags [S.], seq 12605814, ack 3396511772, win 43690, options [mss 65495,sackOK,TS val 6665585 ecr 6665585,nop,wscale 7], length 0
+    0x0000:  4500 003c 0000 4000 4006 3cba 7f00 0001
+    0x0010:  7f00 0001 270f d452 00c0 5976 ca72 a81c
+    0x0020:  a012 aaaa fe30 0000 0204 ffd7 0402 080a
+    0x0030:  0065 b571 0065 b571 0103 0307
+15:49:07.237478 IP 127.0.0.1.54354 &gt; 127.0.0.1.distinct: Flags [.], ack 1, win 342, options [nop,nop,TS val 6665585 ecr 6665585], length 0
+    0x0000:  4500 0034 1d6b 4000 4006 1f57 7f00 0001
+    0x0010:  7f00 0001 d452 270f ca72 a81c 00c0 5977
+    0x0020:  8010 0156 fe28 0000 0101 080a 0065 b571
+    0x0030:  0065 b571
+15:49:07.237521 IP 127.0.0.1.54354 &gt; 127.0.0.1.distinct: Flags [P.], seq 1:4, ack 1, win 342, options [nop,nop,TS val 6665586 ecr 6665585], length 3
+    0x0000:  4500 0037 1d6c 4000 4006 1f53 7f00 0001
+    0x0010:  7f00 0001 d452 270f ca72 a81c 00c0 5977
+    0x0020:  8018 0156 fe2b 0000 0101 080a 0065 b572
+    0x0030:  0065 b571 3132 33
+15:49:07.237532 IP 127.0.0.1.54354 &gt; 127.0.0.1.distinct: Flags [P.U], seq 4:7, ack 1, win 342, urg 3, options [nop,nop,TS val 6665586 ecr 6665585], length 3
+    0x0000:  4500 0037 1d6d 4000 4006 1f52 7f00 0001
+    0x0010:  7f00 0001 d452 270f ca72 a81f 00c0 5977
+    0x0020:  8038 0156 fe2b 0003 0101 080a 0065 b572
+    0x0030:  0065 b571 6162 63
+</code></pre>
+
+<p>通过tcpdump抓取的数据来看，可以看到标志U，这表示在TCP头部设置了紧急标志，"urg 3"是紧急偏移值，他指出带外数据在字节流中的位置的下一个位置是7，其中的4是该TCP报文段的序号值相对与初始序号值的偏移，因此带外数据是字节流中第6个字符，也就是字符"c"</p>
+
+<h5>注意:</h5>
+
+<p>flags参数只对send和recv的当前调用有效，我们也可以使用setsockopt永久的改变socket的某些属性;</p>
+
+<p>在实际的应用中我们通常是没有办法预期带外数据何时到来的！</p>
+
+<p>Linux内核检测到TCP紧急标记时，将通知应用程序有带外数据需要接受;</p>
+
+<p>内核同志应用程序带外数据到达的两种常见方式是:
+<strong> * I/O复用产生的异常事件</strong>
+<strong> * SIGURG信号</strong></p>
+
+<p>但是，即使应用程序得到了有带外数据需要接受的通知，还需要知道带外数据在数据流中具体的位置，才能准确接受带外数据</p>
+
+<pre><code>#include &lt;sys/socket.h&gt;
+int sockatmark(int sockfd);
+</code></pre>
+
+<p>sockatmark判断sockfd是否处于带外标记，即下一个读取到的数据是否是带外数据。
+* 如果是sockatmark返回1，此时我们便可以使用带有MSG_OOB标志的recv调用来接受带外数据.
+* 如果不是则返回0</p>
+
+<pre><code>/* 利用异常事件来读取MSG_OOB信息 */
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;sys/epoll.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;pthread.h&gt;
+
+int main(int argc, char** argv)
+{
+
+    const char* ip = "127.0.0.1";
+    int port = 80;
+    int ret = 0;
+    struct sockaddr_in address;
+    memset(&amp;address, 0, sizeof(address));
+
+    address.sin_family = AF_INET;
+    address.sin_port = htons(port);
+    inet_pton(AF_INET, ip, &amp;address.sin_addr);
+
+    int listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    assert(-1 != listenfd);
+
+    ret = bind(listenfd, (struct sockaddr*)&amp;address, sizeof(address));
+    assert(-1 != ret);
+
+    ret = listen(listenfd, 5);
+    assert(ret != -1);
+
+    struct sockaddr_in client_address;
+    socklen_t client_addresslength = sizeof(client_address);
+    int connfd = accept(listenfd, (struct sockaddr*)&amp;client_address, &amp;client_addresslength);
+
+    if (connfd &lt; 0 ) {
+        printf("errno is : %d\n", errno);
+        close(listenfd);
+    }
+
+
+    char buf[1024];
+    fd_set read_fds;
+    fd_set exception_fds;
+    FD_ZERO(&amp;read_fds);
+    FD_ZERO(&amp;exception_fds);
+
+    while(1) {
+        memset(buf, 0, sizeof(buf));
+
+        FD_SET(connfd, &amp;read_fds);
+        FD_SET(connfd, &amp;exception_fds);
+
+        ret = select(connfd + 1, &amp;read_fds, NULL, &amp;exception_fds, NULL);
+        if (ret &lt; 0) {
+            printf("selection failure\n");
+            break;
+        }
+
+        if (FD_ISSET(connfd, &amp;read_fds)) {
+            ret = recv(connfd, buf, sizeof(buf) - 1, 0);
+            if (ret &lt;= 0) {
+                break;
+            }
+            printf("get %d bytes of normal data: %s\n", ret, buf);
+        } else if (FD_ISSET(connfd, &amp;exception_fds)) {
+
+            ret = recv(connfd, buf, sizeof(buf) - 1, MSG_OOB);
+            if (ret &lt;= 0) {
+                break;
+            } 
+            printf("get %d bytes of oob data: %s\n", ret, buf);
+        }
+
+    }
+
+    close(connfd);
+    close(listenfd);
+
+    return 0;
+}
+</code></pre>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>MSG_OOB的使用</strong> was published on <time datetime="2014-03-11T00:00:00+00:00">March 11, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

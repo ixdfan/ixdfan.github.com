@@ -1,0 +1,326 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>守护进程的实现 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="守护进程">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="守护进程的实现">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/11/11/damon/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/11/11/damon/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>守护进程的实现</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>守护进程(daemon)</p>
+
+<p>守护进程因为没有控制终端，所以他们是在后台运行</p>
+
+<pre><code>ps -axj
+-a的含义为显示由其他用户所拥有的进程的状态
+-x显示没有控制终端的进程状态
+-j显示与作业有关的信息：回话ID、进程组ID、控制终端、终端进程组ID
+
+[root@localhost C++]# ps -axj
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND             
+    0     1     1     1 ?           -1 Ss       0   0:02 /sbin/init          
+    0     2     0     0 ?           -1 S        0   0:00 [kthreadd]          
+    2     3     0     0 ?           -1 S        0   0:00 [migration/0]       
+    2     4     0     0 ?           -1 S        0   0:00 [ksoftirqd/0]
+
+
+PPID:父进程ID
+PID:进程ID
+PGID:进程组ID
+SID:会话ID
+TTY:终端名称
+TPGID:终端进程组ID(与该控制终端相关的前台进程组)
+STAT:进程状态
+TIME:累计CPU时间
+UID:用户ID
+COMMAND:命令字符串
+</code></pre>
+
+<p>系统进程依赖于操作系统的实现，父进程ID为0的各种进程通常是内核进程，他们作为系统自举的一部分而启动。init是此种进程的例外，他是内核在自举时启动的用户层命令。内核进程是特殊的，通常存在于系统的整个生命周期内，他们以超级用户权限运行，无控制终端，无命令行。</p>
+
+<p>进程1通常是init，他是一个守护进程，负责启动个运行层次的特定的系统服务。</p>
+
+<h5>注意：</h5>
+
+<p>绝大部分守护进程都已超级用户(ID为0)特权运行，没有一个守护进程具有控制终端，其终端名设置为问好(?)，终端前台进程组ID设置为-1.内核守护进程以无控制终端方式启动。</p>
+
+<p>用户层守护进程缺少控制终端可能是守护进程调用setsid的结果;</p>
+
+<p>所有用户层守护进程都是进程组的组长进程以及会话的首进程，而且是这些进程组和会话中唯一的进程，最后应当引起注意的是大多数守护进程的父进程是init进程</p>
+
+<p>守护进程的编写：</p>
+
+<h5>1.使用umask将文件模式创建屏蔽字设置为0</h5>
+
+<p>由继承得来的文件模式创建的屏蔽字可能会拒绝设置某些权限。</p>
+
+<p>例如：若守护进程要创建以个组可读、写的文件，而继承的文件模式创建屏蔽字可能屏蔽了这两种权限，于是所要求的组可读、写就不能起作用。</p>
+
+<h5>2.调用fork，然后使父进程退出(exit)</h5>
+
+<p>这样实现了以下几点：</p>
+
+<p>第一，如果该守护进程是作为一条简单shell命令启动的，那么父进程终止使得shell认为这条命令已经执行完毕</p>
+
+<p>第二，子进程继承了父进程的进程组ID，但具有一个新的进程ID，这样就保证了子进程不是一个进程组的组长进程。对于下一步的setsid就是一个必要的前提条件。</p>
+
+<h5>3.调用setsid创建一个新会话 :</h5>
+
+<p>(a).成为新会话的首进程</p>
+
+<p>(b).成为一个新进程组的组长进程</p>
+
+<p>(c).没有控制终端</p>
+
+<h5>注意：</h5>
+
+<p>对于V系统来将，建议此时再次调用fork，并使父进程终止，第二个子进程作为守护进程继续运行。这样就保证了该守护进程不是会话首进程。</p>
+
+<h5>4.将当前工作目录改为根目录</h5>
+
+<p>从父进程处稽查过来的当前工作目录可能在一个装配文件系统中。因为守护进程通常在系统再引导之前是一直存在的，所以如果守护进程的当前工作目录在一个装配文件系统中，那么该文件系统就不能被拆卸了，拆卸了则守护进程就没有了，这个与装配文件系统的原意不符</p>
+
+<h5>5.关闭不需要的文件描述符</h5>
+
+<p>这使得守护进程不在持有从父进程继承来的某些文件描述符(父进程可能是shell进程，也可能是其他进程)。</p>
+
+<h5>6.某些守护进程打开/dev/null使其具有文件描述符0、1、2，这样任何一个试图读标准输入、写标准输出或标准出错的库程序都不会产生任何的效果。</h5>
+
+<p>因为守护进程并不与终端设备相关，所以不能在终端设备上显示器输出，也无处从用户那里接受输入，及时守护进程是从交互式会话启动的，但是因为守护进程是在后台运行的，所以登录会话的终止并不影响守护进程，如果其他用户在同以终端登录设备我们也不会再终端上见到守护进程的输出，用户也不可期望他们在终端上的输入会有守护进程读取。</p>
+
+<p>守护进程当通用格式:</p>
+
+<pre><code>bool daemonize()
+{
+    /*创建子进程，关闭父进程，这样可以使程序在后台运行*/
+    pid_t pid = fork();
+    if (pid &lt; 0) {
+        return false;
+    } else if (pid &gt; 0) {
+        exit(0);
+    }
+
+    /*
+     * 设置文件权限掩码。当进程创建新文件,
+     * 使用open(const char* pathname, int flags, mode_t mode)时候，
+     * 文件权限为mode &amp; 0777
+     */
+
+    umask(0);
+
+    /* 创建新当会话，设置本进程为进程组的首领 */
+    pid_t sid = setsid();
+    if (sid &lt; 0) {
+        return false;
+    }
+
+
+    /* 切换工作目录 */
+    if (chdir("/") &lt; 0) {
+        return false;
+    }
+
+    /* 关闭标准输入、标准输出、标准错误输出设备 */  
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+
+    /* 关闭其他已经打开当文件描述符,代码省略 */
+
+    /* 
+     * 将标准输入、标准输入、标准错误输出重定向到/dev/null文件
+     * open默认返回可以打开当最小描述符作为打开文件当描述符
+     * 之前已经将0、1、2关闭了、所言现在会分别返回0、1、2
+     */
+
+    open("/dev/null", O_RDONLY);
+    open("/dev/null", O_RDWR);
+    open("/dev/null", O_RDWR);
+}
+</code></pre>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>守护进程的实现</strong> was published on <time datetime="2013-11-11T15:56:05Z">November 11, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

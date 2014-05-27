@@ -1,0 +1,433 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>awk的变量 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="awk的变量">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/12/16/awk-01/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/12/16/awk-01/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>awk的变量</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <hr />
+
+<p>变量与数组</p>
+
+<p>awk中有两种变量，用户自定义变量和内建变量</p>
+
+<p>指定FS(FS=":")此处FS就是内建变量</p>
+
+<p><strong>awk的变量使用无需先声明</strong>；</p>
+
+<p>awk会在第一次时候该变量的时候自动建立变量</p>
+
+<p>awk的变量在建立时的初始值都是空字符串，但是当需要数值时他会被视为0；</p>
+
+<p>也就是awk自动将字符串转换位数值进行计算，与shell脚本是一致的；</p>
+
+<p><strong>awk的变量名必须以ASCII字母或下划线开始，然后使用字母、数字、下划线</strong>、</p>
+
+<p>awk的变量名是大小写敏感的！建议局部变量小写，全局第一个变量大写</p>
+
+<p>awk中常用内建变量</p>
+
+<pre><code>==============================================================
+$0          当前记录
+
+$1-$n       当前记录中嗯的字段
+
+FILENAME    当前输入文件的名称
+
+FNR     当前输入文件的记录数目
+
+FS      字段分隔符(支持正则表达式)，默任为空格    
+
+NF      当前记录的字段数
+
+NR      在工作(job)中的记录数
+
+OFS     输出字段分隔符
+
+ORS     输出记录分隔字符(默认为‘\n’)
+
+RS      输入记录分隔字符
+
+==============================================================
+</code></pre>
+
+<h5>数组:</h5>
+
+<p>awk中数组包含来从零到多个数据项，通过紧邻着名称的数组索引选定</p>
+
+<p>awk运行以方括号内将任意数字或字符串表达式括起来作为索引</p>
+
+<pre><code>site[goolge] = "http://google.com"
+site[yaohoo] = "http://yahoo.com"
+site[baidu] = "http://baidu.com"
+</code></pre>
+
+<p>我们为数组site中的4个元素赋值，这四个元素可以通过site[name]来引用。</p>
+
+<p>我们可以使用任意值作为数组的索引，这种数组成为关联数组，因为他们的名称与值是相关联的。</p>
+
+<p>与awk中的变量类似，数组也是不用声明就可以使用的。数组的存储空间在引用新元素时会自动增长。</p>
+
+<p>数组的存储空间是稀疏的，我们可以在使用了x[1] = 12后直接使用x[1000]="xyz",而不需要去填满2到9999。</p>
+
+<h5>数组的删除</h5>
+
+<p>delete array[list]会从数组中删除元素</p>
+
+<p>delete array会删除数组中所有的元素</p>
+
+<h5>注意:</h5>
+
+<p><strong>变量名和数组名不能重名，当你使用delete删除数组元素的时候不会删除它的名称</strong></p>
+
+<p>例如:</p>
+
+<pre><code>x[1] = 123
+delete x
+x = 789
+</code></pre>
+
+<p>这样就是错误的，awk会警告无法位数组名赋值</p>
+
+<h5>环境变量</h5>
+
+<p>awk支持直接对系统环境变量的访问，通过ENVIRON数组</p>
+
+<pre><code>[root@localhost awk]# awk 'BEGIN{print ENVIRON["HOME"]; print ENVIRON["PATH"]}'
+/root
+/opt/oracle/102/bin:/usr/local/tmux/bin:/usr/lib/qt4/bin:/opt/oracle/102/bin:/usr/local/tmux/bin:/usr/lib/qt4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin:/root/bin
+[root@localhost awk]#
+</code></pre>
+
+<p>当<strong>awk启动时会从系统中读取环境变量初始化ENVIRON数组</strong>，在awk中我们可以像普通数组一样对他加入删除以及修改</p>
+
+<h5>awk中的数学运算</h5>
+
+<pre><code>awk ‘BEGIN{print "3+2=" 3+2}’
+awk 'BEGIN{print "2^10=" 2^10}'
+awk 'BEGIN{print “(3+2)*7=” (3+2)*7}'
+</code></pre>
+
+<p>awk支持的运算符有+ - * / % ^</p>
+
+<p>awk支持的元算符</p>
+
+<pre><code>==============================================================================
+=、+=、-=、*=、/=、%=、^=     赋值
+
+?:                  条件表达式 
+
+||                  逻辑或
+
+&amp;&amp;                  逻辑与
+
+~、~!              匹配正则表达式和不匹配正则表达式
+
+&lt;、&lt;=、&gt;、&gt;=、!=、==           关系运算符
+
+空格                  链接              
+
++、-                   加、减
+
+*、/、%               乘、除、余
+
++-!                 一元加、减和逻辑非
+
+^***                求幂
+
+++ --               前或后子增自减
+
+$                   字段引用
+
+in                  数组成员
+==============================================================================
+</code></pre>
+
+<h5>awk中的多条记录</h5>
+
+<p>awk中的记录就是行的概念，默认情况下一行对应一条记录</p>
+
+<p>我们有一份文本文件，记录了客户的地址等信息</p>
+
+<pre><code>[root@localhost awk]# cat address.txt
+Jimmy the Weasel
+100 Pleasant Drive
+San Franciso, CA 12345
+
+Big Tony
+200 Incognito Ave.
+Suburbia, Wa 67890
+
+Ollir
+Nanjing University
+Gulou, Nanjing, 210000
+[root@localhost awk]#
+</code></pre>
+
+<p>我们希望awk将每3行看作一个独立的记录，而不是3个独立的记录；</p>
+
+<p>如果awk将第一行看作是$1,第二行看作$2，第三行看作$3，那就是我们想要！</p>
+
+<pre><code>BEGIN{
+    FS='\n'
+    RS=""
+}
+</code></pre>
+
+<p>FS设置为FS表示每个字段都占用一行</p>
+
+<p>RS设置为""表示每个记录都是由空白行分隔</p>
+
+<pre><code>[root@localhost awk]# awk -f address.awk address.txt
+Jimmy the Weasel,100 Pleasant Drive,San Franciso, CA 12345
+Big Tony,200 Incognito Ave.,Suburbia, Wa 67890
+Ollir,Nanjing University,Gulou, Nanjing, 210000
+</code></pre>
+
+<h5>OFS与ORS</h5>
+
+<pre><code>print "Hello", "there", "Jim!"
+</code></pre>
+
+<p>默认输出</p>
+
+<pre><code>Hello there Jim
+</code></pre>
+
+<p>设置OFS变量可以在每个字符串之间打印OFS变量；</p>
+
+<p>默认情况下OFS被设置为" "，我们也可以改为","等自己需要的类型</p>
+
+<p>ORS是输出记录分隔符</p>
+
+<p>之前编写的脚本仅仅适用于地址为3行的，对于地址是四行的就无法使用了！</p>
+
+<pre><code>Big Tony
+200 Incognito Ave
+300 City Alley
+Suburbia, Wa 67890
+
+
+
+BEGIN{
+        FS="\n"
+        RS=""
+        ORS=""
+}
+{
+        x = 1;
+        while(x &lt; NF){
+                print $x "\t"
+                x++
+        }
+        print $NF  "\n"
+}
+</code></pre>
+
+<p>首先将字符分隔符FS设置成'\n'</p>
+
+<p>将记录分隔符RS设置为""</p>
+
+<p>将输出记录符ORS设置成位""</p>
+
+<p>它使用print语句在每个调用末尾部不输出新行。</p>
+
+<p>这就是如果希望任何文本从新的一行开始，那么需要明确写入print '\n'</p>
+
+<p>建立一个变量x来存储正在处理的当前字段的编号。</p>
+
+<p>开始它被设置成为1，我们使用while循环</p>
+
+<p>对于所有记录，(最后一个记录除外)重复打印记录和tab字符。</p>
+
+<p>最后打印最后一个记录和换行。</p>
+
+<p>此外由于将ORS设置成""，print将不输出换行</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>awk的变量</strong> was published on <time datetime="2013-12-16T16:21:29Z">December 16, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

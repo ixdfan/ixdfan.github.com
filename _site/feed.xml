@@ -1,0 +1,4612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">高手之路</title>
+<generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml" />
+<link rel="alternate" type="text/html" href="http://localhost:4000" />
+<updated>2014-05-27T01:17:32+00:00</updated>
+<id>http://localhost:4000/</id>
+<author>
+  <name>Neo</name>
+  <uri>http://localhost:4000/</uri>
+  <email>ucshell.neo@gmail.com</email>
+</author>
+
+
+<entry>
+  <title type="html"><![CDATA[sed批量修改文件中的名字]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" />
+  <id>http://localhost:4000/2014/05/10/sed-bat-change-file-var-name</id>
+  <published>2014-05-10T00:00:00+00:00</published>
+  <updated>2014-05-10T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;比如我们想批量将文件中的某个单词例如shell替换成my_shell,此时可以使用sed&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sed -i &quot;s/shell/my_shell/g&quot; `grep -l &quot;\&amp;lt;shell\&amp;gt;&quot; *`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;grep  -l表示找到含有shell的文件后仅仅显示文件名&lt;/p&gt;
+
+&lt;p&gt;sed -i 表示直接将指令插入到符合的行后&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/&quot;&gt;sed批量修改文件中的名字&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 10, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[map的使用]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/09/stl-use-map/" />
+  <id>http://localhost:4000/2014/05/09/stl-use-map</id>
+  <published>2014-05-09T00:00:00+00:00</published>
+  <updated>2014-05-09T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;map是关联容器，它提供一对一的数据处理能力，其中第一个可以叫做关键字，每个关键字只能出现一次，第二个叫关键字的值。&lt;/p&gt;
+
+&lt;p&gt;map使用红黑树来实现的，所以在map捏不所有的数据都是有序的。&lt;/p&gt;
+
+&lt;h4&gt;map的插入&lt;/h4&gt;
+
+&lt;p&gt;1.使用insert插入pair数据&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;map&amp;gt;
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    map&amp;lt;int, string&amp;gt; map_student;
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(1, &quot;student_one&quot;));
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(2, &quot;student_two&quot;));
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(3, &quot;student_three&quot;));
+
+    map&amp;lt;int, string&amp;gt;::reverse_iterator reiter;
+    map&amp;lt;int, string&amp;gt;::iterator iter;
+
+    /*  正序输出    */
+    for (iter = map_student.rbegin(); iter != map_student.rend(); ++iter) {
+        cout &amp;lt;&amp;lt; iter-&amp;gt;first &amp;lt;&amp;lt; &quot;:&quot; &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl; 
+    }
+    cout &amp;lt;&amp;lt; &quot;map.size() = &quot; &amp;lt;&amp;lt;  map_student.size() &amp;lt;&amp;lt; endl;
+
+    /*  逆序输出    */
+    for (reiter = map_student.rbegin(); reiter != map_student.rend(); ++reiter) {
+        cout &amp;lt;&amp;lt; reiter-&amp;gt;first &amp;lt;&amp;lt; &quot;:&quot; &amp;lt;&amp;lt; reiter-&amp;gt;second &amp;lt;&amp;lt; endl; 
+    }
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.使用insert插入value_type数据&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;map&amp;gt;
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+
+
+
+    map&amp;lt;int, string&amp;gt; map_student;
+
+    map_student.insert(map&amp;lt;int, string&amp;gt;::value_type(1, &quot;student_one&quot;));
+    map_student.insert(map&amp;lt;int, string&amp;gt;::value_type(2, &quot;student_two&quot;));
+    map_student.insert(map&amp;lt;int, string&amp;gt;::value_type(3, &quot;student_three&quot;));
+
+    map&amp;lt;int, string&amp;gt;::iterator iter;
+
+    for (iter = map_student.begin(); iter != map_student.end(); ++iter) {
+        cout &amp;lt;&amp;lt; iter-&amp;gt;first &amp;lt;&amp;lt; &quot;:&quot; &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl; 
+    }
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3.数组方式插入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;map&amp;gt;
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    map&amp;lt;int, string&amp;gt; map_student;
+    map_student[1] =  &quot;student_one&quot;;
+    map_student[2] =  &quot;student_two&quot;;
+    map_student[3] =  &quot;student_three&quot;;
+
+    map&amp;lt;int, string&amp;gt;::iterator iter;
+
+    for (iter = map_student.begin(); iter != map_student.end(); ++iter) {
+        cout &amp;lt;&amp;lt; iter-&amp;gt;first &amp;lt;&amp;lt; &quot;:&quot; &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl; 
+    }
+
+        /*  很少能够使用如下方法，除非是连续的 */  
+//      int size = map_student.size();  
+        /*  要从下标1开始，因为我们没有插入0 */
+//      for (int index = 1; index &amp;lt;= size; ++index) {   
+//          cout &amp;lt;&amp;lt; map_student[index] &amp;lt;&amp;lt; endl;
+//      }
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上三种方法都可以事项数据的插入，但是他们有一定的区别:&lt;/p&gt;
+
+&lt;p&gt;第一和第二种是完全一样的,使用insert插入数据，当map中有这个关键字的时候，insert是插入不了的，相当与不会执行。&lt;/p&gt;
+
+&lt;p&gt;数组方式则会修改已经存在的值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    map_student.insert(map&amp;lt;int, string&amp;gt;::value_type(2, &quot;student_two&quot;));
+    map_student.insert(map&amp;lt;int, string&amp;gt;::value_type(2, &quot;student_three&quot;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上两条语句执行之后，map中2关键字对应的值还是student_two,也就是说第二条语句没有生效，这就涉及到如何判断insert语句是否成功插入的问题，可以使用pair来获取是否插入成功&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  通过insert_pair的第二个变量来知道是否插入成功，成功返回true，失败返回false，
+    第一个变量返回的是map的迭代器      
+*/
+pair&amp;lt;map&amp;lt;int, string&amp;gt;::iterator, bool&amp;gt; insert_pair;
+map_student.insert(map&amp;lt;int, string&amp;gt;::value_type(2, &quot;student_two&quot;));
+insert_pair = map_student.insert(map&amp;lt;int, string&amp;gt;::value_type(2, &quot;student_three&quot;));
+
+if (insert_pair.second == false) {
+    cout &amp;lt;&amp;lt; &quot;insert failed&quot; &amp;lt;&amp;lt; endl;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;数组中的插入会覆盖原来的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    map_student[2] =  &quot;student_two&quot;;
+    map_student[2] =  &quot;student_three&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;则map中的2对应的值变成了student_three;&lt;/p&gt;
+
+&lt;h4&gt;map的大小&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;int size = map_student.size();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;map的遍历&lt;/h4&gt;
+
+&lt;p&gt;map中提供了正向与反向迭代器可以使用;&lt;/p&gt;
+
+&lt;h4&gt;数据的查找&lt;/h4&gt;
+
+&lt;p&gt;1.使用count&lt;/p&gt;
+
+&lt;p&gt;count是返回map中元素的个数，但是map不允许有重复的，所以count要么返回0,要么返回1
+但是缺点是无法确定数据出现的位置。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;map_student.count(2)    /*  存在所有返回1 */
+map_student.count(5)    /*  不存在所有返回0  */
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.使用find&lt;/p&gt;
+
+&lt;p&gt;find返回的是一个迭代器，当数据出现时候，返回的是数据所在位置的迭代器，如果map中没有要查找的数据，它返回的迭代器就是end函数的迭代器。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;map&amp;gt;
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    map&amp;lt;int, string&amp;gt; map_student;
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(1, &quot;stuednt_one&quot;));
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(2, &quot;stuednt_two&quot;));
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(3, &quot;stuednt_three&quot;));
+
+    map&amp;lt;int, string&amp;gt;::iterator iter;
+
+    iter = map_student.find(1);
+    if (iter != map_student.end()) {
+        cout &amp;lt;&amp;lt; &quot;find the value is &quot; &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl;
+
+    } else {
+        cout &amp;lt;&amp;lt; &quot;Do not find&quot; &amp;lt;&amp;lt; endl;
+    }
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3.使用equal_range&lt;/p&gt;
+
+&lt;p&gt;lower_bound函数用来返回要查找关键字的下边界迭代器
+upper_bound函数用来返回要查找关键字的上边界迭代器&lt;/p&gt;
+
+&lt;p&gt;如果map中已经插入了1,2,3,4的话，使用lower_bound(2)则返回2，upper_bound(2)返回的就是3&lt;/p&gt;
+
+&lt;p&gt;如果不存在upper_bound就返回迭代器指向end，如果不存在lower_bound就返回迭代器指向end.&lt;/p&gt;
+
+&lt;p&gt;例如upper_bound(4)就返回指向end的迭代器,lower_bound(0)返回的也是指向end的迭代器&lt;/p&gt;
+
+&lt;p&gt;equal_range返回一个pairpair中第一个变量是lower_bound返回的迭代其，第二个是upper_bound返回的迭代器，
+如果这两个迭代器相等的话(就都是end)，则说明map中不出现这个关键字;如果存在的话其upper_bound与lower_bound一定不同&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;map&amp;gt;
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    map&amp;lt;int, string&amp;gt; map_student;
+    map_student[1] =  &quot;stuednt_one&quot;;
+    map_student[2] =  &quot;stuednt_two&quot;;
+    map_student[3] =  &quot;stuednt_three&quot;;
+
+    map&amp;lt;int, string&amp;gt;::iterator iter;
+
+    iter = map_student.lower_bound(2);
+    cout &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl;
+
+    iter = map_student.lower_bound(3);
+    cout &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl;
+
+    iter = map_student.upper_bound(1);
+    cout &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl;
+
+    iter = map_student.upper_bound(2);
+    cout &amp;lt;&amp;lt; iter-&amp;gt;second &amp;lt;&amp;lt; endl;
+
+
+    pair&amp;lt;map&amp;lt;int, string&amp;gt;::iterator, map&amp;lt;int, string&amp;gt;::iterator&amp;gt; map_pair;
+    map_pair = map_student.equal_range(3);
+
+    if (map_pair.first == map_pair.second) {
+
+        cout &amp;lt;&amp;lt; &quot;do not find&quot; &amp;lt;&amp;lt; endl;
+
+    } else {
+        cout &amp;lt;&amp;lt; &quot;find&quot; &amp;lt;&amp;lt; endl;
+    }
+
+    /*  upper_bound(3)返回的是指向end的迭代器,一下是验证 */
+    cout &amp;lt;&amp;lt; (map_pair.second == map_student.end() ? &quot;end&quot; : &quot;other&quot;) &amp;lt;&amp;lt; endl;
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;数据的清空与判断&lt;/h4&gt;
+
+&lt;p&gt;清空map中的数据可以使用clear函数，判断map中是否有数据可以使用empty(),为空返回true&lt;/p&gt;
+
+&lt;h4&gt;数据的删除&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;map&amp;gt;
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    map&amp;lt;int, string&amp;gt; map_student;
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(1, &quot;stuednt_one&quot;));
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(2, &quot;stuednt_two&quot;));
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(3, &quot;stuednt_three&quot;));
+    map_student.insert(pair&amp;lt;int, string&amp;gt;(4, &quot;stuednt_four&quot;));
+
+    cout &amp;lt;&amp;lt; &quot;map.size() = &quot; &amp;lt;&amp;lt;  map_student.size() &amp;lt;&amp;lt; endl;
+
+    /*  数据的删除使用迭代器  */
+    map&amp;lt;int, string&amp;gt;::iterator m_iter = map_student.find(1);
+    if (m_iter != map_student.end()) {
+        map_student.erase(m_iter);  
+    }
+
+    /*  直接使用关键字删除 
+        如果删除了会返回1,否则返回0
+    */
+    int ret = map_student.erase(2);
+
+    /*  使用迭代器成片删除，删除的是一个前闭后开的区间   */
+    map_student.earse(map_student.begin(), map_student.end());
+    cout &amp;lt;&amp;lt; &quot;map.size() = &quot; &amp;lt;&amp;lt;  map_student.size() &amp;lt;&amp;lt; endl;
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;排序&lt;/h4&gt;
+
+&lt;p&gt;STL默认使用小于号排序的，对于常规类型没有问题，但是在用户自定义类型的情况下，排序就会出现问题，因为它没有小于号，所以编译不过去。&lt;/p&gt;
+
+&lt;p&gt;1.重载小于运算符&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;map&amp;gt;
+
+using namespace std;
+
+typedef struct student_info{
+    int         m_id;
+    string      m_name;
+
+    /*  或者写成有原函数    */  
+    /*  自定义类型必须重载小于运算符  */
+    bool operator &amp;lt; (const student_info&amp;amp; info) const
+    {
+        if (m_id &amp;lt; info.m_id)
+            return true;
+        if (m_id == info.m_id)  
+            /*  如果id相同则按照名字比较 */
+            return m_name.compare(info.m_name) &amp;lt; 0;
+
+        return false;
+    }
+}student_info, *prt_student_info;
+
+
+int main(int argc, char** argv)
+{
+    int size;
+    map&amp;lt;student_info, int&amp;gt;  map_student;
+    map&amp;lt;student_info, int&amp;gt;::iterator iter;
+    student_info my_student;
+    my_student.m_id = 1;
+    my_student.m_name = &quot;student_one&quot;;
+
+    map_student.insert(pair&amp;lt;student_info, int&amp;gt;(my_student, 90));
+
+    my_student.m_id = 2;
+    my_student.m_name = &quot;student_two&quot;;
+    map_student.insert(pair&amp;lt;student_info, int&amp;gt;(my_student, 80));
+
+    for (iter = map_student.begin(); iter != map_student.end(); iter++) {
+        cout &amp;lt;&amp;lt; iter-&amp;gt;first.m_id &amp;lt;&amp;lt; &quot;   &quot; &amp;lt;&amp;lt; iter-&amp;gt;first.m_name &amp;lt;&amp;lt; &quot;    &quot; &amp;lt;&amp;lt;  iter-&amp;gt;second &amp;lt;&amp;lt; endl;
+    }
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.实现仿函数&lt;/p&gt;
+
+&lt;p&gt;所谓的仿函数就是指在类中对()符号进行重载，使其具有与函数类似的功能&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class sort {
+public:
+    /*  注意不是重载&amp;lt;，而是重载()    */
+    bool operator()(student_info const &amp;amp; first, student_info const &amp;amp; second) const
+    {   
+        if (first.m_id &amp;lt; second.m_id)
+            return true;
+        if (first.m_id == second.m_id) 
+            return first.m_name.compare(second.m_name) &amp;lt; 0;
+
+        return false;
+    }   
+};
+
+
+int main()
+{
+    ... 
+    /*  并没有重载&amp;lt;，仅仅是实现了仿函数  */
+    map&amp;lt;student_info, int, sort&amp;gt;    map_student;
+    ...
+
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/09/stl-use-map/&quot;&gt;map的使用&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 09, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[将mysql的头文件加入自动搜索]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/08/mysql-include-header/" />
+  <id>http://localhost:4000/2014/05/08/mysql-include-header</id>
+  <published>2014-05-08T00:00:00+00:00</published>
+  <updated>2014-05-08T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;gcc 在编译时如何去寻找所需要的头文件：&lt;/p&gt;
+
+&lt;p&gt;命令行参数-I&lt;/p&gt;
+
+&lt;p&gt;然后找gcc的环境变量 C_INCLUDE_PATH,CPLUS_INCLUDE_PATH,OBJC_INCLUDE_PATH&lt;/p&gt;
+
+&lt;p&gt;再找以下目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/usr/include
+/usr/local/include
+/usr/lib/gcc-lib/i386-linux/2.95.2/include
+/usr/lib/gcc-lib/i386-linux/2.95.2/../../../../include/g++-3
+/usr/lib/gcc-lib/i386-linux/2.95.2/../../../../i386-linux/include
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果只对当前用户有效在Home目录下的.bashrc或.bash_profile里增加下面的内容(对所有用户有效则是在/etc/profile):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#在PATH中找到可执行文件程序的路径。
+export PATH =$PATH:$HOME/bin
+
+#gcc找到头文件的路径
+C_INCLUDE_PATH=/usr/include/libxml2:/MyLib
+export C_INCLUDE_PATH
+
+#g++找到头文件的路径
+CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/include/libxml2:/MyLib
+export CPLUS_INCLUDE_PATH
+
+#找到动态链接库的路径
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/MyLib
+export LD_LIBRARY_PATH
+
+#找到静态库的路径
+LIBRARY_PATH=$LIBRARY_PATH:/MyLib
+export LIBRARY_PATH
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;直接在.bashrc中加入:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C_INCLUDE_PATH=/usr/include/mysql   #mysql.h的路径
+export C_INCLUDE_PATH   
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为我的C_INCLUDE_PATH原来没有值，所以直接给它赋值&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/08/mysql-include-header/&quot;&gt;将mysql的头文件加入自动搜索&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 08, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx开启目录显示]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/07/nginx-show-directory/" />
+  <id>http://localhost:4000/2014/05/07/nginx-show-directory</id>
+  <published>2014-05-07T00:00:00+00:00</published>
+  <updated>2014-05-07T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;主要是三个选项&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;autoindex on;                   #开启nginx目录浏览功能
+autoindex_exact_size off;       #文件大小从KB显示
+                                #默认为on，显示文件确切大小，单位是bytes
+                                #off，显示文件大概大小，单位是最方便读的
+autoindex_localtime on;         #显示文件修改时间为服务器本地时间
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;具体在配置文件中的使用如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;worker_processes  2;  
+error_log  logs/error.log debug;    
+
+
+events {
+    worker_connections  1024;   
+}   
+
+
+http {
+    include       mime.types;      
+    default_type  application/octet-stream;
+
+    server {
+        listen       80;
+        listen      127.0.0.1:8080;
+        server_name  localhost;
+
+            location / { 
+                root   html;
+                index  index.html index.htm;
+
+                autoindex on;                   #开启nginx目录浏览功能
+                autoindex_exact_size off;       #文件大小从KB显示
+                                                #默认为on，显示文件确切大小，单位是bytes
+                                                #off，显示文件大概大小，单位是最方便读的
+
+                autoindex_localtime on;         #显示文件修改时间为服务器本地时间
+            }
+
+        error_page 404 /404.html;
+        error_page 500 502 503 504 /50x.html;
+
+        location = /50x.html {
+            root html;
+        }
+    }
+}   
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/07/nginx-show-directory/&quot;&gt;nginx开启目录显示&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 07, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[使用c连接到mysql数据库]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/07/mysql-c-connect-mysql-server/" />
+  <id>http://localhost:4000/2014/05/07/mysql-c-connect-mysql-server</id>
+  <published>2014-05-07T00:00:00+00:00</published>
+  <updated>2014-05-07T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;h4&gt;mysql_init():准备连接&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;MYSQL*  mysql_init(MYSQL* mysql)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;实例:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  test.c  */
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;mysql.h&amp;gt;  /*  头文件不一定是这个 */
+
+int main() 
+{
+    MYSQL conn;
+
+    if (mysql_init(&amp;amp;conn) == NULL) {
+        printf(&quot;mysql_init error\n&quot;);
+        exit(-1);
+    }
+    mysql_close(&amp;amp;conn);
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用gcc编译的时候，必须指定mysql.h所在的路径，并加入mysqlclient库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cc test.c -omain -I/usr/include/mysql -L/usr/lib/mysql -lmysqlclient 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-I致命mysql.h所在的路径;&lt;/p&gt;
+
+&lt;p&gt;—L指定库文件的路径&lt;/p&gt;
+
+&lt;p&gt;-l使用库&lt;/p&gt;
+
+&lt;h4&gt;mysql_real_connect()&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;MYSQL* mysql_real_connect(MYSQL* mysql, const char* host, const char* user, 
+                          const char* passwd, const char* db, unsigned int port, 
+                          const char* unix_socket, unsigned long client_flag)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第一个参数是handle，就是mysql_init返回的handle;&lt;/p&gt;
+
+&lt;p&gt;第五个参数是db_name，也可以将其设为NULL，然后使用mysql_select_db()来选择数据库;&lt;/p&gt;
+
+&lt;p&gt;第六个参数是MYSQL Server的连接池，一般设置为MYSQl_PORT;&lt;/p&gt;
+
+&lt;p&gt;第六个参数一般设置为NULL;&lt;/p&gt;
+
+&lt;p&gt;第七个参数包含压缩协议，查询协议，加密协议等，一般设置为0;&lt;/p&gt;
+
+&lt;p&gt;实例:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  test.c  */
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;mysql.h&amp;gt;  
+
+int main() 
+{
+    MYSQL       conn;
+
+    if (mysql_init(&amp;amp;conn) == NULL) {
+        printf(&quot;mysql_init error\n&quot;);
+        exit(-1);
+    }
+
+
+    if (NULL == mysql_real_connect(&amp;amp;conn, &quot;localhost&quot;, &quot;user&quot;, &quot;123456&quot;, 
+                                    &quot;company&quot;, MYSQL_PORT, NULL, 0)) 
+    {
+        printf(&quot;connection error\n&quot;);
+        exit(-1);
+
+    }
+    printf(&quot;Connection ok\n&quot;);
+    mysql_close(&amp;amp;conn);
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;查询数据库&lt;/h4&gt;
+
+&lt;p&gt;当成功连接mysql之后，可以使用mysql_query或是mysql_real_query来查询数据库，但是mysql_query不能处理binary data(例如图片),如果包含binary data，则必须使用mysql_real_query，这个函数需要提供程序字串的长度&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int mysql_query(MYSQL *mysql, const char *query)
+int mysql_real_query(MYSQL *mysql, const char *query, unsigned long length) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查询成功则返回0,否则返回非0;&lt;/p&gt;
+
+&lt;p&gt;如果查询语句并没有结果返回，例如delete/update/insert等，mysql_query被执行后便完成了整个操作;&lt;/p&gt;
+
+&lt;p&gt;如果要执行insert/show/describe等，在存取结果前，必须使用mysql_store_result建立result handle;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;MYSQL_RES* mysql_store_result(MYSQL* mysql)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;实例:
+    /&lt;em&gt;  test.c  &lt;/em&gt;/
+    #include &amp;lt;stdio.h&gt;
+    #include &amp;lt;mysql.h&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int main() 
+{
+    MYSQL       conn;
+    MYSQl_RES*  result;
+
+    if (mysql_init(&amp;amp;conn) == NULL) {
+        printf(&quot;mysql_init error\n&quot;);
+        exit(-1);
+    }
+
+
+    if (NULL == mysql_real_connect(&amp;amp;conn, &quot;localhost&quot;, &quot;user&quot;, &quot;123456&quot;, 
+                                    &quot;company&quot;, MYSQL_PORT, NULL, 0)) 
+    {
+        printf(&quot;connection error\n&quot;);
+        exit(-1);
+
+    }
+    printf(&quot;Connection ok\n&quot;);
+
+    mysql_query(&amp;amp;conn, &quot;select * from worker&quot;);
+    result = mysql_store_result(&amp;amp;conn)
+
+    mysql_free_result(result);
+    mysql_close(&amp;amp;conn);
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;p&gt;mysql_result是一个指针，因为mysql_store_result会自动分配内存存储查询结果，所以在后面要执行mysql_free_result(MYSQL_RES*)来释放内存&lt;/p&gt;
+
+&lt;h4&gt;提取查询结果:&lt;/h4&gt;
+
+&lt;p&gt;提前接过钱必须使用mysql_store_result分配内存给查询结果，然后利用mysql_fetch_row逐行提取数据。
+结果的行数和列数可以使用mysql_num_rows和mysql_num_fields来获取;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;MYSQL_ROW mysql_fetch_row(MYSQL_RES* result)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;MYSQL_RES是一个数组结构，数组中每一个元素依次为该行的字段value;&lt;/p&gt;
+
+&lt;p&gt;实例:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;mysql.h&amp;gt;  
+
+int main() 
+{
+    MYSQL       conn;
+    MYSQL_RES*  result;
+    MYSQL_ROW   row;
+    int         num_row,
+                num_col,
+                i,
+                j;
+
+    if (mysql_init(&amp;amp;conn) == NULL) {
+        printf(&quot;mysql_init error\n&quot;);
+        exit(-1);
+    }
+
+
+    if (NULL == mysql_real_connect(&amp;amp;conn, &quot;localhost&quot;, &quot;root&quot;, &quot;ucshell&quot;, 
+                                    &quot;company&quot;, MYSQL_PORT, NULL, 0)) 
+    {
+        printf(&quot;connection error\n&quot;);
+        exit(-1);
+
+    }
+    printf(&quot;Connection ok\n&quot;);
+
+    if (0 != mysql_query(&amp;amp;conn, &quot;select * from worker&quot;) ) {
+        printf(&quot;query error\n&quot;);
+        exit(-1);
+    }
+
+
+    result = mysql_store_result(&amp;amp;conn);
+
+    /*  这个函数容易忘记结尾的s，只要记住行有很多行，就是复数(非单数)的意思，就不会忘记最后的s了  */
+    num_row = mysql_num_rows(result);       /*  获取行数    */
+    num_col = mysql_num_fields(result);     /*  获取列数    */
+
+    for (i = 0; i &amp;lt; num_row; i++) {
+        row = mysql_fetch_row(result);      /*  row是一个数组，每一个元素就是对应的字段的值 */
+
+        for (j = 0; j &amp;lt; num_col; j++) {
+            printf(&quot;%-20s   &quot;, row[j]);
+        }
+        printf(&quot;\n&quot;);
+    }
+
+
+
+    mysql_free_result(result);
+    mysql_close(&amp;amp;conn);
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:&lt;/h4&gt;
+
+&lt;p&gt;如果数据库很大，而又没有使用mysql_free_result释放内存的话，则很容易发送内存泄漏&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/07/mysql-c-connect-mysql-server/&quot;&gt;使用c连接到mysql数据库&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 07, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Nginx的IO多路复用]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/06/nginx-event/" />
+  <id>http://localhost:4000/2014/05/06/nginx-event</id>
+  <published>2014-05-06T00:00:00+00:00</published>
+  <updated>2014-05-06T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;Nginx是以事件驱动的，也就是说nginx内部流程向前推进基本都是靠各种事件的发生来驱动，否则nginx将一直阻塞在函数epoll_wait和sigsuspend这样的系统调用上，nginx工作进程关注的事件有两类:IO事件与定时器事件。&lt;/p&gt;
+
+&lt;h5&gt;IO复用模型&lt;/h5&gt;
+
+&lt;p&gt;无论是哪种IO复用模型，基本原理都是相同的，他们都能让应用程序同时对多个IO端口进行监控以判断其上的操作是否可以进行，达到时间复用的目的(单位时间内，可以同时监控很多)。&lt;/p&gt;
+
+&lt;p&gt;这个例子非常的形象:&lt;/p&gt;
+
+&lt;p&gt;如果要监控10根来自不同地方的水管(IO端口)是否有水流达到(是否可读)，那么需要10个人来做这件事情(10个线程或10处代码)，如果利用某种技术(比如摄像头)把10根水管的状态统一传达到某个点，那么就只需要1人在那个点进行监控就行了，类似于select或是epoll这样的多路IO复用机制就好比是摄像头的功能，他们能把多个IO端口的情况反馈到同一处，比如某个特定的文件描述符上，这样应用程序只需要对应的select或是epoll_wait调用阻塞关注这一处即可.&lt;/p&gt;
+
+&lt;p&gt;不同平台支持不同的IO多路复用模型，Nginx对这些IO多路复用模型进行封装和使用，IO多路复用模型被封装在一个叫做ngx_event_atcionts_t的结构体中，该结构体中包含的字段主要就是回调函数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;230 typedef struct {
+
+        /*  将某个描述符的某个事件(可读/可写)添加到多路复用的监控  */
+231     ngx_int_t  (*add)(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags);
+        /*  将某个描述符的某个事件(可读/可写)从多路复用的监控中删除   */
+232     ngx_int_t  (*del)(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags);
+233 
+        /*  启用对某个事件的监控  */
+234     ngx_int_t  (*enable)(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags);
+
+        /*  禁用对某个指定事件的监控    */
+235     ngx_int_t  (*disable)(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags);
+236 
+        /*  将指定连接关联的描述符加入到多路复用监控里 */
+237     ngx_int_t  (*add_conn)(ngx_connection_t *c);
+
+        /*  将指定连接关联的描述符从多路复用监控里删除 */
+238     ngx_int_t  (*del_conn)(ngx_connection_t *c, ngx_uint_t flags);
+
+239     /*  仅仅对kqueue才会用到这个接口，所以没什么用    */ 
+240     ngx_int_t  (*process_changes)(ngx_cycle_t *cycle, ngx_uint_t nowait);
+
+        /*  阻塞等待时间发生，对发生的时间进行逐个处理 */
+241     ngx_int_t  (*process_events)(ngx_cycle_t *cycle, ngx_msec_t timer,
+242                    ngx_uint_t flags);
+243 
+        /*  初始化   */
+244     ngx_int_t  (*init)(ngx_cycle_t *cycle, ngx_msec_t timer);
+        /*  回收资源    */
+245     void       (*done)(ngx_cycle_t *cycle);
+246 } ngx_event_actions_t;
+247 
+248 
+249 extern ngx_event_actions_t   ngx_event_actions;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由于多路复用模型各自具体的实现不同，上面列出的接口可能在Nginx的IO多路复用处理模块里没有对应的处理，但几个最近本的接口例如add/del/process_events肯定会有实现的。&lt;/p&gt;
+
+&lt;p&gt;为了方便使用任何一种事件处理机制，Nginx定义一个类型为ngx_event_actions_t的全局变量ngx_event_actions，并且定义了几个宏&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;448 #define ngx_process_changes  ngx_event_actions.process_changes
+449 #define ngx_process_events   ngx_event_actions.process_events
+450 #define ngx_done_events      ngx_event_actions.done
+451 
+452 #define ngx_add_event        ngx_event_actions.add
+453 #define ngx_del_event        ngx_event_actions.del
+454 #define ngx_add_conn         ngx_event_actions.add_conn
+455 #define ngx_del_conn         ngx_event_actions.del_conn
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样Nginx要将某个时间添加到多路复用监控里，只需要调用ngx_add_event()即可，至于这个函数对应到哪个具体的IO多路复用模块上，就不必关心！&lt;/p&gt;
+
+&lt;p&gt;ngx_add_event()函数是如何关联到具体的IO多路复用处理模块上的呢？&lt;/p&gt;
+
+&lt;p&gt;关键在于全局变量ngx_event_actions的值，为全局变量ngx_event_actions进行赋值出现在各个时间处理模块的初始化函数内,例如epoll模块。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;491 typedef struct {
+492     ngx_str_t              *name;
+493 
+494     void                 *(*create_conf)(ngx_cycle_t *cycle);
+495     char                 *(*init_conf)(ngx_cycle_t *cycle, void *conf);
+496 
+497     ngx_event_actions_t     actions;    /*  action的定义在上面，成员主要是一些回调函数    */
+498 } ngx_event_module_t;
+
+
+
+149 ngx_event_module_t  ngx_epoll_module_ctx = {
+150     &amp;amp;epoll_name,
+151     ngx_epoll_create_conf,               /* create configuration */
+152     ngx_epoll_init_conf,                 /* init configuration */
+153     
+154     {
+            /*  与ngx_event_actions_t中的函数一一对应  */
+155         ngx_epoll_add_event,             /* add an event */
+156         ngx_epoll_del_event,             /* delete an event */
+157         ngx_epoll_add_event,             /* enable an event */
+158         ngx_epoll_del_event,             /* disable an event */
+159         ngx_epoll_add_connection,        /* add an connection */
+160         ngx_epoll_del_connection,        /* delete an connection */
+161         NULL,                            /* process the changes */
+162         ngx_epoll_process_events,        /* process the events */
+163         ngx_epoll_init,                  /* init the events */
+164         ngx_epoll_done,                  /* done the events */
+165     }
+166 };  
+
+
+
+288 static ngx_int_t
+289 ngx_epoll_init(ngx_cycle_t *cycle, ngx_msec_t timer)
+290 {
+291     ngx_epoll_conf_t  *epcf;
+292 
+293     epcf = ngx_event_get_conf(cycle-&amp;gt;conf_ctx, ngx_epoll_module);
+294 
+295     if (ep == -1) {
+296         ep = epoll_create(cycle-&amp;gt;connection_n / 2);
+297 
+298         if (ep == -1) {
+299             ngx_log_error(NGX_LOG_EMERG, cycle-&amp;gt;log, ngx_errno,
+300                           &quot;epoll_create() failed&quot;);
+301             return NGX_ERROR;
+302         }
+303 
+304 #if (NGX_HAVE_FILE_AIO)
+305 
+306         ngx_epoll_aio_init(cycle, epcf);
+307 
+308 #endif
+309     }
+310 
+311     if (nevents &amp;lt; epcf-&amp;gt;events) {
+312         if (event_list) {
+313             ngx_free(event_list);
+314         }
+315 
+316         event_list = ngx_alloc(sizeof(struct epoll_event) * epcf-&amp;gt;events,
+317                                cycle-&amp;gt;log);
+318         if (event_list == NULL) {
+319             return NGX_ERROR;
+320         }
+321     }
+322 
+323     nevents = epcf-&amp;gt;events;
+324 
+325     ngx_io = ngx_os_io;
+326 
+        /*  全局变量关联上来了,这个ngx_epoll_module_ctx.action是一个结构体 */
+327     ngx_event_actions = ngx_epoll_module_ctx.actions;
+328 
+329 #if (NGX_HAVE_CLEAR_EVENT)
+330     ngx_event_flags = NGX_USE_CLEAR_EVENT
+331 #else
+332     ngx_event_flags = NGX_USE_LEVEL_EVENT
+333 #endif
+334                       |NGX_USE_GREEDY_EVENT
+335                       |NGX_USE_EPOLL_EVENT;
+336 
+337     return NGX_OK;
+338 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;327行就是对epoll模块的ngx_event_actions赋值，而在其他时间处理模块的初始化函数内也可以看到这样的赋值语句，所以一旦指定了nginx使用某个事件处理模块，经过事件处理模块的初始化后，就把全局变量ngx_event_actions指向了他的封装，比如ngx_add_event()调用的就是上面的ngx_epoll_add_event()函数&lt;/p&gt;
+
+&lt;p&gt;设定nginx使用那个事件处理机制是通过在event块中使用use指令来指定的，该配置指令对应的处理函数为ngx_event_use()函数&lt;/p&gt;
+
+&lt;p&gt;经过相关验证，比如检验该指定模块是否存在后，就会将对应的事件处理模块序号记录到efc-&gt;use中，如果不进行主动指定，则nginx会根据当前系统平台选择一个合适的事件处理模块，并且同样把模块序号记录在efc-&gt;use中，相关函数是ngx_event_core_init_conf&lt;/p&gt;
+
+&lt;p&gt;工作进程的初始化函数ngx_worker_process_init函数中会调用时间核心模块的初始化函数ngx_event_process_init,在该函数中根据ecf-&gt;use的值来调用对应的时间处理模块的初始化函数,例如epoll模块的ngx_epoll_init模块&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;584 ngx_event_process_init(ngx_cycle_t *cycle)
+585 {
+586     ngx_uint_t           m, i;
+587     ngx_event_t         *rev, *wev;
+588     ngx_listening_t     *ls;
+589     ngx_connection_t    *c, *next, *old;
+590     ngx_core_conf_t     *ccf;
+591     ngx_event_conf_t    *ecf;
+592     ngx_event_module_t  *module;
+593 
+594     ccf = (ngx_core_conf_t *) ngx_get_conf(cycle-&amp;gt;conf_ctx, ngx_core_module);
+595     ecf = ngx_event_get_conf(cycle-&amp;gt;conf_ctx, ngx_event_core_module);
+596 
+597     /*  
+598      *      1。只有在多进程的模型下
+599      *      2. worker进程数大于1
+600      *      3. 手动开启负载均衡     如果没有指定，则默认设置为开启模式
+601      *      满足以上三个条件才会开启负载均衡
+602     */
+603     if (ccf-&amp;gt;master &amp;amp;&amp;amp; ccf-&amp;gt;worker_processes &amp;gt; 1 &amp;amp;&amp;amp; ecf-&amp;gt;accept_mutex) {
+604         ngx_use_accept_mutex = 1;   /*  开启负载均衡    */
+605         ngx_accept_mutex_held = 0;
+606         ngx_accept_mutex_delay = ecf-&amp;gt;accept_mutex_delay;
+607 
+608     } else {
+609         ngx_use_accept_mutex = 0;   /*  没有开启    */
+610     }
+611 
+612 #if (NGX_THREADS)
+613     ngx_posted_events_mutex = ngx_mutex_init(cycle-&amp;gt;log, 0);
+614     if (ngx_posted_events_mutex == NULL) {
+615         return NGX_ERROR;
+616     }
+617 #endif
+618 
+619     if (ngx_event_timer_init(cycle-&amp;gt;log) == NGX_ERROR) {
+620         return NGX_ERROR;
+621     }
+622 
+            /*  遍历查找对应的模块 */
+623     for (m = 0; ngx_modules[m]; m++) {
+            /*  首先类型要为NGX_EVENT_MODULE  */
+624         if (ngx_modules[m]-&amp;gt;type != NGX_EVENT_MODULE) {
+625             continue;
+626         }
+627 
+628         /*  然后在同类模块中的编号要相等 */
+629         if (ngx_modules[m]-&amp;gt;ctx_index != ecf-&amp;gt;use) {
+630             continue;
+631         }
+632 
+633         module = ngx_modules[m]-&amp;gt;ctx;           /*  对应模块特有的数据 */
+634 
+635         if (module-&amp;gt;actions.init(cycle, ngx_timer_resolution) != NGX_OK) {
+636             /* fatal */
+637             exit(2);
+638         }
+639 
+640         break;
+641     }
+642 
+
+
+543 typedef struct {
+544     ngx_uint_t    connections;      /*   连接池的大小 */
+544     ngx_uint_t    use;              /*  选用的事件模块在同类事件模块中的序号  */
+545     ngx_flag_t    multi_accept;     /*  标志位，如果为1，则表示在接收到一个新连接事件时，一次性建立尽可能多的连接   */
+546     /*  标识位，为1表示启用负载均衡锁 */
+547     ngx_flag_t    accept_mutex;
+        /*
+        *   负载均衡锁会使有些worker进程在拿不到锁时延迟建立新连接
+        *   accept_mutex_delay就是这段延迟时间的长度
+        */
+548     ngx_msec_t    accept_mutex_delay;
+549    u_char       *name;              /*   所选用事件模块的名字，它与use成员是匹配的   */
+550 #if (NGX_DEBUG)   
+551     ngx_array_t   debug_connection;
+552 #endif
+553 } ngx_event_conf_t;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/013.png&quot; alt=&quot;013&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/06/nginx-event/&quot;&gt;Nginx的IO多路复用&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 06, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx配置解析]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/06/nginx-config/" />
+  <id>http://localhost:4000/2014/05/06/nginx-config</id>
+  <published>2014-05-06T00:00:00+00:00</published>
+  <updated>2014-05-06T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;为了统一配置项目的解析，nginx利用ngx_command_s数据类型对所有的nginx配置项目进行统一的描述&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;78 struct ngx_command_s {
+79     ngx_str_t             name;          /*  配置名   */
+80     ngx_uint_t            type;          /*  表示配置值的类型    */
+                                            /*  对应配置指令的回调函数   */
+81     char               *(*set)(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
+82     ngx_uint_t            conf;
+83     ngx_uint_t            offset;        /*  指向转换后控制值的存放位置 */
+84     void                 *post;          /*  在大多数情况下都为NULL */
+85 };
+86 
+87 #define ngx_null_command  { ngx_null_string, 0, NULL, 0, 0, NULL }
+
+
+    /*  这个数组对所有可能出现的配置项进行描述，设定对应的回调函数 */
+33 static ngx_command_t  ngx_core_commands[] = {
+34 
+35         /*  设置所有可能出现的配置项的回调函数以及其他对应的处理    */
+36     { ngx_string(&quot;daemon&quot;),
+37       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_FLAG,
+38       ngx_conf_set_flag_slot,
+39       0,
+40       offsetof(ngx_core_conf_t, daemon),
+41       NULL },
+42 
+43     { ngx_string(&quot;master_process&quot;),
+44       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_FLAG,
+45       ngx_conf_set_flag_slot,
+46       0,
+47       offsetof(ngx_core_conf_t, master),
+48       NULL },
+49 
+            ......
+158 
+159       ngx_null_command  /*  以它结尾    */
+160 };
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以daemon配置名为例，当遇到配置文件中的daemon项目名时，nginx就会调用ngx_conf_set_flag_slot()回调函数来对其项目值进行解析，并根据是on还是off来将ngx_core_conf_t的daemon的字段值设置为1或0,这样就完成了配置项目信息到nginx内部实际值的转换过程&lt;/p&gt;
+
+&lt;p&gt;其中ngx_command_s结构体中的type字段指定该配置项的多种相关信息。&lt;/p&gt;
+
+&lt;h5&gt;配置的类型:&lt;/h5&gt;
+
+&lt;p&gt;NGX_CONF_FLAG表示该配置项目是一个布尔类型的值，例如daemon就是一个布尔类型的配置项目，其值为on或off;&lt;/p&gt;
+
+&lt;p&gt;NGX_CONF_BLOCK表示该配置项目为负载配置项，因此有一个由大括号组织起来的多值块，比如配置项http、event等。&lt;/p&gt;
+
+&lt;h5&gt;配置项目的配置值的token个数:&lt;/h5&gt;
+
+&lt;p&gt;NGX_CONF_NOARGS、NGX_CONF_TAKE1、NGX_CONF_TAKE2......NGX_CONF_TAKE7分别表示该配置项的配置值没有token、1个、2个......7个token;&lt;/p&gt;
+
+&lt;p&gt;NGX_CONF_TAKE12、NGX_CONF_TAKE123、NGX_CONF_1MORE表示这些配置项的配置值的token个数不定，分别为1个或2个、1个或2个或3个、1个以上;&lt;/p&gt;
+
+&lt;h5&gt;该配置项目所处的上下文:&lt;/h5&gt;
+
+&lt;p&gt;NGX_MAIN_CONF:配置文件最外层，不包含期内的类似于http这样的配置块内部，即不向内延伸，其他上下文都有这个特性;&lt;/p&gt;
+
+&lt;p&gt;NGX_EVENT_CONF:event的配置块&lt;/p&gt;
+
+&lt;p&gt;NGX_HTTP_MAIN_CONF:HTTP配置块&lt;/p&gt;
+
+&lt;p&gt;NGX_HTTP_SRV_CONF:HTTP的server指令配置块&lt;/p&gt;
+
+&lt;p&gt;NGX_HTTP_LOC_CONF:HTTP的location指令配置块&lt;/p&gt;
+
+&lt;p&gt;......等等&lt;/p&gt;
+
+&lt;p&gt;post字段在大多数情况下都为NULL，但是在某些特殊配置项中也会指定其值，而且多为回调函数指针。&lt;/p&gt;
+
+&lt;p&gt;每个模块都把自己所需要的配置项目对应的ngx_command_s结构体变量组成一个数组，以ngx_xxx_xxx_commands的形式命名，该数组以元素ngx_null_command作为结束标识&lt;/p&gt;
+
+&lt;h4&gt;配置文件解析流程&lt;/h4&gt;
+
+&lt;p&gt;假设以命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nginx -c /usr/local/niginx/conf/nginx.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动nginx&lt;/p&gt;
+
+&lt;p&gt;nginx.conf的内容如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;worker_processes  2;
+error_log  logs/error.log debug;    
+
+
+events {
+    worker_connections  1024;   
+}
+
+
+http {
+    include       mime.types;       # 文件类型
+    default_type  application/octet-stream;
+
+    server {
+        listen       8888;
+        server_name  localhost;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+        error_page 404 /404.html
+        error_page 500 502 503 504 /50x.html
+
+        location = /50x.html {
+            root html;
+        }
+    }
+}
+
+在函数ngx_conf_parse处下断点，我们可以看到ngx_conf_parse有两个参数
+
+Breakpoint 1, ngx_conf_parse (cf=cf@entry=0xbffff0c0, filename=filename@entry=0x80e3aa8) at src/core/ngx_conf_file.c:104
+(gdb) p *filename
+$2 = {len = 32, data = 0x80e3aff &quot;/usr/local/nginx/conf/nginx.conf&quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第二个参数filename街头体中保存这配置文件路径的字符串&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ngx_str_t的定义
+16 typedef struct {
+17     size_t      len;
+18     u_char     *data;
+19 } ngx_str_t;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_conf_parse()函数是执行配置文件解析的关键函数&lt;/p&gt;
+
+&lt;p&gt;ngx_conf_parse总体将配置内容的解析过程分为三部分&lt;/p&gt;
+
+&lt;p&gt;1.判断当前解析状态&lt;/p&gt;
+
+&lt;p&gt;2.读取配置标记token&lt;/p&gt;
+
+&lt;p&gt;3.读取了合适数量的标记token后对其进行实际的处理，也就是将配置值转换为Nginx内对应控制变量的值。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;103 ngx_conf_parse(ngx_conf_t *cf, ngx_str_t *filename)
+104 {
+105     char             *rv;
+106     ngx_fd_t          fd;
+107     ngx_int_t         rc;
+108     ngx_buf_t         buf;
+109     ngx_conf_file_t  *prev, conf_file;
+        /*  三种状态    */
+110     enum {
+111         parse_file = 0,
+112         parse_block,
+113         parse_param
+114     } type;
+115 
+116 #if (NGX_SUPPRESS_WARN)
+117     fd = NGX_INVALID_FILE;
+118     prev = NULL;
+119 #endif
+120 
+        /*  首先判断路径是否存在  */
+121     if (filename) {
+122 
+123         /* open configuration file */
+124 
+125         fd = ngx_open_file(filename-&amp;gt;data, NGX_FILE_RDONLY, NGX_FILE_OPEN, 0);
+126         if (fd == NGX_INVALID_FILE) {
+127             ngx_conf_log_error(NGX_LOG_EMERG, cf, ngx_errno,
+128                                ngx_open_file_n &quot; \&quot;%s\&quot; failed&quot;,
+129                                filename-&amp;gt;data);
+130             return NGX_CONF_ERROR;
+131         }
+132 
+133         prev = cf-&amp;gt;conf_file;
+134 
+135         cf-&amp;gt;conf_file = &amp;amp;conf_file;
+136 
+137         if (ngx_fd_info(fd, &amp;amp;cf-&amp;gt;conf_file-&amp;gt;file.info) == -1) {
+138             ngx_log_error(NGX_LOG_EMERG, cf-&amp;gt;log, ngx_errno,
+
+139                           ngx_fd_info_n &quot; \&quot;%s\&quot; failed&quot;, filename-&amp;gt;data);
+140         }
+141 
+            /*  cf-&amp;gt;conf_file-&amp;gt;buffer将直接使用buf */
+142         cf-&amp;gt;conf_file-&amp;gt;buffer = &amp;amp;buf;
+143             
+            /*  分配buf的空间  */
+144         buf.start = ngx_alloc(NGX_CONF_BUFFER, cf-&amp;gt;log);
+145         if (buf.start == NULL) {
+146             goto failed;
+147         }
+148 
+149         buf.pos = buf.start;
+150         buf.last = buf.start;
+151         buf.end = buf.last + NGX_CONF_BUFFER;   /*  指定buf的空间范围,到end结束   */
+152         buf.temporary = 1;
+153 
+154         cf-&amp;gt;conf_file-&amp;gt;file.fd = fd;
+155         cf-&amp;gt;conf_file-&amp;gt;file.name.len = filename-&amp;gt;len;
+156         cf-&amp;gt;conf_file-&amp;gt;file.name.data = filename-&amp;gt;data;
+157         cf-&amp;gt;conf_file-&amp;gt;file.offset = 0;
+158         cf-&amp;gt;conf_file-&amp;gt;file.log = cf-&amp;gt;log;
+159         cf-&amp;gt;conf_file-&amp;gt;line = 1;
+160 
+            /*  设置状态标记  */
+161         type = parse_file;      
+162 
+            /*  读取复杂配置项目，一般是递归调用ngx_conf_parse所以filename一般设置为空???   */
+163     } else if (cf-&amp;gt;conf_file-&amp;gt;file.fd != NGX_INVALID_FILE) {
+164 
+165         type = parse_block;
+166 
+        /*  这个到底是怎么判断的???   */  
+167     } else {
+168         type = parse_param;
+169     }
+170 
+171 
+172     for ( ;; ) {
+
+            /*  循环从配置文件里读取token */
+173         rc = ngx_conf_read_token(cf);
+174 
+175         /*  
+176          * ngx_conf_read_token() may return
+177          *
+178          *    NGX_ERROR             there is error
+179          *    NGX_OK                the token terminated by &quot;;&quot; was found
+180          *    NGX_CONF_BLOCK_START  the token terminated by &quot;{&quot; was found
+181          *    NGX_CONF_BLOCK_DONE   the &quot;}&quot; was found
+182          *    NGX_CONF_FILE_DONE    the configuration file is done
+183          */
+184 
+185         if (rc == NGX_ERROR) {
+186             goto done;
+187         }
+188 
+189         if (rc == NGX_CONF_BLOCK_DONE) {
+190 
+                /*  type具体的含义见下文    */
+191             if (type != parse_block) {
+192                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0, &quot;unexpected \&quot;}\&quot;&quot;);
+193                 goto failed;
+194             }
+195 
+196             goto done;
+197         }
+198 
+199         if (rc == NGX_CONF_FILE_DONE) {
+200 
+201             if (type == parse_block) {
+202                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+203                                    &quot;unexpected end of file, expecting \&quot;}\&quot;&quot;);
+204                 goto failed;
+205             }
+206 
+207             goto done;
+208         }
+209 
+210         if (rc == NGX_CONF_BLOCK_START) {
+211 
+212             if (type == parse_param) {
+213                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+214                                    &quot;block directives are not supported &quot;
+215                                    &quot;in -g option&quot;);
+216                 goto failed;
+217             }
+218         }
+219 
+220         /* rc == NGX_OK || rc == NGX_CONF_BLOCK_START */
+221 
+            /*  
+            *   这个主要是针对类似 text/html html htm;之类不定配置项,这些配置项众多且变化不定,
+            *   但格式统一,一般是以key/values的形式存在的    
+            *   nginx只是将其拷贝到对应的变量内,所以此时一般提供一个统一的handler便是cf-&amp;gt;handler
+            *   比如type指令的处理函数ngx_http_core_types就会将cf-&amp;gt;handler赋值为ngx_http_core_types
+            */
+222         if (cf-&amp;gt;handler) {
+223 
+224             /*
+225              * the custom handler, i.e., that is used in the http&#39;s
+226              * &quot;types { ... }&quot; directive
+227              */
+228 
+229             rv = (*cf-&amp;gt;handler)(cf, NULL, cf-&amp;gt;handler_conf);
+230             if (rv == NGX_CONF_OK) {
+231                 continue;
+232             }
+233 
+234             if (rv == NGX_CONF_ERROR) {
+235                 goto failed;
+236             }
+237 
+238             ngx_conf_log_error(NGX_LOG_EMERG, cf, 0, rv);
+239 
+240             goto failed;
+241         }
+242 
+243 
+            /*  
+            *   配置转换的核心函数 
+            *   两个参数分别是cf和rc
+            *   cf中包含了很多参数,比如要转换的token就保存在cf-&amp;gt;args中
+            *   rc记录的是最近一次ngx_conf_read_token函数返回值
+            */
+244         rc = ngx_conf_handler(cf, rc);
+245 
+246         if (rc == NGX_ERROR) {
+247             goto failed;
+248         }
+249     }
+250 
+251 failed:
+252 
+253     rc = NGX_ERROR;
+254 
+255 done:
+256 
+257     if (filename) {
+258         if (cf-&amp;gt;conf_file-&amp;gt;buffer-&amp;gt;start) {
+259             ngx_free(cf-&amp;gt;conf_file-&amp;gt;buffer-&amp;gt;start);
+260         }
+261 
+262         if (ngx_close_file(fd) == NGX_FILE_ERROR) {
+263             ngx_log_error(NGX_LOG_ALERT, cf-&amp;gt;log, ngx_errno,
+264                           ngx_close_file_n &quot; %s failed&quot;,
+265                           filename-&amp;gt;data);
+266             return NGX_CONF_ERROR;
+267         }
+268 
+269         cf-&amp;gt;conf_file = prev;
+270     }
+271 
+272     if (rc == NGX_ERROR) {
+273         return NGX_CONF_ERROR;
+274     }
+275 
+276     return NGX_CONF_OK;
+277 }
+278 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进入ngx_conf_parse函数后，第一步要做的是判断当前解析过程处于一个什么样的状态，有三种可能&lt;/p&gt;
+
+&lt;h5&gt;parse_file: 正要解析一个配置文件&lt;/h5&gt;
+
+&lt;p&gt;此时参数filename指向一个配置文件路径字符串，需要函数ngx_conf_parse()打开该文件并获取相关的文件信息(比如文件描述符)以便下面代码读取文件内容并进行解析。除了在上面Nginx启动时候开始配置文件解析属于这种情况外，还有当遇到include指令时候也要以这种状态调用ngx_conf_parse函数，因为include指令表示一个新的配置文件要开始解析，此时type=parse_file&lt;/p&gt;
+
+&lt;h5&gt;parse_block: 正要解析一个复杂配置项&lt;/h5&gt;
+
+&lt;p&gt;此时配置文件已经打开并且也已经对文件进行了解析，当遇到复杂的配置项例如events或是http时候，这些复杂配置项的处理函数又会递归调用ngx_conf_parse函数，此时解析的内容还是来自当前的配置文件，因此无需在打开它，此时type=parse_block;&lt;/p&gt;
+
+&lt;h5&gt;parse_param: 主要开始解析命令行参数配置项值&lt;/h5&gt;
+
+&lt;p&gt;在对用户通过命令行-g参数输入的配置信息进行解析时候处于这种状态，比如: nginx -g &#39;daemon on&#39;.nginx在调用ngx_conf_parse函数对命令行参数配置信息&#39;daemon on&#39;进行解析时候就是这种状态，type=parse_param&lt;/p&gt;
+
+&lt;p&gt;当判断好解析状态之后就开始读取配置文件内容，配置文件都是由一个个token组成，因此接下来应该是循环从配置文件里读取token，主要有函数ngx_conf_read_token来实现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    /*  buf的结构    */
+18 typedef struct ngx_buf_s  ngx_buf_t;
+19 
+20 struct ngx_buf_s {
+21     u_char          *pos;
+22     u_char          *last;
+23     off_t            file_pos;            
+24     off_t            file_last;  
+25    
+26     u_char          *start;         /* start of buffer */
+27     u_char          *end;           /* end of buffer */  
+28     ngx_buf_tag_t    tag;
+29     ngx_file_t      *file;
+30     ngx_buf_t       *shadow;
+31    
+32    
+33     /* the buf&#39;s content could be changed */
+34     unsigned         temporary:1;         
+35                 
+36     /*
+37      * the buf&#39;s content is in a memory cache or in a read only memory
+38      * and must not be changed
+39      */
+40     unsigned         memory:1;
+41    
+42     /* the buf&#39;s content is mmap()ed and must not be changed */
+43     unsigned         mmap:1;
+44                 
+45     unsigned         recycled:1;
+46     unsigned         in_file:1;
+47     unsigned         flush:1;
+48     unsigned         sync:1;
+49     unsigned         last_buf:1;
+50     unsigned         last_in_chain:1;     
+51 
+52     unsigned         last_shadow:1;       
+53     unsigned         temp_file:1;         
+54 
+55     /* STUB */ int   num;
+56 };
+
+
+
+434 static ngx_int_t
+435 ngx_conf_read_token(ngx_conf_t *cf)
+436 {
+437     u_char      *start, ch, *src, *dst;
+438     off_t        file_size; 
+439     size_t       len;
+440     ssize_t      n, size;
+441     ngx_uint_t   found, need_space, last_space, sharp_comment, variable;
+442     ngx_uint_t   quoted, s_quoted, d_quoted, start_line;
+443     ngx_str_t   *word;
+444     ngx_buf_t   *b;
+445 
+446     found = 0;
+447     need_space = 0;
+448     last_space = 1;
+449     sharp_comment = 0;
+450     variable = 0; 
+451     quoted = 0;
+452     s_quoted = 0;
+453     d_quoted = 0;
+454 
+455     cf-&amp;gt;args-&amp;gt;nelts = 0;
+456     b = cf-&amp;gt;conf_file-&amp;gt;buffer;
+457     start = b-&amp;gt;pos;
+458     start_line = cf-&amp;gt;conf_file-&amp;gt;line;
+459 
+460     file_size = ngx_file_size(&amp;amp;cf-&amp;gt;conf_file-&amp;gt;file.info);
+461 
+462     for ( ;; ) {
+463 
+464         if (b-&amp;gt;pos &amp;gt;= b-&amp;gt;last) {
+465 
+466             if (cf-&amp;gt;conf_file-&amp;gt;file.offset &amp;gt;= file_size) {
+467 
+468                 if (cf-&amp;gt;args-&amp;gt;nelts &amp;gt; 0 || !last_space) {
+469 
+470                     if (cf-&amp;gt;conf_file-&amp;gt;file.fd == NGX_INVALID_FILE) {
+471                         ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+472                                            &quot;unexpected end of parameter, &quot;
+473                                            &quot;expecting \&quot;;\&quot;&quot;);
+474                         return NGX_ERROR;
+475                     }
+476 
+477                     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+478                                   &quot;unexpected end of file, &quot;
+479                                   &quot;expecting \&quot;;\&quot; or \&quot;}\&quot;&quot;);
+480                     return NGX_ERROR;
+481                 }
+482 
+483                 return NGX_CONF_FILE_DONE;
+484             }
+485 
+486             len = b-&amp;gt;pos - start;
+487 
+488             if (len == NGX_CONF_BUFFER) {
+489                 cf-&amp;gt;conf_file-&amp;gt;line = start_line;
+490 
+491                 if (d_quoted) {
+492                     ch = &#39;&quot;&#39;;
+493 
+494                 } else if (s_quoted) {
+495                     ch = &#39;\&#39;&#39;;
+496 
+497                 } else {
+498                     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+499                                        &quot;too long parameter \&quot;%*s...\&quot; started&quot;,
+500                                        10, start);
+501                     return NGX_ERROR;
+502                 }
+503 
+504                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+505                                    &quot;too long parameter, probably &quot;
+506                                    &quot;missing terminating \&quot;%c\&quot; character&quot;, ch);
+507                 return NGX_ERROR;
+508             }
+509 
+510             if (len) {
+511                 ngx_memmove(b-&amp;gt;start, start, len);
+512             }
+513 
+514             size = (ssize_t) (file_size - cf-&amp;gt;conf_file-&amp;gt;file.offset);
+515 
+516             if (size &amp;gt; b-&amp;gt;end - (b-&amp;gt;start + len)) {
+517                 size = b-&amp;gt;end - (b-&amp;gt;start + len);
+518             }
+519 
+520             n = ngx_read_file(&amp;amp;cf-&amp;gt;conf_file-&amp;gt;file, b-&amp;gt;start + len, size,
+521                               cf-&amp;gt;conf_file-&amp;gt;file.offset);
+522 
+523             if (n == NGX_ERROR) {
+524                 return NGX_ERROR;
+525             }
+526 
+527             if (n != size) {
+528                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+529                                    ngx_read_file_n &quot; returned &quot;
+530                                    &quot;only %z bytes instead of %z&quot;,
+531                                    n, size);
+532                 return NGX_ERROR;
+533             }
+534 
+535             b-&amp;gt;pos = b-&amp;gt;start + len;
+536             b-&amp;gt;last = b-&amp;gt;pos + n;
+537             start = b-&amp;gt;start;
+538         }
+539 
+540         ch = *b-&amp;gt;pos++;
+541 
+542         if (ch == LF) {
+543             cf-&amp;gt;conf_file-&amp;gt;line++;
+544 
+545             if (sharp_comment) {
+546                 sharp_comment = 0;
+547             }
+548         }
+549 
+550         if (sharp_comment) {
+551             continue;
+552         }
+553 
+554         if (quoted) {
+555             quoted = 0;
+556             continue;
+557         }
+558 
+559         if (need_space) {
+560             if (ch == &#39; &#39; || ch == &#39;\t&#39; || ch == CR || ch == LF) {
+561                 last_space = 1;
+562                 need_space = 0;
+563                 continue;
+564             }
+565 
+566             if (ch == &#39;;&#39;) {
+567                 return NGX_OK;
+568             }
+569 
+570             if (ch == &#39;{&#39;) {
+571                 return NGX_CONF_BLOCK_START;
+572             }
+573 
+574             if (ch == &#39;)&#39;) {
+575                 last_space = 1;
+576                 need_space = 0;
+577 
+578             } else {
+579                  ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+580                                     &quot;unexpected \&quot;%c\&quot;&quot;, ch);
+581                  return NGX_ERROR;
+582             }
+583         }
+584 
+585         if (last_space) {
+586             if (ch == &#39; &#39; || ch == &#39;\t&#39; || ch == CR || ch == LF) {
+587                 continue;
+588             }
+589 
+590             start = b-&amp;gt;pos - 1;
+591             start_line = cf-&amp;gt;conf_file-&amp;gt;line;
+592 
+593             switch (ch) {
+594 
+595             case &#39;;&#39;:
+596             case &#39;{&#39;:
+597                 if (cf-&amp;gt;args-&amp;gt;nelts == 0) {
+598                     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+599                                        &quot;unexpected \&quot;%c\&quot;&quot;, ch);
+600                     return NGX_ERROR;
+601                 }
+602 
+603                 if (ch == &#39;{&#39;) {
+604                     return NGX_CONF_BLOCK_START;
+605                 }
+606 
+607                 return NGX_OK;
+608 
+609             case &#39;}&#39;:
+610                 if (cf-&amp;gt;args-&amp;gt;nelts != 0) {
+611                     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+612                                        &quot;unexpected \&quot;}\&quot;&quot;);
+613                     return NGX_ERROR;
+614                 }
+615 
+616                 return NGX_CONF_BLOCK_DONE;
+617 
+618             case &#39;#&#39;:
+619                 sharp_comment = 1;
+620                 continue;
+621 
+622             case &#39;\\&#39;:
+623                 quoted = 1;
+624                 last_space = 0;
+625                 continue;
+626 
+627             case &#39;&quot;&#39;:
+628                 start++;
+629                 d_quoted = 1;
+630                 last_space = 0;
+631                 continue;
+632 
+633             case &#39;\&#39;&#39;:
+634                 start++;
+635                 s_quoted = 1;
+636                 last_space = 0;
+637                 continue;
+638 
+639             default:
+640                 last_space = 0;
+641             }
+642 
+643         } else {
+644             if (ch == &#39;{&#39; &amp;amp;&amp;amp; variable) {
+645                 continue;
+646             }
+647 
+648             variable = 0;
+649 
+650             if (ch == &#39;\\&#39;) {
+651                 quoted = 1;
+652                 continue;
+653             }
+654 
+655             if (ch == &#39;$&#39;) {
+
+656                 variable = 1;
+657                 continue;
+658             }
+659 
+660             if (d_quoted) {
+661                 if (ch == &#39;&quot;&#39;) {
+662                     d_quoted = 0;
+663                     need_space = 1;
+664                     found = 1;
+665                 }
+666 
+667             } else if (s_quoted) {
+668                 if (ch == &#39;\&#39;&#39;) {
+669                     s_quoted = 0;
+670                     need_space = 1;
+671                     found = 1;
+672                 }
+673 
+674             } else if (ch == &#39; &#39; || ch == &#39;\t&#39; || ch == CR || ch == LF
+675                        || ch == &#39;;&#39; || ch == &#39;{&#39;)
+676             {
+677                 last_space = 1;
+678                 found = 1;
+679             }
+680 
+681             if (found) {
+682                 word = ngx_array_push(cf-&amp;gt;args);
+683                 if (word == NULL) {
+684                     return NGX_ERROR;
+685                 }
+686 
+687                 word-&amp;gt;data = ngx_pnalloc(cf-&amp;gt;pool, b-&amp;gt;pos - start + 1);
+688                 if (word-&amp;gt;data == NULL) {
+689                     return NGX_ERROR;
+690                 }
+691 
+692                 for (dst = word-&amp;gt;data, src = start, len = 0;
+693                      src &amp;lt; b-&amp;gt;pos - 1;
+694                      len++)
+695                 {
+696                     if (*src == &#39;\\&#39;) {
+697                         switch (src[1]) {
+698                         case &#39;&quot;&#39;:
+699                         case &#39;\&#39;&#39;:
+700                         case &#39;\\&#39;:
+701                             src++;
+702                             break;
+703 
+704                         case &#39;t&#39;:
+705                             *dst++ = &#39;\t&#39;;
+706                             src += 2;
+707                             continue;
+708 
+709                         case &#39;r&#39;:
+710                             *dst++ = &#39;\r&#39;;
+711                             src += 2;
+712                             continue;
+713 
+714                         case &#39;n&#39;:
+715                             *dst++ = &#39;\n&#39;;
+716                             src += 2;
+717                             continue;
+718                         }
+719 
+720                     }
+721                     *dst++ = *src++;
+722                 }
+723                 *dst = &#39;\0&#39;;
+724                 word-&amp;gt;len = len;
+725 
+726                 if (ch == &#39;;&#39;) {                    /*  返回表示读取完一个简单配置项的标记 */
+727                     return NGX_OK;
+728                 }
+729 
+730                 if (== &#39;{&#39;) {
+731                    return NGX_CONF_BLOCK_START;     /*  返回开始读取负载配置项的标记  */
+732                 }
+733
+734                     found = 0;
+735             }
+736         }
+737     }
+738 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_conf_read_token会对配置文件进行逐个字符扫描并解析出单个的token，但是这个函数并不会去频繁的读取配置文件，它每次从文件内读取足够多的内容以填满一个大小为NGX_CONF_BUFFER(4096)的缓冲区(除了最后一次，配置文件本身剩余内容不足4096)，这个缓冲区在函数内申请并保存到引用变量cf-&gt;conf_file-&gt;buffer中，函数ngx_conf_read_token将会返回使用该缓存区，缓存区也有一些状态。&lt;/p&gt;
+
+&lt;h5&gt;1.初始状态&lt;/h5&gt;
+
+&lt;p&gt;函数ngx_conf_parse()内申请缓冲区后的初始状态&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/007.png&quot; alt=&quot;007&quot; /&gt;&lt;/p&gt;
+
+&lt;h5&gt;2.处理过程的中间状态&lt;/h5&gt;
+
+&lt;p&gt;有一部分配置内容已经被解析为一个个token并保存起来，而有一部分内容主要被组合成token，还有一部分内容等待处理,已解析的字符和已扫描的字符都属于已处理的字符，但是已解析的字符已经被作为token额外保存起来，所以这些字符已经没有什么用处了，而已扫描的字符表示这些字符还没有组成一个完成的token，所以他们不能被丢弃。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/008.png&quot; alt=&quot;008&quot; /&gt;&lt;/p&gt;
+
+&lt;h5&gt;3.缓存区中字符都处理完状态&lt;/h5&gt;
+
+&lt;p&gt;缓存区中字符都处理完时，需要继续从打开的配置文件中读取新的内容到缓存中此时的临界状态如图:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/009.png&quot; alt=&quot;009&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;因为解析过的字符已经没有什么用了，所以我们将已经扫描但是还没有组成token的字符移动到缓存的前面，然后从配置文件读取内容填满缓存区剩下的空间。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/010.png&quot; alt=&quot;010&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;对于最后一次读取，无法填满缓冲区的情况如下&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/011.png&quot; alt=&quot;011&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ngx_conf_read_token在读取了合适数量的标记token之后就开始下一个步骤，对这些标记进行实际的处理，读到多少才算合适呢？&lt;/p&gt;
+
+&lt;p&gt;对于简单配置项，读取其全部标记，也就是遇到配置项结束标记分号为止;此时一条简单配置项的所有标记都已经被读取并存放在cf-&gt;args数组内，因此可以开始下一步，即执行回调函数进行实际性的解析处理;&lt;/p&gt;
+
+&lt;p&gt;对于负载配置项则是读取完其配置块内所有的标记，即遇到大括号{为止，此时负载配置项处理函数所需要的标记都已经读取到，而对于配置块{}内的标记将在接下来的函数ngx_conf_parse递归调用中继续处理，这是个反复的过程，当然如果配置文件出错就会直接返回了。&lt;/p&gt;
+
+&lt;p&gt;ngx_conf_parse函数识别并将token缓存到cf-&gt;args数组中,首先对配置文件临时缓存区内容调整,接着通过缓冲区从前往后扫描整个配置文件的内容,对每一个字符与前面已经扫描字符的组合进行有效性检测并进行一些状态旗标设置,比如d_quoted旗标置1则表示当前处于双引号字符串后,last_space置1则表示当前一个字符为空白字符,这些旗标能够大大方便接下来的字符有效性组合检测.&lt;/p&gt;
+
+&lt;p&gt;再接下来就是判断当前已经扫描字符是否能够组成一个token标记,两个双引号,两个单引号,两个空白字符之间的字符就能组成一个token标记,此时cf-&gt;args数组内申请对应的存储空间并机型token标记字符串拷贝,从而完成了一个token标记的解析与读取工作,此时根据情况要么继续进行下一个token标记的解析与读取,要么返回到ngx_conf_parse函数进行实际处理.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;13 typedef struct ngx_conf_s        ngx_conf_t;
+
+166 struct ngx_conf_s {
+167     char                 *name;         /*  没有使用    */
+168     ngx_array_t          *args;         /*  指令的参数 */
+169 
+170     ngx_cycle_t          *cycle;        /*  指向系统参数，在系统整个运行过程中，  */
+171                                         /*  需要使用的一些参数、资源需要统一的管理   */
+172     ngx_pool_t           *pool;         /*  内存池   */
+173     ngx_pool_t           *temp_pool;    /*  分配临时数据空间的内存池    */
+174     ngx_conf_file_t      *conf_file;    /*  配置文件的信息   */
+175     ngx_log_t            *log;          /*  日志      */
+176 
+177     void                 *ctx;          /*  模块的配置信息   */
+178     ngx_uint_t            module_type;  /*  当前指令的类型   */
+179     ngx_uint_t            cmd_type;     /*  命令的类型 */
+180 
+181     ngx_conf_handler_pt   handler;      /*  指令处理函数，有自己行为的在这里实现  */
+182     char                 *handler_conf; /*  指令处理函数的配置信息   */
+183};
+
+16 // 动态数组
+17 struct ngx_array_s {
+18                          
+19     void        *elts;       /*  elts指向数组的首地址 */
+20     
+21     ngx_uint_t   nelts;      /* nelts是数组中已经使用的元素个数 */
+22     
+23     size_t       size;       /* 每个数组元素占用的内存大小 */
+24     
+25     ngx_uint_t   nalloc;     /* 当前数组中能够容纳元素个数的总大小 */
+26     
+27     ngx_pool_t  *pool;       /* 内存池对象  */
+28 };
+29 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以下是在ngx_conf_parse函数中打印的一些内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) p (*cf-&amp;gt;args)-&amp;gt;nelts
+$6 = 2
+(gdb) p *((ngx_str_t*)((*cf-&amp;gt;args)-&amp;gt;elts))
+$7 = {len = 16, data = 0x80e33d8 &quot;worker_processes&quot;}
+(gdb) p *((ngx_str_t*)((*cf-&amp;gt;args)-&amp;gt;elts+sizeof(ngx_str_t)))
+$8 = {len = 1, data = 0x80e33ea &quot;2&quot;}
+(gdb) p (*cf-&amp;gt;args)-&amp;gt;elts
+$9 = (void *) 0x80e3388
+(gdb) p (*cf-&amp;gt;args)-&amp;gt;nelts
+$10 = 2
+(gdb) p filename
+$11 = (ngx_str_t *) 0x80e2ac8
+(gdb) p *filename
+$12 = {len = 32, data = 0x80e2b1f &quot;/usr/local/nginx/conf/nginx.conf&quot;}
+(gdb) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;此时解析转换所需要的token都已经被保存到cf-&gt;args中了,接下来要将这些token转换为nginx内控制变量的值,ngx_conf_handler函数的作用便是如此&lt;/p&gt;
+
+&lt;p&gt;nginx的每一个配置指令都对应一个ngx_command_s数据类型变量,记录这该配置指令的回调函数,转换值的存储位置等,而每一个模块又都把自身锁相关的所有指令以数组的形式组织起来,所以ngx_conf_handler首先做的就是查找当前指令所对应的ngx_command_s变量,通过循环遍历各个模块的指令数组即可,nginx的所有模块也是用数组形式组织的,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;281 static ngx_int_t
+282 ngx_conf_handler(ngx_conf_t *cf, ngx_int_t last)
+283 {
+284     char           *rv;
+285     void           *conf, **confp;
+286     ngx_uint_t      i, multi;
+287     ngx_str_t      *name;
+288     ngx_command_t  *cmd;
+289 
+        /*  以work_process为例,elts类型为ngx_str_t    */
+290     name = cf-&amp;gt;args-&amp;gt;elts;
+291 
+292     multi = 0;
+293 
+        /*  遍历各个模块,数组中结尾的是空结构的哨兵  */
+294     for (i = 0; ngx_modules[i]; i++) {
+295 
+296         /* look up the directive in the appropriate modules */
+297 
+            /*  
+            *   一定是在NGX_CONF_MODULE类型的模块中找
+            *   并且模块类型与cf-&amp;gt;module_type的类型必须相同   
+            */
+298         if (ngx_modules[i]-&amp;gt;type != NGX_CONF_MODULE
+299             &amp;amp;&amp;amp; ngx_modules[i]-&amp;gt;type != cf-&amp;gt;module_type)
+300         {
+301             continue;
+302         }
+303 
+304         cmd = ngx_modules[i]-&amp;gt;commands;
+305         if (cmd == NULL) {
+306             continue;
+307         }
+308 
+309         for ( /* void */ ; cmd-&amp;gt;name.len; cmd++) {
+310             
+                /*  首先比较长度,长度不同没有必要再去比较了  */
+311             if (name-&amp;gt;len != cmd-&amp;gt;name.len) {
+312                 continue;
+313             }
+314 
+                /*  长度相同在比较具体的字符是否相同    */
+315             if (ngx_strcmp(name-&amp;gt;data, cmd-&amp;gt;name.data) != 0) {
+316                 continue;
+317             }
+318 
+319 
+320             /* is the directive&#39;s location right ? */
+321 
+322             if (!(cmd-&amp;gt;type &amp;amp; cf-&amp;gt;cmd_type)) {
+323                 if (cmd-&amp;gt;type &amp;amp; NGX_CONF_MULTI) {
+324                     multi = 1;
+325                     continue;
+326                 }
+327 
+328                 goto not_allowed;
+329             }
+330 
+331             if (!(cmd-&amp;gt;type &amp;amp; NGX_CONF_BLOCK) &amp;amp;&amp;amp; last != NGX_OK) {
+332                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+333                                   &quot;directive \&quot;%s\&quot; is not terminated by \&quot;;\&quot;&quot;,
+334                                   name-&amp;gt;data);
+335                 return NGX_ERROR;
+336             }
+337 
+338             if ((cmd-&amp;gt;type &amp;amp; NGX_CONF_BLOCK) &amp;amp;&amp;amp; last != NGX_CONF_BLOCK_START) {
+339                 ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+340                                    &quot;directive \&quot;%s\&quot; has no opening \&quot;{\&quot;&quot;,
+341                                    name-&amp;gt;data);
+342                 return NGX_ERROR;
+343             }
+344 
+345             /* is the directive&#39;s argument count right ? */
+346 
+347             if (!(cmd-&amp;gt;type &amp;amp; NGX_CONF_ANY)) {
+348 
+349                 if (cmd-&amp;gt;type &amp;amp; NGX_CONF_FLAG) {
+350 
+351                     if (cf-&amp;gt;args-&amp;gt;nelts != 2) {
+352                         goto invalid;
+353                     }
+354 
+355                 } else if (cmd-&amp;gt;type &amp;amp; NGX_CONF_1MORE) {
+356 
+357                     if (cf-&amp;gt;args-&amp;gt;nelts &amp;lt; 2) {
+358                         goto invalid;
+359                     }
+360 
+361                 } else if (cmd-&amp;gt;type &amp;amp; NGX_CONF_2MORE) {
+362 
+363                     if (cf-&amp;gt;args-&amp;gt;nelts &amp;lt; 3) {
+364                         goto invalid;
+365                     }
+366 
+367                 } else if (cf-&amp;gt;args-&amp;gt;nelts &amp;gt; NGX_CONF_MAX_ARGS) {
+368 
+369                     goto invalid;
+370 
+371                 } else if (!(cmd-&amp;gt;type &amp;amp; argument_number[cf-&amp;gt;args-&amp;gt;nelts - 1]))
+372                 {
+373                     goto invalid;
+374                 }
+375             }
+376 
+377             /* set up the directive&#39;s configuration context */
+378 
+379             conf = NULL;
+380 
+381             if (cmd-&amp;gt;type &amp;amp; NGX_DIRECT_CONF) {
+382                 conf = ((void **) cf-&amp;gt;ctx)[ngx_modules[i]-&amp;gt;index];
+383 
+384             } else if (cmd-&amp;gt;type &amp;amp; NGX_MAIN_CONF) {
+385                 conf = &amp;amp;(((void **) cf-&amp;gt;ctx)[ngx_modules[i]-&amp;gt;index]);
+e if (cf-&amp;gt;ctx) {
+388                 confp = *(void **) ((char *) cf-&amp;gt;ctx + cmd-&amp;gt;conf);
+389 
+390                 if (confp) {
+391                     conf = confp[ngx_modules[i]-&amp;gt;ctx_index];
+392                 }
+393             }
+394 
+395             rv = cmd-&amp;gt;set(cf, cmd, conf);
+396 
+397             if (rv == NGX_CONF_OK) {
+398                 return NGX_OK;
+399             }
+400 
+401             if (rv == NGX_CONF_ERROR) {
+402                 return NGX_ERROR;
+403             }
+404 
+405             ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+406                                &quot;\&quot;%s\&quot; directive %s&quot;, name-&amp;gt;data, rv);
+407 
+408             return NGX_ERROR;
+409         }
+410     }
+411 
+412     if (multi == 0) {
+413         ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+414                            &quot;unknown directive \&quot;%s\&quot;&quot;, name-&amp;gt;data);
+415 
+416         return NGX_ERROR;
+417     }
+418 
+419 not_allowed:
+420 
+421     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+422                        &quot;\&quot;%s\&quot; directive is not allowed here&quot;, name-&amp;gt;data);
+423     return NGX_ERROR;
+424 
+425 invalid:
+426 
+427     ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+428                        &quot;invalid number of arguments in \&quot;%s\&quot; directive&quot;,
+429                        name-&amp;gt;data);
+430 
+431     return NGX_ERROR;
+432 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以worker_processes为例,当查找到worker_processes配置指令对应的ngx_command_s变量时,就开始调用回调函数进行处理&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; 70     { ngx_string(&quot;worker_processes&quot;),
+ 71       NGX_MAIN_CONF|NGX_DIRECT_CONF|NGX_CONF_TAKE1,
+ 72       ngx_conf_set_num_slot,    /*      worker_processes的回调函数set  */
+ 73       0,
+ 74       offsetof(ngx_core_conf_t, worker_processes),
+ 75       NULL },
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;worker_processes的回调函数是ngx_conf_set_num_slot,它的主要作用是找到在将cf中值的存储的位置,然后利用ngx_atoi来将字符串转换为数字,存储到对应的位置&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1203 char *
+1204 ngx_conf_set_num_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+1205 {
+1206     char  *p = conf;
+1207 
+1208     ngx_int_t        *np;
+1209     ngx_str_t        *value;
+1210     ngx_conf_post_t  *post;
+1211 
+1212    /*  找到存储位置  */ 
+1213     np = (ngx_int_t *) (p + cmd-&amp;gt;offset);
+1214 
+1215     if (*np != NGX_CONF_UNSET) {
+1216         return &quot;is duplicate&quot;;
+1217     }
+1218 
+1219     value = cf-&amp;gt;args-&amp;gt;elts;
+        /*  value[0]存储的是worker_processes及其长度,value[1]中存储的就是worker_processes之后的配置参素    */
+1220     *np = ngx_atoi(value[1].data, value[1].len); //把value后面的buffer强制转为一个str
+1221     if (*np == NGX_ERROR) {
+1222         return &quot;invalid number&quot;;
+1223     }
+
+1224    /*      post多数情况下都是NULL   */ 
+1225     if (cmd-&amp;gt;post) {
+1226         post = cmd-&amp;gt;post;
+1227         return post-&amp;gt;post_handler(cf, post, np);
+1228     }
+1229 
+1230     return NGX_CONF_OK;
+1231 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;nginx配置文件解析的流程图如下:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/012.png&quot; alt=&quot;012&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/06/nginx-config/&quot;&gt;nginx配置解析&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 06, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx的多核绑定]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-per-cpu/" />
+  <id>http://localhost:4000/2014/05/05/nginx-per-cpu</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;h4&gt;多核绑定&lt;/h4&gt;
+
+&lt;p&gt;对于多核平台的优化，最核心的思路就是per-cpu处理，这样才能做到性能按cpu线性扩展。&lt;/p&gt;
+
+&lt;p&gt;nginx在多核平台上针对负载均衡和优化所做的工作，就是提供了worker_cpu_affinity配置指令，该指令可以将工作进程固定在指定的CPU核上运行，这个又叫做cpu亲和性;&lt;/p&gt;
+
+&lt;p&gt;CPU亲和性就是让某一段代码/数据尽量的在指定的一个或几个cpu核心上长时间运行/计算的机制。&lt;/p&gt;
+
+&lt;p&gt;nginx将工作进程绑定到指定cpu是cpu affinity的一种应用&lt;/p&gt;
+
+&lt;p&gt;nginx中配置cpu亲和性的使用配置首先根据系统CPU个数设定工作进程数目，我的CPU是4核，所以就设定为4,一般工作进程数目与CPU数目一致，否则太多可能导致进程切换频繁，使得整体性能下降。&lt;/p&gt;
+
+&lt;p&gt;让0号工作进程运行在0号cpu上，一号进程运行在1号cpu上&lt;/p&gt;
+
+&lt;p&gt;可以在配置文件中使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;5 worker_processes  4;                  #指定4个工作进程
+6 worker_cpu_affinity 01 10 100 1000;   #指定各个工作进程使用哪个CPU
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;worker_cpu_affinity指令的配置值是位图表示法，从前往后分别是0号工作进程、1号工作进程的CPU二进制掩码(各个掩码之间使用空格隔开)，所以这里0号工作进程的CPU掩码为01,表示使用0号cpu，1号工作进程的cpu掩码为10,表示使用1号cpu，如果某个工作进程的掩码是11,则表示既使用0号CPU又使用1号cpu。&lt;/p&gt;
+
+&lt;p&gt;其中PSR代表的是cpu编号，可以看到4个worker进程分别在0-3的cpu上
+    [root@ sbin]# ps -elHF | grep UID  | grep -v grep
+    F S UID        PID  PPID  C PRI  NI ADDR SZ WCHAN    RSS PSR STIME TTY          TIME CMD&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sbin]# ps -elHF | grep nginx | grep -v grep
+1 S root      3473     1  0  80   0 -  1032 sigsus   480   2 10:15 ?        00:00:00   nginx: master process ./nginx
+5 S nobody    3474  3473  0  80   0 -  1076 SyS_ep   828   0 10:15 ?        00:00:00     nginx: worker process
+5 S nobody    3475  3473  0  80   0 -  1076 SyS_ep   828   1 10:15 ?        00:00:00     nginx: worker process
+5 S nobody    3476  3473  0  80   0 -  1076 SyS_ep   828   2 10:15 ?        00:00:00     nginx: worker process
+5 S nobody    3477  3473  0  80   0 -  1076 SyS_ep   828   3 10:15 ?        00:00:00     nginx: worker process
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者直接使用命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ps -eo pid,args,psr来查看那个每个进程所属CPU
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-o指定了ps的输出参数&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-per-cpu/&quot;&gt;nginx的多核绑定&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx负载均衡--加权轮询的实现]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;nginx根据每个工作进程的当前压力调整他们获取监听套接口的机率，那些当前比较空闲的工作进程有更多机会获取到监听套接口，从而当客户端的请求到达后也就相应的被他捕获并处理。这是客户端请求在多个Nginx进程之间的均衡。&lt;/p&gt;
+
+&lt;p&gt;如果Nginx是以反向代理的形式配置运行，那么对于请求的实际处理需要转发到后端服务器进行，如果后端服务器有多台，如何选择一个合适的后端服务器来处理当前请求，这就是通常所说的负载均衡。&lt;/p&gt;
+
+&lt;p&gt;可以看到这两个均衡是不相互冲突而且能同时生效。&lt;/p&gt;
+
+&lt;p&gt;负载均衡是指将负载尽量均衡的分摊到多个不同的服务单元(比如多个后台服务器),以保证服务的可用和可靠性，提供给客户更好的用户体验。负载均衡的直接作用只有一个，尽量发挥多个服务单元的整体效能，实现1+1=2甚至大于2的效果。&lt;/p&gt;
+
+&lt;p&gt;nginx提供的负载均衡策略主要包括:&lt;/p&gt;
+
+&lt;h5&gt;加权轮询、weight、IP哈希、fair、一致哈希&lt;/h5&gt;
+
+&lt;p&gt;其中fair和一致哈希都是第三方模块提供的，加权轮询、weight和IP哈希是Nginx内置的策略;&lt;/p&gt;
+
+&lt;h4&gt;加权轮询(默认)&lt;/h4&gt;
+
+&lt;p&gt;每个请求按照时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，则自动踢出这台服务器;默认每个权重都是1;&lt;/p&gt;
+
+&lt;h4&gt;weight&lt;/h4&gt;
+
+&lt;p&gt;与加权轮询配合使用，其实就是自己指定了轮询机率，weight和访问比率成正比，weight越大访问次数越多,用于后端服务器性能不均的情况;&lt;/p&gt;
+
+&lt;h4&gt;ip_hash&lt;/h4&gt;
+
+&lt;p&gt;每个请求按照ip的哈希结果分配，每个访客固定访问一个后端服务器&lt;/p&gt;
+
+&lt;p&gt;Nginx默认采用的是加权轮询策略，如果要采用IP哈希策略，就必须在Nginx的配置文件中通过配置指令ip_hash明确指定(最好放在其他server指令之前，以便检查server的配置选项是否合理)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream backend{   
+    ip_hash;
+    server 192.168.8.1:8000; 
+    server 192.168.8.2:9000;
+}   
+
+
+
+/*  通过执行不同的初始化函数，在后续实际负载时候采用的策略也就不同了    */
+4651 static char *
+4652 ngx_http_upstream_init_main_conf(ngx_conf_t *cf, void *conf)
+4653 {
+4665    ......
+4666     for (i = 0; i &amp;lt; umcf-&amp;gt;upstreams.nelts; i++) {
+4667 
+4668         /* ngx_http_upstream_init_round_robin是加权轮询 */
+4669         /* 如果用户没有做任何策略选择，那么负载均衡策略的初始化函数就是round_robin */
+             /* 否则的话就执行对应的uscfp[i]-&amp;gt;peer.init_upstream指针函数 */
+             /* 如果有配置ip_hash指令，则也就是行数ngx_http_upstream_init_ip_hash() */
+4670         init = uscfp[i]-&amp;gt;peer.init_upstream ? uscfp[i]-&amp;gt;peer.init_upstream:
+4671                                             ngx_http_upstream_init_round_robin;
+4672    ......
+4673 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;准备工作:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream backend {
+    server  backend1.example.com    weight=5;
+    server  127.0.0.1:8080  max_fails=3 fail_timeout=30s;
+    server  UNIX:/temp/backend3 backup;
+    server  192.168.0.1:9000 down;
+}
+指定的server可以是域名、ip或是UNIX域，他们代表不同的后端服务器
+
+weigth:权重，默认是1,与加权轮询策略配合使用
+
+max_fails与fail_timeout:他们需要配合使用，默认值分别是1和10s
+
+具体的含义是:
+如果某台服务器在fail_timeout时间内发生了max_fails次失败连接，那么该后端服务器在这fail_timeout时间内就不再残余被选择，直到fail_timeout时间后才重新加入从而有机会被再次选择，简单点就是先休息下，一会在工作。
+
+backup:备机，平常不被选择，之后当其他所有非备机全部不可用(比如繁忙或宕机)时才会被使用。
+
+down:主动标识其为宕机状态，不参与被选择
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;backup选项不能用于ip_hash中，因为他会扰乱哈希的结果而违背ip_hash策略的初衷;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;某些参数只能和策略配合使用，如果发现某参数没有生效，则应该检测一下这一点，在配置解析过程中，这些选项设置都被转换为Nginx内部对应的变量值;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;path:/src/http/ngx_http_upstream.h&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;87 typedef struct {
+88     ngx_addr_t                      *addrs;
+89     ngx_uint_t                       naddrs;
+90     ngx_uint_t                       weight;
+91     ngx_uint_t                       max_fails;
+92     time_t                           fail_timeout;
+93 
+94     unsigned                         down:1;
+95     unsigned                         backup:1;
+96 } ngx_http_upstream_server_t;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;addrs是一个数组指针，这是因为一个域名可以对应这多个IP地址;&lt;/p&gt;
+
+&lt;p&gt;数组的元素由naddrs指定;&lt;/p&gt;
+
+&lt;p&gt;域名解析中Nginx直接采用gethostbyname()阻塞函数获取，所以如果Nginx启动过程中发现卡住情况，可以检查下配置文件是否有配置域名并且系统当前的DNS解析是否正常。&lt;/p&gt;
+
+&lt;p&gt;以下代码主要在/src/http/ngx_http_upstream_round_robin.h|c中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;17 typedef struct {
+    /*  基本socket信息      */
+18     struct sockaddr                *sockaddr;
+19     socklen_t                       socklen;
+20     ngx_str_t                       name;
+21  /* 当前权重值和设定权重值 */
+22     ngx_int_t                       current_weight;
+23     ngx_int_t                       weight;
+24  /* 失败次数和访问次数   */ 
+25     ngx_uint_t                      fails;
+    /*  失败访问时间，用于计算超时 */
+26     time_t                          accessed;
+27     time_t                          checked;
+28  /*  失败次数上限和失败时间阀值 */
+29     ngx_uint_t                      max_fails;
+30     time_t                          fail_timeout;
+31  /* 服务器是否被标记了down，标记了就不参与选择 */ 
+32     ngx_uint_t                      down;          /* unsigned  down:1; */
+33     
+34 #if (NGX_HTTP_SSL)
+35     ngx_ssl_session_t              *ssl_session;   /* local to a process */
+36 #endif
+37 } ngx_http_upstream_rr_peer_t;
+
+current_weight和weight的主要区别是前者为权重排序的值，随着处理请求会动态变化，后面是配置文档中的值，用于恢复初始状态。
+
+    /*  注意:与上面的不同，上面是peer_t，下面是peers_t*/
+40 typedef struct ngx_http_upstream_rr_peers_s  ngx_http_upstream_rr_peers_t;
+41     
+42 struct ngx_http_upstream_rr_peers_s {
+43     ngx_uint_t                      single;        /* unsigned  single:1; */
+44     ngx_uint_t                      number;        /*  后台服务器的台数   */
+45     ngx_uint_t                      last_cached;
+46 
+47  /* ngx_mutex_t                    *mutex; */
+48     ngx_connection_t              **cached;
+49     
+50     ngx_str_t                      *name;
+51 
+52     ngx_http_upstream_rr_peers_t   *next;
+53 
+54     ngx_http_upstream_rr_peer_t     peer[1];
+55 };
+56 
+57 
+58 typedef struct {
+59     ngx_http_upstream_rr_peers_t   *peers;
+60     ngx_uint_t                      current;
+61     uintptr_t                      *tried;
+62     uintptr_t                       data;
+63 } ngx_http_upstream_rr_peer_data_t;
+
+
+
+
+
+加权轮询实现代码
+598 static ngx_uint_t
+599 ngx_http_upstream_get_peer(ngx_http_upstream_rr_peers_t *peers)
+600 {
+601     ngx_uint_t                    i, n, reset = 0;
+602     ngx_http_upstream_rr_peer_t  *peer;
+603 
+604     peer = &amp;amp;peers-&amp;gt;peer[0];
+605 
+606     for ( ;; ) {
+607         /*  i是后台机器的下标   */ 
+608         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+609             /*  如果权重小于等于0,就跳过  */ 
+610             if (peer[i].current_weight &amp;lt;= 0) {
+611                 continue;            
+612             }
+613    
+614             n = i;
+615         
+                /*  while查找当前权重最大的后端机器    */
+616             while (i &amp;lt; peers-&amp;gt;number - 1) {
+617 
+618                 i++;
+619 
+620                 if (peer[i].current_weight &amp;lt;= 0) {
+621                     continue;            
+622                 }
+623 
+624                 if (peer[n].current_weight * 1000 / peer[i].current_weight
+625                     &amp;gt; peer[n].weight * 1000 / peer[i].weight)
+626                 {
+627                     return n;            
+628                 }
+629 
+630                 n = i;               
+631             }
+632             
+                /*  如果while找到了current_weight&amp;gt;0的机器，则返回*/
+633             if (peer[i].current_weight &amp;gt; 0) {
+634                 n = i;
+635             }
+636 
+637             return n;
+638         }
+639             
+            /*  以下代码是恢复状态 */
+640         if (reset++) {
+641             return 0;
+642         }
+643         
+            /*  peer[i].weigth是配置文件中手工设定的权重值    */
+644         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+645             peer[i].current_weight = peer[i].weight;    
+646         }
+647     }
+648 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_http_upstream_init_round_robin()函数根据用户的配置执行不同的代码，用户配置有两种情况&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;第一种情况:
+
+upstream backend {
+    server 127.0.0.1:9001   backup;
+    server 127.0.0.1:9000   weight=5;
+    server 127.0.0.1:8000   max_fails=3 fail_timeout=30s;
+    server 127.0.0.1:7000   max_fails=1 fail_timeout=10s;
+}
+    proxy_pass backend;
+
+    对应代码if (us-&amp;gt;servers) {...}这一段
+
+第二种情况:
+
+    proxy_pass localhost:4000   #后面直接接后端服务器地址
+
+    对应代码后半部分
+
+/*  将配置解析后的结果转存到对应的变量  */
+/*  创建后端服务器列表，将非后备服务器与后备服务器分开进行各自单独的列表    */
+/*  每个后端服务器使用结构体ngx_http_upstream_rr_peer_t对应 */
+/*  非后备服务器列表挂载在us-&amp;gt;ps.data字段下*/
+/*  后备服务器列表挂载在非后备服务器列表head域中的next字段下*/
+
+31 ngx_int_t
+32 ngx_http_upstream_init_round_robin(ngx_conf_t *cf,
+33     ngx_http_upstream_srv_conf_t *us)
+34 {
+35     ngx_url_t                      u;
+36     ngx_uint_t                     i, j, n;
+37     ngx_http_upstream_server_t    *server;
+38     ngx_http_upstream_rr_peers_t  *peers, *backup;
+39      /*  初始化操作 */ 
+40     us-&amp;gt;peer.init = ngx_http_upstream_init_round_robin_peer;
+41      /*  适用于情况一*/ 
+42     if (us-&amp;gt;servers) {
+43         server = us-&amp;gt;servers-&amp;gt;elts;
+44 
+45         n = 0;
+46 
+47         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+48             if (server[i].backup) {  
+49                 continue;
+50             }
+51 
+52             n += server[i].naddrs;
+53         }
+54 
+55         if (n == 0) {
+56             ngx_log_error(NGX_LOG_EMERG, cf-&amp;gt;log, 0,
+57                           &quot;no servers in upstream \&quot;%V\&quot; in %s:%ui&quot;,
+58                           &amp;amp;us-&amp;gt;host, us-&amp;gt;file_name, us-&amp;gt;line);
+59             return NGX_ERROR;
+60         }
+61       
+62         peers = ngx_pcalloc(cf-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peers_t)
+63                               + sizeof(ngx_http_upstream_rr_peer_t) * (n - 1));
+64         if (peers == NULL) {
+65             return NGX_ERROR;
+66         }
+67          /*  如果只有一台服务器(非后备和后备服务器一共一台)则会对齐机型标识，
+                这样在后续用户请求的时候更本无需在做选择，直接使用这一台即可*/
+68         peers-&amp;gt;single = (n == 1);
+69         peers-&amp;gt;number = n;
+70         peers-&amp;gt;name = &amp;amp;us-&amp;gt;host;
+71 
+72         n = 0;
+73          /*  将解析后的结果存储到对应的变量之中 */ 
+74         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+75             for (j = 0; j &amp;lt; server[i].naddrs; j++) {
+76                 if (server[i].backup) {  
+77                     continue;    /* 对与后备的服务器暂不操作 */
+78                 }
+79 
+80                 peers-&amp;gt;peer[n].sockaddr = server[i].addrs[j].sockaddr;
+81                 peers-&amp;gt;peer[n].socklen = server[i].addrs[j].socklen;
+82                 peers-&amp;gt;peer[n].name = server[i].addrs[j].name;
+83                 peers-&amp;gt;peer[n].max_fails = server[i].max_fails;
+84                 peers-&amp;gt;peer[n].fail_timeout = server[i].fail_timeout;
+85                 peers-&amp;gt;peer[n].down = server[i].down;
+86                 peers-&amp;gt;peer[n].weight = server[i].down ? 0 : server[i].weight;
+87                 peers-&amp;gt;peer[n].current_weight = peers-&amp;gt;peer[n].weight;
+88                 n++;
+89             }
+90         }
+91 
+92         us-&amp;gt;peer.data = peers;   /*  peers是非后备服务器列表    */
+
+93          /*  对peers列表中的服务器按照权重进行排序*/ 
+94         ngx_sort(&amp;amp;peers-&amp;gt;peer[0], (size_t) n,
+95                  sizeof(ngx_http_upstream_rr_peer_t),
+96                  ngx_http_upstream_cmp_servers);
+97 
+98         /* backup servers */
+99 
+100         n = 0;
+101 
+102         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+103             if (!server[i].backup) {
+104                 continue;   /* 对非后备服务器不进行操作 */
+105             }
+106 
+107             n += server[i].naddrs;
+108         }
+109 
+110         if (n == 0) {
+111             return NGX_OK;
+112         }
+113         /*  后备服务器的列表空间  */
+114         backup = ngx_pcalloc(cf-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peers_t)
+115                               + sizeof(ngx_http_upstream_rr_peer_t) * (n - 1));
+116         if (backup == NULL) {
+117             return NGX_ERROR;
+118         }
+119         /*  why???  */
+120         peers-&amp;gt;single = 0;
+121         backup-&amp;gt;single = 0;
+122         backup-&amp;gt;number = n;
+123         backup-&amp;gt;name = &amp;amp;us-&amp;gt;host;
+124 
+125         n = 0;
+126 
+127         for (i = 0; i &amp;lt; us-&amp;gt;servers-&amp;gt;nelts; i++) {
+128             for (j = 0; j &amp;lt; server[i].naddrs; j++) {
+129                 if (!server[i].backup) {
+130                     continue;   /* 跳过非后备服务器 */
+131                 }
+132 
+133                 backup-&amp;gt;peer[n].sockaddr = server[i].addrs[j].sockaddr;
+134                 backup-&amp;gt;peer[n].socklen = server[i].addrs[j].socklen;
+135                 backup-&amp;gt;peer[n].name = server[i].addrs[j].name;
+136                 backup-&amp;gt;peer[n].weight = server[i].weight;
+137                 backup-&amp;gt;peer[n].current_weight = server[i].weight;
+138                 backup-&amp;gt;peer[n].max_fails = server[i].max_fails;
+139                 backup-&amp;gt;peer[n].fail_timeout = server[i].fail_timeout;
+140                 backup-&amp;gt;peer[n].down = server[i].down;
+141                 n++;
+142             }
+143         }
+144 
+145         peers-&amp;gt;next = backup;   /*  后备服务器 */
+146         /* 对后备服务器进行权重排序  */
+147         ngx_sort(&amp;amp;backup-&amp;gt;peer[0], (size_t) n,
+148                  sizeof(ngx_http_upstream_rr_peer_t),
+149                  ngx_http_upstream_cmp_servers);
+150 
+151         return NGX_OK;
+152     }
+153 
+154 
+155     /* an upstream implicitly defined by proxy_pass, etc. */
+156     /*  实用于情况2，对于直接在proxy_pass等指令之后直接指定后端服务器地址的处理方式*/ 
+157     if (us-&amp;gt;port == 0 &amp;amp;&amp;amp; us-&amp;gt;default_port == 0) {
+158         ngx_log_error(NGX_LOG_EMERG, cf-&amp;gt;log, 0,
+159                       &quot;no port in upstream \&quot;%V\&quot; in %s:%ui&quot;,
+160                       &amp;amp;us-&amp;gt;host, us-&amp;gt;file_name, us-&amp;gt;line);
+161         return NGX_ERROR;
+162     }
+163 
+164     ngx_memzero(&amp;amp;u, sizeof(ngx_url_t));
+165 
+166     u.host = us-&amp;gt;host;
+167     u.port = (in_port_t) (us-&amp;gt;port ? us-&amp;gt;port : us-&amp;gt;default_port);
+168 
+169     if (ngx_inet_resolve_host(cf-&amp;gt;pool, &amp;amp;u) != NGX_OK) {
+170         if (u.err) {
+171             ngx_log_error(NGX_LOG_EMERG, cf-&amp;gt;log, 0,
+172                           &quot;%s in upstream \&quot;%V\&quot; in %s:%ui&quot;,
+173                           u.err, &amp;amp;us-&amp;gt;host, us-&amp;gt;file_name, us-&amp;gt;line);
+174         }
+175 
+176         return NGX_ERROR;
+177     }
+178 
+179     n = u.naddrs;
+180 
+181     peers = ngx_pcalloc(cf-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peers_t)
+182                               + sizeof(ngx_http_upstream_rr_peer_t) * (n - 1));
+183     if (peers == NULL) {
+184         return NGX_ERROR;
+185     }
+186 
+187     peers-&amp;gt;single = (n == 1);
+188     peers-&amp;gt;number = n;
+189     peers-&amp;gt;name = &amp;amp;us-&amp;gt;host;
+190 
+191     for (i = 0; i &amp;lt; u.naddrs; i++) {
+192         peers-&amp;gt;peer[i].sockaddr = u.addrs[i].sockaddr;
+193         peers-&amp;gt;peer[i].socklen = u.addrs[i].socklen;
+194         peers-&amp;gt;peer[i].name = u.addrs[i].name;
+195         peers-&amp;gt;peer[i].weight = 1;
+196         peers-&amp;gt;peer[i].current_weight = 1;
+197         peers-&amp;gt;peer[i].max_fails = 1;
+198         peers-&amp;gt;peer[i].fail_timeout = 10;
+199     }
+200 
+201     us-&amp;gt;peer.data = peers;
+202 
+203     /* implicitly defined upstream has no backup servers */
+204 
+205     return NGX_OK;
+206 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/001.png&quot; alt=&quot;001&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当全局初始准备工作做好以后，当一个客户请求过来时候，Nginx就要选择适合的后端服务器来处理该请求，在正式开始选择前，Nginx还要单独为本轮选择做一些初始化，比如设置回调函数,回调函数是在每个请求选择后端服务器之前被调用。&lt;/p&gt;
+
+&lt;h4&gt;注意:&lt;/h4&gt;
+
+&lt;p&gt;针对一个客户端请求，Nginx会进行多次尝试，尝试全部失败才会返回502错误，所以要注意一轮选择与一次选择的区别。&lt;/p&gt;
+
+&lt;h4&gt;选择后端服务器&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  选择后端服务器   */
+221 ngx_int_t
+222 ngx_http_upstream_init_round_robin_peer(ngx_http_request_t *r,
+223     ngx_http_upstream_srv_conf_t *us)
+224 {
+225     ngx_uint_t                         n;
+226     ngx_http_upstream_rr_peer_data_t  *rrp;
+227     
+228     rrp = r-&amp;gt;upstream-&amp;gt;peer.data;
+229 
+230     if (rrp == NULL) {
+231         rrp = ngx_palloc(r-&amp;gt;pool, sizeof(ngx_http_upstream_rr_peer_data_t));
+232         if (rrp == NULL) {
+233             return NGX_ERROR;
+234         }
+235 
+236         r-&amp;gt;upstream-&amp;gt;peer.data = rrp;
+237     }
+238     
+        /*  非后备服务器  */
+239     rrp-&amp;gt;peers = us-&amp;gt;peer.data;
+240     rrp-&amp;gt;current = 0;
+241     
+        /*  n要选择后备服务器和非后备服务器中数量较大的那一个   */
+242     n = rrp-&amp;gt;peers-&amp;gt;number;
+243 
+244     if (rrp-&amp;gt;peers-&amp;gt;next &amp;amp;&amp;amp; rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number &amp;gt; n) {
+245         n = rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number;
+246     }
+247 
+248     if (n &amp;lt;= 8 * sizeof(uintptr_t)) {
+249         rrp-&amp;gt;tried = &amp;amp;rrp-&amp;gt;data;
+250         rrp-&amp;gt;data = 0;
+251 
+252     } else {
+253         n = (n + (8 * sizeof(uintptr_t) - 1)) / (8 * sizeof(uintptr_t));
+254 
+255         rrp-&amp;gt;tried = ngx_pcalloc(r-&amp;gt;pool, n * sizeof(uintptr_t));
+256         if (rrp-&amp;gt;tried == NULL) {
+257             return NGX_ERROR;
+258         }
+259     }
+
+260     /*  设置回调函数  */
+261     r-&amp;gt;upstream-&amp;gt;peer.get = ngx_http_upstream_get_round_robin_peer; /*  对后端服务器进行一次选择    */ 
+262     r-&amp;gt;upstream-&amp;gt;peer.free = ngx_http_upstream_free_round_robin_peer;
+        /*  初始状态    */
+263     r-&amp;gt;upstream-&amp;gt;peer.tries = rrp-&amp;gt;peers-&amp;gt;number;
+264 #if (NGX_HTTP_SSL)
+265     r-&amp;gt;upstream-&amp;gt;peer.set_session =
+266                                ngx_http_upstream_set_round_robin_peer_session;
+267     r-&amp;gt;upstream-&amp;gt;peer.save_session =
+268                                ngx_http_upstream_save_round_robin_peer_session;
+269 #endif
+270 
+271     return NGX_OK;
+272 }
+273 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:&lt;/h4&gt;
+
+&lt;p&gt;rrp-&gt;tried是一个位图，用来标识在一轮选择中多个后端服务器是否已经被选择过;&lt;/p&gt;
+
+&lt;p&gt;例如:&lt;/p&gt;
+
+&lt;p&gt;假设有3台后端服务器，此时来了一个客户端请求，因此Nginx要针对该请求进行一轮选择，第一次选择了第一台服务器，结果后续连接失败，因此需要进行第二次选择，此时就不能在选择第一台服务器了，因为它已经被选择并尝试过了，所以只能选择第二台或第三台服务器，这个位图只是针对本轮选择，也就是如果又来了一个客户端请求，那么针对它的一轮选择对应的rrp-&gt;tried位图又是全新的，如果后端服务器个数少于一个nt类型变量可以表示的范围(32位就是32台)(因为要同时让非后备服务器和后备服务器两个列表都能使用，所以取两个列表中个数较大的那个值)，那么就直接使用已有的指针类型的data变量做位图即可，否则使用ngx_pcalloc函数申请对应的内存空间。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  对后端服务器进行一次选择    */
+/*  关于前面的last_cached相关代码是未实现的陈旧代码，不用去管它 */
+376 ngx_int_t
+377 ngx_http_upstream_get_round_robin_peer(ngx_peer_connection_t *pc, void *data)
+378 {
+379     ngx_http_upstream_rr_peer_data_t  *rrp = data;
+380 
+381     time_t                         now;
+382     uintptr_t                      m;
+383     ngx_int_t                      rc;
+384     ngx_uint_t                     i, n;
+385     ngx_connection_t              *c;
+386     ngx_http_upstream_rr_peer_t   *peer;
+387     ngx_http_upstream_rr_peers_t  *peers;
+388 
+389     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+390                    &quot;get rr peer, try: %ui&quot;, pc-&amp;gt;tries);
+391 
+392     now = ngx_time();
+393 
+394     /* ngx_lock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+395 
+396     /*  未实现的陈旧代码，不用去管他    */
+397     if (rrp-&amp;gt;peers-&amp;gt;last_cached) {
+398 
+399         /* cached connection */
+400         ...... 
+415     }
+416 
+417     pc-&amp;gt;cached = 0;
+418     pc-&amp;gt;connection = NULL;
+419 
+420     /*  判断是否只有一台后端服务器  */
+421     if (rrp-&amp;gt;peers-&amp;gt;single) {
+422         peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[0];
+423 
+424     } else {
+425 
+426         /* there are several peers */
+427     
+            /*  判断是否是第一次选择,第一次选择的机器数量就是后端服务器的数量*/
+            /*  表示在连接一个远端服务器时，当前连接出现异常失败后可以重试的次数，
+                也就是允许的最多失败次数,第一次链接时候可以重试的次数就是主机数  */
+428         if (pc-&amp;gt;tries == rrp-&amp;gt;peers-&amp;gt;number) {  /*  number是后端服务器的个数   */
+429 
+430             /* it&#39;s a first try - get a current peer */
+431 
+432             i = pc-&amp;gt;tries;
+433 
+434             for ( ;; ) {
+                    /*  返回权值最大的服务器下标，rrp-&amp;gt;current是经过选择的后端服务器的下标   */
+435                 rrp-&amp;gt;current = ngx_http_upstream_get_peer(rrp-&amp;gt;peers);  /*  get_peer是加权轮选的具体实现  */
+436                 /*  
+437                 ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+438                                &quot;get rr peer, current: %ui %i&quot;,
+439                                rrp-&amp;gt;current,
+440                                rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current].current_weight);
+441
+                    /*  如果机器数大于了32,那么就返回的是该后端服务器在位图中的第几个int块中，小于32就返回0    */
+442                 n = rrp-&amp;gt;current / (8 * sizeof(uintptr_t));
+
+                    /*  m代表的是该后端服务器在位图中的第几位 */
+443                 m = (uintptr_t) 1 &amp;lt;&amp;lt; rrp-&amp;gt;current % (8 * sizeof(uintptr_t));
+444 
+                    /*  对rrp-&amp;gt;tried的具体使用    */
+                    /*  判断tried位图中该机器是否可用，如果tried[n]为0则表示可用   */
+                    /*  位图标记过的就不要再去选择了，处于down机状态的也被排除 */
+445                 if (!(rrp-&amp;gt;tried[n] &amp;amp; m)) {
+446                     peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current];
+447                     
+448                     if (!peer-&amp;gt;down) {      /*  非down */ 
+449                             
+                            /*  一段时间内的最大失败次数进行判断    */
+450                         if (peer-&amp;gt;max_fails == 0
+451                             || peer-&amp;gt;fails &amp;lt; peer-&amp;gt;max_fails)   /*  fails是已经失败的次数*/
+452                         {
+453                             break;  
+454                         }
+455 
+456                         if (now - peer-&amp;gt;checked &amp;gt; peer-&amp;gt;fail_timeout) {
+457                             peer-&amp;gt;checked = now;
+458                             break;
+459                         }
+460                         
+                            /*  有问题的服务器，将权重设为0，让他先休息一会    */
+461                         peer-&amp;gt;current_weight = 0;
+462 
+463                     } else {    /*  down设置位图标记???   */
+464                         rrp-&amp;gt;tried[n] |= m;     /*  设置位图标记  */
+465                     }
+466                     
+                        /*  如果执行到这里说明没有执行break,表示检验不通过  */
+                        /*  tries表示该连接失败，可以重试机器数-1            */
+467                     pc-&amp;gt;tries--;    
+468                 }
+469                 
+                    /*  如果没有可以重试的机器了则错误   */
+470                 if (pc-&amp;gt;tries == 0) {
+471                     goto failed;
+472                 }
+473 
+474                 if (--i == 0) {
+475                     ngx_log_error(NGX_LOG_ALERT, pc-&amp;gt;log, 0,
+476                                   &quot;round robin upstream stuck on %ui tries&quot;,
+477                                   pc-&amp;gt;tries);
+478                     goto failed;
+479                 }
+480             }
+481             /*  break直接跳出来，当前权重减一，时时改变    */ 
+482             peer-&amp;gt;current_weight--;
+483 
+484         } else {
+485 
+                /*  非第一次进行选择,不是使用轮询，而是利用current进行遍历了    */
+486             i = pc-&amp;gt;tries;
+487 
+488             for ( ;; ) {
+                    /*rrp-&amp;gt;current此时是之前返回的权值最大的服务器下标+1(如果是第二次的话)*/
+489                 n = rrp-&amp;gt;current / (8 * sizeof(uintptr_t));
+490                 m = (uintptr_t) 1 &amp;lt;&amp;lt; rrp-&amp;gt;current % (8 * sizeof(uintptr_t));
+491 
+492                 if (!(rrp-&amp;gt;tried[n] &amp;amp; m)) {
+493 
+494                     peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current];
+495                     
+                        /*  与上面的判断类似    */
+496                     if (!peer-&amp;gt;down) {
+497 
+498                         if (peer-&amp;gt;max_fails == 0
+499                             || peer-&amp;gt;fails &amp;lt; peer-&amp;gt;max_fails)
+500                         {
+501                             break;
+502                         }
+503 
+504                         if (now - peer-&amp;gt;checked &amp;gt; peer-&amp;gt;fail_timeout) {
+505                             peer-&amp;gt;checked = now;
+506                             break;
+507                         }
+508 
+509                         peer-&amp;gt;current_weight = 0;
+510 
+511                     } else {
+512                         rrp-&amp;gt;tried[n] |= m;
+513                     }
+514 
+515                     pc-&amp;gt;tries--;
+516                 }
+517 
+518                 rrp-&amp;gt;current++;     /*  没有释放，所以要在这里自增 */
+519 
+                    /*  超过主机数量，就要从头开始 */
+520                 if (rrp-&amp;gt;current &amp;gt;= rrp-&amp;gt;peers-&amp;gt;number) {
+521                     rrp-&amp;gt;current = 0;
+522                 }
+523                 
+                    /*  可以尝试的主机数为0    */
+524                 if (pc-&amp;gt;tries == 0) {
+525                     goto failed;
+526                 }
+527 
+528                 if (--i == 0) {
+529                     ngx_log_error(NGX_LOG_ALERT, pc-&amp;gt;log, 0,
+530                                   &quot;round robin upstream stuck on %ui tries&quot;,
+531                                   pc-&amp;gt;tries);
+532                     goto failed;
+533                 }
+534             }
+535             
+                /*  权重值减少一  */
+536             peer-&amp;gt;current_weight--;
+537         }
+538         /*  无论是第一次还是第二次，都要将选择了的进行标记   */ 
+539         rrp-&amp;gt;tried[n] |= m;
+540     }
+541 
+542     pc-&amp;gt;sockaddr = peer-&amp;gt;sockaddr;
+543     pc-&amp;gt;socklen = peer-&amp;gt;socklen;
+544     pc-&amp;gt;name = &amp;amp;peer-&amp;gt;name;
+545 
+546     /* ngx_unlock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+547 
+548     if (pc-&amp;gt;tries == 1 &amp;amp;&amp;amp; rrp-&amp;gt;peers-&amp;gt;next) {
+549         pc-&amp;gt;tries += rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number;
+550 
+551         n = rrp-&amp;gt;peers-&amp;gt;next-&amp;gt;number / (8 * sizeof(uintptr_t)) + 1;
+552         for (i = 0; i &amp;lt; n; i++) {
+553              rrp-&amp;gt;tried[i] = 0;
+554         }
+555     }
+556 
+557     return NGX_OK;
+558 
+    /*  使用后备服务器(如果有的话)对错误情况进行处理   */
+559 failed:
+560 
+561     peers = rrp-&amp;gt;peers;
+562     
+        /*  如果非后备服务器都出错了，
+            此时如果有后备服务器就切换到后备服务器
+            如果连后备服务器都搞不定就返回NGX_BUSY   
+        */
+563     if (peers-&amp;gt;next) {
+564 
+565         /* ngx_unlock_mutex(peers-&amp;gt;mutex); */
+566 
+567         ngx_log_debug0(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0, &quot;backup servers&quot;);
+568 
+569         rrp-&amp;gt;peers = peers-&amp;gt;next;
+570         pc-&amp;gt;tries = rrp-&amp;gt;peers-&amp;gt;number;
+571         
+            /*  rrp-&amp;gt;peers-&amp;gt;number是后备服务器的数量   */
+572         n = rrp-&amp;gt;peers-&amp;gt;number / (8 * sizeof(uintptr_t)) + 1;
+573         for (i = 0; i &amp;lt; n; i++) {
+574              rrp-&amp;gt;tried[i] = 0; /*  位图清0  */
+575         }
+576 
+            /*  
+                对后备服务器执行函数ngx_http_upstream_get_round_robin_peer
+                对后备服务器进行相关非后备服务器的类似操作
+                如果连后备服务器都失败则rc==NGX_BUSY
+            */
+577         rc = ngx_http_upstream_get_round_robin_peer(pc, rrp);
+578              
+579         if (rc != NGX_BUSY) {
+580             return rc;
+581         }
+582 
+583         /* ngx_lock_mutex(peers-&amp;gt;mutex); */
+584     }
+585 
+586     /* all peers failed, mark them as live for quick recovery */
+587 
+588     for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+589         peers-&amp;gt;peer[i].fails = 0;
+590     }
+591 
+592     /* ngx_unlock_mutex(peers-&amp;gt;mutex); */
+593 
+594     pc-&amp;gt;name = peers-&amp;gt;name;
+595 
+596     return NGX_BUSY;
+597 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;核心流程:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/002.png&quot; alt=&quot;002&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;对于只有一台后端服务器的情况，Nginx直接选择它并返回，如果有多台后端服务器，对于第一次选择，Nginx会循环调用函数ngx_http_upstream_get_peer()按照各台服务器的当前值进行选择，如果第一次选择的服务器因链接失败或是其他情况导致需要重新选择另外一台服务器，Nginx采用的就是简单的遍历，起始节点为rrp-&gt;current，但是这个值会在对第一次选择结果进行释放时自增1,也就是说起始节点和第一次选择节点并没有重复。&lt;/p&gt;
+
+&lt;p&gt;图中没有给出对非后备服务器全部选择failed失败的情况，如果出现这种情况，则此时将尝试后备服务器，同样是对服务器列表进行选择，所以处理的情况与非后备服务器相似，只是将相关变量进行了切换,如果此时后备服务器也选择失败，那么函数将返回NGX_BUSY，这意味这没有后端服务器来处理该请求，Nginx将获得502错误，Nginx可以直接将这个错误发送到客户端，或者对它做替换处理。&lt;/p&gt;
+
+&lt;h4&gt;后端服务器的权值计算&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;600 static ngx_uint_t
+601 ngx_http_upstream_get_peer(ngx_http_upstream_rr_peers_t *peers)
+602 {
+603     ngx_uint_t                    i, n, reset = 0;
+604     ngx_http_upstream_rr_peer_t  *peer;
+605 
+606     peer = &amp;amp;peers-&amp;gt;peer[0];
+607 
+608     for ( ;; ) {
+609 
+610         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+611             
+                /*  已经休息的服务器不用计算    */
+612             if (peer[i].current_weight &amp;lt;= 0) {
+613                 continue;
+614             }
+615 
+616             n = i;
+617 
+618             while (i &amp;lt; peers-&amp;gt;number - 1) {
+619 
+620                 i++;
+621                 
+                    /*  
+                        如果都小于0,则都跳过了，此时i等于peers-&amp;gt;number-1，
+                        在执行for中的i++，i变为peers-&amp;gt;number
+                    */
+
+622                 if (peer[i].current_weight &amp;lt;= 0) {
+623                     continue;       
+624                 }
+625 
+                    /*  权重的核心计算   
+                        初始状态中peer[n].current_weight等于peer[n].weight
+                        peer[i].current_weight等于peer[i].weight
+                        乘以1000的目的是避免浮点运算，直接将除数放大1000倍，也就是间接的将精度提升到小数点后三位
+                        由于是比较大小，所以同时提高1000倍不会影响结果。
+                    */
+626                 if (peer[n].current_weight * 1000 / peer[i].current_weight
+627                     &amp;gt; peer[n].weight * 1000 / peer[i].weight)
+628                 {
+629                     return n;
+630                 }
+631 
+632                 n = i;
+633             }
+634 
+635             if (peer[i].current_weight &amp;gt; 0) {
+636                 n = i;
+637             }
+638             /*  如果权值都小于0,此处不会被执行    */ 
+639             return n;
+640         }   /*  for结束   */
+641
+            /*  当所有权值都小于0的时候，将他们进行重置，重置为配置文件中的权值  */
+642         if (reset++) {
+643             return 0;
+644         }
+645         /*  重置权值    */ 
+646         for (i = 0; i &amp;lt; peers-&amp;gt;number; i++) {
+647             peer[i].current_weight = peer[i].weight;
+648         }
+649     }
+650 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;假设有三台后端服务器A、B、C,他们的初始权值为5、3、1,则初始状态中peer[n].current_weight等于peer[n].weight并且peer[i].current_weight等于peer[i].weight，所以Nginx选择服务器C，不过随着后续current_weight权重的改变，各个服务器的权值将会发生变化，客户端的请求也会按照5:3:1的形式分布到A、B、C上，并且相对空闲的服务器会有更多机会被选中&lt;/p&gt;
+
+&lt;h4&gt;释放后端服务器&lt;/h4&gt;
+
+&lt;p&gt;分两种情况:&lt;/p&gt;
+
+&lt;p&gt;1.连接后端服务器并且正常处理当前客户请求后释放后端服务器。这种的处理工作比较简单。&lt;/p&gt;
+
+&lt;p&gt;2.在某一轮选择中，某次选择的服务器因连接失败或请求处理失败二需要重新进行选择。这就需要一些额外的处理了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;653 void
+654 ngx_http_upstream_free_round_robin_peer(ngx_peer_connection_t *pc, void *data,
+655     ngx_uint_t state)
+656 {
+657     ngx_http_upstream_rr_peer_data_t  *rrp = data;
+658 
+659     time_t                       now;
+660     ngx_http_upstream_rr_peer_t  *peer;
+661 
+662     ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+663                    &quot;free rr peer %ui %ui&quot;, pc-&amp;gt;tries, state);
+664
+        /*  正常情况，直接返回了，对应情况1  */
+665     if (state == 0 &amp;amp;&amp;amp; pc-&amp;gt;tries == 0) {
+666         return;
+667     }
+668 
+669     /* TODO: NGX_PEER_KEEPALIVE */
+670 
+671     if (rrp-&amp;gt;peers-&amp;gt;single) {
+672         pc-&amp;gt;tries = 0;
+673         return;
+674     }
+675 
+676     peer = &amp;amp;rrp-&amp;gt;peers-&amp;gt;peer[rrp-&amp;gt;current];
+677
+        /*  一下都是对失败情况进行处理,对应情况2       */
+678     if (state &amp;amp; NGX_PEER_FAILED) {
+679         now = ngx_time();
+680 
+681         /* ngx_lock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+682 
+683         peer-&amp;gt;fails++;              /*  已经失败的次数   */
+684         peer-&amp;gt;accessed = now;
+685         peer-&amp;gt;checked = now;
+686         
+            /*  设置了max_fails非0的话，默认就是1    */
+688             peer-&amp;gt;current_weight -= peer-&amp;gt;weight / peer-&amp;gt;max_fails;
+689         }
+690 
+691         ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+692                        &quot;free rr peer failed: %ui %i&quot;,
+693                        rrp-&amp;gt;current, peer-&amp;gt;current_weight);
+694         
+            /*  权重&amp;lt;0也将它置0,让他去休息吧！ */
+695         if (peer-&amp;gt;current_weight &amp;lt; 0) {
+696             peer-&amp;gt;current_weight = 0;
+697         }
+698 
+699         /* ngx_unlock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+700
+701     } else {
+702 
+703         /* mark peer live if check passed */
+704         /*  ???     */ 
+705         if (peer-&amp;gt;accessed &amp;lt; peer-&amp;gt;checked) {
+706             peer-&amp;gt;fails = 0;
+707         }
+708     }
+709 
+710     rrp-&amp;gt;current++; /*  自增1，current与第二次选择有关，可以看下第二次选择 */
+711     
+        /*  越界了，重新置为0,从头开始选择服务器   */
+712     if (rrp-&amp;gt;current &amp;gt;= rrp-&amp;gt;peers-&amp;gt;number) {
+713         rrp-&amp;gt;current = 0;
+714     }
+715     /*  可以尝试的次数又减少了   */ 
+716     if (pc-&amp;gt;tries) {
+717         pc-&amp;gt;tries--;
+718     }
+719 
+720     /* ngx_unlock_mutex(rrp-&amp;gt;peers-&amp;gt;mutex); */
+721 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果连接失败(不管是连接失败还是请求处理失败)，此时需要更新fails等变量;&lt;/p&gt;
+
+&lt;p&gt;如果成功，则需要判断一个fail_timeout时间段已过，才能重置fails的值，如果不这样做，那么可能得到值两个错误&lt;/p&gt;
+
+&lt;p&gt;要么将当前fail_timeout时间段内的失败次数统计错误，要么将当前fail_timeout时间段内的失败次数累加到下一个fail_timeout时间段。&lt;/p&gt;
+
+&lt;p&gt;默认情况下。在一轮选择中，如果是链接错误或者是链接超时导致的失败，那么Nginx会尽量尝试每一台后端服务器进行请求处理，直到全部失败才会返回502错误。当然在配置文件中可以修改，例如proxy_next_upstream或是fastcgi_next_upstream.&lt;/p&gt;
+
+&lt;p&gt;例如:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fastcgi_next_upstream http_404;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使得Nginx仅仅在上一台后端服务器返回404错误的情况下，才会尝试重新选择，否中直接返回对应的错误，500或是502。
+也就是说只有返回的错误类型与指定的相同，才会尝试重新选择。&lt;/p&gt;
+
+&lt;p&gt;这部分由ngx_http_upstream_next来实现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2814 static void
+2815 ngx_http_upstream_next(ngx_http_request_t *r, ngx_http_upstream_t *u,
+2816     ngx_uint_t ft_type)
+2817 {
+                ......
+                /*  全部尝试完毕了，或者是u-&amp;gt;conf-&amp;gt;next_upstream与配置文件中指定的类型不同  */
+2883         if (u-&amp;gt;peer.tries == 0 || !(u-&amp;gt;conf-&amp;gt;next_upstream &amp;amp; ft_type)) {
+2884    
+                /*  最终的返回 */
+2904             ngx_http_upstream_finalize_request(r, u, status);
+2905             return;
+2906         }
+2907     }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;整个加权轮询的大体流程图:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/003.png&quot; alt=&quot;003&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-round-robin/&quot;&gt;nginx负载均衡--加权轮询的实现&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx负载均衡--客户端请求的均衡与惊群问题]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-request/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-request</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;一般情况下，配置Nginx执行时候，工作进程会有多个，由于各个工作进程相互独立的接收客户端请求、处理、响应，所以就出现了负载不均衡的情况，比如极端的情况会是1个工作进程当前有3000个请求等待处理;而另一个进程当前也之后300个请求等待处理。&lt;/p&gt;
+
+&lt;h4&gt;客户端请求均衡&lt;/h4&gt;
+
+&lt;h5&gt;惊群问题&lt;/h5&gt;
+
+&lt;p&gt;Nginx工作进程的主要任务就是处理事件，而事件的最初源头来自监听套接口，所以一旦末个工作进程独自拥有末个监听套接口，那么所有来自该监听套接口的客户端请求都将被这个工作线程处理。&lt;/p&gt;
+
+&lt;p&gt;如果多个工作进程同时拥有某个监听套接字，那么一旦该监听套接字出现某客户端请求，此时就将引发所有拥有该监听套接字的工作进程去争抢这个请求，但是能够抢到的肯定只有某一个工作进程，而其他工作进程注定无功而返，这就是惊群现象。&lt;/p&gt;
+
+&lt;p&gt;在高版本的Linux内核中已经解决了这个问题。&lt;/p&gt;
+
+&lt;p&gt;Nginx中有一个ngx_use_accept_mutex的全局变量，这个变量可以说是Nginx均衡措施的根本所在，该变量是一个整形变量。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;54 ngx_uint_t            ngx_use_accept_mutex;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_use_accept_mutex变量的赋值在ngx_event_process_init中，也就是每个工作进程开始时的初始化函数。&lt;/p&gt;
+
+&lt;p&gt;调用关系如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ngx_worker_process_cycyle()---&amp;gt;ngx_worker_process_init()---&amp;gt;ngx_event_process_init()
+
+
+584 ngx_event_process_init(ngx_cycle_t *cycle)
+585 {
+586     ngx_uint_t           m, i;
+587     ngx_event_t         *rev, *wev;
+588     ngx_listening_t     *ls;
+589     ngx_connection_t    *c, *next, *old;
+590     ngx_core_conf_t     *ccf;
+591     ngx_event_conf_t    *ecf;
+592     ngx_event_module_t  *module;
+593 
+594     ccf = (ngx_core_conf_t *) ngx_get_conf(cycle-&amp;gt;conf_ctx, ngx_core_module);
+595     ecf = ngx_event_get_conf(cycle-&amp;gt;conf_ctx, ngx_event_core_module);
+596 
+597     if (ccf-&amp;gt;master &amp;amp;&amp;amp; ccf-&amp;gt;worker_processes &amp;gt; 1 &amp;amp;&amp;amp; ecf-&amp;gt;accept_mutex) {
+598         ngx_use_accept_mutex = 1;
+599         ngx_accept_mutex_held = 0;
+600         ngx_accept_mutex_delay = ecf-&amp;gt;accept_mutex_delay;
+601 
+602     } else {
+603         ngx_use_accept_mutex = 0;
+604     }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到(1)只有在多进程的模型下，并且(2)工作进程数大于1的情况下，(3)用户配置开启负载均衡的情况下,才会设置开启负载均衡。否则是不开启的(ngx_use_accept_mutex为0)&lt;/p&gt;
+
+&lt;p&gt;对于ecf-&gt;accept_mutex主要是提供用户便利，可以让用户关闭该功能，因为难保某些情况下因为本身的消耗得不偿失。所以可以让用户关闭这个功能。&lt;/p&gt;
+
+&lt;p&gt;这个字段默认为1,在初始化函数ngx_event_core_init_conf()内;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1252     ngx_conf_init_value(ecf-&amp;gt;multi_accept, 0);
+1253     ngx_conf_init_value(ecf-&amp;gt;accept_mutex, 1); /*  将accept_mutex设置为1.  */
+1254     ngx_conf_init_msec_value(ecf-&amp;gt;accept_mutex_delay, 500);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将ngx_use_accept_mutex值设置为1,也就开启了Nginx负载均衡策略，此时在每个工作进程的初始化函数ngx_event_process_init内，所有监听套接字都不会被加入到工作进程的事件监控机制里了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;826         rev-&amp;gt;handler = ngx_event_accept;
+827         
+            /*  如果开启了负载均衡，就跳过，不会将其加入到事件监控 */
+828         if (ngx_use_accept_mutex) {
+829             continue;
+830         }
+831 
+832         if (ngx_event_flags &amp;amp; NGX_USE_RTSIG_EVENT) {
+833             if (ngx_add_conn(c) == NGX_ERROR) {
+834                 return NGX_ERROR;
+835             }
+836 
+            /*  没有开启，就将其加入到事件监控中去 */
+837         } else {
+838             if (ngx_add_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR) {
+839                 return NGX_ERROR;
+840             }
+841         }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;真正将监听套接口加入到时间监控机制实在函数ngx_process_event_and_timers函数中.&lt;/p&gt;
+
+&lt;p&gt;工作进程的主要一个执行体就是一个无限for循环，而该循环内最重要的调用就是ngx_process_event_and_timers。&lt;/p&gt;
+
+&lt;p&gt;在该函数内动态的添加与删除监听套接口是一种很灵活的方式。&lt;/p&gt;
+
+&lt;p&gt;如果当前的工作的负载均衡比较小，就将监听套接字加入到自身的事件监控机制中，从而带来新的客户端请求;&lt;/p&gt;
+
+&lt;p&gt;如果当前工作进程负载比较大，就将套接字从自身的事件监控机制中删除，避免引入新的客户端请求而带来的更大的负载。&lt;/p&gt;
+
+&lt;p&gt;当然，加入、删除需要锁机制来做互斥与同步，既要避免监听套接字同时被加入到多个进程的事件监控机制里，又要避免监听套接字在某一时刻没有任何进程监控。&lt;/p&gt;
+
+&lt;h4&gt;负载均衡&lt;/h4&gt;
+
+&lt;h5&gt;post事件处理机制&lt;/h5&gt;
+
+&lt;p&gt;nginx设计了两个队列:ngx_posted_accept_events(存放新链接事件的队列)和ngx_posted_events队列(存放普通事件的队列)，这两个队列都是ngx_event_t类型的双链表。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;200 void
+201 ngx_process_events_and_timers(ngx_cycle_t *cycle)
+202 {
+203     ngx_uint_t  flags;
+204     ngx_msec_t  timer, delta;
+205 
+206     if (ngx_timer_resolution) {
+207         timer = NGX_TIMER_INFINITE;
+208         flags = 0;
+209 
+210     } else {
+211         timer = ngx_event_find_timer();
+212         flags = NGX_UPDATE_TIME;
+213 
+214 #if (NGX_THREADS)
+215 
+216         if (timer == NGX_TIMER_INFINITE || timer &amp;gt; 500) {
+217             timer = 500;
+218         }
+219 
+220 #endif
+221     }
+222     
+        /*  负载均衡的真正实现 */
+        /*  必须开启了才可以使用  */
+223     if (ngx_use_accept_mutex) {
+            /*  ngx_accept_disabled&amp;gt;0则处于过载状态  */
+224         if (ngx_accept_disabled &amp;gt; 0) {
+                /*  没有去抢那把锁，而是静静的去处理原来的负载，所以说自减1  */
+225             ngx_accept_disabled--;
+226 
+            /*  否则便是没有过载    */
+227         } else {
+                /*  没有过载就努力去争取锁   */
+228             if (ngx_trylock_accept_mutex(cycle) == NGX_ERROR) {
+229                 return;
+230             }
+231                 
+                /*  争取失败，判断是否本来就拥有锁   */
+                /*  如果当前拥有锁，那么就给flags加入标识NGX_POST_EVENTS,表示所有发生的事件都将咽喉处理  */
+232             if (ngx_accept_mutex_held) {
+233                 flags |= NGX_POST_EVENTS;
+234 
+235             } else {
+236                 if (timer == NGX_TIMER_INFINITE
+237                     || timer &amp;gt; ngx_accept_mutex_delay)
+238                 {
+239                     timer = ngx_accept_mutex_delay;
+240                 }
+241             }
+242         }
+243     }   // if end
+244 
+245     delta = ngx_current_msec;
+246         
+        /*  这个函数将所有的事件缓存了 */
+247     (void) ngx_process_events(cycle, timer, flags);
+248 
+249     delta = ngx_current_msec - delta;
+250 
+251     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+252                    &quot;timer delta: %M&quot;, delta);
+253 
+        /*  
+            如果其不为空链表，则处理新建链接的缓存事件
+            ngx_epoll_process_events函数中对这个链表进行了缓存，使得其不为空
+            先处理新建链接上的事件缓存，在处理其他的事件缓存
+
+        */
+254     if (ngx_posted_accept_events) {
+255         ngx_event_process_posted(cycle, &amp;amp;ngx_posted_accept_events);
+256     }
+257 
+        /*  处理完后就赶紧释放锁  */
+258     if (ngx_accept_mutex_held) {
+259         ngx_shmtx_unlock(&amp;amp;ngx_accept_mutex);
+260     }
+261 
+262     if (delta) {
+263         ngx_event_expire_timers();
+264     }
+265 
+266     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+267                    &quot;posted events %p&quot;, ngx_posted_events);
+268
+        /*  处理原本延时的事件队列(如果有的话)  */
+269     if (ngx_posted_events) {
+270         if (ngx_threaded) {
+271             ngx_wakeup_worker_thread(cycle);
+272 
+273         } else {
+274             ngx_event_process_posted(cycle, &amp;amp;ngx_posted_events);
+275         }
+276     }
+277 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_accept_disabled的值的含义&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;18 void
+19 ngx_event_accept(ngx_event_t *ev)
+20 {
+107         ngx_accept_disabled = ngx_cycle-&amp;gt;connection_n / 8
+108                               - ngx_cycle-&amp;gt;free_connection_n;
+109 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中ngx_cycle-&gt;connection_n表示一个工作进程的最大可承受连接数，可以通过配置文件的work_connections指令配置，默认值是512,在函数ngx_event_core_init_conf()中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;13 #define DEFAULT_CONNECTIONS  512
+
+1156 static char *
+1157 ngx_event_core_init_conf(ngx_cycle_t *cycle, void *conf)
+1158 {
+        /*  默认初始化成512了    */
+1244     ngx_conf_init_uint_value(ecf-&amp;gt;connections, DEFAULT_CONNECTIONS);
+1245     cycle-&amp;gt;connection_n = ecf-&amp;gt;connections;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;另一个ngx_cycle-&gt;free_connection_n表示当前可用连接数，假设当前活动连接数为x，那么该值为ngx_cycyle-&gt;connection_n - x;
+所以此时ngx_accept_disabled的值为:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ngx_accept_disabled = ngx_cycle-&amp;gt;connection_n/8 - (ngx_cycle-&amp;gt;connection_n - x)
+                    = x - (ngx_cycle-&amp;gt;connection_n * 7/8)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果ngx_accept_disabled &gt; 0表示过载，意思就是x - (ngx_cycle-&gt;connection_n * 7/8) &gt; 0，也就是说当前活动连接数(x)的值如果超过ngx_cycle-&gt;connection_n的7/8，则表示发生过载。变量ngx_accept_disabled将大于0,并且该值越大表示过载越大，当前进程负载越重。&lt;/p&gt;
+
+&lt;p&gt;当工作进程的负载达到这个临界点的时候他就不会尝试去获取互斥锁，从而让新来的负载可以均衡到其他工作进程。&lt;/p&gt;
+
+&lt;p&gt;可以看到只有在开启了负载均衡(ngx_use_accept_mutex=1)后才会生效。&lt;/p&gt;
+
+&lt;p&gt;首先判断变量ngx_accept_disabled是否大于0来判断当前进程是否已经过载。为什么这样继续向下看;&lt;/p&gt;
+
+&lt;p&gt;当处于过载状态的时候，所做的工作是使ngx_accept_disabled自减1,这表示既然经过了一轮处理，那么负载一定是减小的，所以要相应改变ngx_accept_disabled的值。&lt;/p&gt;
+
+&lt;p&gt;经过一段时间ngx_accept_disabled将会降到0以下，便又可以去争取新的请求连接。
+所以如下文所说的最大可承受连接数的7/8便是一个负载均衡点，当某进程的负载达到了这个临界点的时候它就不会去尝试获取互斥锁，从而让新增加的负载可以均衡到其他工作进程上去。&lt;/p&gt;
+
+&lt;p&gt;如果进程并没有处理过载状态，那么就会去争锁，实际上争取的是套接字接口的监控权，争锁成功就会把所有监听套接字加入到自身的事件监控机制中(如果原本不在);&lt;/p&gt;
+
+&lt;p&gt;如果争锁失败就会将所有监听套接字从自身的时间监控机制里删除(如果原本有的话),&lt;/p&gt;
+
+&lt;p&gt;注意:是所有套接字，因为他们总是作为一个整体本加入或是删除&lt;/p&gt;
+
+&lt;p&gt;NGX_POST_EVENTS标记表示所有发生的事件都将会延后处理,因为要尽快的释放锁。&lt;/p&gt;
+
+&lt;h4&gt;任何架构设计都必须遵守的约定，就是持锁者必须尽量缩短自身持有锁的时间,所以发生的大部分事件都要延迟到释放锁之后再去处理，以便把锁尽快释放，缩短自身持有锁的时间可以让其他进程尽可能的有机会获取到锁。&lt;/h4&gt;
+
+&lt;p&gt;如果当前进程没有获取到锁，那么就将监控机制阻塞点(例如epoll_wait)的超时时间限制在一个比较短的时间范围内，也就是ngx_accept_mutex_delay，默认是500毫秒.超时时间短了，所以超时更快，那么也就可以更频繁的从阻塞中跳出，也就有更多的机会去争取到锁了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;294 ngx_int_t
+295 ngx_trylock_accept_mutex(ngx_cycle_t *cycle)
+296 {
+297     if (ngx_shmtx_trylock(&amp;amp;ngx_accept_mutex)) {
+298 
+299         ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+300                        &quot;accept mutex locked&quot;);
+301 
+302         if (ngx_accept_mutex_held
+303             &amp;amp;&amp;amp; ngx_accept_events == 0
+304             &amp;amp;&amp;amp; !(ngx_event_flags &amp;amp; NGX_USE_RTSIG_EVENT))
+305         {
+306             return NGX_OK;
+307         }
+308 
+309         if (ngx_enable_accept_events(cycle) == NGX_ERROR) {
+310             ngx_shmtx_unlock(&amp;amp;ngx_accept_mutex);
+311             return NGX_ERROR;
+312         }
+313 
+314         ngx_accept_events = 0;
+315         ngx_accept_mutex_held = 1;
+316 
+317         return NGX_OK;
+318     }
+319 
+320     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+321                    &quot;accept mutex lock failed: %ui&quot;, ngx_accept_mutex_held);
+322 
+323     if (ngx_accept_mutex_held) {
+324         if (ngx_disable_accept_events(cycle) == NGX_ERROR) {
+325             return NGX_ERROR;
+326         }
+327 
+328         ngx_accept_mutex_held = 0;
+329     }
+330 
+331     return NGX_OK;
+332 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_trylock_accept_mutex的内部流程
+&lt;img src=&quot;/uploads/2014/05/006.png&quot; alt=&quot;006&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;拥有锁的进程对时间的处理，也就是之前所说的延迟处理，当一个事件发生时候，一般处理(不做延迟的话)会立即调用事件对应的回调函数，而延迟处理则会将该时间以链表的形式缓存起来&lt;/p&gt;
+
+&lt;p&gt;在函数ngx_process_events_and_timers中的ngx_process_events函数已经将所有事件都缓存了起来，接下来先处理新建链接&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    static ngx_int_t
+558 ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
+559 {
+            ......
+                /*  如果标记了延迟处理，则执行事件缓存 */
+672             if (flags &amp;amp; NGX_POST_EVENTS) {
+673                 queue = (ngx_event_t **) (rev-&amp;gt;accept ?
+674                                &amp;amp;ngx_posted_accept_events : &amp;amp;ngx_posted_events);
+                        /*  
+                                将其添加到ngx_posted_accept_events链表中
+                                新建连接事件，就是监听套接字上发生的可读事件
+                                在ngx_process_events_and_timers中的ngx_posted_accept_events就不为空了
+                        */
+675 
+676                 ngx_locked_post_event(rev, queue);
+677 
+                /*  否则直接调用对应的回调函数 */
+678             } else {
+679                 rev-&amp;gt;handler(rev);
+680             }
+681         }
+682 
+683         wev = c-&amp;gt;write;
+684 
+685         if ((revents &amp;amp; EPOLLOUT) &amp;amp;&amp;amp; wev-&amp;gt;active) {
+686 
+687             if (c-&amp;gt;fd == -1 || wev-&amp;gt;instance != instance) {
+688 
+689                 /*
+690                  * the stale event from a file descriptor
+691                  * that was just closed in this iteration
+692                  */
+693 
+694                 ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle-&amp;gt;log, 0,
+695                                &quot;epoll: stale event %p&quot;, c);
+696                 continue;
+697             }
+698 
+699             if (flags &amp;amp; NGX_POST_THREAD_EVENTS) {
+700                 wev-&amp;gt;posted_ready = 1;
+701 
+702             } else {
+703                 wev-&amp;gt;ready = 1;
+704             }
+705             /*  对于标记了的单独进行处理    */ 
+706             if (flags &amp;amp; NGX_POST_EVENTS) {
+707                 ngx_locked_post_event(wev, &amp;amp;ngx_posted_events);
+708 
+709             } else {
+710                 wev-&amp;gt;handler(wev);
+711             }
+712         }
+713     }
+714 
+715     ngx_mutex_unlock(ngx_posted_events_mutex);
+716 
+717     return NGX_OK;
+718 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ngx_process_events_and_timers函数中先处理新建连接缓存事件链表ngx_posted_accept_events，此时还不能释放锁，因为我们还在处理监听套接字上的事情，还要读取上面的请求数据，所以此时必须独占，一旦缓存的新链接事件表被全部处理完了就必须马上释放现有的锁了，因为连接套接字只可能被某一个进程自始至终占用，不会出现进程之间的相互冲突，所以对于链接套接口上事件ngx_posted_events的处理可以在释放锁之后进行，虽然对于他们的具体处理与响应是非常消耗时间的，但是在此之前已经释放了持有的锁，所以即使是慢一点也不会影响到其他进程，最多客户感觉慢了一点吧！&lt;/p&gt;
+
+&lt;h3&gt;注意:&lt;/h3&gt;
+
+&lt;p&gt;1.如果在办理新建链接时间的过程中，在监听套接字上又来了新的请求的时候怎么办？&lt;/p&gt;
+
+&lt;p&gt;当前进程只会处理已经缓存的事件，新的请求将会被阻塞在监听套接字中，由于监听套接字是以水平方式加入到时间监控机制中的，所以等到下一轮的被那个进程争取到锁并且加到时间监控机制里时候才会被触发从而被抓取出来。&lt;/p&gt;
+
+&lt;p&gt;2.第259行ngx_shmtx_unlock(&amp;amp;ngx_accept_mutex)只是释放锁，而并没有将监听套接字从事件监控机制中删除，所以有可能在接下来处理ngx_posted_events缓存时间的过程中，互斥锁被另外一个进程争抢到并且把所有的监听套接字加入到他的事件监控机制里面，因此严格来说，在同一时刻，监听套接字可能被多个进程拥有，但是在同一时刻，监听套接字只可能被一个进程监控(也就是epoll_wait这种)，因此进程在处理完ngx_posted_events缓存事件后去争抢锁，发现锁被其他进程占用而争用失败，会把所有监听套接字从自身的事件监控机制里删除，然后才进行事件监控。但在同一时刻，监听套接字只能被一个进程监控，这也就意味着Nginx根本不会受到惊群问题的影响。&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-request/&quot;&gt;nginx负载均衡--客户端请求的均衡与惊群问题&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx负载均衡--ip_hash的实现]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;根据IP的哈希值来获取对应的后端服务器，Nginx1.2.0仅支持IPv4&lt;/p&gt;
+
+&lt;p&gt;加权轮询是Nginx负载均衡的基础策略，所以一些初始化工作，比如配置值转储(配置文件中相关值存储到变量中),所以其他策略可以直接复用加权轮询的初始化工作。&lt;/p&gt;
+
+&lt;p&gt;path:src/http/modules/ngx_http_upstream_ip_hash_module.c&lt;/p&gt;
+
+&lt;h4&gt;初始化工作&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;79 ngx_int_t
+80 ngx_http_upstream_init_ip_hash(ngx_conf_t *cf, ngx_http_upstream_srv_conf_t *us)
+81 {
+        /*  直接使用round_robin的全局初始化   */
+82     if (ngx_http_upstream_init_round_robin(cf, us) != NGX_OK) {
+83         return NGX_ERROR;
+84     }
+85  
+        /*  设定客户端请求到来时候的初始化函数 */
+86     us-&amp;gt;peer.init = ngx_http_upstream_init_ip_hash_peer;
+87 
+88     return NGX_OK;
+89 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第86行是针对单个请求进行初始化的回调函数指针，当一个客户请求过来时，就调用ngx_http_upstream_init_ip_hash_peer做初始化。&lt;/p&gt;
+
+&lt;h4&gt;选择后端服务器&lt;/h4&gt;
+
+&lt;p&gt;客户端请求到来后，函数ngx_http_upstream_ip_hash_module进行初始化，它调用了加权轮询策略的初始函数ngx_http_upstream_init_round_robin_peer，之所以这样是因为在多次哈希选择失败之后，&lt;em&gt;Nginx将会选择策略退化为加权轮询&lt;/em&gt;,针对IP哈希锁做的初始化工作主要是将对应的客户端IP转存出来。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;92 static ngx_int_t
+93 ngx_http_upstream_init_ip_hash_peer(ngx_http_request_t *r,
+94     ngx_http_upstream_srv_conf_t *us)
+95 {
+96     u_char                                 *p;
+97     struct sockaddr_in                     *sin;
+98     ngx_http_upstream_ip_hash_peer_data_t  *iphp;
+99 
+100     iphp = ngx_palloc(r-&amp;gt;pool, sizeof(ngx_http_upstream_ip_hash_peer_data_t));
+101     if (iphp == NULL) {
+102         return NGX_ERROR;
+103     }
+104 
+105     r-&amp;gt;upstream-&amp;gt;peer.data = &amp;amp;iphp-&amp;gt;rrp;
+106 
+107     if (ngx_http_upstream_init_round_robin_peer(r, us) != NGX_OK) {
+108         return NGX_ERROR;
+109     }
+110     
+        /*  设置回调函数  */          /*  获取使用ip_hash策略   */
+        /*  修改了原本在ngx_http_upstream_init_round_robin_peer函数中的值    */
+111     r-&amp;gt;upstream-&amp;gt;peer.get = ngx_http_upstream_get_ip_hash_peer;
+112 
+113     /* AF_INET only */  /*  仅仅支持IPV4    */
+114 
+115     if (r-&amp;gt;connection-&amp;gt;sockaddr-&amp;gt;sa_family == AF_INET) {
+116 
+117         sin = (struct sockaddr_in *) r-&amp;gt;connection-&amp;gt;sockaddr;
+118         p = (u_char *) &amp;amp;sin-&amp;gt;sin_addr.s_addr;
+
+            /*  哈希方法仅仅需要ip地址的前三个字节即可    */
+119         iphp-&amp;gt;addr[0] = p[0];
+120         iphp-&amp;gt;addr[1] = p[1];
+121         iphp-&amp;gt;addr[2] = p[2];
+122 
+123     } else {
+            /*  IPV6的全部置为0,都分配到同一台机器了 */
+124         iphp-&amp;gt;addr[0] = 0;
+125         iphp-&amp;gt;addr[1] = 0;
+126         iphp-&amp;gt;addr[2] = 0;
+127     }
+128 
+        /*  哈希初始值 */
+129     iphp-&amp;gt;hash = 89;
+130     iphp-&amp;gt;tries = 0;
+        /*  哈希失败20次以上就会退化成加权轮询模式，调用iphp-&amp;gt;get_rr_peer  */
+131     iphp-&amp;gt;get_rr_peer = ngx_http_upstream_get_round_robin_peer;
+132 
+133     return NGX_OK;
+134 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;函数ngx_http_upstream_get_ip_hash_peer的实现&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*  选择后端服务器   */
+137 static ngx_int_t
+138 ngx_http_upstream_get_ip_hash_peer(ngx_peer_connection_t *pc, void *data)
+139 {
+140     ngx_http_upstream_ip_hash_peer_data_t  *iphp = data;
+141 
+142     time_t                        now;
+143     uintptr_t                     m; 
+144     ngx_uint_t                    i, n, p, hash;
+145     ngx_http_upstream_rr_peer_t  *peer;
+146 
+147     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+148                    &quot;get ip hash peer, try: %ui&quot;, pc-&amp;gt;tries);
+149 
+150     /* TODO: cached */
+151     
+        /*  哈希失败20次以上，或是单机模式    */
+152     if (iphp-&amp;gt;tries &amp;gt; 20 || iphp-&amp;gt;rrp.peers-&amp;gt;single) {
+            /*  退化为加权轮询   */
+153         return iphp-&amp;gt;get_rr_peer(pc, &amp;amp;iphp-&amp;gt;rrp);
+154     }
+155 
+156     now = ngx_time();
+157 
+158     pc-&amp;gt;cached = 0;
+159     pc-&amp;gt;connection = NULL;
+160 
+        /*      iphp-&amp;gt;hash初始值为89，质数       */
+161     hash = iphp-&amp;gt;hash;
+162 
+163     for ( ;; ) {
+164 
+            /*  一下是哈希的计算方法  */
+            /*  只需要ip的前三个字节所以i &amp;lt; 3    */
+165         for (i = 0; i &amp;lt; 3; i++) {
+166             hash = (hash * 113 + iphp-&amp;gt;addr[i]) % 6271;
+167         }
+168 
+            /*  p就是最后的哈希值，得到的p一定小于机器数量  */
+169         p = hash % iphp-&amp;gt;rrp.peers-&amp;gt;number;
+170             
+            /*  检测p机器在位图中是否被使用过了  */
+171         n = p / (8 * sizeof(uintptr_t));
+172         m = (uintptr_t) 1 &amp;lt;&amp;lt; p % (8 * sizeof(uintptr_t));
+173 
+            /*  对应的位为0表示没有使用过   */
+174         if (!(iphp-&amp;gt;rrp.tried[n] &amp;amp; m)) {
+175 
+176             ngx_log_debug2(NGX_LOG_DEBUG_HTTP, pc-&amp;gt;log, 0,
+177                            &quot;get ip hash peer, hash: %ui %04XA&quot;, p, m);
+178 
+179             peer = &amp;amp;iphp-&amp;gt;rrp.peers-&amp;gt;peer[p];
+180 
+181             /* ngx_lock_mutex(iphp-&amp;gt;rrp.peers-&amp;gt;mutex); */
+182             
+                /*  如果机器可用，break便会跳出执行代码207行代码  */
+183             if (!peer-&amp;gt;down) {
+184 
+185                 if (peer-&amp;gt;max_fails == 0 || peer-&amp;gt;fails &amp;lt; peer-&amp;gt;max_fails) {
+186                     break;
+187                 }
+188 
+189                 if (now - peer-&amp;gt;checked &amp;gt; peer-&amp;gt;fail_timeout) {
+190                     peer-&amp;gt;checked = now;
+191                     break;
+192                 }
+193             }
+194 
+195             iphp-&amp;gt;rrp.tried[n] |= m;
+196 
+197             /* ngx_unlock_mutex(iphp-&amp;gt;rrp.peers-&amp;gt;mutex); */
+198 
+199             pc-&amp;gt;tries--;
+200         }
+201         
+            /*  失败了20次机上就退化   */
+202         if (++iphp-&amp;gt;tries &amp;gt;= 20) {
+203             return iphp-&amp;gt;get_rr_peer(pc, &amp;amp;iphp-&amp;gt;rrp);
+204         }
+205     }
+206 
+207     iphp-&amp;gt;rrp.current = p;
+208 
+209     pc-&amp;gt;sockaddr = peer-&amp;gt;sockaddr;
+210     pc-&amp;gt;socklen = peer-&amp;gt;socklen;
+211     pc-&amp;gt;name = &amp;amp;peer-&amp;gt;name;
+212 
+213     /* ngx_unlock_mutex(iphp-&amp;gt;rrp.peers-&amp;gt;mutex); */
+214 
+215     iphp-&amp;gt;rrp.tried[n] |= m;
+216     iphp-&amp;gt;hash = hash;
+217 
+218     return NGX_OK;
+219 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;哈希的计算很简单，就是通常的哈希规则，也就是相关数值，比如3、89、113、6271都是质数，这样使得哈希结果更加散列;&lt;/p&gt;
+
+&lt;p&gt;根据哈希值得到被选中的后端服务器，判断其是否可用，如果可用则break跳出，执行207行代码，否则将可重试次数减少1,再在上次哈希结果hash的基础上再进行哈希(就是那个for死循环的作用)！&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/uploads/2014/05/005.png&quot; alt=&quot;005&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-ip_hash/&quot;&gt;nginx负载均衡--ip_hash的实现&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[nginx负载均衡两种策略的比较]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/05/nginx-loadbalance-compare/" />
+  <id>http://localhost:4000/2014/05/05/nginx-loadbalance-compare</id>
+  <published>2014-05-05T00:00:00+00:00</published>
+  <updated>2014-05-05T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;h4&gt;加权轮询&lt;/h4&gt;
+
+&lt;h5&gt;优势:&lt;/h5&gt;
+
+&lt;p&gt;加权轮询的适用性更强，它不依赖于客户端的任何信息，而完全依靠后端服务器的情况进行选择;
+能把客户端的请求更合理更均匀的分配到各个后端服务器处理;&lt;/p&gt;
+
+&lt;h5&gt;劣势:&lt;/h5&gt;
+
+&lt;p&gt;同一个客户端的多次请求可能会被分配到不同的后端服务器进行处理，所以无法满足做会话保持的应用的需求。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4&gt;IP哈希&lt;/h4&gt;
+
+&lt;h5&gt;优势:&lt;/h5&gt;
+
+&lt;p&gt;能较好的将同一个客户的多次请求分配到同一后台服务器处理，避免了加权轮询策略无法使用会话保持的需求。&lt;/p&gt;
+
+&lt;h5&gt;劣势:&lt;/h5&gt;
+
+&lt;p&gt;IP哈希是根据客户端的IP地址来对后端服务器选择，如果某个时刻，来自某个IP的请求特别多，那么将导致谋台后端服务器的压力非常大，而其他后端服务器却还是很空闲的不均匀情况。&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/05/nginx-loadbalance-compare/&quot;&gt;nginx负载均衡两种策略的比较&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 05, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[解决vsftpd无法上传文件的问题]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/soft-vsftpd/" />
+  <id>http://localhost:4000/2014/05/04/soft-vsftpd</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;将vsftp的配置文件/etc/vsftpd/vsftpd.conf中该设置的都设置了，但是上传文件时候就是不成功,如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ftp&amp;gt; mput rc.tar.gz 
+mput rc.tar.gz? y
+227 Entering Passive Mode (127,0,0,1,141,205).
+553 Could not create file.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;vsftp的默认目录在/var/ftp，只要将这个目录的权限改成0777即可&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chmod 0777 /var/ftp
+
+ftp中哪个目录中中如果无法上传就只要修改这个目录的权限即可
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/soft-vsftpd/&quot;&gt;解决vsftpd无法上传文件的问题&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[shell中的一些变量]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/shell-var/" />
+  <id>http://localhost:4000/2014/05/04/shell-var</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;1获取字符串的长度&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var=1234567890
+echo ${#var}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2识别当前shell版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo $SHELL
+echo $0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3检测当前用户是否为超级用户&lt;/p&gt;
+
+&lt;p&gt;UID是一个重要的环境变量用于检测当前脚本是以超级用户还是普通用户运行的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if [ $UID -ne 0 ]; then
+echo Non root user.Please run as root.
+else
+echo Root user
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4修改bash的提示符&lt;/p&gt;
+
+&lt;p&gt;运行bash时候会看到[root@localhost script]#这样的提示字符串，我们可以利用PS1环境变量来第年至提示文本，默认的shell提示文本是~/.bashrc中设置的(全局的在/etc/bashrc中)&lt;/p&gt;
+
+&lt;p&gt;我们可以使用类似于\e[1;31的特定转义序列来设置彩色的提示字符串。&lt;/p&gt;
+
+&lt;p&gt;还有一些特殊的字符可以扩展为系统参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;\u可以扩展为用户名；
+\h可以扩展为主机名；
+\w可以扩展为当前工作目录的完全路径
+\W可以扩展为当前工作目录(没有路径)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PS1=&quot;[\u@ \W]\$ &quot;&lt;/p&gt;
+
+&lt;p&gt;后面的\$的作用就是显示#或$的&lt;/p&gt;
+
+&lt;p&gt;数组&lt;/p&gt;
+
+&lt;p&gt;数组定义的方法有很多种类，可以在单行中使用一列值来定义一个数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array_var=(1 2 3 4 5 6 7 8 9)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还可以将数组定义为一组索引值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array_var[0]=&quot;test1&quot;
+array_var[1]=&quot;test2&quot;
+array_var[2]=&quot;test3&quot;
+array_var[3]=&quot;test4&quot;
+array_var[4]=&quot;test5&quot;
+array_var[5]=&quot;test6&quot;
+打印出数组中的值
+
+#echo ${array_var[1]}
+test2
+#index=5
+#echo ${array_var[$index]}
+test6
+#echo ${array_var[*]}   #以清单的形式打印出数组中所有的值
+test1 test2 test3 test4 test5 test6 
+#echo ${#array_var[*]}  #打印数组的长度
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;6关联数组&lt;/p&gt;
+
+&lt;p&gt;在关联数组中我们可以使用任意的文本作为数组索引，而在普通数组中只能用整数作为数组索引
+首先需要一个单独的声明语句将一个变量名声明为关联数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#declare -A ass_array
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;声明之后可以使用两种方法将元素添加到关联数组中&lt;/p&gt;
+
+&lt;p&gt;(1)内嵌索引-值列表法，提供一个索引-值列表&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#ass_array=([index1]=val1 [index2]=val2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(2)独立的索引-值进行赋值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#ass_array[index1]=val1
+#ass_array[index2]=val2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;实例:&lt;/h5&gt;
+
+&lt;p&gt;用关联数组为水果定制价格&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#declare -A friutes_value
+#friutes_value=([apple]=&#39;100 dollars&#39; [orange]=&#39;150 dollars&#39;)
+#echo &quot;Apple costs ${friutes_value[apple]}&quot;
+Apple costs 150 dollars
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;列出数组索引&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#echo ${!friutes_value[*]} 
+orange apple
+#echo ${!friutes_value[@]} 
+orange apple
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/shell-var/&quot;&gt;shell中的一些变量&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[自动作业处理]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/shell-crontab/" />
+  <id>http://localhost:4000/2014/05/04/shell-crontab</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;h5&gt;crontab&lt;/h5&gt;
+
+&lt;p&gt;启动crontab进程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service crontab start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;停止crontab进程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service crontab stop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新启动crontab进程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service crontab restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;crontab的选项&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;crontab [-u user] [-e] [-l] [-r] [-i]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-e  编辑用户的crontab文件&lt;/p&gt;
+
+&lt;p&gt;-l  列出用户在crontab中设定的任务&lt;/p&gt;
+
+&lt;p&gt;-r  删除用户在crontab中的任务&lt;/p&gt;
+
+&lt;p&gt;-i  交互模式，删除用户设定的任务前进行提示&lt;/p&gt;
+
+&lt;p&gt;-u user&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;分钟:每小时第几分钟执行，取值0-59&lt;/p&gt;
+
+&lt;p&gt;小时:每天第几小时执行，取值0-23&lt;/p&gt;
+
+&lt;p&gt;日期:每月第几天执行，取值0-31&lt;/p&gt;
+
+&lt;p&gt;月份:每年的第几月执行，取值0-12或英文缩写May、Feb、Nov等&lt;/p&gt;
+
+&lt;p&gt;星期:每周第几天执行，取值0-6或英文缩写Sun、Mon、Tue&lt;/p&gt;
+
+&lt;p&gt;用户:执行该命令的用户，root等&lt;/p&gt;
+
+&lt;p&gt;命令:定期执行的命令，date等&lt;/p&gt;
+
+&lt;p&gt;在时间域中，可以使用&#39;-&#39;代表一段时间，例如在小时后输入6-12表示每小时的6、7、8、9、10、11、12分钟;&lt;/p&gt;
+
+&lt;p&gt;可以使用&#39;&lt;em&gt;&#39;表示全部时间，例如在日期字段输入&#39;&lt;/em&gt;&#39;则表示每个月的每一天都执行该命令;&lt;/p&gt;
+
+&lt;p&gt;使用&#39;,&#39;表示特定时间，例如:在月份中输入&#39;3,5,12&#39;,则表示一年的3月、5月、12月;&lt;/p&gt;
+
+&lt;p&gt;使用&#39;/&#39;表示每隔,例如:在分钟字段中输入*/5表示每隔5分钟。&lt;/p&gt;
+
+&lt;p&gt;修改crontab文件之后不需要重新启动crontab服务程序，crontab会自动根据文件内容刷新任务里表&lt;/p&gt;
+
+&lt;p&gt;实例:&lt;/p&gt;
+
+&lt;p&gt;使用crontab -e添加新的任务&lt;/p&gt;
+
+&lt;p&gt;每隔5分钟将系统时间写入~/work/cron_test&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;*/5 * * * * date &amp;gt;&amp;gt; ~/work/cron_test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每月的3日23:30自动删除/var/log/httpd目录下所有文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;30 23 3 * * root rm -rf /var/log/httpd/*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每隔5分钟查询一次系统中当前运行的进程，并保存到~/work/cron_test&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;*/5 * * * * * ps aux &amp;gt; ~/work/cron_test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每周一的1:00 3:00 8:00各自查询一次根目录结构，并保存到~/work/cron_test&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;0 1,3,8 * * * ls -l &amp;gt; ~/work/cron_test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不带-u选项使用crontab命令，系统默认认为当前用户创建任务，如果为其他用户设定只要在-u后面指定用户，例如，编辑用户Test的任务时候&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#crontab -e -u Test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-l选项可以列出所有任务的列表，例如列出root用户的列表&lt;/p&gt;
+
+&lt;h4&gt;at&lt;/h4&gt;
+
+&lt;p&gt;at也是一种任务管理工具，不过与crontab不同的是，at命令设置的任务只在某个时刻执行，并且只执行一次，如果要使用at命令调度程序，必须先启动atd守护进程,atd启动之后可以使用at命令设定任务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;at [-c] [-V] [-q queue] [-f file] [-m] [-l] [-d] [-v] TIME
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;-m: 当指定的任务被完成之后，将给用户发送邮件，即使没有标准输出;&lt;/p&gt;
+
+&lt;p&gt;-l: 等同于atq命令&lt;/p&gt;
+
+&lt;p&gt;-d: 等同于atrm命令&lt;/p&gt;
+
+&lt;p&gt;-v: 显示任务被执行的时间&lt;/p&gt;
+
+&lt;p&gt;-V: 版本信息&lt;/p&gt;
+
+&lt;p&gt;-q queue:   使用指定的队列&lt;/p&gt;
+
+&lt;p&gt;-f file:    从指定文件读入任务，而不是从标准输入读入&lt;/p&gt;
+
+&lt;p&gt;TIME:       指定任务执行的时间&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#输入命令后使用Ctrl+D退出at模式
+#00:02执行ls -l，并保存
+[root@ Note]# at 00:02
+at&amp;gt; ls -l &amp;gt; ~/work/at
+at&amp;gt; &amp;lt;EOT&amp;gt;
+job 5 at Thu May  8 00:02:00 2014
+[root@ Note]#
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;时间的设定可以是多种格式,例如:
+8:50pm、+10days、tomorrow、now、noon、midnight等&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#一分钟后执行某命令
+[root@ Note]# at +1
+
+#明天下午4点执行某任务
+[root@ Note]# at 4pm tomorrow
+
+#两天后早上九点执行
+[root@ Note]# at 9am+2days
+
+#查询已分配的任务
+[root@ Note]# at -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;batch命令:批处理&lt;/h4&gt;
+
+&lt;p&gt;batch命令用来实现批处理，即一次连接执行多个命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ batch]# ls
+test1.doc  test2.doc  test3.doc
+#批处理，删除当前目录下test1.doc test2.doc文件
+[root@ batch]# batch
+at&amp;gt; rm test1.doc
+at&amp;gt; rm test2.doc
+at&amp;gt; &amp;lt;EOT&amp;gt;
+job 8 at Wed May  7 00:13:00 2014
+[root@ batch]# ls
+test3.doc
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/shell-crontab/&quot;&gt;自动作业处理&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[mysql常用语句]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/mysql-use/" />
+  <id>http://localhost:4000/2014/05/04/mysql-use</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;字符串数据类型一般用来存放较短的字符串&lt;/p&gt;
+
+&lt;p&gt;需要存储大串字符时，应该使用文本型数据，文本型数据，可以存放超过过二十亿个字符的字符串&lt;/p&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;p&gt;文本型字段既大又慢，所以不能随意使用&lt;/p&gt;
+
+&lt;p&gt;数值类型可以存储整数、实数、浮点数&lt;/p&gt;
+
+&lt;p&gt;逻辑型也称为布尔型，只能取两个值0、1,即TRUE或是FALSE&lt;/p&gt;
+
+&lt;h4&gt;记录操作&lt;/h4&gt;
+
+&lt;p&gt;插入记录:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;insert into &amp;lt;表名&amp;gt;
+[(列名1,列名2....)]
+values (&amp;lt;列对应的值&amp;gt;)
+
+&amp;gt;insert into student_info (stu_id, stu_name, stu_sex, stu_age) 
+    values (101, &quot;Zhangsan&quot;,&#39;M&#39;, 22)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更新记录:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;update &amp;lt;表名&amp;gt;
+set &amp;lt;列名&amp;gt;=&amp;lt;表达式&amp;gt;
+[ where &amp;lt;条件&amp;gt;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除记录:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;delete from &amp;lt;表名&amp;gt; [where &amp;lt;条件&amp;gt;]
+
+&amp;gt;delete from student_info where stu_id=1001
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:&lt;/h4&gt;
+
+&lt;p&gt;如果使用delete时候不设定where从句，则表格中的所有记录将被全部删除&lt;/p&gt;
+
+&lt;h4&gt;查询:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;select [all|distinct] &amp;lt;目标列表达式&amp;gt; [,&amp;lt;目标列表达式&amp;gt;]...
+from &amp;lt;表名或视图&amp;gt; [,&amp;lt;表名或视图&amp;gt;]
+[where &amp;lt;条件表达式&amp;gt;]
+[group by &amp;lt;列名&amp;gt; [having &amp;lt;条件表达式&amp;gt;] ]
+[order by &amp;lt;列名&amp;gt; [asc | desc]];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;select还可以使用as作为额别名&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;select * from student_info
+
+&amp;gt;select stu_id as ID , stu_name as NAME from student_info
+
+&amp;gt;select stu_id, stu_name from student_info order by stu_age
+
+&amp;gt;select * from student_info where stu_age&amp;gt;20
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;having 子句必须出现在group by之后，order by之前
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;修改表的结构&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;alter table &amp;lt;表名&amp;gt;
+[ ADD &amp;lt;新列名&amp;gt; &amp;lt;数据类型&amp;gt; &amp;lt;完整性约束&amp;gt; ]
+[ DROP &amp;lt;完整性约束&amp;gt; ]
+[ ALTER COLUMN &amp;lt;列名&amp;gt; &amp;lt;数据类型&amp;gt; ]
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/mysql-use/&quot;&gt;mysql常用语句&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[mysql的基本配置]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/04/mysql-config/" />
+  <id>http://localhost:4000/2014/05/04/mysql-config</id>
+  <published>2014-05-04T00:00:00+00:00</published>
+  <updated>2014-05-04T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;h5&gt;Mysql的密码修改:&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;#mysqladmin -u root password 123456
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;连接Mysql数据库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#mysql -u root -p 然后输入密码
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;显示数据库列表:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;show databases;
+#默认自带两个数据库mysql和test，mysql中存储用户相关信息
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;选择一个数据库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;use mysql;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看一个数据库中所有的表&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;show tables;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除所有的数据表:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;drop table worker;
+
+如果不能肯定一个表是否存在，可以在drop语句中增加if exists 语句
+
+&amp;gt;drop table if exists worker
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除数据库:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;drop database company;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;注意:都是drop，不是delete&lt;/h4&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/04/mysql-config/&quot;&gt;mysql的基本配置&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 04, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[until语法]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-until/" />
+  <id>http://localhost:4000/2014/05/03/shell-until</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;pre&gt;&lt;code&gt;until
+    命令表1
+test 表达式 
+do
+    命令表2
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;命令表1在循环开始前执行，且每一次循环结束后再次执行&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;表达式作为循环控制条件.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;do..done之间为until循环的循环体，每次循环时执行其中的命令表2&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;until循环结束后将执行done后的语句&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;until执行的步骤:&lt;/p&gt;
+
+&lt;p&gt;执行命令表1，并检测表达式的值，若表达式非0,则执行循环体命令表2一次，然后返回再次执行命令表1，并再次检验表达式的值，反复，直到表达式为0,循环结束&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+i=1
+echo &quot;enter N&quot;
+read N
+until
+    echo &quot;hello&quot;    #hello输出次数比下面的echo多1
+test $i -gt $N  #检测条件是i&amp;lt;N就执行
+do
+    RESULT=`expr $i \* $i`  
+    echo &quot;$i--------------$RESULT&quot;
+    i=$(($i+1))
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-until/&quot;&gt;until语法&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[sed总结]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-sed/" />
+  <id>http://localhost:4000/2014/05/03/shell-sed</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;sed [-n] program [file-list]
+sed [-n] [-f] program-file file-list&lt;/p&gt;
+
+&lt;p&gt;-n 表示除非sed使用了p指令或者是标识，否则不会将文本复制到标准输出。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# cat example 
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+第七行
+这是第八行
+
+[root@ sed]# sed -n &#39;2,8 p&#39; example
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;地址作用&lt;/h4&gt;
+
+&lt;p&gt;通过地址来确定需要处理的数据行，地址可以通过数字正则表达式或二者结合的方式。&lt;/p&gt;
+
+&lt;p&gt;当地址由数字构成的时候，数字表示行号，二行号作为地址可以用来选择某一行，作为一个特列，符号$表示出入中的最后一行。&lt;/p&gt;
+
+&lt;p&gt;用逗号分隔的两个行号表示以这两行为起止的行的范围(包括行数表示的那两行)。&lt;/p&gt;
+
+&lt;p&gt;正则表达式作为地址可以用来选择那些包含与正则表达式相匹配的字符串的行。&lt;/p&gt;
+
+&lt;p&gt;如果没有地址，sed将会选择所有的行&lt;/p&gt;
+
+&lt;h4&gt;指令&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;d   删除指令
+
+n   下一条指令
+
+a   追加指令
+
+i   插入指令
+
+c   修改指令
+
+s   替换指令
+
+p   打印指令
+
+w file  写指令
+
+r file  读取指令
+
+q   退出
+
+
+
+
+[root@ sed]# sed &#39;2,6 d&#39; example
+这是第一行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;追加指令&lt;/h5&gt;
+
+&lt;p&gt;a指令会在当前选择的行之后插入一行或多行文本。如果a指令前有两个地址，则会在每个地址之后添加文本&lt;/p&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;p&gt;除最后一行外，所有添加的文本的每一行都必须以反斜杠结尾，反斜杠用于指袋行末的换行符。没有反斜杠结尾的行被是做要添加到文本的末尾&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#filename:append
+#分贝在第四行和最后一行添加分隔符
+
+4 a\
+----------------    #指令的最后一行，所以不用添加\
+$ a\
+----------------
+
+
+[root@ sed]# sed -f append  example
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+----------------
+这是第五行
+六行
+第七行
+这是第八行
+----------------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;打印指令&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# sed &#39;/六/p&#39; example
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+六行
+第七行
+这是第八行
+
+
+由于没有使用-n选项，所有的行都被显示输出
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;注意:&lt;/h5&gt;
+
+&lt;p&gt;除非制定了-n否则sed将会在标准输出上打印所有的行，无论是否满足条件。使用-n选项后，sed仅仅在标准输出上打印满足的行。例如被p指令选定的行。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sed -f
+#filename:change
+#将第三行的内容修改为aaaaaaaaa
+#将第四行的内容修改为bbbbbbbbb
+#将第五行的内容修改为ccccccccc
+#
+3,5 c\
+aaaaaaaa\
+bbbbbbbb\
+cccccccc 
+
+
+[root@ sed]# ./change example
+这是第一行
+这是第二行
+aaaaaaaa
+bbbbbbbb
+cccccccc
+六行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;替换指令&lt;/h5&gt;
+
+&lt;p&gt;替换指令与vim中的非常相似&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[address [,address] ] s/pattern/replacement-string/[g][p][w file]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;g标识:sed的s指令对选定行的所有匹配字符串进行替换&lt;/p&gt;
+
+&lt;p&gt;p标识:将所有应用了替换操作的行输出到标准输出&lt;/p&gt;
+
+&lt;p&gt;w标识:他将输出送入file指定的文件中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# sed -n &#39;s/这是/This is/p&#39; example
+This is第一行
+This is第二行
+This is第五行
+This is第八行
+
+
+[root@ sed]# sed &#39;s/这是/This is/w temp&#39; example
+This is第一行
+This is第二行
+第三行
+第四行,文件的中部
+This is第五行
+六行
+第七行
+This is第八行
+
+[root@ sed]# cat temp
+This is第一行
+This is第二行
+This is第五行
+This is第八行
+[root@ sed]#
+
+
+
+#!/bin/bash
+#filename:
+
+for file    #默认以命令行参数作为in的对象
+do
+    echo $file
+    cp $file ftemp
+    #将ftemp中所有的is替换为IS，
+    #MY替换为my，PAPER替换为paper
+    sed &#39;s/is/IS/g
+         s/MY/my/g
+         s/PAPER/paper/g
+        &#39;  ftemp &amp;gt; $file
+done 
+rm -rf ftemp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;插入指令&lt;/h5&gt;
+
+&lt;p&gt;插入指令是将文本添加到选定行之前&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/第/ i\
+-----下一行有&quot;第&quot;字出现------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;下一条指令&lt;/h5&gt;
+
+&lt;p&gt;n指令输出当前选择的行，然后从输入中读取下一行，并且从sed程序中的下一条指令开始对新读入的行进行处理&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#使用n指令跳过文件中的第3行
+#表示对如果是第三行则使用n指令，然后使用p指令，其他行直接使用p指令
+[root@ sed]# cat next
+3n
+p
+[root@ sed]# sed -n -f next example
+这是第一行
+这是第二行
+第四行,文件的中部
+这是第五行
+六行
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;文件读入指令&lt;/h5&gt;
+
+&lt;p&gt;r指令读出指定文件的内容并添加到选定的行之后&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#在文件example中出现&#39;六&#39;的行下方读入文件example
+[root@ sed]# sed &#39;/六/r next&#39; example
+这是第一行
+这是第二行
+第三行
+第四行,文件的中部
+这是第五行
+六行
+3 n
+p
+第七行
+这是第八行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5&gt;控制结构&lt;/h5&gt;
+
+&lt;p&gt;!取反操作:使得sed后面与其同一行的指令作用于没有被该指令选择的每一行地址上&lt;/p&gt;
+
+&lt;p&gt;3!d:删除除了第三行以外的所有的行
+3,6 !w file :将除3-6行以外所有额行写入到file中&lt;/p&gt;
+
+&lt;h5&gt;Hold和Pattern&lt;/h5&gt;
+
+&lt;p&gt;sed有两个缓冲区，Pattern和Hold区，所有的命令都是工作在Pattern区。Pattern区保存着sed刚刚从输入中读取的行。&lt;/p&gt;
+
+&lt;p&gt;Hold作为临时缓冲区，可以在操作Pattern时候用来暂存数据。将数据放入Hold区之前内容为空&lt;/p&gt;
+
+&lt;p&gt;Pattern和Hold之间传送数据的指令:&lt;/p&gt;
+
+&lt;p&gt;g   将Hold区中的内容复制到Pattern中，Pattern中原来的内容将会丢失&lt;/p&gt;
+
+&lt;p&gt;G   将一个换行符和Hold区中的内容追加到Pattern区的内容之后&lt;/p&gt;
+
+&lt;p&gt;h   将Pattern区的内容复制到Hold区，Hold中原来的数据会丢失&lt;/p&gt;
+
+&lt;p&gt;H   将一个换行符和Pattern区中的内容附加到Hold区中的内容之后&lt;/p&gt;
+
+&lt;p&gt;x   交换Pattern和Hold缓冲区的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@ sed]# sed &#39;G&#39; example
+这是第一行
+
+这是第二行
+
+第三行
+
+第四行,文件的中部
+
+这是第五行
+
+六行
+
+第七行
+
+这是第八行
+
+[root@ sed]# 
+
+
+
+
+[root@ sed]# cat pandh
+2,$G
+h
+$!d
+[root@ sed]# sed -f pandh example
+这是第八行
+第七行
+六行
+这是第五行
+第四行,文件的中部
+第三行
+这是第二行
+这是第一行
+[root@ sed]#
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将Pattern和Hold区域配合使用，反序输出文件example中的内容&lt;/p&gt;
+
+&lt;p&gt;$表示最后一行&lt;/p&gt;
+
+&lt;p&gt;2,$表示2到最后一行&lt;/p&gt;
+
+&lt;p&gt;!表示取反&lt;/p&gt;
+
+&lt;p&gt;$!表示除最后一行的其他行&lt;/p&gt;
+
+&lt;p&gt;具体的步骤:&lt;/p&gt;
+
+&lt;p&gt;1).sed将输入的第一行(&quot;这是第一行&quot;)内容读入到Pattern中&lt;/p&gt;
+
+&lt;p&gt;指令2,$G不会处理第一行，G只会处理2到最后一行&lt;/p&gt;
+
+&lt;p&gt;h指令将第一行从Pattern复制到Hold&lt;/p&gt;
+
+&lt;p&gt;$!d删除了Pattern中的内容，所以Pattern中没有任何内容，所以sed什么也不显示&lt;/p&gt;
+
+&lt;p&gt;2).sed将输入中的第二行(&quot;这是第二行&quot;)读入到Pattern&lt;/p&gt;
+
+&lt;p&gt;指令2,$G会将Hold中的内容(&quot;这是第一行&quot;),添加到Pattern，此时Pattern中的内容是&quot;这是第二行\n这是第一行&quot;&lt;/p&gt;
+
+&lt;p&gt;指令h将Pattern中的内容复制到Hold&lt;/p&gt;
+
+&lt;p&gt;$!d删除了输入中的第二行内容，所以sed什么也不显示。&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-sed/&quot;&gt;sed总结&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[shell中获取变量的长度]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/2014/05/03/shell-length-var/" />
+  <id>http://localhost:4000/2014/05/03/shell-length-var</id>
+  <published>2014-05-03T00:00:00+00:00</published>
+  <updated>2014-05-03T00:00:00+00:00</updated>
+  <author>
+    <name>Neo</name>
+    <uri>http://localhost:4000</uri>
+    <email>ucshell.neo@gmail.com</email>
+  </author>
+  <content type="html">&lt;pre&gt;&lt;code&gt;var=&quot;1234567890&quot;
+length=${#var}
+echo length
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;打印数组长度&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo ${#array[*]}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;打印数组中所有的值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo ${array[*]}
+或是
+echo ${array[@]}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;列出数组索引&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo ${!array[*]}
+或是
+echo ${!array[@]}
+&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/2014/05/03/shell-length-var/&quot;&gt;shell中获取变量的长度&lt;/a&gt; was originally published by Neo at &lt;a href=&quot;http://localhost:4000&quot;&gt;高手之路&lt;/a&gt; on May 03, 2014.&lt;/p&gt;</content>
+</entry>
+
+</feed>

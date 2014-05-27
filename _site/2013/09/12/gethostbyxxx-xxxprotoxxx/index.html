@@ -1,0 +1,424 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>gethostbyxxx与xxxprotoxxx函数 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="gethostbyxxx, xxxprotoxxx">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gethostbyxxx与xxxprotoxxx函数">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/09/12/gethostbyxxx-xxxprotoxxx/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/09/12/gethostbyxxx-xxxprotoxxx/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>gethostbyxxx与xxxprotoxxx函数</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <hr />
+
+<p>什么是可重入函数与不可重入函数？</p>
+
+<p>在实时系统中，常常会有多个任务调用同一个函数的情况，如果这个函数是不可重入的函数的话，那么不同的任务调用这个函数的时候可能修改其他任务调用这个函数的数据，从而导致不可预料的后果。</p>
+
+<p>所谓的可重入是指一个可以被多个任务调用的过程，任务在调用时不必担心数据是否会出错。不可重入函数在实时系统设计中被视为不安全的函数</p>
+
+<p>满足下列条件的函数是不可重入函数：</p>
+
+<p>(1).函数体内使用了静态的数据结构</p>
+
+<p>(2).函数体内调用了malloc或是free函数</p>
+
+<p>(3).函数体内调用了标准IO函数</p>
+
+<hr />
+
+<pre><code>void sethostent(int stayopen);
+void endhostent(void);
+
+struct hostent *gethostbyname(const char *name);
+struct hostent *gethostbyaddr(const void *addr,
+                                     socklen_t len, int type);
+</code></pre>
+
+<p>第一个参数指向一个struct in_addr的结构，需要将查询主机的ip填写到这个结构中</p>
+
+<p>第二个参数len表示第一个参数所指向的区域的大小</p>
+
+<p>第三个参数typd指定要查询主机IP地址的类型IPV4就是AF_INET</p>
+
+<hr />
+
+<p>注意：</p>
+
+<p><strong>gethostbuname与gethostbyaddr是不可重入的函数，由于传出值为一块静态的内存地址，当另一次查询到来的时候这块区域会被占用</strong></p>
+
+<hr />
+
+<pre><code>struct hostent
+{
+    char* h_name;
+    char** h_aliases;
+    int h_addrtype;
+    int h_length;
+    char** h_addr_list;
+};
+#define h_addr h_addr_list[0]  
+/*  为了向前兼容所定义的宏  */
+</code></pre>
+
+<p>h_name 主机的官方名称 如www.baidu.com</p>
+
+<p>h_aliases 主机别名，可能有多个</p>
+
+<p>h_addrtype 主机地址的类型 AF_INET位ipv4，AF_INET6为ipv6</p>
+
+<p>h_length ip地址的长度对于ipv4来讲是4</p>
+
+<p>h_addr_list 主机ip地址的链表，每一个都是h_length的长度</p>
+
+<p><strong>特别注意</strong>:</p>
+
+<p>h_addr_list的用法如下：</p>
+
+<pre><code>printf("IP: %s\n", inet_ntoa(（struct in_addr*）h-&gt;h_addr));
+</code></pre>
+
+<p>每次用的时候都习惯直接输出h_addr，但这样是错误的</p>
+
+<p>一定要注意,<strong>不能直接输出h_addr</strong></p>
+
+<hr />
+
+<p>xxxprotoxxx函数</p>
+
+<pre><code>void setprotoent(int stayopen);
+//打开文件/etc/protocols,当stayopen为1时，调用getprotobyname或者getprotobynumber查询协议时并不关闭文件
+
+void endprotoent(void);
+//关闭文件/etc/protocols
+
+struct protoent *getprotoent(void);
+//从文件/etc/protocols中读取一行并返回指向struct protoent的指针，不过需要实现打开/etc/protocols文件
+
+struct protoent *getprotobyname(const char *name);
+
+struct protoent *getprotobynumber(int proto);
+</code></pre>
+
+<hr />
+
+<pre><code>struct protoent
+{
+    char* p_name;       /*   协议的官方名称  */
+    char** p_aliases;   /*   别名列表       */
+    int p_proto;        /*   协议的值       */
+};
+</code></pre>
+
+<hr />
+
+<p>gethostbyname实例：</p>
+
+<pre><code>#include &lt;netdb.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+int main()
+{
+    char host[] = "www.baidu.com";
+    struct hostent* ht = NULL;
+
+    ht = gethostbyname(host);
+    printf("type : %s\n", AF_INET == ht-&gt;h_addrtype ? "AF_INET" : "AF_INET6");
+    printf("length : %s\n", ht-&gt;h_length);
+
+    int i = 0;
+    while(NULL != ht-&gt;h_addr_list[i])
+    {
+        printf("IP : %s\n", inet_ntoa((unsigned int*)ht-&gt;h_addr_list[i++]));
+    }
+
+    i = 0;
+    while(NULL != ht-&gt;h_aliases[i])
+    {
+        printf("alias %d: %s\n", i, ht-&gt;h_aliases[i]);
+    }
+    return 0;
+}   return 0;
+}
+</code></pre>
+
+<hr />
+
+<p>gethostbyname不可重入实例：</p>
+
+<pre><code>#include &lt;netdb.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+int main()
+{
+    char host1[] = "www.baidu.com";
+    char host2[] = "www.sohu.com";
+    struct hostent* ht = NULL;
+
+    struct hostent* ht1 = NULL;
+    struct hostent* ht2 = NULL;
+
+    ht1 = gethostbyname(host1); /*  www.baidu.com  */
+    ht2 = gethostbyname(host2); /*  www.sohu.com   */
+
+    int j = 0;
+    for(j; j&lt;2; j++)
+    {
+        if(0 == j)
+            ht = ht1;
+        else
+            ht = ht2;
+
+        if(ht)
+        {
+            int i = 0;
+            printf("get the host : %s addr\n", ht == ht1 ? host1 : host2);
+            printf("name : %s\n", ht-&gt;h_name);
+
+            printf("type : %s\n", AF_INET == ht-&gt;h_addrtype ? "AF_INET" : "AF_INET6");
+            printf("length : %s\n", ht-&gt;h_length);
+
+            int i = 0;
+            while(NULL != ht-&gt;h_addr_list[i])
+            {
+                printf("IP : %s\n", inet_ntoa((unsigned int*)ht-&gt;h_addr_list[i++]));
+            }
+
+            i = 0;
+            while(NULL != ht-&gt;h_aliases[i])
+            {
+                printf("alias %d: %s\n", i, ht-&gt;h_aliases[i]);
+            }
+        }
+    }
+    return 0;
+}
+</code></pre>
+
+<p>可以看到输出的IP都是相同的，所以gethostbyname是不可重用的，可以看到www.sohu.com的信息都被www.baidu.com覆盖了</p>
+
+<p>因此使用gethostbyname进行主机查询的时候函数返回后要马上将结果取出，否则会被后面的函数调用过程覆盖</p>
+
+<hr />
+
+<p>getprotobyname实例:</p>
+
+<pre><code>#include &lt;netdb.h&gt;
+#include &lt;stdio.h&gt;
+
+int main()
+{
+        const char* protocol_name[] = {"ip", "icmp", "udp", "tcp", NULL};
+        setprotoent(1);//打开
+        struct protoent* pt = NULL;
+        int j = 0;
+        while(NULL != protocol_name[j])
+        {
+                int i = 0;
+                pt = getprotobyname((const char*)&amp;protocol_name[j][0]);
+                if(NULL != pt)
+                {
+                        printf("protocol name : %s,", pt-&gt;p_name);
+                        if(NULL != pt-&gt;p_aliases)
+                        {
+                                printf("aliases name : ");
+                                while(pt-&gt;p_aliases[i])
+                                {
+                                        printf("%s ", pt-&gt;p_aliases[i]);
+                                        i++;
+                                }
+                                printf(",value:%d\n", pt-&gt;p_proto);
+                        }
+                }
+                j++;
+        }
+    endprotoent(); //关闭
+        return 0;
+}
+
+}
+</code></pre>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>gethostbyxxx与xxxprotoxxx函数</strong> was published on <time datetime="2013-09-12T07:18:49Z">September 12, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/09/stl-use-map/" title="map的使用">map的使用</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/08/mysql-include-header/" title="将mysql的头文件加入自动搜索">将mysql的头文件加入自动搜索</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>
