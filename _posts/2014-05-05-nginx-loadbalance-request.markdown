@@ -113,7 +113,6 @@ ngx_use_accept_mutex变量的赋值在ngx_event_process_init中，也就是每�
 nginx设计了两个队列:ngx_posted_accept_events(存放新链接事件的队列)和ngx_posted_events队列(存放普通事件的队列)，这两个队列都是ngx_event_t类型的双链表。
 
 
-
 	200 void
 	201 ngx_process_events_and_timers(ngx_cycle_t *cycle)
 	202 {
