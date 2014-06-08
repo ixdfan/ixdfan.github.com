@@ -1,0 +1,361 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>shell脚本的调试 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell脚本的调试">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/06/05/shell-debug/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/06/05/shell-debug/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>shell脚本的调试</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <hr />
+
+<h4>1. 使用set命令</h4>
+
+<p>set命令设置选项-x或是xtrace时候,在运行脚本的时候除了正常的出处之外,还会显示出代码运行前每行代码的扩展命令和变量,方便的观察脚本运行的情况,确定出错的位置</p>
+
+<p>如果在脚本文件中加入命令 set -x,那么在set之后执行的每一条命令以及加在命令行中的任何参数都会被显示处理.每一行之前都会加上加号(+),提示塔式跟踪输出的标识,shell中执行的shell跟踪命令会加两个加号即"++"</p>
+
+<pre><code>#!/bin/bash
+#filename:debug.sh
+#set -x     #此时set -x被注释掉了
+
+echo -n "Can you write device drivers? "
+read answer
+answer=`echo $answer | tr [a-z] [A-Z]`      #小写转大写
+
+if [ "$answer" = Y ] ; then                 #$answer要使用"",否则输入为空的时候会显示错误
+
+    echo "Wow, you must be very skilled"
+else
+
+    echo "Neither can I, I'm just an example shell script"
+fi
+</code></pre>
+
+<p>输出如下</p>
+
+<pre><code>[root@ script]# ./debug.sh 
+Can you write device drivers? y
+Wow, you must be very skilled
+[root@ script]# ./debug.sh 
+Can you write device drivers? n
+Neither can I, I'm just an example shell script
+</code></pre>
+
+<p>取消set -x的注释</p>
+
+<pre><code>#!/bin/bash
+#filename:debug.sh
+set -x      #取消注释               
+
+echo -n "Can you write device drivers? "
+read answer
+answer=`echo $answer | tr [a-z] [A-Z]`      #小写转大写
+
+if [ "$answer" = Y ] ; then         #$answer要使用"",否则输入为空的时候会显示错误
+
+    echo "Wow, you must be very skilled"
+else
+
+    echo "Neither can I, I'm just an example shell script"
+fi
+</code></pre>
+
+<p>输出如下</p>
+
+<pre><code>[root@ script]# ./debug.sh 
++ echo -n 'Can you write device drivers? '
+Can you write device drivers? + read answer         #前部分为正常的输出
+y
+++ echo y           #++表示在shell中执行shell命令的跟踪调用
+++ tr '[a-z]' '[A-Z]'
++ answer=Y
++ '[' Y = Y ']'
++ echo 'Wow, you must be very skilled'
+Wow, you must be very skilled
+[root@ script]# ./debug.sh 
++ echo -n 'Can you write device drivers? '
+Can you write device drivers? + read answer
+n
+++ tr '[a-z]' '[A-Z]'
+++ echo n
++ answer=N
++ '[' N = Y ']'
++ echo 'Neither can I, I'\''m just an example shell script'
+Neither can I, I'm just an example shell script
+</code></pre>
+
+<p>set中关闭-x选项的方法是使用+x来关闭,这样就可以从某个点关闭选项,这在只需要调试一小段代码时候是非常有用的,只需要在代码错误区之前打开选项,在错误区域关闭选项就可以完成调试,这样就不会让程序显示一大堆无用信息</p>
+
+<pre><code>#!/bin/bash
+#filename:debug.sh
+set -x              #开启
+
+echo -n "Can you write device drivers? "
+read answer
+answer=`echo $answer | tr [a-z] [A-Z]`      #小写转大写
+set +x              #在此处关闭, 一下内容不会跟踪
+if [ "$answer" = Y ] ; then                 #$answer要使用"",否则输入为空的时候会显示错误
+
+    echo "Wow, you must be very skilled"
+else
+
+    echo "Neither can I, I'm just an example shell script"
+fi
+</code></pre>
+
+<p>输出
+    [root@ script]# ./debug.sh
+    + echo -n 'Can you write device drivers? '
+    Can you write device drivers? + read answer         #前部分为正常的输出
+    y
+    ++ echo y               #++表示在shell中执行shell命令的跟踪调用
+    ++ tr '[a-z]' '[A-Z]'
+    + answer=Y
+    + set +x                #set +x关闭了跟踪
+    Wow, you must be very skilled
+    [root@ script]# ./debug.sh
+    + echo -n 'Can you write device drivers? '
+    Can you write device drivers? + read answer
+    n
+    ++ echo n
+    ++ tr '[a-z]' '[A-Z]'
+    + answer=N
+    + set +x
+    Neither can I, I'm just an example shell script</p>
+
+<hr />
+
+<h4>2. echo简单的输出</h4>
+
+<pre><code>#!/bin/bash
+#filename:debug.sh
+set -x              #开启
+
+echo -n "Can you write device drivers? "
+read answer
+answer=`echo $answer | tr [a-z] [A-Z]`      #小写转大写
+set +x              #在此处关闭, 一下内容不会跟踪
+if [ "$answer" = Y ] ; then                 #$answer要使用"",否则输入为空的时候会显示错误
+
+    echo "Wow, you must be very skilled"
+    echo "The answer is $answer"
+else
+
+    echo "Neither can I, I'm just an example shell script"
+    echo "The answer is $answer"
+fi
+</code></pre>
+
+<p>但是这种方法很繁琐,每次用完后还要再删除echo的输出</p>
+
+<hr />
+
+<h4>3. echo调试层次输出</h4>
+
+<pre><code>#!/bin/bash
+debug=1     #一键开启调试信息
+test "$debug" -gt 0 &amp;&amp; echo "Debug is on"
+echo -n "Can you write device drivers? "
+read answer
+test "$debug" -gt 0 &amp;&amp; echo "The answer is $answer"
+answer=`echo $answer | tr [a-z] [A-Z]`
+
+if [ "$answer" = Y ] ; then     
+
+    echo "Wow, you must be very skilled"
+    test $debug -gt 0 &amp;&amp; echo "The answer is $answer"
+else
+
+    echo "Neither can I, I'm just an example shell script"
+    test $debug -gt 0 &amp;&amp; echo "The answer is $answer"
+fi
+</code></pre>
+
+<p>使用debug来开启或是关闭调试信息的输出,并且可以按照层次来显示信息,例如test $debug -gt 2,则将debug改为对应层次的值即可实现不同层次的输出</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>shell脚本的调试</strong> was published on <time datetime="2014-06-05T00:00:00+00:00">June 05, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/06/05/kernel-memory-align/" title="内存对齐的实现">内存对齐的实现</a></li>
+    
+      <li><a href="http://localhost:4000/2014/06/02/nginx-share-memory/" title="nginx的slab机制">nginx的slab机制</a></li>
+    
+      <li><a href="http://localhost:4000/2014/05/20/the-algorithm-%E9%98%B6%E4%B9%98%E7%9B%B8%E5%85%B3/" title="100介乘末尾有多少个零">100介乘末尾有多少个零</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

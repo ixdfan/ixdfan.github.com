@@ -121,8 +121,43 @@
   <h3><a href="http://localhost:4000/articles/">Articles</a></h3>
       
   <article>
+    <h2><a href="http://localhost:4000/2014/06/05/shell-debug/" title="shell脚本的调试">shell脚本的调试</a></h2>
+    <p>1. 使用set命令set命令设置选项-x或是xtrace时候,在运行脚本的时候除了正常的出处之外,还会显示出代码运行前每行代码的扩展命令和变量,方便的观察脚本运行的情况,确定出错的位置如果在脚本文件中加入命令 set -x,那么在s...</p>
+  </article>
+      
+  <article>
+    <h2><a href="http://localhost:4000/2014/06/05/kernel-memory-align/" title="内存对齐的实现">内存对齐的实现</a></h2>
+    <p>首先我们看如何计算倍数的问题:其实这个原理是比较简单的,例如:size = 8;8的二进制====>1000如果一个数是8的倍数那么它的二进制形式一定要满足至少为1000的形式,并且我们知道后面的3个0加起来最多也就是7,如果存在后面...</p>
+  </article>
+      
+  <article>
+    <h2><a href="http://localhost:4000/2014/06/02/nginx-share-memory/" title="nginx的slab机制">nginx的slab机制</a></h2>
+    <p>Nginx的slab机制主要是两点:缓存与对齐;缓存就是预先分配,提前申请号内存并对被踩做好划分形成内存池;对齐就是内存的申请与分配总是按照2的幂次方进行,即内存的大小总是8,16,32,64等,例如虽然只申请33个字节内存,但是还是...</p>
+  </article>
+      
+  <article>
+    <h2><a href="http://localhost:4000/2014/05/20/the-algorithm-%E9%98%B6%E4%B9%98%E7%9B%B8%E5%85%B3/" title="100介乘末尾有多少个零">100介乘末尾有多少个零</a></h2>
+    <p>100!末尾有多少个零??网上都说在编程之美上有,但是我好像不记得看过!之前看到了一个非常好用的方法:计算方法如下:x为要计算的数,n为该结果末尾0的个数n = [x/5^1] + [x/5^2] + [x/5^3] + [x/5^4...</p>
+  </article>
+      
+  <article>
+    <h2><a href="http://localhost:4000/2014/05/20/kernel-macro-min-function/" title="kernel中min宏函数">kernel中min宏函数</a></h2>
+    <p>#define min(x,y) ({ \    const typeof(x) _x = (x);   \    const typeof(y) _y = (y);   \    (void)(&amp;_x == &amp;_y)...</p>
+  </article>
+      
+  <article>
+    <h2><a href="http://localhost:4000/2014/05/11/nginx-process-message/" title="nginx进程间通信">nginx进程间通信</a></h2>
+    <p>Nginx中采用的是socketpair来创建未命名套接字来进行父子进程之间通信的.22 typedef struct {23     ngx_pid_t           pid;24     int               ...</p>
+  </article>
+      
+  <article>
     <h2><a href="http://localhost:4000/2014/05/10/sed-bat-change-file-var-name/" title="sed批量修改文件中的名字">sed批量修改文件中的名字</a></h2>
     <p>比如我们想批量将文件中的某个单词例如shell替换成my_shell,此时可以使用sedsed -i "s/shell/my_shell/g" `grep -l "\&lt;shell\&gt;" *`grep  -l表示找到含有sh...</p>
+  </article>
+      
+  <article>
+    <h2><a href="http://localhost:4000/2014/05/10/security-hiden-file/" title="覆盖性加载">覆盖性加载</a></h2>
+    <p>今天看到了一个非常非常非常非常好的隐藏目录的方法,使人难以访问.例如我们可以创建/opt/tmp目录.并将所有的工具都放在该目录下,然后切换到这个目录,运行要运行的程序[root@ tmp]# pwd/opt/tmp[root@ tm...</p>
   </article>
       
   <article>
@@ -141,6 +176,11 @@
   </article>
       
   <article>
+    <h2><a href="http://localhost:4000/2014/05/07/nginx-module/" title="nginx模块--handler|filter|upstream">nginx模块--handler|filter|upstream</a></h2>
+    <p>Nginx的模块根据主要功能分为以下四个类别:1.handlers:协同完成客户端请求的处理、产生响应数据2.filter:对handlers产生的响应数据做各种过滤处理(增删改)，例如ngx_http_not_module_filt...</p>
+  </article>
+      
+  <article>
     <h2><a href="http://localhost:4000/2014/05/07/mysql-c-connect-mysql-server/" title="使用c连接到mysql数据库">使用c连接到mysql数据库</a></h2>
     <p>mysql_init():准备连接MYSQL*  mysql_init(MYSQL* mysql)实例:/*  test.c  */#include &lt;stdio.h&gt;#include &lt;mysql.h&gt;  /...</p>
   </article>
@@ -153,11 +193,6 @@
   <article>
     <h2><a href="http://localhost:4000/2014/05/06/nginx-config/" title="nginx配置解析">nginx配置解析</a></h2>
     <p>为了统一配置项目的解析，nginx利用ngx_command_s数据类型对所有的nginx配置项目进行统一的描述78 struct ngx_command_s {79     ngx_str_t             name;  ...</p>
-  </article>
-      
-  <article>
-    <h2><a href="http://localhost:4000/2014/05/05/nginx-per-cpu/" title="nginx的多核绑定">nginx的多核绑定</a></h2>
-    <p>多核绑定对于多核平台的优化，最核心的思路就是per-cpu处理，这样才能做到性能按cpu线性扩展。nginx在多核平台上针对负载均衡和优化所做的工作，就是提供了worker_cpu_affinity配置指令，该指令可以将工作进程固定在...</p>
   </article>
   
 </div><!-- /#index -->

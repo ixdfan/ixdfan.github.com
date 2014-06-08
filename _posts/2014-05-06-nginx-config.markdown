@@ -375,11 +375,23 @@ ngx_conf_parse总体将配置内容的解析过程分为三部分
 	18 typedef struct ngx_buf_s  ngx_buf_t;
 	19 
 	20 struct ngx_buf_s {
-	21     u_char          *pos;
-	22     u_char          *last;
-	23     off_t            file_pos;            
-	24     off_t            file_last;  
+			/*
+			*	pos通常用来该哦啊素使用者保额次应该从pos这个位置开始处理内存中的数据
+			*	因为同一个ngx_buf_t很有可能被反复处理
+			*/
+	21     u_char          *pos;			
+			/*
+			*	last通常表示有效的内容到此为止
+			*	pos与last之间的内容是希望被nginx处理的内容
+			*
+			*/
+	22     u_char          *last;			
+
+			/*	处理文件时候,file_pos与file_last的含义与处理内存时候的pos与last相同	*/
+	23     off_t            file_pos;  	
+	24     off_t            file_last;  	
 	25    
+			/*	start与end指向内存缓冲区的起始与结束位置,pos与last都是基于这段内存的	*/
 	26     u_char          *start;         /* start of buffer */
 	27     u_char          *end;           /* end of buffer */  
 	28     ngx_buf_tag_t    tag;
