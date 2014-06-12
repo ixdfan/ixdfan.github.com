@@ -3,7 +3,6 @@ author: UCSHELL
 comments: true
 date: 2014-02-26 12:01:34+00:00
 layout: post
-slug: epoll%e6%a8%a1%e5%9e%8b%e4%b8%80
 title: epoll模型
 wordpress_id: 1327
 categories:
@@ -129,7 +128,7 @@ events是分配好的epoll_event结构体数组，epoll将会把发生的事件�
 
 maxevents表示本次可以返回的最大事件数目，通常与预先分配的enents数组的大小是相等的;但是不能超过epoll_create的参数size，同时也必须大于0;
 
-timeout表示在没有检测到事件发生时最多等待的时间(单位毫秒)，如果为0,则表示epoll_wait在没有检测到事件发生时会立刻发挥，不会等待(有则获取，没有也不会阻塞等待)，取值-1则表示无限等待
+timeout表示在没有检测到事件发生时最多等待的时间(单位毫秒)，如果为0,则表示epoll_wait在没有检测到事件发生时会立刻返回，不会等待(有则获取，没有也不会阻塞等待)，取值-1则表示无限等待
 
 epoll\_wait与epoll\_pwait的区别是epoll_pwait可以通过最后一个参数设置阻塞过程中的信号屏蔽字
 

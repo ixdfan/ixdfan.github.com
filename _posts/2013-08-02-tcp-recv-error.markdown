@@ -3,9 +3,7 @@ author: UCSHELL
 comments: true
 date: 2013-08-02 16:13:59+00:00
 layout: post
-slug: '%e5%85%b3%e4%ba%8erecv%e7%9a%84%e6%95%85%e4%ba%8b'
 title: TCP编程RECV的错误
-wordpress_id: 409
 categories:
 - THE LINUX
 tags:

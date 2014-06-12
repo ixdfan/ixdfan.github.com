@@ -1,9 +1,5 @@
 ---
-author: UCSHELL
-comments: true
-date: 2014-02-27 14:41:16+00:00
 layout: post
-slug: epoll%e7%bc%96%e7%a8%8b%e5%ae%9e%e4%be%8b
 title: epoll编程实例
 wordpress_id: 1342
 categories:
@@ -176,6 +172,7 @@ tags:
 
 
 总的来说不难，主要的工作流程同select类似:  
+
 1. 建立socket  
 2. bind绑定地址  
 3. listen监听  
@@ -186,7 +183,8 @@ tags:
 * 如果发生事件的不是sockfd时候，表示是客户端发送了数据，读取数据即可
 
 #### 需要注意的是:
+
 * 对于ET模式一定要一次性读完所有的数据，errno为EAGAIN才表示读取完毕
 * 对于LT模式只要正常读取即可，因为假如有数据没有读取完毕，那么epoll_wait会一直通知你让你去读
 
-errno参考文章[《errno中EAGAIN的含义》](http://ucshell.com/archives/1339)
+
