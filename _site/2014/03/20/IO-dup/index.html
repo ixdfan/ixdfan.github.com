@@ -1,0 +1,509 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>dup与dup2函数 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="IO">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dup与dup2函数">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2014/03/20/IO-dup/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2014/03/20/IO-dup/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+    
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#the linux" title="view all
+posts">the linux <span style="margin-left:10px;">(19)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#other" title="view all
+posts">other <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#life" title="view all
+posts">life <span style="margin-left:10px;">(7)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#c\c++" title="view all
+posts">c\c++ <span style="margin-left:10px;">(25)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#win32asm" title="view all
+posts">win32asm <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#datebase" title="view all
+posts">datebase <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#linux" title="view all
+posts">linux <span style="margin-left:10px;">(26)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#tool" title="view all
+posts">tool <span style="margin-left:10px;">(22)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#algorithm" title="view all
+posts">algorithm <span style="margin-left:10px;">(14)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#操作系统" title="view all
+posts">操作系统 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#剑指offer" title="view all
+posts">剑指offer <span style="margin-left:10px;">(6)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#信号" title="view all
+posts">信号 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#网络编程" title="view all
+posts">网络编程 <span style="margin-left:10px;">(13)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#编程珠玑" title="view all
+posts">编程珠玑 <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#gdb" title="view all
+posts">gdb <span style="margin-left:10px;">(12)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#nginx" title="view all
+posts">nginx <span style="margin-left:10px;">(17)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#vim" title="view all
+posts">vim <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#线程" title="view all
+posts">线程 <span style="margin-left:10px;">(9)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#makefile" title="view all
+posts">makefile <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#reading" title="view all
+posts">reading <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#stl" title="view all
+posts">stl <span style="margin-left:10px;">(11)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#树" title="view all
+posts">树 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#shell" title="view all
+posts">shell <span style="margin-left:10px;">(15)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#sed" title="view all
+posts">sed <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#awk" title="view all
+posts">awk <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#进程" title="view all
+posts">进程 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#排序" title="view all
+posts">排序 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#network" title="view all
+posts">network <span style="margin-left:10px;">(3)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#mysql" title="view all
+posts">mysql <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#security" title="view all
+posts">security <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#kernel" title="view all
+posts">kernel <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+</ul>
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>dup与dup2函数</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>有时候我们希望将标准输入重定向到一个文件中去，或者将标准输出重定向到一个网络链接(例如CGI编程)，可以使用dup与dup2函数实现;</p>
+
+<pre><code>   int dup(int oldfd);
+   int dup2(int oldfd, int newfd);
+</code></pre>
+
+<p>dup函数创建一个新的文件描述符，该新文件描述符和原有文件描述符oldfd指向相同的文件、管道或是网络链接。
+并且dup返回的文件描述符总是取系统当前可用的最小整数值。</p>
+
+<p>dup与dup2类似，不过它将返回一个不小于newfd的整数值</p>
+
+<h5>注意:</h5>
+
+<p>dup与dup2并创建的新描述符不会继承原文件描述符的属性，例如non-blocking</p>
+
+<pre><code>int main(int argc, char** argv)
+{
+    const char* ip = "127.0.0.1";
+    int port = 80;
+
+    struct sockaddr_in address;
+    bzero(&amp;address, sizeof(address));
+
+    address.sin_family = AF_INET;
+    address.sin_port = htons(port);
+    inet_pton(AF_INET, ip, &amp;address.sin_addr);
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    assert(sock &gt; 0);
+
+    int ret = bind(sock, (struct sockaddr*)&amp;address, sizeof(address));
+    assert(ret != -1);
+
+    ret = listen(sock, 5);
+    assert(ret != -1);
+
+    struct sockaddr_in client;
+    socklen_t client_addrlength = sizeof(client);
+    int connfd = accept(sock, (struct sockaddr*)&amp;client, &amp;client_addrlength);
+    if (connfd &lt; 0) {
+        printf("errno is %s\n", strerror(errno));
+
+    } else {
+        close(STDOUT_FILENO);
+        /* 将connfd重定位到标准输出, STDOUT_FILENO值为1, 
+        因为dup总是返回系统中最小的可用的文件描述符，fd = 1 */
+        int fd = dup(connfd);
+        printf("abcd\n");
+        close(connfd);
+    }
+
+    close(sock);
+
+    return 0;
+}
+</code></pre>
+
+<p>服务器输出到标准输输出的内容("abcd\n")直接发送到了客户链接对应的socket上，因此printf调用的输出将被客户端获得(而不会显示在服务器终端上)，这就是CGI服务器的基本工作原理;</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+    
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#the linux" title="view all
+posts">the linux <span style="margin-left:10px;">(19)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#other" title="view all
+posts">other <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#life" title="view all
+posts">life <span style="margin-left:10px;">(7)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#c\c++" title="view all
+posts">c\c++ <span style="margin-left:10px;">(25)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#win32asm" title="view all
+posts">win32asm <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#datebase" title="view all
+posts">datebase <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#linux" title="view all
+posts">linux <span style="margin-left:10px;">(26)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#tool" title="view all
+posts">tool <span style="margin-left:10px;">(22)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#algorithm" title="view all
+posts">algorithm <span style="margin-left:10px;">(14)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#操作系统" title="view all
+posts">操作系统 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#剑指offer" title="view all
+posts">剑指offer <span style="margin-left:10px;">(6)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#信号" title="view all
+posts">信号 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#网络编程" title="view all
+posts">网络编程 <span style="margin-left:10px;">(13)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#编程珠玑" title="view all
+posts">编程珠玑 <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#gdb" title="view all
+posts">gdb <span style="margin-left:10px;">(12)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#nginx" title="view all
+posts">nginx <span style="margin-left:10px;">(17)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#vim" title="view all
+posts">vim <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#线程" title="view all
+posts">线程 <span style="margin-left:10px;">(9)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#makefile" title="view all
+posts">makefile <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#reading" title="view all
+posts">reading <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#stl" title="view all
+posts">stl <span style="margin-left:10px;">(11)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#树" title="view all
+posts">树 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#shell" title="view all
+posts">shell <span style="margin-left:10px;">(15)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#sed" title="view all
+posts">sed <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#awk" title="view all
+posts">awk <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#进程" title="view all
+posts">进程 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#排序" title="view all
+posts">排序 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#network" title="view all
+posts">network <span style="margin-left:10px;">(3)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#mysql" title="view all
+posts">mysql <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#security" title="view all
+posts">security <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#kernel" title="view all
+posts">kernel <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+</ul>
+
+
+        </div>
+        <p class="byline"><strong>dup与dup2函数</strong> was published on <time datetime="2014-03-20T00:00:00+00:00">March 20, 2014</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/06/10/linux-heart-packet/" title="简单的心跳包机制">简单的心跳包机制</a></li>
+    
+      <li><a href="http://localhost:4000/2014/06/06/shell-sed-error/" title="sed error:unterminated `s' command">sed error:unterminated `s' command</a></li>
+    
+      <li><a href="http://localhost:4000/2014/06/05/shell-debug/" title="shell脚本的调试">shell脚本的调试</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

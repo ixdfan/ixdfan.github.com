@@ -1,0 +1,564 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>进程的调度 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="进程">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程的调度">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/11/11/%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/11/11/%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+    
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#the linux" title="view all
+posts">the linux <span style="margin-left:10px;">(19)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#other" title="view all
+posts">other <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#life" title="view all
+posts">life <span style="margin-left:10px;">(7)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#c\c++" title="view all
+posts">c\c++ <span style="margin-left:10px;">(25)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#win32asm" title="view all
+posts">win32asm <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#datebase" title="view all
+posts">datebase <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#linux" title="view all
+posts">linux <span style="margin-left:10px;">(26)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#tool" title="view all
+posts">tool <span style="margin-left:10px;">(22)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#algorithm" title="view all
+posts">algorithm <span style="margin-left:10px;">(14)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#操作系统" title="view all
+posts">操作系统 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#剑指offer" title="view all
+posts">剑指offer <span style="margin-left:10px;">(6)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#信号" title="view all
+posts">信号 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#网络编程" title="view all
+posts">网络编程 <span style="margin-left:10px;">(13)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#编程珠玑" title="view all
+posts">编程珠玑 <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#gdb" title="view all
+posts">gdb <span style="margin-left:10px;">(12)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#nginx" title="view all
+posts">nginx <span style="margin-left:10px;">(17)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#vim" title="view all
+posts">vim <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#线程" title="view all
+posts">线程 <span style="margin-left:10px;">(9)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#makefile" title="view all
+posts">makefile <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#reading" title="view all
+posts">reading <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#stl" title="view all
+posts">stl <span style="margin-left:10px;">(11)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#树" title="view all
+posts">树 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#shell" title="view all
+posts">shell <span style="margin-left:10px;">(15)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#sed" title="view all
+posts">sed <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#awk" title="view all
+posts">awk <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#进程" title="view all
+posts">进程 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#排序" title="view all
+posts">排序 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#network" title="view all
+posts">network <span style="margin-left:10px;">(3)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#mysql" title="view all
+posts">mysql <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#security" title="view all
+posts">security <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#kernel" title="view all
+posts">kernel <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+</ul>
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>进程的调度</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>处理机调度是多道程序操作系统调度的基础，是操作系统的核心问题。</p>
+
+<h5>1.引起进程调度的事件:</h5>
+
+<ul>
+<li>正在运行的进程运行完毕或发生某事情不能在继续运行</li>
+<li>运行中的进程因提出输入/输出请求二暂停运行</li>
+<li>在进程通信或同步过程中运行了某种原语操作，如P操作</li>
+<li>在可抢先式调度中，有一个比当前进程优先级更高的进程进入就绪队列</li>
+<li>在时间片轮转法中，时间片用完</li>
+</ul>
+
+
+<h5>2.调度的基本准则:</h5>
+
+<ul>
+<li>处理机利用率:尽可能让昂贵的处理机运行于繁忙之中</li>
+<li>吞吐量:单位是见内所完成进程的数量尽量多</li>
+<li>周转时间:从作业提交到作业完成所花费的时间，要让周转时间尽可能的小</li>
+<li>后备时间:从作业抵达系统后在外存等待进入内存的时间，越小越好</li>
+<li>等待时间:在就绪队列中等待调度进入处理机的时间</li>
+<li>响应时间:从提交请求到产生第一响应输出的时间</li>
+</ul>
+
+
+<h4>调度方法</h4>
+
+<h5>1.不可抢占方式(非剥夺)</h5>
+
+<h5>2.可抢占方式(剥夺)</h5>
+
+<p>剥夺调度有利于提高吞吐量和响应效率</p>
+
+<h5>3.进程调度算法比较</h5>
+
+<ul>
+<li>先来先服务(FCFS)</li>
+<li>短作业或短进程优先(SJF&amp;SPF)</li>
+<li>高响应比优先调度(HRRN)
+  响应比Rp = (等待时间+预计运行事件)/预计运行时间 = 周转时间/预计运行时间</li>
+<li>高优先级优先调度</li>
+<li>时间片轮转调度</li>
+<li>多级反馈队列调度</li>
+</ul>
+
+
+<h4>先来先服务(FCFS)</h4>
+
+<p>该算法即用于作业调度，又用于进程调度,
+属于不可剥夺算法，表面上他是对所有作业都公平，但是如果一个长作业先到达，会使后面的短作业等待很长时间;</p>
+
+<h5>算法特点:</h5>
+
+<ul>
+<li>算法简单，效率低</li>
+<li>对长作业比较有利，对短作业不利</li>
+<li>有利于CPU繁忙型，不利于I/O繁忙型</li>
+</ul>
+
+
+<h4>短作业或短进程优先(SJF&amp;SPF)</h4>
+
+<p>短作业调度算法从后备队列中选择一个或若干个估计运行时间最短的作业，将他们调入内存运行</p>
+
+<p>短进程优先调度算法，从就绪队列中选择一个估计运行时间最短的进程，将处理机分配给他，并使之立即运行，直到完成或发生某事件二阻塞，才释放处理机。</p>
+
+<h5>SFJ调度算法的缺点:</h5>
+
+<ul>
+<li>对长作业不利，SJF调度算法中长作业当周转时间会增加，更严重的是，如果有一个长作业进入系统的后备队列，由于调度程序总是有限调度那些短作业(即便是后来的)，将导致长作业长期，</li>
+</ul>
+
+
+<h4>高优先级优先调度</h4>
+
+<p>该算法即用于作业调度，又用于进程调度;</p>
+
+<p>算法中的优先级longue描述作业运行的紧迫程度;</p>
+
+<p>在作业调度中，优先级调度算法每次从后备作业队列中选择优先级最高的作业将他们调入内存，分配必要的资源</p>
+
+<h5>优先级的分类</h5>
+
+<ul>
+<li><p>静态优先级
+优先级是在创建进程时确定的，且在进程的整个运行期间保持不变</p></li>
+<li><p>动态优先级
+在进程运行过程中，根据进程情况的变化动态调整优先级</p></li>
+</ul>
+
+
+<h4>高响应比优先调度(HRRN)</h4>
+
+<p>主要用于作业调度，该算法是对FCFS和SJF的一种综合平衡，同时考虑每个作业的等待时间和估计运行时间;
+每次进行作业调度时，先计算后备作业队列中每个作业当响应比，从中选出响应比最高的作业投入到运行。</p>
+
+<p>响应比:
+    <code>响应比Rp = (等待时间+要求服务时间)/要求服务时间</code></p>
+
+<p>根据公式:</p>
+
+<ul>
+<li>1.当作业的等待时间相同时，则要求服务时间越短，其响应比就越高，有利于短作业</li>
+<li>2.当要求服务时间相同时候，作业的响应比由其等待时间决定，等待时间越长，其响应比越高，因为他是先的是先来先服务。</li>
+<li>3.对于长作业，作业的响应比可以随等待时间的增加而提高，当其等待时间足够长，其响应比便可以升到很高，从而也获得处理机，克服了饥饿状态，兼顾了长作业。</li>
+</ul>
+
+
+<h4>时间片轮转调度</h4>
+
+<p>时间片轮转算法主要适用于分时系统，系统将所有就绪队列按到达时间的先后次序排成一个队列，进程调度程序总是选择就绪队列中第一个进程执行，也就是先来先服务的原则，但仅能运行一个时间片，用完时间片后，即使进程未完成其运行，它必须释放出(被剥夺)处理机给下一个就绪的进程，被剥夺的进程返回到就绪队列的末尾重新排队，等候再次运行。</p>
+
+<h4>多级反馈队列调度</h4>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+    
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#the linux" title="view all
+posts">the linux <span style="margin-left:10px;">(19)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#other" title="view all
+posts">other <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#life" title="view all
+posts">life <span style="margin-left:10px;">(7)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#c\c++" title="view all
+posts">c\c++ <span style="margin-left:10px;">(25)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#win32asm" title="view all
+posts">win32asm <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#datebase" title="view all
+posts">datebase <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#linux" title="view all
+posts">linux <span style="margin-left:10px;">(26)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#tool" title="view all
+posts">tool <span style="margin-left:10px;">(22)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#algorithm" title="view all
+posts">algorithm <span style="margin-left:10px;">(14)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#操作系统" title="view all
+posts">操作系统 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#剑指offer" title="view all
+posts">剑指offer <span style="margin-left:10px;">(6)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#信号" title="view all
+posts">信号 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#网络编程" title="view all
+posts">网络编程 <span style="margin-left:10px;">(13)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#编程珠玑" title="view all
+posts">编程珠玑 <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#gdb" title="view all
+posts">gdb <span style="margin-left:10px;">(12)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#nginx" title="view all
+posts">nginx <span style="margin-left:10px;">(17)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#vim" title="view all
+posts">vim <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#线程" title="view all
+posts">线程 <span style="margin-left:10px;">(9)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#makefile" title="view all
+posts">makefile <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#reading" title="view all
+posts">reading <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#stl" title="view all
+posts">stl <span style="margin-left:10px;">(11)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#树" title="view all
+posts">树 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#shell" title="view all
+posts">shell <span style="margin-left:10px;">(15)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#sed" title="view all
+posts">sed <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#awk" title="view all
+posts">awk <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#进程" title="view all
+posts">进程 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#排序" title="view all
+posts">排序 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#network" title="view all
+posts">network <span style="margin-left:10px;">(3)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#mysql" title="view all
+posts">mysql <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#security" title="view all
+posts">security <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#kernel" title="view all
+posts">kernel <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+</ul>
+
+
+        </div>
+        <p class="byline"><strong>进程的调度</strong> was published on <time datetime="2013-11-11T00:00:00+00:00">November 11, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/06/10/linux-heart-packet/" title="简单的心跳包机制">简单的心跳包机制</a></li>
+    
+      <li><a href="http://localhost:4000/2014/06/06/shell-sed-error/" title="sed error:unterminated `s' command">sed error:unterminated `s' command</a></li>
+    
+      <li><a href="http://localhost:4000/2014/06/05/shell-debug/" title="shell脚本的调试">shell脚本的调试</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>

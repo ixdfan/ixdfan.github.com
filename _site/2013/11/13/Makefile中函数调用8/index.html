@@ -1,0 +1,921 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Makefile中函数调用 &#8211; 高手之路</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Makefile中函数调用">
+<meta property="og:description" content="专注于linux下程序设计">
+<meta property="og:url" content="http://localhost:4000/2013/11/13/Makefile%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A88/">
+<meta property="og:site_name" content="高手之路">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/11/13/Makefile%E4%B8%AD%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A88/">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="高手之路 Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://localhost:4000">高手之路</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				<li><a href="http://localhost:4000" >Home</a></li>
+		        
+				<li><a href="http://localhost:4000/category/" >Category</a></li>
+		        
+				<li><a href="http://localhost:4000/posts/" >Posts</a></li>
+		        
+				<li><a href="http://localhost:4000/about/" >About</a></li>
+		        
+				<li><a href="http://localhost:4000/comment/" >Leave a message</a></li>
+		        
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+    
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#the linux" title="view all
+posts">the linux <span style="margin-left:10px;">(19)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#other" title="view all
+posts">other <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#life" title="view all
+posts">life <span style="margin-left:10px;">(7)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#c\c++" title="view all
+posts">c\c++ <span style="margin-left:10px;">(25)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#win32asm" title="view all
+posts">win32asm <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#datebase" title="view all
+posts">datebase <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#linux" title="view all
+posts">linux <span style="margin-left:10px;">(26)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#tool" title="view all
+posts">tool <span style="margin-left:10px;">(22)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#algorithm" title="view all
+posts">algorithm <span style="margin-left:10px;">(14)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#操作系统" title="view all
+posts">操作系统 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#剑指offer" title="view all
+posts">剑指offer <span style="margin-left:10px;">(6)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#信号" title="view all
+posts">信号 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#网络编程" title="view all
+posts">网络编程 <span style="margin-left:10px;">(13)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#编程珠玑" title="view all
+posts">编程珠玑 <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#gdb" title="view all
+posts">gdb <span style="margin-left:10px;">(12)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#nginx" title="view all
+posts">nginx <span style="margin-left:10px;">(17)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#vim" title="view all
+posts">vim <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#线程" title="view all
+posts">线程 <span style="margin-left:10px;">(9)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#makefile" title="view all
+posts">makefile <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#reading" title="view all
+posts">reading <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#stl" title="view all
+posts">stl <span style="margin-left:10px;">(11)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#树" title="view all
+posts">树 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#shell" title="view all
+posts">shell <span style="margin-left:10px;">(15)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#sed" title="view all
+posts">sed <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#awk" title="view all
+posts">awk <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#进程" title="view all
+posts">进程 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#排序" title="view all
+posts">排序 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#network" title="view all
+posts">network <span style="margin-left:10px;">(3)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#mysql" title="view all
+posts">mysql <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#security" title="view all
+posts">security <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#kernel" title="view all
+posts">kernel <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+</ul>
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      <h1>Makefile中函数调用</h1>
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>Makefile中函数调用： Makefile中函数调用使用$标识</p>
+
+<pre><code>$(function arguments)
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>${function arguments}
+</code></pre>
+
+<p>其中function标识函数名，arguments表示函数的参数列表。参数间可以以逗号","分隔，而函数名和参数之间用空格分隔
+注意：
+函数调用必须以$开头，以圆括号或花括号把函数名和参数括起来，函数中的参数可以是变量</p>
+
+<p>字符串处理函数：</p>
+
+<p>1.字符串替换函数</p>
+
+<pre><code>$(subst from,to,text)
+</code></pre>
+
+<p>函数功能：将字符串text中的from字符串替换成to
+返回值：返回被替代过后的字符串</p>
+
+<pre><code>main:
+
+        echo -n  "the result is :"
+        echo $(subst a,A,how are you, China?)
+.PHONY:main
+
+
+
+
+[root@localhost 01]# make -s
+the result is :how Are you, ChinA?
+</code></pre>
+
+<p>2.模式字符串替换函数</p>
+
+<pre><code>$(patsubst patterb,replacement,text)
+</code></pre>
+
+<p>函数功能：将字符串text中的patterb模式字符串替换成replacement模式</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(patsubst %.mk, %.o, makefile.mk.mk a.mk)
+.PHONY:main
+
+
+root@localhost 01]# make -s
+the result is :makefile.mk.o a.o
+</code></pre>
+
+<p>将.mk的结尾都替换成了.o结尾</p>
+
+<p>3.去空格函数</p>
+
+<pre><code>$(strip string)
+</code></pre>
+
+<p>函数功能：去除string开头和结尾的空字符</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(strip     hello world    )   #前后各有四个空格
+.PHONY:main
+
+
+[root@localhost 01]# make -s
+the result is :hello world
+</code></pre>
+
+<p>4.查找字符串函数</p>
+
+<pre><code>$(findstring find,in)
+</code></pre>
+
+<p>函数功能：在字符串in中查找find字符串</p>
+
+<p>返回值：找到则返回find字符串，否则返回空字符串</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(findstring he,hello)
+.PHONY:main
+
+
+[root@localhost 01]# make -s
+the result is :he
+</code></pre>
+
+<p>5.过滤函数</p>
+
+<pre><code>$(filter pattern, text)
+</code></pre>
+
+<p>函数功能：以pattern模式过滤text中字符串中的单词，保留符合模式pattern的单词，可以有多个模式。</p>
+
+<p>返回值:返回符合pattern模式的字符串</p>
+
+<pre><code>source := a.c b.c c.c d.h e f g
+main:
+        echo -n  "the result is :"
+        echo $(filter %.c %.h, $(source))
+.PHONY:main
+</code></pre>
+
+<p>保留了.c和.h文件</p>
+
+<pre><code>root@localhost 01]# make -s
+the result is :a.c b.c c.c d.h
+</code></pre>
+
+<p>6.反过滤函数</p>
+
+<pre><code>$(filter-out pattern, text)
+</code></pre>
+
+<p>函数功能：以pattern模式过滤text中字符串中的单词，去除符合模式pattern的单词，可以有多个模式。</p>
+
+<p>返回值:返回不符合pattern模式的字符串</p>
+
+<pre><code>source := a.c b.c c.c d.h e f g
+main:
+        echo -n  "the result is :"
+        echo $(filter-out %.c %.h, $(source))
+.PHONY:main
+
+[root@localhost 01]# make -s
+the result is :e f g
+</code></pre>
+
+<p>7.排序函数</p>
+
+<pre><code>$(sort list)
+
+
+main:
+        echo -n  "the result is :"
+        echo $(sort hello world chian hello)
+.PHONY:main
+
+
+
+[root@localhost 01]# make -s
+the result is :chian hello world
+</code></pre>
+
+<p>注意：sort会去掉list中相同的单词</p>
+
+<p>8.取单词函数</p>
+
+<pre><code>$(word n, text)
+</code></pre>
+
+<p>函数功能：取字符串text中第n个单词</p>
+
+<p>返回值：返回字符串text中第n个单词</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(word 2, hello world  hello chian)
+.PHONY:main
+
+[root@localhost 01]# make -s
+the result is :world
+</code></pre>
+
+<p>9.取单词串函数</p>
+
+<pre><code>$(wordlist &lt;s&gt;,,)&lt;/s&gt;
+</code></pre>
+
+<p>函数功能：从字符串text中取得s开始到e的单词串。</p>
+
+<p>返回值：返回字符串text中s到e的单词串</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(wordlist 1,2, hello world  hello chian)
+.PHONY:main
+
+[root@localhost 01]# make -s
+the result is :hello world
+</code></pre>
+
+<p>10.单词统计个数函数</p>
+
+<pre><code>$(words text)
+</code></pre>
+
+<p>函数功能：统计text中单词串中单词的个数</p>
+
+<p>返回值：返回text中的单词个数</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(words hello world  hello chian)
+.PHONY:main
+
+[root@localhost 01]# make -s
+the result is :4
+</code></pre>
+
+<p>11.首单词函数</p>
+
+<pre><code>$(firstword text)
+</code></pre>
+
+<p>函数功能：取字符串text中的第一个单词</p>
+
+<p>返回值：返回字符串text的第一个单词</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(firstword hello world  hello chian)
+.PHONY:main
+
+[root@localhost 01]# make -s
+the result is :hello
+</code></pre>
+
+<p>1.取目录函数</p>
+
+<pre><code>$(dir name)
+</code></pre>
+
+<p>函数功能：从文件名序列names中取出目录部分，目录部分是指最后一个"/"之前的，如果没有"/"则返回"./"</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(dir test.c /home/admin/test.c)
+.PHONY:main
+
+[root@localhost 01]# make -s
+the result is :./ /home/admin/
+</code></pre>
+
+<p>2.取文件函数</p>
+
+<pre><code>$(notdir name)
+</code></pre>
+
+<p>函数功能：从文件名序列names中取出非目录部分，非目录部分是指最后一个"/"之后
+    main:
+            echo -n  "the result is :"
+            echo $(dir test.c /home/admin/test.c)
+    .PHONY:main</p>
+
+<pre><code>[root@localhost 01]# make -s
+the result is :test.c test.c
+</code></pre>
+
+<p>3.去后缀函数</p>
+
+<pre><code>$(suffix name)
+</code></pre>
+
+<p>函数功能：从文件名序列name中取得各个文件名的后缀</p>
+
+<p>返回值：如果没有后缀名，则返回空字符</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(suffix test.c /home/admin/test.o file)
+.PHONY:main
+
+
+[root@localhost 01]# make -s
+the result is :.c .o
+</code></pre>
+
+<p>4.取前缀函数</p>
+
+<pre><code>$(basename name)
+</code></pre>
+
+<p>函数功能：从文件名序列name中取得各个文件名的前缀</p>
+
+<p>返回值：如果没有前缀，则返回空字符</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(basename test.c /home/admin/test.o file)
+.PHONY:main
+
+
+
+
+[root@localhost 01]# make -s
+the result is :test /home/admin/test file
+</code></pre>
+
+<p>5.加后缀函数</p>
+
+<pre><code>$(addsuffix suffix,name)
+</code></pre>
+
+<p>函数功能:把后缀suffix加到names中的每个单词后面。
+返回值：返回加过后缀的文件名序列</p>
+
+<pre><code>main:
+        echo -n  "the result is :"
+        echo $(addsuffix .c, a b c)
+.PHONY:main
+
+
+
+
+[root@localhost 01]# make -s
+the result is :a.c b.c c.c
+</code></pre>
+
+<p>6.加前缀函数</p>
+
+<pre><code>$(addprefix prefix, names...)
+</code></pre>
+
+<p>函数功能：把前缀prefix加到names中的每个单词前面</p>
+
+<pre><code>result := $(addprefix /home/admin/, text1.c test2.c test3.c)
+main:
+
+        echo -n  "the result is :"
+        echo $(result)
+.PHONY:main
+
+
+
+[root@localhost 01]# make -s
+the result is :/home/admin/text1.c /home/admin/test2.c /home/admin/test3.c
+</code></pre>
+
+<p>7.连接函数</p>
+
+<pre><code>$(join list1, list2)
+</code></pre>
+
+<p>函数功能：把list2中的单词对应的加到list1单词的后面</p>
+
+<pre><code>result := $(join /home/ /home/ /home/, test1.c test2.c teset3.c )
+main:
+
+        echo -n  "the result is :"
+        echo $(result)
+.PHONY:main
+
+
+
+[root@localhost 01]# make -s
+the result is :/home/admin/text1.c /home/admin/test2.c /home/admin/test3.c
+</code></pre>
+
+<p>1.foreach函数</p>
+
+<pre><code>$(foreach var, list, text)
+</code></pre>
+
+<p>var最好是一个变量名，list可以是一个表达式text中一般会使用var参数来依次枚举list中的单词</p>
+
+<p>这个函数的意思是，把参数list中的单词逐一取出放到参数var所指定的变量中，然后再执行text所包含的表达式。</p>
+
+<p>每一次会返回一个字符串，循环过程中，foreach所返回的每个字符串会以空格分隔，最后当整个循环结束时，foreach所返回的每个字符串所组成的整个字符串（以空格分隔）将会是foreach函数的返回值。</p>
+
+<pre><code>names := a b c d
+file := $(foreach n, $(names), $(n).c)
+main:
+
+        echo -n  "the result is :"
+        echo $(file)
+.PHONY:main
+
+
+[root@localhost 01]# make -s
+the result is :a.c b.c c.c d.c
+</code></pre>
+
+<p>注意：foreach的参数var是一个临时变量，因此foreach在执行完成后，var将不再起作用，其作用域只在foreach中</p>
+
+<p>2.if函数</p>
+
+<pre><code>$(if condition, then-part)
+$(if condition, then-part, else-part)
+</code></pre>
+
+<p>if函数中可以包含else部分，也可以不包含，所以if的参数可以是两个可以是三个
+condition表示一个条件表达式，如果该表达式为真，则返回非空字符串,因此then-part的表达式就会被执行，否则执行else-part表达式</p>
+
+<pre><code>a := 1
+b := 1
+result := $(if ifeq($(a), $(b)), a = 10, b =10)
+main:
+
+        echo -n  "the result is :"
+        echo $(result)
+.PHONY:main
+
+
+[root@localhost 01]# make -s
+the result is :a = 10
+</code></pre>
+
+<p>3.call函数
+call函数为用户创建一个自己定义的函数，用户可以写一个非常复杂的表达式，每次用到这个表达式的时候使用call函数转跳到该表达式处执行即可</p>
+
+<pre><code>$(call expression, parm1, parm2, parm3...)
+</code></pre>
+
+<p>make执行这个函数时候，expression参数中的变量，如$(1)、$(2)、$(3)等会被参数parm1, parm2, parm3依次取代
+expression的返回值就是call的返回值</p>
+
+<p>   strcat= $(1) $(2)
+    result := $(call strcat, a, b)
+    main:</p>
+
+<pre><code>        echo -n  "the result is :"
+        echo $(result)
+.PHONY:main
+
+
+[root@localhost 01]# make -s
+the result is :a b
+</code></pre>
+
+<p>4.orgin函数</p>
+
+<pre><code>$(orgin variable)
+</code></pre>
+
+<p>orgin函数操作变量的值，该函数可以将变量的定义信息返回给用户</p>
+
+<p>variable表示变量的名字，因此variable中不能使用$使用变量的值。</p>
+
+<p>orgin函数通过返回值告知用户这个变量的定义情况</p>
+
+<pre><code>undefined:      表示variable变量没有定义过
+default:        表示variable变量make工具的默认变量
+environment:    表示variable变量是一个环境变量并且当makefile执行时-e选项没有被打开
+file:       表示variable变量被定义在makefile中
+command line:   表示variable变量被命令行定义
+overrid:        表示variable变量被override指示符重新定义
+automatic:      表示variable变量是一个命令运行中的自动化变量
+</code></pre>
+
+<p>5.shell函数</p>
+
+<pre><code>$(shell command, parm1, parm2, parm3...)
+</code></pre>
+
+<p>command表示需要执行的shell命令，parm1, parm2, parm3...表示该shell命令的参数；</p>
+
+<p>该函数返回值为执行shell命令的输出结果。</p>
+
+<h5>注意：</h5>
+
+<p>这个函数会生成一个进程执行shell命令，所以该函数会影响运行性能。如果makefile中大量使用该函数会导致makefile的效率严重下降</p>
+
+<pre><code>esult:= $(shell ls)
+main:
+
+        echo -n  "the result is :"
+        echo $(result)
+.PHONY:main
+
+
+
+[root@localhost 01]# make -s
+the result is :fun1.c fun1.h makefile t
+</code></pre>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          <img src="http://localhost:4000/images/Neo.jpg" class="bio-photo" alt="Neo bio photo"></a>
+<h3>Neo</h3>
+<p>每一个优秀的人,都会有一段沉默的时光. 那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 日后说起时,连自己都能被感动的日子.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+    
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#the linux" title="view all
+posts">the linux <span style="margin-left:10px;">(19)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#other" title="view all
+posts">other <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#life" title="view all
+posts">life <span style="margin-left:10px;">(7)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#c\c++" title="view all
+posts">c\c++ <span style="margin-left:10px;">(25)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#win32asm" title="view all
+posts">win32asm <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#datebase" title="view all
+posts">datebase <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#linux" title="view all
+posts">linux <span style="margin-left:10px;">(26)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#tool" title="view all
+posts">tool <span style="margin-left:10px;">(22)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#algorithm" title="view all
+posts">algorithm <span style="margin-left:10px;">(14)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#操作系统" title="view all
+posts">操作系统 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#剑指offer" title="view all
+posts">剑指offer <span style="margin-left:10px;">(6)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#信号" title="view all
+posts">信号 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#网络编程" title="view all
+posts">网络编程 <span style="margin-left:10px;">(13)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#编程珠玑" title="view all
+posts">编程珠玑 <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#gdb" title="view all
+posts">gdb <span style="margin-left:10px;">(12)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#nginx" title="view all
+posts">nginx <span style="margin-left:10px;">(17)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#vim" title="view all
+posts">vim <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#线程" title="view all
+posts">线程 <span style="margin-left:10px;">(9)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#makefile" title="view all
+posts">makefile <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#reading" title="view all
+posts">reading <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#stl" title="view all
+posts">stl <span style="margin-left:10px;">(11)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#树" title="view all
+posts">树 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#shell" title="view all
+posts">shell <span style="margin-left:10px;">(15)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#sed" title="view all
+posts">sed <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#awk" title="view all
+posts">awk <span style="margin-left:10px;">(5)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#进程" title="view all
+posts">进程 <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#排序" title="view all
+posts">排序 <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#network" title="view all
+posts">network <span style="margin-left:10px;">(3)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#mysql" title="view all
+posts">mysql <span style="margin-left:10px;">(4)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#security" title="view all
+posts">security <span style="margin-left:10px;">(1)</span></a>
+    </li>
+    
+    <li style="line-height:20px;list-style:none;font-weight:bold;"><a href="http://localhost:4000/category/#kernel" title="view all
+posts">kernel <span style="margin-left:10px;">(2)</span></a>
+    </li>
+    
+</ul>
+
+
+        </div>
+        <p class="byline"><strong>Makefile中函数调用</strong> was published on <time datetime="2013-11-13T07:26:31Z">November 13, 2013</time> by <a href="http://localhost:4000/about" title="About Neo">Neo</a>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://localhost:4000/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://localhost:4000/2014/06/10/linux-heart-packet/" title="简单的心跳包机制">简单的心跳包机制</a></li>
+    
+      <li><a href="http://localhost:4000/2014/06/06/shell-sed-error/" title="sed error:unterminated `s' command">sed error:unterminated `s' command</a></li>
+    
+      <li><a href="http://localhost:4000/2014/06/05/shell-debug/" title="shell脚本的调试">shell脚本的调试</a></li>
+    
+    </ul>
+    <hr />
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'ucshellcom'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </div><!-- /.related-articles -->
+  <footer>
+    <br></br>
+<br></br>
+<span>&copy; 2013 - 2014 高手之路 ucshell.com , All Rights Reserved.   </span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+	        
+
+</body>
+</html>
