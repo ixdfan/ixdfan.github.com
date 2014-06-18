@@ -3,7 +3,7 @@ layout: post
 title: 求余运算与位运算
 wordpress_id: 793
 categories:
-- THE ALGORITHM
+- ALGORITHM
 ---
 
 **注意：这种方法只是适合于求一个数除以二的N次幂才正确**

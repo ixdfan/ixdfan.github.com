@@ -7,7 +7,7 @@ slug: '%e6%9c%b4%e7%b4%a0%e6%a8%a1%e5%bc%8f%e5%8c%b9%e9%85%8d%e7%ae%97%e6%b3%95'
 title: 朴素模式匹配算法
 wordpress_id: 474
 categories:
-- THE ALGORITHM
+- ALGORITHM
 tags:
 - 朴素匹配
 ---

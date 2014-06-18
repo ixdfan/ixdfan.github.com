@@ -7,7 +7,7 @@ slug: '%e4%bd%bf%e7%94%a8af_unix%e4%b8%ad%e7%94%b1%e5%a4%b4%e6%96%87%e4%bb%b6%e5
 title: 使用AF_UNIX中由头文件引发的错误
 wordpress_id: 539
 categories:
-- THE LINUX
+- LINUX
 ---
 
 今天使用unix域函数时候出现了一大屏奇怪的错误，程序很简单，程序本身是没有什么错误的！问题的关键就是头文件,我使用sockaddr\_un的地址与AF_UNIX来编写，但是我的头文件中有<netinet/in.h>这个文件,就是这个文件导致的错误，为了找出这个错误，我把头文件一个一个的注释掉来排查，终于找到了错误，只要把# include <netinet/in.h>去掉就可以了，这也是经验吧，以后写**网络通信时候就不要加<linux/un.h>** ，**本地通信的时候就不要加<*/in.h>**

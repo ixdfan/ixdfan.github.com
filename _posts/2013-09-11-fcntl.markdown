@@ -7,7 +7,7 @@ slug: fcntl%e5%87%bd%e6%95%b0%e4%bd%bf%e7%94%a8
 title: fcntl函数使用
 wordpress_id: 565
 categories:
-- THE LINUX
+- LINUX
 tags:
 - fcntl
 ---

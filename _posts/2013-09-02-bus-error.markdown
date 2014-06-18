@@ -7,7 +7,7 @@ slug: '%e6%80%bb%e7%ba%bf%e9%94%99%e8%af%af'
 title: 总线错误
 wordpress_id: 546
 categories:
-- THE LINUX
+- LINUX
 tags:
 - BUS ERROR
 ---

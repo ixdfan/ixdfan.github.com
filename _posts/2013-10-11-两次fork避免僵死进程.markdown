@@ -7,7 +7,7 @@ slug: '%e4%b8%a4%e6%ac%a1fork%e9%81%bf%e5%85%8d%e5%83%b5%e6%ad%bb%e8%bf%9b%e7%a8
 title: 两次fork避免僵死进程
 wordpress_id: 832
 categories:
-- THE LINUX
+- LINUX
 tags:
 - fork
 - 僵死进程

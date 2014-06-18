@@ -7,7 +7,7 @@ slug: struct-iphdr%e4%b8%8estruct-ip%e7%9a%84%e5%8c%ba%e5%88%ab
 title: struct iphdr与struct ip的区别
 wordpress_id: 596
 categories:
-- THE LINUX
+- LINUX
 tags:
 - iphdr
 ---

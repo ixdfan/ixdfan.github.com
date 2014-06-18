@@ -7,7 +7,7 @@ slug: oracle%e5%b8%b8%e7%94%a8%e6%9f%a5%e8%af%a2
 title: ORACLE常用查询
 wordpress_id: 305
 categories:
-- THE DATEBASE
+- DATEBASE
 tags:
 - oracle
 ---

@@ -7,7 +7,7 @@ slug: '%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e7%9a%84%e9%87%8d%e8%bd%bd%e3%80%81%
 title: 成员函数的重载、覆盖、隐藏
 wordpress_id: 131
 categories:
-- THE C\C++
+- C\C++
 tags:
 - 多态
 - 覆盖

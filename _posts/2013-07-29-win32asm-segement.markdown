@@ -7,7 +7,7 @@ slug: win32%e6%b1%87%e7%bc%96-%e5%85%b3%e4%ba%8e%e6%ae%b5
 title: WIN32汇编--关于段
 wordpress_id: 246
 categories:
-- THE WIN32ASM
+- WIN32ASM
 tags:
 - WIN32
 - 汇编

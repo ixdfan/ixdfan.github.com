@@ -7,7 +7,7 @@ slug: sql%e7%9a%84%e6%89%a7%e8%a1%8c%e9%a1%ba%e5%ba%8f
 title: SQL的执行顺序
 wordpress_id: 457
 categories:
-- THE DATEBASE
+- DATEBASE
 tags:
 - SQL顺序
 ---

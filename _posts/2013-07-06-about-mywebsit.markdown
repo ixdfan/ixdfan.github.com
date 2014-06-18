@@ -6,7 +6,7 @@ layout: post
 title: 关于建站的收获
 wordpress_id: 4
 categories:
-- THE LIFE
+- LIFE
 tags:
 - 人生
 - 思考

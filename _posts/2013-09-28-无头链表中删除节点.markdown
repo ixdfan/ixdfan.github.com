@@ -7,7 +7,7 @@ slug: '%e6%97%a0%e5%a4%b4%e9%93%be%e8%a1%a8%e4%b8%ad%e5%88%a0%e9%99%a4%e8%8a%82%
 title: 无头链表中删除节点
 wordpress_id: 766
 categories:
-- THE ALGORITHM
+- ALGORITHM
 tags:
 - 链表
 ---

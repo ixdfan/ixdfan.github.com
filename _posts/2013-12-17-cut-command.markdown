@@ -7,7 +7,7 @@ slug: cut%e5%91%bd%e4%bb%a4
 title: cut命令
 wordpress_id: 1280
 categories:
-- THE TOOL
+- TOOL
 ---
 
 cut命令:cut命令可以从一个文本文件或者文本流中提取文本列。

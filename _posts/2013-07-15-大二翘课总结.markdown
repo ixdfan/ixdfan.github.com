@@ -7,7 +7,7 @@ slug: '%e5%a4%a7%e4%ba%8c%e7%bf%98%e8%af%be%e7%9a%84%e6%80%bb%e7%bb%93'
 title: 大二翘课的总结
 wordpress_id: 225
 categories:
-- THE LIFE
+- LIFE
 tags:
 - 阶段总结
 ---

@@ -7,7 +7,7 @@ slug: top%e5%91%bd%e4%bb%a4%e7%9a%84%e4%bd%bf%e7%94%a8
 title: TOP命令的使用
 wordpress_id: 841
 categories:
-- THE TOOL
+- TOOL
 tags:
 - TOOL
 ---

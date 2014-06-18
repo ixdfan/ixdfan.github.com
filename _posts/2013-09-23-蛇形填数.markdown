@@ -7,7 +7,7 @@ slug: '%e8%9b%87%e5%bd%a2%e5%a1%ab%e6%95%b0'
 title: 蛇形填数
 wordpress_id: 730
 categories:
-- THE ALGORITHM
+- ALGORITHM
 ---
 
 蛇形填数

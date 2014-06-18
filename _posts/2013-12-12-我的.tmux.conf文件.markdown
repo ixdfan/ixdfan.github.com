@@ -7,7 +7,7 @@ slug: '%e6%88%91%e7%9a%84-tmux-conf%e6%96%87%e4%bb%b6'
 title: 我的.tmux.conf文件
 wordpress_id: 1199
 categories:
-- THE TOOL
+- TOOL
 tags:
 - tmux
 ---

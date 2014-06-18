@@ -7,7 +7,7 @@ slug: netstat%e5%b8%b8%e7%94%a8%e6%80%bb%e7%bb%93
 title: netstat常用指令小结
 wordpress_id: 437
 categories:
-- THE TOOL
+- TOOL
 tags:
 - netstat
 ---

@@ -1,16 +1,17 @@
 ---
 layout: post
-title: awk
+title: awk总结
 description: 
 modified: 
 categories: 
-- shell 
+- AWK
 tags:
 - 
 ---
 awk的格式
 	
 		pattern {action}
+
 awk将来自文件的第一行与每个模式相比较，如果匹配莫个模式的话，awk就会执行相关{atcion}操作，如果没有匹配的行，awk不进行操作。
 当awk完成了对输入中第一行文本比较之后，将对输入中的下一行重复上面的过程，直到读完所有的输入。
 

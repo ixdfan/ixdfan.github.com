@@ -4,7 +4,7 @@ title: 动态库与静态库的封装
 description: 
 modified: 
 categories: 
-- THE LINUX
+- LINUX
 ---
 
 #### 库: 

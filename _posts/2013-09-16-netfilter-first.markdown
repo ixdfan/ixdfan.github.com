@@ -7,7 +7,7 @@ slug: netfilter%e6%a1%86%e6%9e%b6%e7%bc%96%e7%a8%8b%e5%ad%a6%e4%b9%a0%e4%b8%80
 title: netfilter框架编程学习(一)
 wordpress_id: 605
 categories:
-- THE LINUX
+- LINUX
 tags:
 - netfilter
 ---

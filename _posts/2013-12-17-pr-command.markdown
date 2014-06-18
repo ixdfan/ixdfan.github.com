@@ -7,7 +7,7 @@ slug: pr%e5%91%bd%e4%bb%a4
 title: pr命令
 wordpress_id: 1285
 categories:
-- THE TOOL
+- TOOL
 ---
 
 pr命令：

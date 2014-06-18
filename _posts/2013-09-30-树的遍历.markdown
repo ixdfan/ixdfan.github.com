@@ -7,7 +7,7 @@ slug: '%e6%a0%91%e7%9a%84%e9%81%8d%e5%8e%86'
 title: 树的遍历
 wordpress_id: 789
 categories:
-- THE ALGORITHM
+- ALGORITHM
 tags:
 - 二叉树
 ---

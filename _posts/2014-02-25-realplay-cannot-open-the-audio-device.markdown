@@ -7,7 +7,7 @@ slug: realplay-cannot-open-the-audio-device
 title: Realplay cannot open the audio device
 wordpress_id: 1325
 categories:
-- THE TOOL
+- TOOL
 ---
 
 Realplay cannot open the audio device, Another application may be using it

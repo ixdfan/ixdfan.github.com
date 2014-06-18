@@ -7,7 +7,7 @@ slug: wait%e4%b8%8ewaitpid%e5%87%bd%e6%95%b0
 title: wait与waitpid函数
 wordpress_id: 837
 categories:
-- THE LINUX
+- LINUX
 ---
 
 wait与waitpid函数

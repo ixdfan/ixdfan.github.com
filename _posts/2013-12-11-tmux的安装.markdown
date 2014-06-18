@@ -7,7 +7,7 @@ slug: tmux%e7%9a%84%e5%ae%89%e8%a3%85
 title: tmux的安装
 wordpress_id: 1195
 categories:
-- THE TOOL
+- TOOL
 ---
 
 今天安装tmux-1.8真的是费了九牛二虎之力才算安装成功了！

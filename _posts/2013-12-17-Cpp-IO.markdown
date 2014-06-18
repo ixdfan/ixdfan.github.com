@@ -2,7 +2,7 @@
 layout: post
 title: IO操作
 categories:
-- THE C\C++
+- C\C++
 ---
 
 

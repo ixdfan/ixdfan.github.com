@@ -4,7 +4,7 @@ title:  100介乘末尾有多少个零
 description: 
 modified: 
 categories: 
-- the algorithm 
+- algorithm 
 tags:
 - 
 ---

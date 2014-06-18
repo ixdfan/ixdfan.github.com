@@ -2,7 +2,7 @@
 layout: post
 title: LINUX下PRO*C编译的错误总结
 categories:
-- THE C\C++
+- C\C++
 tags:
 - proc
 ---

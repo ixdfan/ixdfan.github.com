@@ -7,7 +7,7 @@ slug: vimdiff%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8
 title: vimdiff简单使用
 wordpress_id: 556
 categories:
-- THE TOOL
+- TOOL
 tags:
 - vim
 ---

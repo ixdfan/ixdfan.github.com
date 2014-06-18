@@ -7,7 +7,7 @@ slug: oracle%e4%b8%adalter%e7%9a%84%e7%94%a8%e6%b3%95%e8%af%a6%e8%a7%a3
 title: ORACLE中ALTER的用法详解
 wordpress_id: 249
 categories:
-- THE DATEBASE
+- DATEBASE
 tags:
 - alter
 - oracle

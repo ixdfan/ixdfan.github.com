@@ -7,7 +7,7 @@ slug: fcntl%e8%ae%be%e7%bd%ae%e9%9d%9e%e9%98%bb%e5%a1%9e%e6%96%87%e4%bb%b6%e6%8f
 title: fcntl设置非阻塞文件描述符
 wordpress_id: 1336
 categories:
-- THE LINUX
+- LINUX
 tags:
 - fcntl
 ---

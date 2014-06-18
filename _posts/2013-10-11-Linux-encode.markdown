@@ -7,7 +7,7 @@ slug: '%e4%bf%ae%e6%94%b9linux%e9%bb%98%e8%ae%a4%e7%bc%96%e7%a0%81'
 title: 修改Linux默认编码
 wordpress_id: 828
 categories:
-- THE TOOL
+- TOOL
 ---
 ##### 方法1:
     vi /etc/sysconfig/

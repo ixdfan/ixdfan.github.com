@@ -7,7 +7,7 @@ slug: '%e5%9b%be%e7%9a%84%e5%9f%ba%e7%a1%80'
 title: 图的基础
 wordpress_id: 868
 categories:
-- THE ALGORITHM
+- ALGORITHM
 ---
 
 =================================================================

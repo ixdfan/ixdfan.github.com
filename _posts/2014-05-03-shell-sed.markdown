@@ -4,12 +4,13 @@ title:  sed总结
 description: 
 modified: 
 categories: 
-- shell 
+- SED
 tags:
 - 
 ---
 
 sed [-n] program [file-list]
+
 sed [-n] [-f] program-file file-list
 
 

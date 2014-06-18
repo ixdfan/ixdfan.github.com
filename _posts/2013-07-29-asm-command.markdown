@@ -7,7 +7,7 @@ slug: '%e6%b1%87%e7%bc%96%e5%b8%b8%e7%94%a8%e6%b1%87%e6%80%bbing'
 title: 汇编常用汇总ing
 wordpress_id: 244
 categories:
-- THE WIN32ASM
+- WIN32ASM
 tags:
 - WIN32
 - 汇编

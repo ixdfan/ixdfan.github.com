@@ -7,7 +7,7 @@ slug: c%e6%a8%a1%e6%9d%bf%e4%b9%8b%e7%89%b9%e5%8c%96%e3%80%81%e5%81%8f%e7%89%b9%
 title: C++模板之特化、偏特化
 wordpress_id: 657
 categories:
-- THE C\C++
+- C\C++
 tags:
 - 偏特化
 - 模板

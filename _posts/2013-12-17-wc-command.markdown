@@ -7,7 +7,7 @@ slug: wc%e5%91%bd%e4%bb%a4
 title: wc命令
 wordpress_id: 1286
 categories:
-- THE TOOL
+- TOOL
 ---
 
 wc的使用

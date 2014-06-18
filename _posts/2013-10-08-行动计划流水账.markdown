@@ -7,7 +7,7 @@ slug: '%e8%a1%8c%e5%8a%a8%e8%ae%a1%e5%88%92%e6%b5%81%e6%b0%b4%e8%b4%a6'
 title: 行动计划流水账
 wordpress_id: 811
 categories:
-- THE OTHER
+- OTHER
 tags:
 - 流水账
 ---

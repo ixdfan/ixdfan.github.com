@@ -7,7 +7,7 @@ slug: vim%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4
 title: VIM常用命令
 wordpress_id: 521
 categories:
-- THE TOOL
+- TOOL
 tags:
 - vim
 ---

@@ -4,7 +4,7 @@ title:  解决vsftpd无法上传文件的问题
 description: 
 modified: 
 categories: 
-- THE LINUX
+- LINUX
 tags:
 - 
 ---

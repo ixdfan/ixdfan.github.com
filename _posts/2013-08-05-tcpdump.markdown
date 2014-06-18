@@ -7,7 +7,7 @@ slug: tcpdump%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4%e5%b0%8f%e7%bb%93
 title: tcpdump常用指令总结
 wordpress_id: 440
 categories:
-- THE TOOL
+- TOOL
 tags:
 - tcpdump
 ---

@@ -7,7 +7,7 @@ slug: fork%e5%87%bd%e6%95%b0%e8%af%a6%e8%a7%a3
 title: fork函数详解
 wordpress_id: 760
 categories:
-- THE LINUX
+- LINUX
 tags:
 - fork
 ---

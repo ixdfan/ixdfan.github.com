@@ -7,7 +7,7 @@ slug: '%e5%90%8e%e7%bc%80%e8%a1%a8%e8%be%be%e5%bc%8f'
 title: 后缀表达式
 wordpress_id: 1094
 categories:
-- THE ALGORITHM
+- ALGORITHM
 ---
 
 后缀表达式

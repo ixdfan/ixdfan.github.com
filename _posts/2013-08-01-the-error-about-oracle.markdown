@@ -7,7 +7,7 @@ slug: oracle%e5%b8%b8%e8%a7%81%e9%94%99%e8%af%af%e6%b1%87%e6%80%bb
 title: ORACLE常见错误汇总
 wordpress_id: 392
 categories:
-- THE DATEBASE
+- DATEBASE
 tags:
 - oracle
 ---

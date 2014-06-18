@@ -7,7 +7,7 @@ slug: linux%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8bconnection-reset-by-peer
 title: Connection Reset By Peer
 wordpress_id: 559
 categories:
-- THE LINUX
+- LINUX
 tags:
 - recvmsg
 ---

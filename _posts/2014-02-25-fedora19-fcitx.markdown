@@ -7,7 +7,7 @@ slug: fedora19%e5%ae%89%e8%a3%85fcitx%e8%be%93%e5%85%a5%e6%b3%95
 title: fedora19安装fcitx输入法
 wordpress_id: 1310
 categories:
-- THE TOOL
+- TOOL
 ---
 
 今天终于装上了久违的fcitx，之前没有安装成功，今天终于成功啦！fcitx果然比ibus好用的很，

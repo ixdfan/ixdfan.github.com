@@ -4,7 +4,7 @@ title: 静态连接与动态连接的区别
 description: 
 modified: 
 categories: 
-- THE LINUX
+- LINUX
 ---
 
 #### 静态连接于动态连接的区别

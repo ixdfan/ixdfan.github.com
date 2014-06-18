@@ -7,7 +7,7 @@ slug: '%e8%a7%a3%e5%86%b3fedora19%e4%b8%8b%e6%97%a0%e7%ba%bf%e4%bf%a1%e5%8f%b7%e
 title: 解决fedora19下无线信号差的方法
 wordpress_id: 1308
 categories:
-- THE LINUX
+- LINUX
 ---
 
 	/etc/modprobe.d/openfwwf.conf

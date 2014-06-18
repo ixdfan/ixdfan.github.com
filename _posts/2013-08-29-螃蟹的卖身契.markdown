@@ -7,7 +7,7 @@ slug: '%e8%9e%83%e8%9f%b9%e7%9a%84%e5%8d%96%e8%ba%ab%e5%a5%91'
 title: 螃蟹的卖身契
 wordpress_id: 495
 categories:
-- THE LIFE
+- LIFE
 ---
 
 1.  什么时候都不许不理黄滟洪

@@ -4,7 +4,7 @@ title:  linux中的信号
 description: 
 modified: 
 categories: 
-- THE LINUX 
+- LINUX 
 tags:
 - signal
 

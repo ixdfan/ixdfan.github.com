@@ -7,7 +7,7 @@ slug: head%e4%b8%8etail
 title: head与tail
 wordpress_id: 1282
 categories:
-- THE TOOL
+- TOOL
 ---
 
 =================================================================================================

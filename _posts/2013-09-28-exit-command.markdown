@@ -7,7 +7,7 @@ slug: exit%e7%b3%bb%e5%88%97%e5%87%bd%e6%95%b0
 title: exit系列函数
 wordpress_id: 781
 categories:
-- THE LINUX
+- LINUX
 tags:
 - exit
 ---

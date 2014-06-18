@@ -7,7 +7,7 @@ slug: ctags%e7%9a%84%e4%bd%bf%e7%94%a8
 title: ctags的使用
 wordpress_id: 534
 categories:
-- THE TOOL
+- TOOL
 tags:
 - vim
 ---
