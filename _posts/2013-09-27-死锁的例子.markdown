@@ -4,7 +4,7 @@ title:  死锁举例
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - pthread
 

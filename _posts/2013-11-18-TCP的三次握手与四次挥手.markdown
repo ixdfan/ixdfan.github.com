@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-18 11:26:48+00:00
 layout: post
-slug: tcp%e7%9a%84%e4%b8%89%e6%ac%a1%e6%8f%a1%e6%89%8b%e4%b8%8e%e5%9b%9b%e6%ac%a1%e6%8c%a5%e6%89%8b
 title: TCP的三次握手与四次挥手
-wordpress_id: 1039
 categories:
-- 网络编程
+- NETWORK
 ---
 
 TCP的三次握手建立连接如图所示：

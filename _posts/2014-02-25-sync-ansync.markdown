@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2014-02-25 12:46:28+00:00
 layout: post
-slug: '%e5%90%8c%e6%ad%a5%e3%80%81%e5%bc%82%e6%ad%a5%e5%88%b0%e5%ba%95%e6%98%af%e4%bb%80%e4%b9%88'
 title: 同步、异步到底是什么
-wordpress_id: 1312
 categories:
 - 进程
 tags:

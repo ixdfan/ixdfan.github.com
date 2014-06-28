@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-05 03:27:09+00:00
 layout: post
-slug: vim%e4%b8%ad%e5%ae%8f%e5%ae%9a%e4%b9%89
 title: VIM中宏定义
-wordpress_id: 903
 categories:
 - vim
 tags:

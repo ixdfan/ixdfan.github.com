@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-08-29 03:07:50+00:00
 layout: post
-slug: '%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84%e7%ae%97%e6%b3%95'
 title: 一个简单的算法
-wordpress_id: 502
 categories:
 - ALGORITHM
 ---

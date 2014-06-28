@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-28 07:25:30+00:00
 layout: post
-slug: vim%e8%a1%a5%e5%85%a8c%e7%a8%8b%e5%ba%8f
 title: vim补全c++程序
-wordpress_id: 1116
 categories:
 - vim
 tags:

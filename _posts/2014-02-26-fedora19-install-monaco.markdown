@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2014-02-26 13:12:28+00:00
 layout: post
-slug: fedora19%e5%ae%89%e8%a3%85monaco%e5%ad%97%e4%bd%93
 title: Fedora19安装Monaco字体
-wordpress_id: 1329
 categories:
 - TOOL
 ---

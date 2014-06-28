@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-25 16:04:47+00:00
 layout: post
-slug: '%e6%88%91%e7%9a%84%e7%ac%ac%e4%b8%80%e6%ac%a1%e7%ac%94%e8%af%95'
 title: 我的第一次笔试
-wordpress_id: 743
 categories:
 - LIFE
 ---

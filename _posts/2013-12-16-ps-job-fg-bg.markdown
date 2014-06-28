@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-16 16:11:15+00:00
 layout: post
-slug: '%e8%bf%9b%e7%a8%8b%e7%9b%b8%e5%85%b3%e5%91%bd%e4%bb%a4'
 title: 进程相关命令
-wordpress_id: 1229
 categories:
 - TOOL
 ---

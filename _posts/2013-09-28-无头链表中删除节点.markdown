@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-28 05:23:58+00:00
 layout: post
-slug: '%e6%97%a0%e5%a4%b4%e9%93%be%e8%a1%a8%e4%b8%ad%e5%88%a0%e9%99%a4%e8%8a%82%e7%82%b9'
 title: 无头链表中删除节点
-wordpress_id: 766
 categories:
 - ALGORITHM
 tags:

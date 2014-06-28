@@ -56,7 +56,6 @@ ngx_http_headers_in_t 的结构如下:
     		ngx_table_elt_t                  *via;
     	#endif
     
-    	ngx_table_elt_t                  *authorization;
     
     	ngx_table_elt_t                  *keep_alive;
     

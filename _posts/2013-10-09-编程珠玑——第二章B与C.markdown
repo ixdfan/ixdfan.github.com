@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-09 15:06:57+00:00
 layout: post
-slug: '%e7%bc%96%e7%a8%8b%e7%8f%a0%e7%8e%91-%e7%ac%ac%e4%ba%8c%e7%ab%a0b%e4%b8%8ec'
 title: 编程珠玑——第二章B与C
-wordpress_id: 817
 categories:
 - 编程珠玑
 tags:

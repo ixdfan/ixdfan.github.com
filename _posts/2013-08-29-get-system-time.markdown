@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-08-29 07:45:52+00:00
 layout: post
-slug: '517'
 title: 时间函数的使用
-wordpress_id: 517
 categories:
 - C\C++
 tags:

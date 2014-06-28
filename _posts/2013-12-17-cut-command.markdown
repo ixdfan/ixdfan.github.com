@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 04:33:52+00:00
 layout: post
-slug: cut%e5%91%bd%e4%bb%a4
 title: cut命令
-wordpress_id: 1280
 categories:
 - TOOL
 ---

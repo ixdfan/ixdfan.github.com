@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-07-06 12:39:00+00:00
 layout: post
-slug: hello-world
 title: 世界，你好！
-wordpress_id: 1
 categories:
 - OTHER
 ---

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-19 07:42:05+00:00
 layout: post
-slug: '%e6%a8%a1%e6%9d%bf%e4%b8%ad%e4%bd%bf%e7%94%a8%e5%bc%95%e7%94%a8%e7%9a%84%e9%94%99%e8%af%af-%e6%9c%aa%e8%a7%a3%e5%86%b3'
 title: 模板引用的错误
-wordpress_id: 691
 categories:
 - C\C++
 tags:

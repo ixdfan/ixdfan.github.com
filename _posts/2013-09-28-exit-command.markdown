@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-28 15:05:31+00:00
 layout: post
-slug: exit%e7%b3%bb%e5%88%97%e5%87%bd%e6%95%b0
 title: exit系列函数
-wordpress_id: 781
 categories:
 - LINUX
 tags:

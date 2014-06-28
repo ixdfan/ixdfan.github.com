@@ -1,10 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-07-06 15:30:00+00:00
 layout: post
 title: 关于建站的收获
-wordpress_id: 4
 categories:
 - LIFE
 tags:

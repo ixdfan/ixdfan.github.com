@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-02 02:22:33+00:00
 layout: post
-slug: avl%e6%a0%91
 title: AVL树(未完)
-wordpress_id: 1178
 categories:
 - 树
 ---

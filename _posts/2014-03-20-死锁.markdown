@@ -4,7 +4,7 @@ title:  死锁
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 死锁
 

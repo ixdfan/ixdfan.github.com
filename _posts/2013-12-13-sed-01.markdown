@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-13 09:14:57+00:00
 layout: post
-slug: sed%e7%bb%84%e5%90%88%e5%91%bd%e4%bb%a4
 title: sed组合命令
-wordpress_id: 1223
 categories:
 - sed
 tags:

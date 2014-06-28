@@ -4,7 +4,7 @@ title:  在gdb中发送信号
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - GDB
 

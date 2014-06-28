@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-12 01:40:37+00:00
 layout: post
-slug: '%e5%a4%a7%e5%b0%8f%e7%ab%af%e7%9a%84%e8%af%a6%e7%bb%86%e8%a7%a3%e9%87%8a'
 title: 大小端的详细解释
-wordpress_id: 574
 categories:
 - C\C++
 ---

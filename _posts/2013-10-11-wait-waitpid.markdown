@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-11 13:38:28+00:00
 layout: post
-slug: wait%e4%b8%8ewaitpid%e5%87%bd%e6%95%b0
 title: wait与waitpid函数
-wordpress_id: 837
 categories:
 - LINUX
 ---

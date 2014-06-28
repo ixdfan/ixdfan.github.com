@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-13 01:17:51+00:00
 layout: post
-slug: '%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%88%86%e7%a6%bb'
 title: 线程的资源回收
-wordpress_id: 971
 categories:
 - 线程
 tags:

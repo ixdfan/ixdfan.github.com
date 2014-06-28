@@ -1,12 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-18 08:37:52+00:00
 layout: post
 title: 校验和的计算
-wordpress_id: 1027
 categories:
-- 网络编程
+- NETWORK
 tags:
 - 校验和
 ---

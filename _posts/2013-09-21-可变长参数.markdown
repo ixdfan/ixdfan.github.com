@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-21 03:24:05+00:00
 layout: post
-slug: '%e5%8f%af%e7%bc%96%e7%a8%8b%e5%8f%82%e6%95%b0%e8%a1%a8'
 title: 可变长参数
-wordpress_id: 719
 categories:
 - C\C++
 tags:

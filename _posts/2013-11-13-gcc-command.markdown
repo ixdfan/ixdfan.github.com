@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-13 01:25:24+00:00
 layout: post
-slug: gcc%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4
 title: gcc常用命令
-wordpress_id: 975
 categories:
 - TOOL
 tags:

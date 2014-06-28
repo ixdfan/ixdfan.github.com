@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-09 12:45:33+00:00
 layout: post
-slug: '%e5%a6%82%e4%bd%95%e6%9f%a5%e7%9c%8berrno'
 title: 如何查看errno
-wordpress_id: 563
 categories:
 - LINUX
 ---

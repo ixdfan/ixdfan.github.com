@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 04:13:52+00:00
 layout: post
-slug: tcp%e6%8a%a5%e6%96%87%e6%ae%b5%e9%a6%96%e9%83%a8%e6%a0%bc%e5%bc%8f%e8%af%a6%e8%a7%a3
 title: TCP报文段首部格式详解
-wordpress_id: 1266
 categories:
-- 网络编程
+- NETWORK
 ---
 
 当编码数量达到一定的程度的时候，我们会发现，原来理论真的很重要；所以我才把《计算机网络》仔细的看了一下，要是换在以前，我一定觉的这些纯属理论，没有什么实际用处。但是现在我发现我真的就是缺少这些理论。

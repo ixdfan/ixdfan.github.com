@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2014-03-01 06:18:20+00:00
 layout: post
-slug: address-family-not-supported-by-protocol
 title: Address family not supported by protocol
-wordpress_id: 1344
 categories:
-- 网络编程
+- NETWORK
 ---
 
 今天看非阻塞connect时候自己写了一个小例子，结果却出现了

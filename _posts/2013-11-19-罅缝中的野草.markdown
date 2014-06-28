@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-19 13:21:38+00:00
 layout: post
-slug: '%e7%bd%85%e7%bc%9d%e4%b8%ad%e7%9a%84%e9%87%8e%e8%8d%89'
 title: 罅缝中的野草
-wordpress_id: 1082
 categories:
 - READING
 ---

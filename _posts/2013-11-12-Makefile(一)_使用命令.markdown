@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-12 15:15:26+00:00
 layout: post
-slug: '%e6%b5%8b%e8%af%95'
 title: Makefile(一):使用命令
-wordpress_id: 967
 categories:
 - Makefile
 tags:

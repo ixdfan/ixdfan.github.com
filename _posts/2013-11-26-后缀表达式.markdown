@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-26 07:25:42+00:00
 layout: post
-slug: '%e5%90%8e%e7%bc%80%e8%a1%a8%e8%be%be%e5%bc%8f'
 title: 后缀表达式
-wordpress_id: 1094
 categories:
 - ALGORITHM
 ---

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-17 08:32:07+00:00
 layout: post
-slug: extern%e4%b8%8d%e4%b8%ba%e4%ba%ba%e7%9f%a5%e7%9a%84%e5%b0%8f%e7%bb%86%e8%8a%82
 title: extern不为人知的小细节
-wordpress_id: 627
 categories:
 - C\C++
 tags:

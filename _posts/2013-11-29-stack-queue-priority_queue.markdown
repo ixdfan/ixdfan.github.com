@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-29 12:53:01+00:00
 layout: post
-slug: stack-queue-priority_queue
 title: stack queue priority_queue
-wordpress_id: 1136
 categories:
 - STL
 tags:

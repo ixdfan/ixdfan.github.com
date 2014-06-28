@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-08 06:51:25+00:00
 layout: post
-slug: '%e7%ba%bf%e7%a8%8b%e7%bb%88%e6%ad%a2%e5%8f%8a%e9%80%80%e5%87%ba%e4%bf%a1%e6%81%af'
 title: 线程退出以及获取退出信息
-wordpress_id: 925
 categories:
 - 线程
 tags:

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2014-02-25 01:37:25+00:00
 layout: post
-slug: fedora19%e5%ae%89%e8%a3%85fcitx%e8%be%93%e5%85%a5%e6%b3%95
 title: fedora19安装fcitx输入法
-wordpress_id: 1310
 categories:
 - TOOL
 ---

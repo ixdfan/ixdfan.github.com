@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-27 11:13:04+00:00
 layout: post
-slug: '%e7%ac%ac%e4%b8%80%e6%ac%a1%e8%81%8c%e4%b8%9a%e9%9d%a2%e8%af%95'
 title: 第一次职业面试
-wordpress_id: 750
 categories:
 - LIFE
 ---

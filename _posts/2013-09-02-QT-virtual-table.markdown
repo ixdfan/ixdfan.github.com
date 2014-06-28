@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-02 13:28:24+00:00
 layout: post
-slug: qt%e4%b8%ad%e6%b2%a1%e6%9c%89%e6%89%be%e5%88%b0%e8%99%9a%e8%a1%a8%e7%9a%84%e9%94%99%e8%af%af
 title: QT中没有找到虚表的错误
-wordpress_id: 543
 categories:
 - TOOL
 tags:

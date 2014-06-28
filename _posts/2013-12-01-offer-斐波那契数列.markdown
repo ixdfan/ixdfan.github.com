@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-01 08:49:20+00:00
 layout: post
-slug: '%e6%96%90%e6%b3%a2%e9%82%a3%e5%a5%91%e6%95%b0%e5%88%97'
 title: 斐波那契数列
-wordpress_id: 1162
 categories:
 - 剑指offer
 tags:

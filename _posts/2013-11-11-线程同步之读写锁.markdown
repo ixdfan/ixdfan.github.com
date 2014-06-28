@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-11 03:06:13+00:00
 layout: post
-slug: '%e7%ba%bf%e7%a8%8b%e5%90%8c%e6%ad%a5%e4%b9%8b%e8%af%bb%e5%86%99%e9%94%81'
 title: 线程同步之读写锁
-wordpress_id: 951
 categories:
 - 线程
 ---

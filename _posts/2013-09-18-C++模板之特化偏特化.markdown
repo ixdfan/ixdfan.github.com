@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-18 08:16:47+00:00
 layout: post
-slug: c%e6%a8%a1%e6%9d%bf%e4%b9%8b%e7%89%b9%e5%8c%96%e3%80%81%e5%81%8f%e7%89%b9%e5%8c%96
 title: C++模板之特化、偏特化
-wordpress_id: 657
 categories:
 - C\C++
 tags:

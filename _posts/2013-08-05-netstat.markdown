@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-08-05 08:47:05+00:00
 layout: post
-slug: netstat%e5%b8%b8%e7%94%a8%e6%80%bb%e7%bb%93
 title: netstat常用指令小结
-wordpress_id: 437
 categories:
 - TOOL
 tags:

@@ -1,0 +1,38 @@
+---
+layout: post
+title: 脚本中使用bc
+description:  
+modified: 
+categories: 
+- SHELL
+tags:
+- 
+---
+
+bc中有一个scale的变量用来控制浮点运算,如果进行浮点预算则必须将其设置为对应的精度,否则结果不会是你想要的
+
+在脚本中使用的方法是:
+
+	var=`echo "options; expression" | bc`
+
+第一部分options用来设置变量,如果需要设置的变量不止一个变量,可以使用分号来分开;
+
+expression参数定义了通过bc执行的数学表达式
+
+	#!/bin/bash
+	var1=100;
+	var2=45
+	var3=`echo "scale=4"; $var1/$var2 | bc`
+	echo "The answer is $var3"
+
+
+上面的方法适用于较短的运算,但是有时候有很多运算需要在一个命令行中列出多个表达式,最好的方法是使用内联输入重定向
+
+
+	var=`bc << EOF
+	options
+	statements
+	expressions
+	EOF
+	`
+EOF字符标识了内联重定向数据的开始和结尾

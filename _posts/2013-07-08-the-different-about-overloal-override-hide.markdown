@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-07-08 02:30:00+00:00
 layout: post
-slug: '%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e7%9a%84%e9%87%8d%e8%bd%bd%e3%80%81%e8%a6%86%e7%9b%96%e3%80%81%e9%9a%90%e8%97%8f'
 title: 成员函数的重载、覆盖、隐藏
-wordpress_id: 131
 categories:
 - C\C++
 tags:

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-07-12 15:51:00+00:00
 layout: post
-slug: test
 title: 函数参数的传递顺序
-wordpress_id: 207
 categories:
 - C\C++
 tags:

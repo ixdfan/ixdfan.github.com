@@ -1,7 +1,4 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-13 11:21:02+00:00
 layout: post
 title: nginx安装过程中的几个问题
 categories:

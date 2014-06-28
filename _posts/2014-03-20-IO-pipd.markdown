@@ -4,7 +4,7 @@ title:  pipe与socketpair函数
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 
 

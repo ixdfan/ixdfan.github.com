@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-30 01:13:53+00:00
 layout: post
-slug: '%e6%a0%91%e7%9a%84%e9%81%8d%e5%8e%86'
 title: 树的遍历
-wordpress_id: 789
 categories:
 - ALGORITHM
 tags:

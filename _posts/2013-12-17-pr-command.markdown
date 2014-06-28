@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 04:36:15+00:00
 layout: post
-slug: pr%e5%91%bd%e4%bb%a4
 title: pr命令
-wordpress_id: 1285
 categories:
 - TOOL
 ---

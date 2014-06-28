@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-14 02:40:35+00:00
 layout: post
-slug: struct-iphdr%e4%b8%8estruct-ip%e7%9a%84%e5%8c%ba%e5%88%ab
 title: struct iphdr与struct ip的区别
-wordpress_id: 596
 categories:
 - LINUX
 tags:

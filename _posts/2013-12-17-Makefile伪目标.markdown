@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 03:53:22+00:00
 layout: post
-slug: makefile%e4%bc%aa%e7%9b%ae%e6%a0%87
 title: Makefile伪目标
-wordpress_id: 1256
 categories:
 - Makefile
 ---

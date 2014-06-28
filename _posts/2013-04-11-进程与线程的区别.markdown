@@ -4,7 +4,7 @@ title:  进程与线程的区别
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 
 ---

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-09 04:12:11+00:00
 layout: post
-slug: gdb%e8%b0%83%e8%af%95%e5%85%ad%e7%ba%bf%e7%a8%8bcpu%e5%8d%a0%e7%94%a8%e9%ab%98
 title: GDB调试(六):线程CPU占用高
-wordpress_id: 928
 categories:
 - GDB
 tags:

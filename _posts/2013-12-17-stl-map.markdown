@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 04:23:25+00:00
 layout: post
-slug: stlmap
 title: STL::map
-wordpress_id: 1274
 categories:
 - STL
 ---

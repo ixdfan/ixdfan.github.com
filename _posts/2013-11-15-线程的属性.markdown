@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-15 02:42:05+00:00
 layout: post
-slug: '%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%b1%9e%e6%80%a7'
 title: 线程的属性
-wordpress_id: 1000
 categories:
 - 线程
 tags:

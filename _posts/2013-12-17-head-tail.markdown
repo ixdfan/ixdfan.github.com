@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 04:34:59+00:00
 layout: post
-slug: head%e4%b8%8etail
 title: head与tail
-wordpress_id: 1282
 categories:
 - TOOL
 ---

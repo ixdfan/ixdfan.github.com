@@ -1,6 +1,4 @@
 ---
-author: UCSHELL
-comments: true
 layout: post
 title: nginx的ngx_list_t结构
 categories:

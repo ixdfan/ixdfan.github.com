@@ -4,7 +4,7 @@ title:  IPC之共享内存
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 
 

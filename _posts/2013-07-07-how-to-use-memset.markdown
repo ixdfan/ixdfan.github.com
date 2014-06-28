@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-07-07 04:35:00+00:00
 layout: post
-slug: '%e5%85%b3%e4%ba%8ememset%e7%9a%84%e8%af%a6%e7%bb%86%e7%94%a8%e6%b3%95-3'
 title: 关于memset的详细用法
-wordpress_id: 380
 categories:
 - C\C++
 tags:

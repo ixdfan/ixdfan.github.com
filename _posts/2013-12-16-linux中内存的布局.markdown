@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-16 16:17:14+00:00
 layout: post
-slug: linux%e4%b8%ad%e5%86%85%e5%ad%98%e7%9a%84%e5%b8%83%e5%b1%80
 title: linux中内存的布局
-wordpress_id: 1234
 categories:
 - LINUX
 ---

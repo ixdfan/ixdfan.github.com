@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-03 04:43:35+00:00
 layout: post
-slug: '%e7%96%af%e8%a8%80%e7%96%af%e8%af%ad'
 title: 疯言疯语
-wordpress_id: 1181
 categories:
 - READING
 ---

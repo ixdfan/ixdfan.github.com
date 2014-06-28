@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-14 02:41:40+00:00
 layout: post
-slug: sed%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4
 title: sed常用命令
-wordpress_id: 1226
 categories:
 - sed
 ---

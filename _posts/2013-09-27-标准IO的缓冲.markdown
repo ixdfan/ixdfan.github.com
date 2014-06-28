@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-27 15:42:17+00:00
 layout: post
-slug: '%e6%a0%87%e5%87%86io%e7%9a%84%e7%bc%93%e5%86%b2'
 title: 标准IO的缓冲
-wordpress_id: 758
 categories:
 - C\C++
 ---

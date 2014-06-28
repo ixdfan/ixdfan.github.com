@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-09 01:33:35+00:00
 layout: post
-slug: linux%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8bconnection-reset-by-peer
 title: Connection Reset By Peer
-wordpress_id: 559
 categories:
 - LINUX
 tags:

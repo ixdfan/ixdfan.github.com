@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-08 02:55:22+00:00
 layout: post
-slug: '%e8%bf%90%e7%ae%97%e7%ac%a6%e4%bc%98%e5%85%88%e7%ba%a7'
 title: 运算符优先级
-wordpress_id: 913
 categories:
 - C\C++
 ---

@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-25 04:16:59+00:00
 layout: post
-slug: udp%e4%b8%ad%e4%bd%bf%e7%94%a8connect%e7%9a%84%e4%bd%9c%e7%94%a8
 title: UDP中使用connect的作用
-wordpress_id: 741
 categories:
-- 网络编程
+- NETWORK
 ---
 
 udp协议提供的是面向非连接的服务，通信双方不需要建立连接。一方只需要建立好套接字，并显式或由系统绑定地址和端口号后就可以发送/接收数据包。

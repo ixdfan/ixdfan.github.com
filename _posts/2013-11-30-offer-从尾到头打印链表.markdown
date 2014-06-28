@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-30 13:41:53+00:00
 layout: post
-slug: '%e4%bb%8e%e5%b0%be%e5%88%b0%e5%a4%b4%e6%89%93%e5%8d%b0%e9%93%be%e8%a1%a8'
 title: 从尾到头打印链表
-wordpress_id: 1142
 categories:
 - 剑指offer
 ---

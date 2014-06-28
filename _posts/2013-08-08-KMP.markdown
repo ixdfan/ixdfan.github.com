@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-08-08 07:40:09+00:00
 layout: post
-slug: kmp%e5%8c%b9%e9%85%8d%e7%ae%97%e6%b3%95%e5%b0%8f%e7%bb%93
 title: KMP匹配算法小结
-wordpress_id: 485
 categories:
 - ALGORITHM
 tags:

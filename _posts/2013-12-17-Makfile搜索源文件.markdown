@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-17 03:49:34+00:00
 layout: post
-slug: makfile%e6%90%9c%e7%b4%a2%e6%ba%90%e6%96%87%e4%bb%b6
 title: Makfile搜索源文件
-wordpress_id: 1254
 categories:
 - Makefile
 ---

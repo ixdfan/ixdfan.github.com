@@ -4,7 +4,7 @@ title:  mmap与munmap
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - mmap
 ---

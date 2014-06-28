@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-05 03:15:44+00:00
 layout: post
-slug: makefile%e4%b8%8evim%e8%81%94%e5%90%88%e4%bd%bf%e7%94%a8
 title: makefile与vim联合使用
-wordpress_id: 901
 categories:
 - vim
 tags:

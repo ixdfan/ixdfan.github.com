@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-05 02:57:00+00:00
 layout: post
-slug: '%e5%ba%93%e6%96%87%e4%bb%b6%e7%9b%b8%e5%85%b3%e7%9a%84%e9%97%ae%e9%a2%98'
 title: 库文件相关的问题
-wordpress_id: 898
 categories:
 - GDB
 tags:

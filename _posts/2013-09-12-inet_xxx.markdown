@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-12 03:11:46+00:00
 layout: post
-slug: inet_xxxx%e5%87%bd%e6%95%b0%e6%80%bb%e7%bb%93
 title: inet_xxx函数总结
-wordpress_id: 585
 categories:
-- 网络编程
+- NETWORK
 ---
 
 inet_xxxx函数

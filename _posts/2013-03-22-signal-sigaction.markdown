@@ -4,7 +4,7 @@ title:  sigaction的使用
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - signal
 ---

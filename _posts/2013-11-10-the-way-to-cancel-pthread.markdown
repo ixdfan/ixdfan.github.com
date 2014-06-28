@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-10 06:03:38+00:00
 layout: post
-slug: '%e7%ba%bf%e7%a8%8b%e4%b8%89%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%8f%96%e6%b6%88'
 title: 线程的取消
-wordpress_id: 932
 categories:
 - 线程
 tags:

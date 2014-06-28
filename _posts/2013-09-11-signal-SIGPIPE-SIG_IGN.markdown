@@ -1,15 +1,10 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-11 01:55:46+00:00
 layout: post
-slug: sigpipe%e4%bf%a1%e5%8f%b7%e4%b8%8esig_ign%e7%9a%84%e4%bd%bf%e7%94%a8
 title: SIGPIPE信号与SIG_IGN的使用
-wordpress_id: 561
 categories:
-- 信号
+- LINUX
 tags:
-- 信号
+- SIGHUP
 ---
 
 前几天写的客户端程序今天在修改错误，客户端一但链接到服务器，发送数据就产生SIGPIPE信号
@@ -29,10 +24,12 @@ tags:
 系统里边定义了三种处理方法：
 
 1.SIG_DFL信号专用的默认动作:
+
 * 如果默认动作是暂停线程，则该线程的执行被暂时挂起。当线程暂停期间，发送给线程的任何附加信号都不交付，直到该线程开始执行，但是SIGKILL除外。
 * 把挂起信号的信号动作设置成SIG_DFL，且其默认动作是忽略信号 (SIGCHLD)。
 
 2.SIG_IGN忽略信号
+
 * 该信号的交付对线程没有影响
 * 系统不允许把SIGKILL或SIGTOP信号的动作设置为SIG_DFL
 

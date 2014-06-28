@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-28 06:59:58+00:00
 layout: post
-slug: http%e5%8d%8f%e8%ae%ae
 title: HTTP协议
-wordpress_id: 1109
 categories:
-- 网络编程
+- NETWORK
 tags:
 - STL
 ---
@@ -120,7 +115,6 @@ HTTP响应也是由三个部分组成，分别是:**状态行、消息报头、�
 常见状态代码、状态描述、说明：
 	200 OK //客户端请求成功
 	400 Bad Request //客户端请求有语法错误，不能被服务器所理解
-	401 Unauthorized //请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用
 	403 Forbidden //服务器收到请求，但是拒绝提供服务
 	404 Not Found //请求资源不存在，例如：输入了错误的URL
 	500 Internal Server Error //服务器发生不可预期的错误

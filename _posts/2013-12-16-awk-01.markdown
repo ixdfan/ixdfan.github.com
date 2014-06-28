@@ -1,7 +1,4 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-16 16:21:29+00:00
 layout: post
 title: awk的变量
 categories:

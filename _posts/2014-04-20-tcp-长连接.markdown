@@ -4,7 +4,7 @@ title:  tcp长连接
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - TCP
 

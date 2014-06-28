@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-11 06:22:10+00:00
 layout: post
-slug: gdb%e9%ab%98%e7%ab%af%e8%b0%83%e8%af%95%e4%ba%8c
 title: GDB调试(二):断点相关
-wordpress_id: 826
 categories:
 - GDB
 tags:

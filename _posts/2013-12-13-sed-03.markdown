@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-13 08:45:06+00:00
 layout: post
-slug: sed%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8
 title: sed简单使用
-wordpress_id: 1214
 categories:
 - sed
 tags:

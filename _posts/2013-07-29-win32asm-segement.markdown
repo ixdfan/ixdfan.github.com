@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-07-29 16:38:00+00:00
 layout: post
-slug: win32%e6%b1%87%e7%bc%96-%e5%85%b3%e4%ba%8e%e6%ae%b5
 title: WIN32汇编--关于段
-wordpress_id: 246
 categories:
 - WIN32ASM
 tags:

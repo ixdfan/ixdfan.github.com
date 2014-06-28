@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-08-29 03:19:17+00:00
 layout: post
-slug: '%e4%bb%a3%e7%a0%81%e9%ab%98%e4%ba%ae%e6%8f%92%e4%bb%b6'
 title: 代码高亮插件
-wordpress_id: 510
 categories:
 - OTHER
 ---

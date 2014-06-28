@@ -1,9 +1,8 @@
 ---
 layout: post
 title: epoll编程实例
-wordpress_id: 1342
 categories:
-- 网络编程
+- NETWORK
 tags:
 - epoll
 ---

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-12 07:18:49+00:00
 layout: post
-slug: gethostbyxxx%e4%b8%8exxxprotoxxx%e5%87%bd%e6%95%b0
 title: gethostbyxxx与xxxprotoxxx函数
-wordpress_id: 588
 categories:
 - LINUX
 tags:

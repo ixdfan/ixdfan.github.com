@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 求余运算与位运算
-wordpress_id: 793
 categories:
 - ALGORITHM
 ---

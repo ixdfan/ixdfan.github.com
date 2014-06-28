@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-28 07:20:26+00:00
 layout: post
-slug: vim%e8%87%aa%e5%8a%a8%e5%bb%ba%e7%ab%8b%e4%bb%a3%e7%a0%81
 title: vim自动建立代码
-wordpress_id: 1114
 categories:
 - vim
 tags:

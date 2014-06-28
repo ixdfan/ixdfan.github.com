@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2014-02-27 13:39:59+00:00
 layout: post
-slug: errno%e4%b8%adeagain%e5%90%ab%e4%b9%89
 title: errno中EAGAIN含义
-wordpress_id: 1339
 categories:
-- 网络编程
+- NETWORK
 tags:
 - EAGAIN
 ---

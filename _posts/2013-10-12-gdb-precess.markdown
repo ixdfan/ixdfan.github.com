@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-12 12:17:55+00:00
 layout: post
-slug: gdb%e9%ab%98%e7%ab%af%e8%b0%83%e8%af%95%e4%b8%89%ef%bc%9a%e5%a4%9a%e8%bf%9b%e7%a8%8b%e8%b0%83%e8%af%95
 title: GDB调试(三)：多进程调试
-wordpress_id: 844
 categories:
 - GDB
 tags:

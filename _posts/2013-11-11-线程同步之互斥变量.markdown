@@ -1,10 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-11 02:18:25+00:00
 layout: post
 title: 线程同步之互斥变量
-wordpress_id: 941
 categories:
 - 线程
 tags:

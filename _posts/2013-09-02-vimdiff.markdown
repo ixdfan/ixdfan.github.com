@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-02 14:05:38+00:00
 layout: post
-slug: vimdiff%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8
 title: vimdiff简单使用
-wordpress_id: 556
 categories:
 - TOOL
 tags:

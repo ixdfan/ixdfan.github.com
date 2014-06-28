@@ -1,0 +1,35 @@
+---
+layout: post
+title: awk中设定多分隔符
+description:  
+modified: 
+categories: 
+- AWK
+tags:
+- 
+---
+
+awk中指定多种分隔符
+
+有一些文件比较复杂,其中有逗号,有分号,甚至还有',例如we're之类的,想要让awk区分每个单词,可以设置多个分隔符
+
+	BEGIN {FS=",| |'"}
+
+设定分隔符为逗号,空格和"'"
+
+统计一个文件中单词的个数可以这样写
+
+	BEGIN{FS=",| |'|;"; number=0}
+	{
+		i=1
+		while (i<=NF) {
+			if ($i=="word") {
+				number++
+			}
+			i++
+		}
+	}
+	END {printf "word : %d", number}
+
+
+如果分隔符长度不为1,例如one非分隔符,那么也可以设置FS="one"即可

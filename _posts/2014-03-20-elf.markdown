@@ -4,7 +4,7 @@ title:  elf文件格式
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 
 

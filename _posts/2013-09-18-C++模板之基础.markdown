@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-18 07:26:13+00:00
 layout: post
-slug: c%e4%b8%ad%e7%9a%84%e6%a8%a1%e6%9d%bf%e6%80%bb%e7%bb%93
 title: C++模板之基础
-wordpress_id: 648
 categories:
 - C\C++
 tags:

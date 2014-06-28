@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-26 15:25:47+00:00
 layout: post
-slug: '%e5%87%86%e5%a4%87%e9%9d%a2%e8%af%95'
 title: 准备面试
-wordpress_id: 745
 categories:
 - LIFE
 ---

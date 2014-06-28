@@ -4,7 +4,7 @@ title:  进程的调度
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 进程
 ---

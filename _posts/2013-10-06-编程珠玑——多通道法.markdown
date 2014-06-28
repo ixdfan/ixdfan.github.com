@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-06 03:20:19+00:00
 layout: post
-slug: '%e7%bc%96%e7%a8%8b%e7%8f%a0%e7%8e%91-40%e9%80%9a%e9%81%93%e6%b3%95'
 title: 编程珠玑——多通道法
-wordpress_id: 800
 categories:
 - 编程珠玑
 tags:

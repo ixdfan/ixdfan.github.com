@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-23 09:33:16+00:00
 layout: post
-slug: '%e8%9b%87%e5%bd%a2%e5%a1%ab%e6%95%b0'
 title: 蛇形填数
-wordpress_id: 730
 categories:
 - ALGORITHM
 ---

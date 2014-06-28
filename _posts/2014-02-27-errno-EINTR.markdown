@@ -4,7 +4,7 @@ title:  errno中的EINTR
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - errno
 ---

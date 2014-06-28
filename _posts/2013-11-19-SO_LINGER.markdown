@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-19 03:06:04+00:00
 layout: post
-slug: so_linger%e7%bc%93%e5%86%b2%e5%8c%ba%e5%a4%84%e7%90%86%e6%96%b9%e5%bc%8f%e9%80%89%e9%a1%b9
 title: SO_LINGER缓冲区处理方式选项
-wordpress_id: 1059
 categories:
-- 网络编程
+- NETWORK
 tags:
 - SOL_SOCK
 ---

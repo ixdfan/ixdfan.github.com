@@ -4,7 +4,7 @@ title:  epoll与select和poll当区别
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - epoll
 ---

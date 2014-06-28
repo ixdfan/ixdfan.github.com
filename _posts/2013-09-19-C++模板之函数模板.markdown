@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-19 02:40:44+00:00
 layout: post
-slug: c%e6%a8%a1%e6%9d%bf%e4%b9%8b%e5%87%bd%e6%95%b0%e6%a8%a1%e6%9d%bf
 title: C++模板之函数模板
-wordpress_id: 671
 categories:
 - C\C++
 tags:

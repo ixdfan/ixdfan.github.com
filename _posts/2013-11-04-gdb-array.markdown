@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-04 12:15:39+00:00
 layout: post
-slug: gdb%e6%9f%a5%e7%9c%8b%e5%8a%a8%e6%80%81%e6%95%b0%e7%bb%84
 title: GDB查看动态数组
-wordpress_id: 887
 categories:
 - GDB
 tags:

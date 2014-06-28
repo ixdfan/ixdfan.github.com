@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-16 16:31:00+00:00
 layout: post
-slug: awk%e5%ad%97%e7%ac%a6%e4%b8%b2%e6%93%8d%e4%bd%9c%e5%87%bd%e6%95%b0
 title: awk字符串操作函数
-wordpress_id: 1248
 categories:
 - awk
 ---

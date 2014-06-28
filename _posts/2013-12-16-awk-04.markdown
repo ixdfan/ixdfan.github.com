@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-16 16:22:23+00:00
 layout: post
-slug: awk%e4%b8%ad%e7%9a%84%e5%be%aa%e7%8e%af
 title: awk中的循环
-wordpress_id: 1241
 categories:
 - awk
 ---

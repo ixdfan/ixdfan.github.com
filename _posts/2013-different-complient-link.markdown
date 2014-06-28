@@ -4,7 +4,7 @@ title:  编译与链接的区别
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 
 

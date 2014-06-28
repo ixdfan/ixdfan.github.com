@@ -1,13 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-08-01 15:16:45+00:00
 layout: post
-slug: oracle%e5%b8%b8%e8%a7%81%e9%94%99%e8%af%af%e6%b1%87%e6%80%bb
 title: ORACLE常见错误汇总
-wordpress_id: 392
 categories:
-- DATEBASE
+- MYSQL
 tags:
 - oracle
 ---

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-28 06:55:00+00:00
 layout: post
-slug: stlvector
 title: STL::vector
-wordpress_id: 1106
 categories:
 - STL
 tags:

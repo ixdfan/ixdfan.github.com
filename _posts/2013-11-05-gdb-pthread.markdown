@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-05 02:34:45+00:00
 layout: post
-slug: gdb%e8%b0%83%e8%af%95%e4%ba%94%ef%bc%9a%e5%a4%9a%e7%ba%bf%e7%a8%8b%e8%b0%83%e8%af%95
 title: GDB调试(五)：多线程调试
-wordpress_id: 894
 categories:
 - GDB
 tags:

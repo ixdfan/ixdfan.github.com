@@ -4,7 +4,7 @@ title:  socket在什么情况下可读
 description: 
 modified: 
 categories: 
--  THE LINUX
+- LINUX
 tags:
 - 
 ---

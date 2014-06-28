@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-17 08:25:11+00:00
 layout: post
-slug: c%e8%b6%85%e5%87%ba%e8%8c%83%e5%9b%b4%e7%9a%84%e6%95%b0%e5%80%bc%e7%9a%84%e8%a1%a8%e7%a4%ba
 title: C++超出变量范围的赋值
-wordpress_id: 623
 categories:
 - C\C++
 ---

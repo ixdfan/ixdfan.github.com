@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-17 11:52:15+00:00
 layout: post
-slug: '%e5%9b%be%e7%9a%84%e5%9f%ba%e7%a1%80'
 title: 图的基础
-wordpress_id: 868
 categories:
 - ALGORITHM
 ---

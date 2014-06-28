@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-01 13:25:44+00:00
 layout: post
-slug: '%e4%bd%bf%e7%94%a8af_unix%e4%b8%ad%e7%94%b1%e5%a4%b4%e6%96%87%e4%bb%b6%e5%bc%95%e5%8f%91%e7%9a%84%e9%94%99%e8%af%af'
 title: 使用AF_UNIX中由头文件引发的错误
-wordpress_id: 539
 categories:
 - LINUX
 ---

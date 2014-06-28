@@ -1,7 +1,4 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-08-02 16:13:59+00:00
 layout: post
 title: TCP编程RECV的错误
 categories:

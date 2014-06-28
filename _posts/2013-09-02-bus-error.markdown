@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-02 13:38:25+00:00
 layout: post
-slug: '%e6%80%bb%e7%ba%bf%e9%94%99%e8%af%af'
 title: 总线错误
-wordpress_id: 546
 categories:
 - LINUX
 tags:

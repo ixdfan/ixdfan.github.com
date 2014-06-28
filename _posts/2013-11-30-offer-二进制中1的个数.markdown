@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-30 09:38:22+00:00
 layout: post
-slug: '%e4%ba%8c%e8%bf%9b%e5%88%b6%e4%b8%ad1%e7%9a%84%e4%b8%aa%e6%95%b0'
 title: 二进制中1的个数
-wordpress_id: 1138
 categories:
 - 剑指offer
 ---

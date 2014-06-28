@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-27 15:51:27+00:00
 layout: post
-slug: fork%e5%87%bd%e6%95%b0%e8%af%a6%e8%a7%a3
 title: fork函数详解
-wordpress_id: 760
 categories:
 - LINUX
 tags:

@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-21 03:09:52+00:00
 layout: post
-slug: '%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e5%ae%8f'
 title: 你不知道的宏
-wordpress_id: 717
 categories:
 - C\C++
 ---

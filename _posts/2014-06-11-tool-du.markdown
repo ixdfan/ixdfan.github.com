@@ -1,0 +1,67 @@
+---
+layout: post
+title:  df与du命令
+description: 
+modified: 
+categories: 
+- SHELL 
+tags:
+- 
+---
+
+df命令用来查看已挂载磁盘的使用情况
+
+	[root@ work]# df -h
+	Filesystem               Size  Used Avail Use% Mounted on
+	/dev/mapper/fedora-root   40G   15G   23G  40% /
+	devtmpfs                 967M     0  967M   0% /dev
+	tmpfs                    973M  792K  972M   1% /dev/shm
+	tmpfs                    973M 1004K  972M   1% /run
+	tmpfs                    973M     0  973M   0% /sys/fs/cgroup
+	tmpfs                    973M  660K  972M   1% /tmp
+	/dev/sda12               477M   82M  366M  19% /boot
+	/dev/mapper/fedora-home   20G   75M   19G   1% /home
+
+####注意:
+linux系统后台一直有进程在处理文件或是使用文件.df命令的输出值显示的是linux系统认为的当前值.有可能系统上有运行的进程已经创建或删除了某个文件,但是尚未释放文件,这个值就不会计算在空闲空间里
+
+
+通过df命令我们发现哪个磁盘就快要没有存储空间了.下一个问题是发生这种情况时候该怎么办??
+
+
+du命令显示特定目录(默认是当前目录)的磁盘使用情况,这是用来判断你系统上某个目录是不是有超大文件的快速方法
+
+
+默认情况下du显示当前目录下所有的文件,命令和子目录的磁盘使用情况,它的单位是磁盘的块.但是此时输出的列表是非常长的.
+
+但是我们一般是想要直到某个单独的文件和目录占用了多大的磁盘空间,所以输出那么长的列表没有意义!
+
+du的几个方便的参数
+
+	-c 显示所有已列出文件总的大小
+	-h 方便人读的格式输出
+	-s 显示每个输出参数的总计
+
+	[root@ ~]# du -sh *
+	4.0K	anaconda-ks.cfg
+	4.0K	backups
+	900M	Book
+	56K	Caa.zip
+	2.4M	Desktop
+	62M	Documents
+	832M	Downloads
+
+
+我们可以使用sort来对du的输出进行整理
+
+	[root@ ~]# du -sh * | sort -nr
+	995M	Python
+	900M	Book
+	832M	Downloads
+	822M	work
+	515M	Music
+	364K	Linux1.chm
+
+可以看到效果还是很不错的!
+
+sort的-n选项是按照数值来排序,-r是反序排序

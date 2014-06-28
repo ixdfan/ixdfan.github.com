@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-06 02:32:53+00:00
 layout: post
-slug: '%e7%bc%96%e7%a8%8b%e7%8f%a0%e7%8e%91-%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e4%bd%8d%e8%bf%90%e7%ae%97%e5%ae%9e%e7%8e%b0bitmap'
 title: 编程珠玑——如何使用位运算实现BitMap
-wordpress_id: 795
 categories:
 - 编程珠玑
 tags:

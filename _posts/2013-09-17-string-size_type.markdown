@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-17 08:58:10+00:00
 layout: post
-slug: stringsize_type%e7%b1%bb%e5%9e%8b
 title: string与string::size_type类型
-wordpress_id: 633
 categories:
 - C\C++
 ---

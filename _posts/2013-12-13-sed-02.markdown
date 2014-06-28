@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-12-13 09:11:23+00:00
 layout: post
-slug: sed%e7%9a%84%e6%9b%bf%e6%8d%a2%e5%8a%9f%e8%83%bd
 title: sed的替换功能
-wordpress_id: 1221
 categories:
 - sed
 tags:

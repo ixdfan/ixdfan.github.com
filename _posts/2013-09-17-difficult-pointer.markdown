@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-17 11:34:35+00:00
 layout: post
-slug: '%e4%b8%80%e4%b8%aa%e6%9c%89%e7%82%b9%e7%bb%95%e7%9a%84%e6%8c%87%e9%92%88'
 title: 一个有点绕的指针
-wordpress_id: 638
 categories:
 - C\C++
 tags:

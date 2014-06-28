@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-29 02:25:49+00:00
 layout: post
-slug: stldeque
 title: STL::deque
-wordpress_id: 1127
 categories:
 - STL
 tags:

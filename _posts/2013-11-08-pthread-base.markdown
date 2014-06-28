@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-08 04:48:45+00:00
 layout: post
-slug: '%e7%ba%bf%e7%a8%8b%e4%b8%80%e5%9f%ba%e7%a1%80'
 title: 线程(一):基础
-wordpress_id: 917
 categories:
 - 线程
 tags:

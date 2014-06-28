@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-11-04 12:07:49+00:00
 layout: post
-slug: gdb%e8%b0%83%e8%af%95%e5%9b%9bcore%e6%96%87%e4%bb%b6%e8%b0%83%e8%af%95
 title: GDB调试(四):core文件调试
-wordpress_id: 883
 categories:
 - GDB
 tags:

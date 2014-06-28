@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-20 01:40:41+00:00
 layout: post
-slug: c%e6%a8%a1%e6%9d%bf%e4%b9%8b%e5%8f%82%e6%95%b0%e6%8e%a8%e5%af%bc%e8%a7%84%e5%88%99
 title: C++模板之参数推导规则
-wordpress_id: 702
 categories:
 - C\C++
 tags:

@@ -1,12 +1,8 @@
 ---
-author: UCSHELL
-comments: true
-date: 2014-02-26 12:01:34+00:00
 layout: post
 title: epoll模型
-wordpress_id: 1327
 categories:
-- 网络编程
+- NETWORK
 tags:
 - epoll
 ---

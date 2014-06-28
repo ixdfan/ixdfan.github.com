@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-10-11 16:02:33+00:00
 layout: post
-slug: top%e5%91%bd%e4%bb%a4%e7%9a%84%e4%bd%bf%e7%94%a8
 title: TOP命令的使用
-wordpress_id: 841
 categories:
 - TOOL
 tags:

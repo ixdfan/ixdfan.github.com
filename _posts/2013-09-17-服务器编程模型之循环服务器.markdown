@@ -1,11 +1,6 @@
 ---
-author: UCSHELL
-comments: true
-date: 2013-09-17 01:28:59+00:00
 layout: post
-slug: '%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%bc%96%e7%a8%8b%e6%a8%a1%e5%9e%8b%e4%b9%8b%e5%be%aa%e7%8e%af%e6%9c%8d%e5%8a%a1%e5%99%a8'
 title: 服务器编程模型之循环服务器
-wordpress_id: 609
 categories:
 - LINUX
 tags:
