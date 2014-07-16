@@ -40,7 +40,10 @@ tags:
 	[ where <条件>]
 
 删除记录:
-
+	
+	delete from table_name	 #删除表中全部数据,但是表的结构还在
+	delete * from table_name #效果同上
+	
 	delete from <表名> [where <条件>]
 
 	>delete from student_info where stu_id=1001
