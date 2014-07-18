@@ -1,0 +1,209 @@
+---
+layout: post
+title: 常用的几种排序算法总结
+description:  
+modified: 
+categories: 
+- C/C++
+tags:
+- 
+---
+
+常用排序算法总结
+
+	#include <stdio.h>
+	#include <stdlib.h>
+	
+	/***********************
+	 *
+	 *	插入排序
+	 *
+	 **********************/
+	void insert(int a[], int n)
+	{
+		/*	与shell排序相似，不过此处gap=1	*/
+		int i;
+		int j;
+		for (i = 1; i < n ; ++i) {
+			int temp = a[i];
+			for (j = i-1; j >=0 && temp < a[j]; --j) {
+				a[j+1] = a[j];
+			}
+			a[j+1] = temp;
+		}
+	}
+	
+	
+	/***********************
+	 *
+	 *	shell排序
+	 *
+	 **********************/
+	/*	与插入排序十分相似,不过是加入了步长的调整而已	*/
+	void shellsort(int a[], int n)
+	{
+		int i, j;
+		/*	一定注意gap>0不能等于0,当gap=1的时候实际上已经是insertsort了	*/
+		for (int gap = n / 2; gap > 0; gap /= 2)
+			for (i = gap; i < n; ++i) {		/*	注意:这里是++i,而不是i+=gap*/
+				int temp = a[i];
+				for( j = i - gap; j >= 0 && a[j] > temp; j -= gap) {
+					a[j+gap] = a[j];
+				}  
+				a[j+gap] = temp;
+			}
+	}
+	
+	/***********************
+	 *
+	 *	归并排序
+	 *
+	 **********************/
+	int* b = NULL;
+	/*	将两个有序的数组归并成一个有序数组	*/
+	void merge(int a[], int low, int mid, int high)
+	{
+		if(b == NULL) {
+			return ;
+		}
+		int i;
+		int j;
+		int k;
+		/* 放入到b数组	*/
+		for (i = low; i <= high; ++i) {
+			b[i] = a[i];		
+		}
+	
+		for (i = low, j = mid + 1, k = i; i <= mid && j <= high; ++k) { 
+			if (b[i] <= b[j]) {
+				a[k] = b[j++];
+	
+			} else 
+				a[k] = b[i++];
+		}
+	
+		while (i <= mid) 
+			a[k++] = b[i++];
+		while (j <= high) 
+			a[k++] = b[j++];
+			
+		
+	}
+	
+	void mergesort(int a[], int low, int high)
+	{
+		if (low < high) {	/*	注意临界条件	*/
+			int mid = (low + high) / 2;
+			/*	将左右两侧分别变为有序数组(其实就是将其分直到只有一个数字)，然后对左右两侧合并	*/
+			mergesort(a, low, mid);
+			mergesort(a, mid+1, high);
+			merge(a, low, mid, high);
+		}
+		
+	}
+	
+	/***********************
+	 *
+	 *	堆排序
+	 *
+	 **********************/
+	void swap(int* array, int num1, int num2)
+	{
+		int temp = array[num1];
+		array[num1] = array[num2];
+		array[num2] = temp;
+	}
+	
+	/*	堆调整 */
+	int heap_adjust(int array[], int index, int size)
+	{
+		int min = 0;
+		
+		int lch = 0;
+		int rch = 0;
+		/*	如果是叶子节点就不用调整了	*/
+		for (; index <= size / 2;) {
+			lch = index * 2 + 1;	/*	左孩子	*/
+			rch = index * 2 + 2;	/*	右孩子	*/
+	
+			/*	左右孩子都要在size范围之内，取出左右孩子中较小的那个值	*/
+			if (lch < size) {		
+				min = lch; 			/*	lch = index * 2 + 1 */
+			} 
+	
+			if (rch < size) {
+				if (array[min] > array[rch]) {
+					min = rch;
+				}
+			}
+			
+			/*	与父节点index比较，如小于则交换，并且继续调整	 */
+			if (array[min] >= array[index]) {
+				break;
+	
+			} else {
+				swap(array, index, min);
+				index = min;
+			//	heap_adjust(array, min, size);
+			}
+			
+		}
+		
+	}
+	
+	/* 建立堆 */
+	void build_heap(int array[], int size)
+	{
+		int index = size / 2 - 1;
+		for (; index >= 0 ; --index) {
+			heap_adjust(array, index, size);
+		}
+		int i = 0; 
+	}
+	
+	void heap_sort(int array[], int size)
+	{
+		int i = 0;	
+		build_heap(array, size);
+		for (; size > 0; ) {
+			printf("%d ", array[0]);
+			swap(array, 0, size - 1);
+			size--;
+			heap_adjust(array, 0, size);
+		}
+		printf("\n");
+	}
+	
+	
+	int main(int argc, char** argv)
+	{
+		int a[10];
+	
+		int i = 0;
+		for (i = 0; i < 10; ++i) {
+			a[i] = i;
+		}
+	
+		for (i = 0; i < 10; ++i) {
+			printf("%d ", a[i]);
+			fflush(stdout);
+		}
+		puts("");
+			
+		heap_sort(a, 10);
+	
+	//	b = (int*)malloc(sizeof(a));
+	//	puts("");
+	//	mergesort(a, 0, 9);
+	//	
+	//	free(b);
+		puts("");
+		for (i = 0; i < 10; ++i) {
+			printf("%d ", a[i]);
+			fflush(stdout);
+		}	
+		puts("");
+	
+		return 0;
+	}
+
