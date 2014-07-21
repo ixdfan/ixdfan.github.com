@@ -1,8 +1,0 @@
----
-layout: post
-title: 操作系统相关知识
-categories:
-- 操作系统
----
-
-http://www.educity.cn/zk/czxt/201305301133411464.htm
