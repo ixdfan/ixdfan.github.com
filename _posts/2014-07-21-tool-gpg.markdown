@@ -1,0 +1,180 @@
+---
+layout: post
+title: gpg实用教程
+description:  
+modified: 
+categories: 
+- 加密解密
+tags:
+- 
+---
+
+使用gpg的rsa加密方式，gpg会生成唯一的一对钥匙，分别成为公匙(public key)和私匙(private key);
+
+使用公匙加密过后的信息只能由配对的私匙解密，这种方式叫做非对称加密
+
+###### 非对称加密的过程:
+如果A要想要发送信息给B，则首先B需要将自己的公匙给A，A获得B的公匙之后使用公匙加密信息然后发送给B，B收到加密后的信息后使用自己的私匙解密
+
+##### 注意:
+公钥仅仅用于加密，不能用来解密，私匙才是用来解密的
+
+
+####1.生成钥匙对
+
+	gpg --gen-key
+
+运行之后会产生如下信息，让你选择加密算法，选择rsa即可
+
+	gpg (GnuPG) 1.4.18; Copyright (C) 2014 Free Software Foundation, Inc.
+	This is free software: you are free to change and redistribute it.
+	There is NO WARRANTY, to the extent permitted by law.
+	
+	Please select what kind of key you want:
+	(1) RSA and RSA (default)
+	(2) DSA and Elgamal
+	(3) DSA (sign only)
+	(4) RSA (sign only)
+	Your selection? 
+
+然后是密匙的长度，默认是2048位,直接回车
+
+	RSA keys may be between 1024 and 4096 bits long.
+	What keysize do you want? (2048) 
+
+之后是密匙的有效时间，默认是永久有效
+
+	Please specify how long the key should be valid.
+	0 = key does not expire
+	<n>  = key expires in n days
+	<n>w = key expires in n weeks
+	<n>m = key expires in n months
+	<n>y = key expires in n years
+	Key is valid for? (0) 
+
+然后是个人信息，real name可以填写自己的网名，email就写自己的email，comment是你的注释，可以不填写
+
+####2.查看本机钥匙信息
+
+	#gpg --list-keys	#显示本机上钥匙的信息，一般只有一个自己的私匙，其他的是别人的公匙
+	/root/.gnupg/pubring.gpg
+	------------------------
+	pub   2048R/B3A8D48E 2014-07-23
+	uid                  ucshell <ucshell.neo@gmail.com>
+	sub   2048R/7116F16B 2014-07-23
+
+
+	#gpg --list-secret-keys  #显示本机上的私匙
+	/root/.gnupg/secring.gpg
+	------------------------
+	sec   2048R/B3A8D48E 2014-07-23
+	uid                  ucshell <ucshell.neo@gmail.com>
+	ssb   2048R/7116F16B 2014-07-23
+
+如果需要从密匙列表中删除末个密匙，可以使用--delete-key参数
+	
+	gpg --delete-key user-id   #user-id可以是用户名，可以是邮箱
+
+####3.导出公匙
+	
+	gpg -a --output public.key --export user-id 
+
+-a表示输出文本格式文件，默认是二进制格式
+--export 表示执行导出公匙操作，user-id表示要导出的用户名
+--output 指定导出后的文件名。
+
+####4.导入密匙
+
+	gpg --import 密匙文件
+
+除了自己的密匙，还需要将别人的公匙或你自己的其他密匙导入到系统，这时候就需要导入
+
+####5.核对公匙指纹并签收
+导入公匙后就可以使用公匙加密信息了，但是每次操作时候都提示公匙不可信，因为虽然导入了公匙，但是有可能是冒充者的公匙,所以我们需要核对公匙是否真的的作者发出的，然后签收
+
+	gpg --fingerprint
+
+	[root@ ~]# gpg --fingerprint 
+	/root/.gnupg/pubring.gpg
+	------------------------
+	pub   2048R/B3A8D48E 2014-07-23
+	      Key fingerprint = 1B26 0C21 DDC3 EDD0 BE59  C600 D063 348A B3A8 D48E
+		  uid                  ucshell <ucshell.neo@gmail.com>
+		  sub   2048R/7116F16B 2014-07-23
+
+由于公匙有可能会被调包，所以检验其真实性是非常必要的，fingerprint是打印公匙的特征值，其中1B26 0C21 DDC3 EDD0 BE59  C600 D063 348A B3A8 D48E就是特征值，必须要与对方联系(电话或是其他联系)，确定特征值与对方一致才可以，否则就是被调包了！
+
+确定真实性之后，就要对这个公匙进行签收
+
+	gpg --sign-key user-id
+
+系统会提示你确定真实性吗？直接输入y即可
+
+如果是被调包的，可以将其删除
+
+	gpg --delete-keys user-id
+
+####6.加密文件
+	
+	gpg -a --output file.en.txt -r user-id -e file.txt
+
+-a表示输出文本文件格式,如果是二进制的可以不用这个选项
+--output指定加密后的文件名
+-r指定信息接收者的公匙,后跟user-id
+-e代表加密操作	(encrypt)
+-d代表解密操作 (decrypt)
+
+####7.解密文件
+
+收到别人使用你的公匙加密发送给你的加密文件后，使用一下命令进行解密
+
+	gpg --output file.en.txt -d file.txt
+
+-d表示执行解密操作
+
+
+####8.数字签名
+
+	gpg --sign file.txt
+在当前目录下生成一个file.txt.gpg的文件，这个是二进制形式存储的
+
+	gpp --clearsing file.txt
+在当前目录下生成fille.txt.asc，这个是以ascii表示的
+
+	gpg --detach-sign file.txt
+单独形成签名文件，与文件内容分开存放,二进制形式存放
+	
+	gpg -a --detack-sign file.txt
+单独形成签名文件，与文件内容分开存放,以ascii形式存放
+
+
+	类似于这样，上面是消息，没有加密，下面是签名
+	
+	-----BEGIN PGP SIGNED MESSAGE-----
+	Hash: SHA1
+	your message
+
+	----BEGIN PGP SIGNATURE-----
+	Version: GnuPG v1
+
+	iQEcBAEBAgAGBQJTz3IuAAoJENBjNIqzqNSOhgMH/AgKFnyMJzoJcA1czCSyDepK
+	FvmDexdLX3zLly8h/PRx2Cn0UBLE7KKeBlMHqxXXkVVDUg91HuQtoOCth6mLdRsg
+	+20dl7joMvAAQ7ZkaFT8tsNsrAiyQOclQ2sa4xA2AizSBaQdsuRUQeuiw7R+mYCa
+	q9QSIr4toxOryCP+Sh/XTexMPZRqlYC/uFTETFCuttOl9JLUJU65w8qY3vMlEVix
+	TPL9W8PIg1fJ5JjCdba3JIX5mGFi1etoP7RhiZT7C120NJwV7YjfXvA2tKrhOhTF
+	6BqX0Oq5SchXI74Sr9VhChhyeacJqxKmth7IQPPE7OGtnf5dZz3SDt/Kc96fZic=
+	=5f6e
+	-----END PGP SIGNATURE-----
+
+####9.签名的验证
+
+	gpg --verify file.asc
+
+	gpg --verify RMAIL.asc
+ 	gpg: Signature made Wed 23 Jul 2014 04:17:37 PM CST using RSA key ID B3A8D48E
+	gpg: Good signature from "ucshell <ucshell.neo@gmail.com>"
+
+执行后可以看到"Good signature"，这就表示该信息是作者发送的
+
+
+在man手册中gpg的相关选项写的非常详细

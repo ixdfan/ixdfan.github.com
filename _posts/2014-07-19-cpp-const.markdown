@@ -1,0 +1,61 @@
+---
+layout: post
+title: const有关的一点知识
+description:  
+modified: 
+categories: 
+- C\C++
+tags:
+- 
+---
+
+#### 注意:
+extern关键字可以只声明变量，而不会定义变量
+
+	extern int i;	// declares but does not define i
+	int i;			//declares and define i
+
+extern声明不是定义，也不会分配存储空间，实际上他只是表示变量定义在程序的其他地方
+
+只有当声明也是定义的时候，什么才可以有初始化，因为只有定义才会分配存储空间
+
+	extern double pi = 3.1415;	//definition
+
+定义了pi并分配并初始化了存储空间
+
+已初始化的extern声明会被当作定义，所以其后任何定义都是错误的
+
+	extern double pi = 3.1415;	//definition
+	double pi;		//error:redefinition of pi
+
+==================
+
+在全局作用域中定义非const常量，他将在整个程序中可以访问，例如将非const常量定义在一个文件中，那么在另外的文件中也可以访问这个变量，
+
+#### 注意:
+全局作用域中声明的const变量是定义该对象的文件的局部变量，这个变量只能存在于那个文件，其他文件无法访问。
+
+可以使用extern 来什么const定义的全局变量，使其在整个程序中都可以访问。
+
+
+	//file1.cpp
+	int counter;	//define
+	//fine2.cpp
+	extern int counter //use counter from file1.cpp
+	++counter
+
+
+	//file1.cpp
+	//define and initalizes a const that is accessible to other files
+	extern const int bufSize = fcn();
+
+	//file2.cpp
+	extern const int bufSize;	//use bufSize from file1.cpp
+	for (int index = 0; index != bufSize; ++index)
+		...
+
+本程序中，file1.cpp通过函数fcn()的返回值来定义并初始化bufSize，而bufSize定义为extern，也就意味着bufSize可以在其他文件中使用;
+file2.cpp中bufSize的声明也是extern，在这种情况下extern标识bufSize是一个声明，并没有初始化
+
+#### 注意:
+非const变量默认为extern，要使得const变量能够在其他的文件中访问，必须显式的指定他为extern
