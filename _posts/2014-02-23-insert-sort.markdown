@@ -2,7 +2,7 @@
 layout: post
 title: 插入排序
 categories:
-- 排序
+- C\C++
 tags:
 - 排序
 ---
