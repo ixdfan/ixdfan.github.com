@@ -4,7 +4,7 @@ title: 常用的几种排序算法总结
 description:  
 modified: 
 categories: 
-- C/C++
+- C\C++
 tags:
 - 
 ---
