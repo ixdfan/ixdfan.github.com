@@ -160,10 +160,9 @@ tags:
 
 并打印之前的内容，但是打印的结果却不是我们想要的。
 
-为什么会输出两个end呢？？因为我们输入的类型是const char*类型的值，buffer中保存的只是一个地址而已,
+为什么会输出两个end呢？？因为我们输入的类型是const char*类型的值，buf是数组首地址
 
-但是push(buffer)将buffer的地址放入了Stack，而不是将buffer中保存地址所指向的**内容**，一共保存了两次buffer的地址。第三次输入的是end，所以buffer中最后所指向的内容是end，因
-此pop();也就将两个buffer中的地址弹出来。
+但是push(buf)将buf数组的首地址放入了Stack，而不是将buf中的内容，一共保存了两次buf的地址。第三次输入的是end，所以buf中最后保存的内容是end，因此pop();也就将两个buffer中的地址弹出来。
 
 所以是两个end。
 
