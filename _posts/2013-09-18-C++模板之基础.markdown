@@ -64,9 +64,11 @@ tags:
     
     #include <iostream>
     #include <string>
-    #include <>
-    #include 
+	#include <cstdlib>
+	#include <cstring>
+
     using namespace std;
+
     template <typename T, int len>
     class Stack
     {
@@ -116,20 +118,16 @@ tags:
     
     int main()
     {
-    	Stack s;
-    	s.push("hello");
-    	s.push("world");
+    	Stack<const char*, 10> s;
     	/*		没有问题		*/
-    	while(!s.empty())	
-    	{
-    		cout << s.pop() << endl; 	
-            char buffer[10]; 	
-            for( ; ; ) 	
-            { 	
-                    cin >> buf;
-    				if(0 == strcmp(buf, "end"))
-    					break;
-    				s.push(buf);
+    	cout << s.pop() << endl; 	
+        char buf[10]; 	
+        for( ; ; ) 	
+        { 	
+                cin >> buf;
+    			if(0 == strcmp(buf, "end"))
+    				break;
+    			s.push(buf);
     	}
     	cout << "======以上都是输入================" << endl;
     	cout << "======以下都是输出================" << endl;
