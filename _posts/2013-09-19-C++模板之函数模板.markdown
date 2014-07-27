@@ -15,7 +15,7 @@ tags:
     template <typename T>
     string type(T t)
     {
-    	return Type::name();
+    	return Type<T>::name();
     }
     
     cout << type(123) << endl;
@@ -99,13 +99,13 @@ show(m);
 为了使得show专用于数组，写一个通用版本，写一个偏特化版本
 
     
-    template <
+    template <typename T>
     void show(T data)
     {
     	cout << data << endl;
     }
     
-    template <
+    template <typename T, int N)
     void show(T (&t)[N])
     {
     	for(int i = 0; i < N; i++)
@@ -117,12 +117,12 @@ show(m);
     
 ======================================================
     
-    T ()[N]
     T (	)[N]		是一个数组，存放T类型的数据
     T (*p)[N]		数组指针		
     T (&p)[N]		数组引用
     T& (p)[N]		数组中每个元素都是T&类型
-    T* (&p)[N]	        偏向指针数组
+    T* (&p)[N]	    偏向指针数组
+
 ======================================================
 
     
@@ -134,7 +134,7 @@ show(m);
     }
     
     template <typename T>
-    T& Min(T&a, T& b)
+    T& Min(T& a, T& b)
     {
     	cout << "B Min" << endl;
     	return a < b ? a ? b;
@@ -143,8 +143,8 @@ show(m);
 -------------------------------------------------------------
     int x = 1;
     int y = 2;
-    cout << Min(x, y) << endl;	//编译器在选择的时候会选择限制少的，所以调用B模板
-    cout << Min(1, 2) << endl;	//调用A模板，因为输入的是个const常量
+    cout << Min(x, y) << endl;		//编译器在选择的时候会选择限制少的，所以调用B模板
+    cout << Min(1, 2) << endl;		//调用A模板，因为输入的是个const常量
     cout << Min(1.1, 2) << endl;	//错误，因为与两个模板都不匹配,所以要再写一个模板
 
 -------------------------------------------------------------
@@ -152,7 +152,7 @@ show(m);
     T& Min(const T& a, const U& b)
     {
     	cout << "c Min" << endl;
-    	//return a < b ? a : b;		//错误，因为? :运算符要求前后两个类型都相同
+    	//return a < b ? a : b;				//错误，因为? :运算符要求前后两个类型都相同
     	return a < b ? a : static_cast(b); //或使用T(b);
     	//不同类型的比较则会调用c的模板
     }
@@ -183,8 +183,7 @@ Min<>("hello", "world");则调用A版Min
 ======================================================
 
     
-    template <typenmae T>//偏特化
-    
+    template <typenmae T>
     T& Min(const T& a, char& b)
     {
     	cout << "E Min" << endl;
@@ -193,7 +192,7 @@ Min<>("hello", "world");则调用A版Min
     
     cout << Min(123, 'x') << endl;//调用E Min
     
-    template <> //偏特化
+    template <> //特化
     T Min(double& a, double& b)
     {
     	cout << "F Min" << endl;
