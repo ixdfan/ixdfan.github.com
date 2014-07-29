@@ -1,0 +1,45 @@
+---
+layout: post
+title: md5sum的使用
+description:  
+modified: 
+categories: 
+- 加密解密
+tags:
+- 
+---
+
+####计算字符串的md5值
+
+	# echo "12345" | md5sum
+	d577273ff885c3f84dadb8578bb41399  -
+
+	# echo -n "12345" | md5sum			#-n取消echo的换行
+	827ccb0eea8a706c4c34a16891f84e7b  -
+
+
+结果是不相同的，但是以上两个md5值去在线解密都会显示是12345,这是因为我们输入的字符串中都有隐含的换行符,所以结果显示的是不同的
+
+
+####计算文件的md5值
+
+	# ls -l install
+	-rw-r--r--. 1 root root 155 Mar 19 09:24 install
+	# md5sum  install
+	487d1f4e216576ea07d7756a5f11ac6e  install
+	# md5sum  install > install.md5
+	# cat install.md5 
+	487d1f4e216576ea07d7756a5f11ac6e  install
+	# md5sum -c install.md5 	#使用install.md5来检验原文件是否发生改变
+	install: OK							#OK说明没有改变
+	
+	#使用vim改变install文件中的一个字符
+	# md5sum -c install.md5 	
+	install: FAILED
+	md5sum: WARNING: 1 computed checksum did NOT match
+	# 表示文件改变
+
+
+	
+
+
