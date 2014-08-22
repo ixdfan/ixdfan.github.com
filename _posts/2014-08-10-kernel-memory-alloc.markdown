@@ -61,8 +61,6 @@ order:请求或释放页数的2的幂
 例如，申请1页order就是0，申请2页，oder就是1
 
 
-
-
 	/*
 	* memory.c
 	*/
@@ -134,3 +132,27 @@ order:请求或释放页数的2的幂
 	module_exit(kernelspace_exit);
 	
 可以看到分配的空间都是介于3G-4G之间的空间
+
+
+
+-------------------------------------------------------------------------------
+
+#### 按页分配
+
+如果需要分配更大块的内存，那么使用面向页的分配方式更好
+
+	unsigned long get_zeroed_page(unsigned int flags)
+	返回指向新页面的指针，并将页面清零
+
+	unsigned long __get_free_page(unsigned int flags)
+	和get_zeroed_page类似，但不清零页面
+
+	unsigned long __get_free_pages(unsigned int flags, unsigned int order)
+	分配如果连续的页面，返回指向该内存区域的指针，但也不清零这段内存。
+
+当程序使用完这些页，可以使用以下函数来释放:
+
+	void free_page(unsigned long addr)
+	只释放一页的内存
+	void free_pages(unsigned long addr, unsigned long order)
+	释放2^order页的内存，如果释放的与分配的数目不等，则会导致系统错误
