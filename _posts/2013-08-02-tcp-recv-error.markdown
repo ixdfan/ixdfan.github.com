@@ -271,6 +271,7 @@ tags:
 也就是说它直接从流中去取得，取得多少算多少，问题就出现了！当我们发送四个字节的时候它能够将四个字节都填充满在返回吗？就是为了防止出现这种情况所以在recv中才多出了一个选项MSG_WAITALLL
 
 开始还好，但是后来客户端消息出现了乱码，当时我就想可能是因为没有指定MSG_WAITALL造成的
+
     # include <stdio.h>
     # include <string.h>
     # include <unistd.h>
