@@ -80,11 +80,11 @@ GDB高端调试(三)——多进程的调试
 
 4. 运行GDB
 
-   [root@localhost GDB]# gdb
-   (gdb)attach PID
-   (gdb)stop /*这个是非常重要的，必须先暂停你在设置一些断点*/
-   (gdb)break function /*在function函数上设置断点*/
-   (gdb)continue
+	[root@localhost GDB]# gdb
+	(gdb)attach PID
+	(gdb)stop /*这个是非常重要的，必须先暂停你在设置一些断点*/
+	(gdb)break function /*在function函数上设置断点*/
+	(gdb)continue
 	**也可以直接使用gdb -p pid** 这两种方法都可以
 	/*遇到断点后进行单步调试*/
 
