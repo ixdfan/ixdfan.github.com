@@ -79,7 +79,8 @@ GDB高端调试(三)——多进程的调试
 	[root@localhost GDB]# ps a
 
 4. 运行GDB
-
+	
+	AA
 	[root@localhost GDB]# gdb
 	(gdb)attach PID
 	(gdb)stop /*这个是非常重要的，必须先暂停你在设置一些断点*/
