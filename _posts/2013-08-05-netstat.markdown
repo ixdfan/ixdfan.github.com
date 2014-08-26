@@ -176,7 +176,6 @@ netstat -p 可以与其它开关一起使用，就可以添加 “PID/进程名�
     netstat: no support for `AF NETROM' on this system.
  
 ### 显示核心路由信息 netstat -r
- 
 
     # netstat -r
     Kernel IP routing table
