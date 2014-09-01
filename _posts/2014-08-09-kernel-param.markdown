@@ -31,7 +31,8 @@ perm常用:
 - S_IRUGO:任何用户都对/sys/module中出现的该参数具有读权限
 - S_IWUSR:允许root用户修改/sys/modules中出现的该参数
 
-	
+-------------------------------------------------------------------------------
+
 	#include <linux/module.h>
 	#include <linux/init.h>
 	
@@ -57,6 +58,7 @@ perm常用:
 	module_exit(param_exit);
 	
 加载
+
 	[root@ hello]# insmod param.ko 
 	[root@ hello]# 
 	Message from syslogd@localhost at Fri Aug 15 12:38:48 2014 ...
