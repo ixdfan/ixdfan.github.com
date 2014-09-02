@@ -9,20 +9,7 @@ tags:
 - 
 ---
 
-内核中的链表是一个非常神奇的东西，神奇在哪里呢?
-
-通常我们写一个链表，例如student类型的链表，那么一般是这样写:
-
-先写
-
-	struct student {
-		int value;
-		string name;
-		struct student* next, prev;
-	}
-
-
-内核链表是一个双向链表
+内核中的链表是一个非常神奇的东西.内核链表是一个双向链表
 
 	struct list_head {
 		struct list_head *next, *prev;
@@ -44,7 +31,6 @@ tags:
 -------------------------------------------------------------------------------
 
 2.插入节点
-
 	
 	/* new是新建立的节点 */
 	static inline void list_add(struct list_head *new, struct list_head *head)
@@ -140,33 +126,29 @@ container_of不是很好理解，container_of的实际作用其实就是已知�
 	typeof的作用是取类型
 	struct list_head* __mptr = (0x100);
 
-如果上面的还不好理解的话，可以再简单一点:
+	如果上面的还不好理解的话，可以再简单一点:
 
 
 	int a;/* 假如a位于0x10000位置*/
 	char* p;
 	p = &a;
 
-等价于
+	等价于
 
 	p = (char*)0x10000;
 
-表示认为0x10000位置放的是一个字符，同样我们也可以假设0位置放的是一个字符;
+	表示认为0x10000位置放的是一个字符，同样我们也可以假设0位置放的是一个字符;
 
 	p = (char*)0x0;
 
-这就是
+	这就是struct list_head* __mptr = (0x100);的含义
 
-	struct list_head* __mptr = (0x100);
+	((struct employee*)0)->list的含义就是假设在0位置放置有一个struct employee类型的变量。
+	知道这个struct employee的地址了，就能够使用成员变量。
 
-的含义
+	typeof( ((struct employee*)0)->list)的作用是取得成员变量的类型，list的类型是struct list_head;
 
-((struct employee*)0)->list的含义就是假设在0位置放置有一个struct employee类型的变量。知道这个struct employee的地址了，就能够使用成员变量。
-
-typeof( ((struct employee*)0)->list)的作用是取得成员变量的类型，list的类型是struct list_head;
-
-重新定义一个list_head的指针用于保存链表中成员变量list的地址
-
+	重新定义一个list_head的指针用于保存链表中成员变量list的地址
 	const typeof( ((type *)0)->member ) *__mptr = (ptr);
 	重新定义一个临时变量作用如同于MAX宏中的临时变量的作用，用于消除某些歧义;
 
