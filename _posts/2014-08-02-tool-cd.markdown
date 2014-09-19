@@ -1,0 +1,18 @@
+---
+layout: post
+title: cd的妙用
+description:  
+modified: 
+categories: 
+- TOOL
+tags:
+- 
+---
+
+> 千辛万苦的进入到了一个很深的目录，再次输入cd后受一抖按了回车。。。怎么办?????
+
+别急！
+
+使用cd -进入上一次进入的目录
+
+cd -

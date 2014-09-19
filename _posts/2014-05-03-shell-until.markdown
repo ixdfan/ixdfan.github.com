@@ -39,7 +39,7 @@ until执行的步骤:
 		echo "hello"	#hello输出次数比下面的echo多1
 	test $i -gt $N	#检测条件是i<N就执行
 	do
-		RESULT=`expr $i \* $i`	
+		RESULT=`expr $i \* $i`	#注意这里使用了反引号
 		echo "$i--------------$RESULT"
 		i=$(($i+1))
 	done

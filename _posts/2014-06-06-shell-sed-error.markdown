@@ -4,7 +4,7 @@ title:  sed error:unterminated `s' command
 description: 
 modified: 
 categories: 
-- shell 
+- SED
 tags:
 - 
 ---

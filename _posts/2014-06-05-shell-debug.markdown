@@ -109,6 +109,7 @@ set中关闭-x选项的方法是使用+x来关闭,这样就可以从某个点关
 	fi
 
 输出
+
 	[root@ script]# ./debug.sh 
 	+ echo -n 'Can you write device drivers? '
 	Can you write device drivers? + read answer			#前部分为正常的输出
