@@ -35,15 +35,16 @@ bing_verify:
 # Links to include in top navigation
 # For external links add external: true
 links:
-  - title: Home
+ - title: Home
    url: 
  - title: Category
    url: /category/
  - title: Posts
-   url: /posts/ - title: About
-    url: /about/
+   url: /posts/ 
+ - title: About
+   url: /about/
 #external: true
-  - title: Leave a message
+ - title: Leave a message
    url: /comment/
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
