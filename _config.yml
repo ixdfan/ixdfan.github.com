@@ -1,0 +1,76 @@
+title:            高手之路
+description:      专注于linux下程序设计
+# Your site's domain goes here. Leave localhost server or blank when working locally.
+url:              http://ucshell.com
+# Owner/author information
+owner:
+  name:           Neo
+  avatar:         Neo.jpg
+  bio:            "每一个优秀的人,都会有一段沉默的时光. 
+那一段时光,是付出了很多努力,忍受孤独和寂寞,不抱怨不诉苦. 
+日后说起时,连自己都能被感动的日子."
+  email:          ucshell.neo@gmail.com 
+  # Social networking links are used in author-bio sidebar. Update and remove as you like.
+  twitter:        
+  facebook:       
+  github: 
+  stackoverflow: 
+  linkedin:       
+  instagram:      
+  lastfm:         
+  tumblr: 
+  pinterest: 
+  foursquare: 
+  steam: 
+  dribbble: 
+  # For Google Authorship https://plus.google.com/authorship
+  google_plus: 
+
+# Analytics and webmaster tools stuff goes here
+google_analytics:   
+google_verify:      
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+bing_verify:        
+
+# Links to include in top navigation
+# For external links add external: true
+links:
+  - title: Home
+    url: 
+  - title: Category
+    url: /category/
+#  - title: Posts
+#    url: /posts/
+  - title: About
+    url: /about/
+##   external: true
+  - title: Leave a message
+    url: /comment/
+
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    China/Chongqing
+future:      true
+highlighter:    true
+markdown:    rdiscount 
+
+# https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink:   /:year/:month/:day/:title/
+
+img_url: /uploads
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  use_coderay: false
+
+  coderay:
+    coderay_line_numbers: 
+    coderay_line_numbers_start: 1
+    coderay_tab_width: 4
+    coderay_bold_every: 10
+    coderay_css: class
+
+include: [".htaccess"]
+exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
