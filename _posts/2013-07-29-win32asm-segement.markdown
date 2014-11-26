@@ -2,10 +2,7 @@
 layout: post
 title: WIN32汇编--关于段
 categories:
-- WIN32ASM
-tags:
-- WIN32
-- 汇编
+- ASM
 ---
 
 .stack .data .data? .const .code都是分段伪指令
