@@ -37,10 +37,10 @@ bing_verify:
 links:
   - title: Home
     url: 
-  - title: Category
-    url: /category/
-#  - title: Posts
-#    url: /posts/
+#  - title: Category
+#    url: /category/
+  - title: Posts
+    url: /posts/
   - title: About
     url: /about/
 ##   external: true
